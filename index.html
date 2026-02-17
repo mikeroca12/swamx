@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOC Toolbox | swamx.com</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #223352;
+            --surface: #2a3f64;
+            --surface-hover: #334b72;
+            --border: #3d5880;
+            --accent: #3b82f6;
+            --accent-dim: rgba(59, 130, 246, 0.15);
+            --accent-glow: rgba(59, 130, 246, 0.12);
+            --text: #e4e6ed;
+            --text-muted: #94a7c8;
+            --text-dim: #6880a0;
+            --green: #22c55e;
+            --amber: #f59e0b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(180deg, #283d60 0%, #223352 30%, #1b2a45 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ---- HEADER ---- */
+        header {
+            padding: 40px 0 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: auto;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .logo-icon img {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo h1 {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .logo h1 span { color: var(--accent); }
+
+        .domain-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+
+        /* ---- NAV TABS ---- */
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+            padding: 20px 0 0;
+        }
+
+        .nav-tab {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-tab:hover { color: var(--text); background: var(--surface); }
+
+        .nav-tab.active {
+            color: var(--accent);
+            background: var(--surface);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        /* ---- SECTIONS ---- */
+        .section { display: none; padding: 32px 0 48px; }
+        .section.active { display: block; }
+
+        /* ---- APPS SECTION ---- */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .app-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.2s ease;
+            display: block;
+        }
+
+        .app-card:hover {
+            background: var(--surface-hover);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 20px var(--accent-glow);
+        }
+
+        .app-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .app-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .app-status {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .status-live { color: var(--green); background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); }
+        .status-dev { color: var(--amber); background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); }
+        .status-soon { color: var(--text-muted); background: rgba(122, 127, 142, 0.1); border: 1px solid rgba(122, 127, 142, 0.2); }
+
+        .app-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+        .app-card p { color: var(--text-muted); font-size: 14px; font-weight: 300; line-height: 1.5; }
+
+        .app-card-placeholder {
+            border: 2px dashed var(--border);
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 140px;
+            cursor: default;
+        }
+
+        .app-card-placeholder:hover {
+            background: transparent;
+            border-color: var(--text-dim);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .app-card-placeholder p {
+            color: var(--text-dim);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        /* ---- QUICK REF SECTION ---- */
+        .search-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dim);
+            pointer-events: none;
+        }
+
+        .search-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .search-input::placeholder { color: var(--text-dim); }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+
+        .filter-chip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .filter-chip:hover { border-color: var(--accent); color: var(--text); }
+
+        .filter-chip.active {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .results-area { min-height: 200px; }
+
+        .results-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-dim);
+        }
+
+        .results-empty p { font-size: 15px; font-weight: 300; line-height: 1.6; }
+
+        .results-empty .hint {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 8px;
+        }
+
+        .result-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .result-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            transition: all 0.15s ease;
+        }
+
+        .result-card:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: var(--surface-hover);
+        }
+
+        .result-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .result-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            background: var(--accent-dim);
+            color: var(--accent);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .result-title {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .result-refs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .result-ref {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(122, 127, 142, 0.08);
+            border: 1px solid var(--border);
+        }
+
+        /* ---- FOOTER ---- */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 28px 0;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-dim);
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        @media (max-width: 640px) {
+            header { padding: 28px 0 0; }
+            .header-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .logo h1 { font-size: 22px; }
+            .apps-grid { grid-template-columns: 1fr; }
+            .search-input { font-size: 15px; padding: 14px 14px 14px 44px; }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section.active { animation: fadeUp 0.3s ease both; }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <header>
+            <div class="header-row">
+                <div class="logo">
+                    <div class="logo-icon"><img src="logo.webp" alt="MOC Toolbox"></div>
+                    <h1>MOC <span>Toolbox</span></h1>
+                </div>
+            </div>
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="apps">Apps</button>
+                <button class="nav-tab" data-tab="quickref">Quick Reference</button>
+            </div>
+        </header>
+
+        <!-- APPS -->
+        <section id="apps" class="section active">
+            <div class="apps-grid">
+                <a href="flap-overspeed.html" class="app-card">
+                    <div class="app-card-header">
+                        <div class="app-icon" style="background: rgba(239,68,68,0.15); color: var(--amber);">F</div>
+                        <span class="app-status status-live">LIVE</span>
+                    </div>
+                    <h3>MAX 737-8 Flap/Slat Overspeed</h3>
+                    <p>Decision tool for flap/slat overspeed inspection requirements. Phase I/II limits, Nz assessment, deferral windows.</p>
+                </a>
+
+                <div class="app-card app-card-placeholder">
+                    <p>More apps coming soon</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUICK REFERENCE -->
+        <section id="quickref" class="section">
+            <div class="search-container">
+                <div class="search-icon">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </div>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search by ATA, keyword, manual reference..." autocomplete="off">
+            </div>
+
+            <div class="filter-row" id="filterRow">
+                <button class="filter-chip active" data-filter="ALL">ALL</button>
+                <button class="filter-chip" data-filter="ATA">ATA</button>
+                <button class="filter-chip" data-filter="AOM">AOM</button>
+                <button class="filter-chip" data-filter="MPM">MPM</button>
+                <button class="filter-chip" data-filter="FOM">FOM</button>
+                <button class="filter-chip" data-filter="MEL">MEL</button>
+                <button class="filter-chip" data-filter="MXI">MXI</button>
+                <button class="filter-chip" data-filter="IFOM">IFOM</button>
+                <button class="filter-chip" data-filter="FRM">FRM</button>
+                <button class="filter-chip" data-filter="GOM">GOM</button>
+                <button class="filter-chip" data-filter="MISC">MISC</button>
+            </div>
+
+            <div class="results-area" id="resultsArea">
+                <div class="results-empty">
+                    <p>Search for anything -- ATA codes, procedures, faults, tips</p>
+                    <p class="hint">Type to search or select a category filter</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>MOC Toolbox | swamx.com</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // ---- TAB SWITCHING ----
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // ---- REFERENCE DATA ----
+        // Format: { cat: "ATA 28", title: "FUEL TANK FLOAT SWITCH T/S", refs: ["REF 1", "REF 2"] }
+        const DATA = [
+  {cat:"MPM",title:"MPM 52.6.5 Info Only Item Defect Procedure",refs:["MPM 6.5.2 Flight Deck Crew Reset of Tripped C/B", "FOM 19.2.6.1 INFO ONLY ITEM", "AOM 3.7.1-3 CYCLE C/B"]},
+  {cat:"ATA 05",title:"FLAP OVERSPEED",refs:["AOM 3.9 FLT CONTROLS (Flaps Placard Limit Speed)", "AOM 16.5.3.5 ACARS MSGS (OVRSPD Messages)", "VMO 360 & ABOVE INSP REQ", "MMO .84 & ABOVE INSP REQ"]},
+  {cat:"AOM",title:"AOM 3.8.4 MIN ENG OIL QTY",refs:[]},
+  {cat:"ATA 05",title:"HIGH WIND, HAIL OR FLEET CAMPAIGN EXCEL TRACK",refs:["HAIL STRIKE - RBD/RBF/KBF", "LIGHTNING STRIKE OCMP CBT", "FOM 19.2.6.3 COND INSP"]},
+  {cat:"AOM",title:"AOM 16.12.6 (-700) Center Tank Fuel Pump LOW PRESSURE Light Illuminated on Ground",refs:[]},
+  {cat:"AOM",title:"AOM 5.5.1 ABORTED ENGINE STARTS",refs:[]},
+  {cat:"AOM",title:"AOM 16.7.1 Supplemental Engine Start Procedures Ground Air / Crossbleed",refs:[]},
+  {cat:"AOM",title:"AOM 4.9.3.5 FLIGHT PLAN UPLINK PROCEDURE",refs:["AOM 6.8.2 PWB TAKEOFF DATA REVIEW"]},
+  {cat:"AOM",title:"AOM 16.8.3 LAV SMOKE DET RESET",refs:[]},
+  {cat:"AOM",title:"AOM 3.8.2 ENGINE STABILIZATION AND COOLDOWN (SHUTDOWN IDLE 3 MIN)",refs:[]},
+  {cat:"AOM",title:"AOM 4.8.1 (VNAV SPEED FLAP LIMIT ISSUE) CHECK VNAV CLB PAGE 2L/3L TGT & SPD RESTRICTION",refs:["CDU VNAV TARGET SPD"]},
+  {cat:"AOM",title:"NORMAL OPERATION OF SYSTEMS (AOM 16 SUPPLEMENTAL)",refs:[]},
+  {cat:"AOM",title:"LANDING WEIGHT AOM 3.3.2 STRUCTURAL WEIGHT",refs:["AOM 17.6 PWB Normal Landing Planning Procedure"]},
+  {cat:"AOM",title:"AOM 3.12.1 GENERAL TABLE 3.21 FUEL SYS LIM",refs:[]},
+  {cat:"AOM",title:"AOM 6.1 AIRCRAFT PREFLIGHT - FMC SOFTWARE VERSION U11 OR U13",refs:["MAX FRM 11.5.2.2 Derated Thrust Climb", "YOUTUBE 49 MIN (LEAP1B REQUIRES %)"]},
+  {cat:"ATA 05",title:"MISSING PAINT",refs:["MPM 52.07.01.02 DAMAGE & DENT IDENT", "KBF METAL VS COMPOSITE", "SRM 51-70-00-1A-3 - REQ ENG"]},
+  {cat:"ATA 05",title:"REJECTED TAKEOFF/BRAKE COOLING",refs:["AOM 12.2.2 MAXIMUM QUICK TURNAROUND TIME", "AOM 18.4.13 MAX BRAKE COOL SCHED (EASIER THAN AMM)", "AMM FIGURE"]},
+  {cat:"ATA 05",title:"SRM FOLLOW ONS - ENGINEERING ACTION GUIDE",refs:["SRM NICKS GOUGES SCRATCH & DAMAGE REMOVAL TIP", "MAX WINGLET DAMAGE TIP", "52.7.1.1 Damage and Dent Identification in MXI", "52.7.1.2 Damage and Dent Identification Marking"]},
+  {cat:"ATA 09",title:"KBF - TOW BAR SHEAR PIN",refs:["AOM 7.1 PUSHBACK PROCEDURES"]},
+  {cat:"ATA 11",title:"800 REQUIRED PLACARDS MT (ALSO REF AMM CH 11)",refs:["MAX REQUIRED PLACARDS MT (ALSO REF AMM CH 11)"]},
+  {cat:"ATA 20",title:"FLT DECK GUARDED SWITHCHES LOCKWIRE AMM 20-10-44-400-801",refs:[]},
+  {cat:"ATA 21",title:"PACK TRIM AIR MOD VLV & TCV",refs:["PACK STANDBY TCV", "PACK TRIM AIR PRSOV"]},
+  {cat:"ATA 21",title:"RAM AIR LOCKOUT EXH ACT LINK P/N C21009-1 / INLET ACT KIT 21000001-01",refs:["RAM AIR HAT REMOVAL PANEL 192BL/BR PER AMM 05-41-01"]},
+  {cat:"ATA 21",title:"RBF 25-13 (AOM 15.2.2) OPTIMUM PANEL CONFIG DURING COOLING",refs:[]},
+  {cat:"ATA 21",title:"On the Radar 2025.05.01 (Pack operations)",refs:[]},
+  {cat:"ATA 21",title:"NOISE/VIBRATION/HUMMING AFT GALLEY CABIN",refs:[]},
+  {cat:"ATA 22",title:"MAX SPEED TRIM NUISANCE / DFCS BITE",refs:["SPEED TRIM 22-11186 IFIM", "SPEED TRIM FTD", "SPEED TRIM ADJUST TSI STEPS"]},
+  {cat:"ATA 22",title:"STAB OUT TRIM LIGHT",refs:[]},
+  {cat:"ATA 22",title:"POWER UP AURAL WARNING EVERY 8 SEC",refs:[]},
+  {cat:"ATA 22",title:"RCAS EVENT ROLL AUTHORITY UNCOMMANDED ROLL",refs:[]},
+  {cat:"ATA 23",title:"700'S WIFI COMM ISSUE",refs:[]},
+  {cat:"ATA 23",title:"AOM 16.5.3.7 ACARS QUICK REF / FMC PREVIOUS CITY",refs:[]},
+  {cat:"ATA 23",title:"FLIGHT INTERPHONE STATIC (JACK)",refs:[]},
+  {cat:"ATA 23",title:"IDG INTERNAL LOW PRESSURE SWITCH CK (CMM)",refs:[]},
+  {cat:"ATA 23",title:"RADIO TUNING INOP DISPLAYED PANEL RESET",refs:[]},
+  {cat:"ATA 23",title:"SATCOM PART REPLACEMENT EMAIL SATCOM-DG VERIFY ACTIVATION",refs:[]},
+  {cat:"ATA 23",title:"ACARS NO CHIME CRITICAL FLT MODE",refs:[]},
+  {cat:"ATA 23",title:"ACARS OR DATA LINK MEL APPLIED CPDLC WILL NOT WORK IN FLIGHT ATC LOGS OUT",refs:[]},
+  {cat:"ATA 23",title:"FLIGHT ATTENDANT PANEL SAFETY BUTTON",refs:[]},
+  {cat:"ATA 23",title:"FASTEN SEAT BELT ANNOUNCEMENT WHEN SWITCHED TO AUTO OR ON",refs:[]},
+  {cat:"ATA 23",title:"CVR MEL 15 MINUTES",refs:[]},
+  {cat:"ATA 23",title:"RAMP HEADSET CALL OUTS POWER ON, COMMUNICATION ESTABLISHED & LOW BATTERY (RAMP HEADSET)",refs:[]},
+  {cat:"ATA 24",title:"AFT GALLEY POWER CYCLES",refs:[]},
+  {cat:"ATA 24",title:"ELEC LIGHT SPCU FAULT C/B CYCLE B1 & B2 FIM 24-34 TASK 802",refs:[]},
+  {cat:"ATA 24",title:"MAIN/AUX BATTERY LOCATION",refs:[]},
+  {cat:"ATA 24",title:"APPLYING ENGINE GENERATOR MEL W/SERIES 2 APU LUBE MODULE INSTALLED",refs:["PPE APU LUBE MODULE POWERPOINT"]},
+  {cat:"ATA 25",title:"MAX B/E AFT LH RH LAV VANITY OUTER DOOR PARTS",refs:[]},
+  {cat:"ATA 25",title:"FLIGHT DECK DOOR HEADER BUNDLE",refs:[]},
+  {cat:"ATA 25",title:"GALLEY BALL MAT RAW STOCK",refs:[]},
+  {cat:"ATA 25",title:"2.6.1 - 2.6.3 LIFE VEST, LOTO, RETURN AIR GRILLE & LIFE RAFT INSPECTION",refs:["FOM 21.1.9 LIFE VEST", "MAX TAMPER RED SECURITY SEAL DRAWING 25400009", "800 TAMPER RED SECURITY SEAL DRAWING 25400007"]},
+  {cat:"ATA 25",title:"MAX LAV SINK UNCLOG/CLEAN",refs:[]},
+  {cat:"ATA 25",title:"MAX AFT LAV DOOR PLACARDS",refs:[]},
+  {cat:"ATA 25",title:"ISP AUGUST TROUBLESHOOTING (IN SEAT POWER USB)",refs:["ISP BOEING TROUBLESHOOTING (IN SEAT POWER USB)", "CONFIG MODULE", "AMMS", "IPPC"]},
+  {cat:"ATA 25",title:"FLIGHT DECK USB CHARGING & EFB POWER KIT",refs:["KBF", "USB FLIGHT DECK", "AOM 3.16.1 EFB GENERAL", "AOM 5.20.2 5.20.2 Single EFB Failure Device or App"]},
+  {cat:"ATA 25",title:"PROMISE PLACARD EO 1132-E-15040 & EO 1132-E-16752 (ELECT SPRAY)",refs:[]},
+  {cat:"ATA 25",title:"MEGAPHONE SEAL",refs:[]},
+  {cat:"ATA 25",title:"MAX BE AFT LAV DOOR HARD TO OPEN OR CLOSE LOCK",refs:[]},
+  {cat:"ATA 25",title:"AFT GALLEY COUNTER DRAIN DOOR APPLY MEL 38-10-01A",refs:[]},
+  {cat:"ATA 25",title:"CARPET CHANGE STATIONS",refs:[]},
+  {cat:"ATA 25",title:"LOTO BOX CONTENTS",refs:[]},
+  {cat:"ATA 26",title:"WING TO BODY OVERHEAT PARTS EXCEL",refs:["WTB ELEMENTS P/N"]},
+  {cat:"ATA 27",title:"ELEVATOR PITOT LEAK CHECK PLUG P/N MS21913V6P or AN806-6",refs:[]},
+  {cat:"ATA 27",title:"PITOT PROBE CONNECTOR KIT P/N 00855-1727-0001",refs:[]},
+  {cat:"ATA 27",title:"SPEEED BRAKE DO NOT ARM NO DIM R&R DIODE M394 P/N 1N2976B PER WDM 33-18-21-2",refs:[]},
+  {cat:"ATA 27",title:"MAX KNOWN GOOD FLAP SETTINGS",refs:["A"]},
+  {cat:"ATA 27",title:"TRAILING EDGE FLAP NOT EXTENDING PROPERLY (Usually #1 & #8 Flap transmittion popped)",refs:[]},
+  {cat:"ATA 27",title:"MAX ELEV FEEL LIGHT ON (SOLENOIDS)",refs:["MAX ELEVATOR FEEL SCHEMATIC", "MAX ELEVATOR FEEL DIFF LIGHT"]},
+  {cat:"ATA 27",title:"STAB CHAIN GRINDING NOISE",refs:[]},
+  {cat:"ATA 27",title:"MPM 53.3 Functional Check Flights",refs:["SA-M 1092 (NRFO APP QUICKBASE)"]},
+  {cat:"ATA 27",title:"FLAP LOCK OUT/OVERSPEED - FLAP LOAD RELIEF",refs:[]},
+  {cat:"ATA 28",title:"AOM 16.12.4 DEFUELING AND GROUND TRANSFER OF FUEL",refs:["FQM 06.05 PRESSURE DEFUELING", "AOM 16.12.2 FUEL PROCEDURE (FUEL DENSITY)"]},
+  {cat:"ATA 28",title:"FUEL GREATER THAN 1000 IMBALANCE EXCEEDANCE COND INSP (QUESTIONS)",refs:[]},
+  {cat:"ATA 28",title:"FUEL TANK FLOAT SWITCH T/S",refs:[]},
+  {cat:"ATA 28",title:"FRM 11.5.3 FUEL MONITORING (FUEL QTY SENS MESSAGE)",refs:["CDU FUEL PROGRESS/INIT REF PAGE", "FMC LANDING FUEL (USING FUEL RESERVE)"]},
+  {cat:"ATA 28",title:"MAX RT TANK FUEL TUBE CRACK",refs:["NEW EA TANK DIVE"]},
+  {cat:"ATA 28",title:"NG FUEL PROBE P/N PRIOR TO LINE 7741 (FOR ETOPS APPLYS TO 8300'S)",refs:[]},
+  {cat:"ATA 28",title:"FUEL TEMP IND INOP MEL NOTES",refs:[]},
+  {cat:"ATA 29",title:"On the Radar 2025.05.01 (Hydraulic reservior changes during flight)",refs:[]},
+  {cat:"ATA 30",title:"MAX LEFT ONLY WING ANTI ICE HEALTH CHECK",refs:[]},
+  {cat:"ATA 30",title:"WING ANTI ICE MEL CREW CONFUSION",refs:["PNEUMATIC SCHEMATIC"]},
+  {cat:"ATA 31",title:"ACMS MENU",refs:["ACMS PROMPT BLANKING OUT (CLEAR REPORTS)", "NEW ACMS PAGES NG/MAX KBF"]},
+  {cat:"ATA 31",title:"AIRSPEED FLAP UP BUG",refs:[]},
+  {cat:"ATA 31",title:"FIBER OPTIC SIGN OFF",refs:[]},
+  {cat:"ATA 31",title:"WATER VAPING SENSING SYSTEM (NOAA) (MAX CONFIG SLOT 31-70)",refs:["IMAGE", "PRESENTATION"]},
+  {cat:"ATA 31",title:"AHM FAULT OCCURENCE -1 INDICATES WHAT CAUSED THE FAULT",refs:[]},
+  {cat:"ATA 32",title:"MAX LANDING GEAR CONTROL LEVER MODULE OPS CK",refs:[]},
+  {cat:"ATA 32",title:"MAX MLG BONDING JUMPER (NOT DEFERABLE MUST FIX STOCKED AT ALL STA))",refs:["NG MLG CTR DOOR UPR & LOWER JUMPERS"]},
+  {cat:"ATA 32",title:"TIRE BLOWOUT BRAKE METERING VALVE CONTROL ROD SEIZED (BMV SIDE)",refs:["EA - TTG8Q00TQKPR", "3241-C-17451-NG NEW EO 180 DAY INTERVAL", "BMV ROD INSPECTION NOT SEIZED"]},
+  {cat:"ATA 33",title:"ANTI COLLISION LT MODULE / DRIVER",refs:[]},
+  {cat:"ATA 33",title:"FLT DECK LEFT DOME EMERG LT",refs:[]},
+  {cat:"ATA 33",title:"GREEN GEAR + OVERHEAD IN DIM INOP",refs:[]},
+  {cat:"ATA 33",title:"CEILING LED MAXIMUM OF 3 LTS MAY BE INOP (20% OF 15 LT ASSY)",refs:[]},
+  {cat:"ATA 33",title:"ACP MAX SAFETY DEMO BUTTON MISSING (FAM 3.3.4)",refs:["Avionics Engineering Response", "TTG8Q0108L33"]},
+  {cat:"ATA 33",title:"MPM",refs:[]},
+  {cat:"ATA 34",title:"PM",refs:["AOM 4.10.3 IRS ALIGN LIGHTS FLASHING", "MAX ADIRU AUTO REALIGN", "ADIRU FAULT CODES FOR IFIM"]},
+  {cat:"ATA 34",title:"AOM 4.9.6 EXPIRED NAV DATABASE",refs:["I"]},
+  {cat:"ATA 34",title:"MAX FRM 111.12.2 FMC Alerting Messages",refs:[]},
+  {cat:"ATA 34",title:"MCP A UNDERSPEED",refs:[]},
+  {cat:"ATA 34",title:"OAT DISAGREE",refs:[]},
+  {cat:"ATA 34",title:"AOM 4.7.1 Arming LNAV for Takeoff",refs:["MAX FRM 4.1.4 Lateral Navigation"]},
+  {cat:"ATA 34",title:"ETOPS POST FLIGHT NAV CHECK ACCU CK",refs:[]},
+  {cat:"ATA 34",title:"ENGAGING LNAV & VNAV ON THE GROUND",refs:[]},
+  {cat:"ATA 35",title:"AOM 16.1.2 Oxygen Pressures",refs:[]},
+  {cat:"ATA 36",title:"MAX DUCT PRESSURE OSCILLLATION OR LOW IFIM",refs:[]},
+  {cat:"ATA 36",title:"737 MAX ATA 36 – Pneumatic System Fault Code Summary",refs:[]},
+  {cat:"ATA 36",title:"PRSOV SENSE LINE",refs:[]},
+  {cat:"ATA 36",title:"MAX - ENG ANTI-ICE Light PI DRIFT Fault (MEL 36-11-02B)",refs:["PNEUMATIC ENG OFF HPSOV OMF TEST"]},
+  {cat:"ATA 36",title:"MAX - Bleed System Status Message Won’t Clear (FAMV/PRSOV/HPSOV)",refs:[]},
+  {cat:"ATA 46",title:"NFS REPLACE ADHOC",refs:["NFS STAGE 2 MX MSG 46-13109 / 13110", "Remove and Replace (NFS) [TTG8Q010ARG7]"]},
+  {cat:"ATA 46",title:"RBF AVIOCAST AID & DOCK (CREW USES 2WIRE NOT AVIO CAST - AVIO CURRENTLY USED FOR AHM ONLY)",refs:["AVIOCAST AID DRAWING OPS CK", "AVIO MOD FIGURES", "AVIOCAST YOUTUBE"]},
+  {cat:"ATA 49",title:"APU FUEL SHUT OFF DATA PLATE",refs:[]},
+  {cat:"ATA 49",title:"APU",refs:[]},
+  {cat:"ATA 52",title:"FLIGHT DECK DOOR CODE 523 (OPS BINDER - COMPLY 365)",refs:[]},
+  {cat:"ATA 54",title:"LEAP1B T/R LANYARD DRAWING",refs:[]},
+  {cat:"ATA 56",title:"FRONT WINDOW SIGN OFF BURN SPOT",refs:[]},
+  {cat:"ATA 71",title:"EGT EXCEEDANCE GUIDE",refs:["MPM 23.3.5.1 Engines EGT Exceedance Procedure"]},
+  {cat:"ATA 71",title:"MAX TAIL PIPE FIRE AMM 71-00-00-200-801-G00",refs:["MAX CVTE SMOKE AFTER SHUTDOWN NORMAL"]},
+  {cat:"ATA 71",title:"STA HIGH POWER RUNS W/LEAK CK (ATL, DAL, HOU, PHX & DEN)",refs:[]},
+  {cat:"ATA 71",title:"FAN COWL LATCH INDICATING SYSTEM BLADE MISSING (AC 8701-8735 NOT INSTALLED)",refs:["TSR 2024002144 SHOWS BLADE EFF TO COWL ASSY", "FAN COWL P/N'S WITH & WITHOUT LATCH SYS", "FAN COWL AMM NG 71-11-02 / MAX 71-11-04", "LATCH TAPE ALL EA M-24-171-01399 CONFIG 71-11"]},
+  {cat:"ATA 71",title:"LEAP1B FAN DRAIN MAST FUEL PUMP LEAK",refs:[]},
+  {cat:"ATA 71",title:"FAN COWL PIN FALLS OUT OF QUICK DISCONNECT",refs:[]},
+  {cat:"ATA 72",title:"LEAP1B TRF / AFT SUMP REPACK / CVT GROUND VERF",refs:[]},
+  {cat:"ATA 72",title:"LEAP1B INLET COWL/FAN FRAME MODULE/FAN BLADE AMM INSPECTION",refs:["KBF FAN BLADE"]},
+  {cat:"ATA 73",title:"LEAP EEC CREDENTIALS ONE TIME EA TO DEFER TTG8Q00KS8RN",refs:[]},
+  {cat:"ATA 73",title:"LEAP1B DATA PLUG",refs:[]},
+  {cat:"ATA 73",title:"CMF56-7B FUEL PUMP IMPELLER SHAFT INSPECTION",refs:[]},
+  {cat:"ATA 73",title:"LEAP1B FUEL NOZZLE TASK CARD PS3 TUBE B-NUT LOOSE RESULT",refs:[]},
+  {cat:"ATA 73",title:"LEAP1B N1 FLUCTUATING LESS THAN 1% WITH FUEL FLOW FOLLOWING CONTACT PPE MORE THAN LIKELY A BAD FMU",refs:[]},
+  {cat:"ATA 74",title:"LEAP1B IGNITION LEADS/EXCITER",refs:[]},
+  {cat:"ATA 78",title:"LEAP 1B EXHAUST COKING AMM",refs:[]},
+  {cat:"ATA 78",title:"MAX T/R WONT CYCLE SPECIAL FUNCTIONS",refs:[]},
+  {cat:"ATA 79",title:"On the Radar 2025.05.08 (Low oil qty)",refs:[]},
+  {cat:"ATA 79",title:"ODMS - CHIP COUNT INCREASE ALL EA M-24-179-01799-ETOPS - CONFIG 79",refs:["3 DAY LAB RESULTS EA TLD TTG8Q00MJY8P", "ODMS PARTS", "AOS EO A/C SEARCH"]},
+  {cat:"ATA 80",title:"N2 rotor seizure on brand new engines. The rotating seals can touch abradable/honeycomb",refs:[]},
+  {cat:"CMM",title:"TRAY TABLE EXIT ROW LOCK SB",refs:["TTG8Q00AGK1W", "TSR 202200602 & 2022005", "EO TRAY TABLE LATCH"]},
+  {cat:"FAM",title:"5.5 Preflight Cabin Equipment Checklist",refs:["FAM 5.7.2 Cabin Clean-Up Bag Biohazard Red-Bag (PROVO)", "FAM 5.6.19 Medical Blankets (PROVO)", "FAM 5.8 Over-the-Counter (OTC) Kit (PROVO)"]},
+  {cat:"FAM",title:"FAM 11.20 Flight Attendant Positions",refs:[]},
+  {cat:"FAM",title:"FAM 3.4.10.2 Lavatory Doors (JAMMED USED CREDIT CARD METHOD)",refs:[]},
+  {cat:"FOM",title:"FOM 19.2.6.2 MX NOTE (0-3 ON RELEASE)",refs:[]},
+  {cat:"FOM",title:"FOM 5.1.2 System Resets",refs:[]},
+  {cat:"FOM",title:"FOM 17.7.10 Flight Numbering System",refs:[]},
+  {cat:"FOM",title:"FOM 19.4 Maintenance Facilities",refs:[]},
+  {cat:"FOM",title:"FOM 19.2.4 Correcting Errors and/or Voiding Pages or Sections (LOG PAGE)",refs:[]},
+  {cat:"FOM",title:"FOM 15.3.2 Turbulence Intensity",refs:["FOM 15.3.8 Turbulence Action Table"]},
+  {cat:"FOM",title:"FOM 17.1 General (NO REVENUE IF ALL LAVS INOP)",refs:[]},
+  {cat:"FOM",title:"FOM 21.5.5 Emergency Medical Kit (EMK)",refs:["KBF NEW ENHANCED EMK"]},
+  {cat:"FOM",title:"FOM 17.7.3 Dispatch Release Example and Explanation (MEL CODES DISTINGUISH A NUMBER OR LOCATION NO EFFECT ON MEL)",refs:[]},
+  {cat:"FOM",title:"FOM TABLE 22.1 (LOG BOOK ENTRY REQUIRED)",refs:[]},
+  {cat:"FQM",title:"FQM 06.03 Fueling with Inoperative Quantity Indicating System",refs:["MAX MEL SP #28 Fuel Measuring Stick Readings"]},
+  {cat:"FRM",title:"UNABLE SELECT OAT N1 LIMIT PAGE (TAT)",refs:["MAX FRM 11.8.3.12 N1 LIMIT Page- Preflight", "AOM 4.9.3.8 N1 LIMIT Page (N1 LIMIT)"]},
+  {cat:"GOM",title:"GOM Tire Changes While Deplaning",refs:[]},
+  {cat:"GOM",title:"GOM RON Aircraft Procedures During Winter Operations",refs:["GOM Draining During Winter Operations", "GOM Winterization Checklist for Originating Aircraft"]},
+  {cat:"GOM",title:"GOM Cleanup Procedures",refs:[]},
+  {cat:"GOM",title:"CAPTAIN MAKES FINAL DETERMINATION OF MX REQUIRED",refs:[]},
+  {cat:"IFOM",title:"IFOM 8.1.4 HF Radio (In-Flight Single Failure can continue ETOPS)",refs:["IFOM 9.4.4 SATCOM Datalink Failure", "HILLMAN SATCOM GUIDE", "SATCOM TASK CARD OPS CK", "HF ARINC JEPP CHARTS / COMPANY FREQ"]},
+  {cat:"IFOM",title:"IFOM 6.4.2 ETOPS AREAS OF OPERATION",refs:["IFOM 6.4.1 ADEQUATE AIRPORT"]},
+  {cat:"IFOM",title:"IFOM 2.1.2 International Equipment Operating Table",refs:[]},
+  {cat:"IPC",title:"OVERHEAD BIN INTERIOR BLACK PLASTIC CORNER COVER",refs:[]},
+  {cat:"MEL",title:"MPM 9.2.3 Aircraft Fault Deferral Types (MEL CATEGORY)",refs:[]},
+  {cat:"MEL",title:"MPM 9.7.2 MEL Correction Deadline Extension Procedure",refs:[]},
+  {cat:"MEL",title:"NG 27-7-04 PERFORMANCE PENALTY",refs:[]},
+  {cat:"MEL",title:"MOC READ & SIGN MEL 38-2-03, 30-3-04 & 38-30-01C (PICTURES OF C/B'S & CONNECTORS)",refs:[]},
+  {cat:"MISC",title:"PAINT COLORS",refs:["Specialty Paint Search in MXI", "Swalife Specialty AC"]},
+  {cat:"MPM",title:"MPM 46.7.2 ETOPS Component/Part Swapping Policy",refs:[]},
+  {cat:"MPM",title:"MPM 46.2 ETOPS PDSC Faults found during or after PDSC/gate return",refs:["MPM 46.2.4 ETOPS Flight Continuation Policy", "MPM 46.2.5 ETOPS Flight Continuation Procedure", "MPM 46.2.3 AC Reposition Post PDSC Walk Around", "IFOM 6.10 PDSC/CONT/DUAL MX/MX NOTE"]},
+  {cat:"MPM",title:"MPM 46.8.2 ETOPS Significant Event Reporting Procedure",refs:[]},
+  {cat:"MPM",title:"MPM 46.1.1 ETOPS Significant Systems Policy",refs:[]},
+  {cat:"MPM",title:"MPM 46.5.2 Request for Access to ETOPS Task Cards in Toolbox Procedure",refs:[]},
+  {cat:"MPM",title:"MPM 46.6.7 ETOPS Alert Creation Procedure",refs:["MPM 46.6.8 Alert Removal Procedure"]},
+  {cat:"MPM",title:"MPM 46.10.2 ETOPS ECM Procedure (After 5 days of lapsed ECM data, Apply ETOPS Restriction)(LVL 1 & 2 CNR Apply Restriction)",refs:["KBF URGENT CNR LEVELS", "CFM POWERPOINT"]},
+  {cat:"MPM",title:"TOOL",refs:[]},
+  {cat:"MPM",title:"MPM 46.4.8 ETOPS Verification Flight (EVF) Policy",refs:["MPM 46.4.11 ETOPS SSOR Flight", "IFOM 6.10.1 ETOPS EVF SSOR PEEP"]},
+  {cat:"MPM",title:"MPM 46.4.1 ETOPS Verification Program Policy",refs:["FAULT EXAMPLE"]},
+  {cat:"MPM",title:"MPM 46 NEW OIL PROCEDURES DRAFT",refs:["MPM 46.11.1 Oil Consumption Monitoring Current Policy", "MPM Table 23.3.6(1): Southwest Airlines Oil Consumption Rates"]},
+  {cat:"MPM",title:"MPM 45.8 OEM Letter Check Equivalence (AWR EVERY 8 DAYS)",refs:[]},
+  {cat:"MPM",title:"FERRY, FCF, GEAR DOWN WRITE UPS",refs:["47.3.2 Aircraft Logbook Documentation", "AOM 16.2.8 Reduced PSI Differential Operations", "MPM 47.2.3 Landing Gear Down Ferry Flights", "FCF READ &SIGN"]},
+  {cat:"MPM",title:"MPM 6.14.3 Pest Problem Aircraft",refs:[]},
+  {cat:"MPM",title:"MPM 7.2 Lost or Damaged Certificate of Aircraft Registration or Standard Airworthiness Certificate",refs:[]},
+  {cat:"MPM",title:"MPM 52.6.8.3 Missing Airworthiness Release Procedure",refs:["AIRVAULT AWR LOG PAGE SEARCH"]},
+  {cat:"MPM",title:"MPM 9.2.1 MEL/CDL/MX Note/DEF/TLD Deferred Maintenance Items Policy (MX Note in liew of TLD)",refs:[]},
+  {cat:"MPM",title:"MPM 9.2.3 Aircraft Fault Deferral Types (MX note list)",refs:[]},
+  {cat:"MPM",title:"MPM 6.9.2 On-Call Maintenance Provider (OCMP) Procedure",refs:[]},
+  {cat:"MPM",title:"MPM 28.7.1 Requests to Aircraft Records for Corrections/Updates Procedure",refs:["MPM 52.3 Maintenix Corrections Procedure"]},
+  {cat:"MPM",title:"MPM 21.5.1 Loading Software Parts Procedure (PMAT/UMD TO VERIFY SOFTWARE)",refs:[]},
+  {cat:"MPM",title:"MPM 53.5.9.2 Installation of Metallic Speed Tape Procedure",refs:[]},
+  {cat:"MPM",title:"MPM 22.6.1 Aircraft Tire/Wheel/Brake Storage Policy",refs:[]},
+  {cat:"MPM",title:"MPM 52.8.1.4 Hard Copy Task Card Generated from Maintenix Instructions for Use",refs:[]},
+  {cat:"MPM",title:"MPM 53.4.4.3 Engine Start, Taxi, and Run-Up Procedure (high power fuel requirements)",refs:[]},
+  {cat:"MPM",title:"MPM52.2.2 Documenting Faults in Maintenix Procedure (BATCH PARTS EFFECTIVITY VERIFIED THROUGH IPC)",refs:[]},
+  {cat:"MPM",title:"52.02.01 Documenting Faults in Maintenix Policy (COMBINE 10 DEFECTS ON 1 FAULT)",refs:[]},
+  {cat:"MPM",title:"MXI OUTAGE",refs:["TABL/CALC", "MPM 52.10 Maintenix Outage Backup Manual Documentation", "MPM 9.5.2 Alternate MEL, CDL, MX Note, and Repair Ref Entry"]},
+  {cat:"MPM",title:"MPM 22.5.4 Aircraft Tire Wear/Cut Limits",refs:[]},
+  {cat:"MPM",title:"MPM 46.6.1 ETOPS Operational Status Control Policy",refs:["MPM 46.6.10 Removal of ETOPS Restricted Status Procedure"]},
+  {cat:"MPM",title:"MPM 46.4.1 ETOPS Verification Program Policy - MEL BYPASS CH 46",refs:[]},
+  {cat:"MPM",title:"MPM 6.6.7.5 Borrowed Parts in Maintenix Procedure",refs:[]},
+  {cat:"MPM",title:"MPM 9.6.4 DMI to Continue on Deferral Procedure",refs:[]},
+  {cat:"MPM",title:"MPM 9.6.5 MEL, CDL, MX Note, or DEF/TLD Repetitive Inspection or Repetitive Maintenance Action (LOG BOOK ONLY)",refs:[]},
+  {cat:"MPM",title:"MPM 6.7.3 Cancelation Entry Procedure",refs:[]},
+  {cat:"MPM",title:"MPM 6.3.6.2 Excessive Rudder or Aileron Trim Report Procedure",refs:[]},
+  {cat:"MPM",title:"MPM 6.17.3 Installation and Use of Experimental Airworthiness Certificate Application",refs:[]},
+  {cat:"MPM",title:"MPM 53.5.8 Flexible Hose for Interim Repair",refs:[]},
+  {cat:"MPM",title:"MPM 52.6.11.1 Missing Aircraft Logbook or Logpage Procedure",refs:["FOM 19.2.5 MISSING AIRCRAFT LOGBOOK"]},
+  {cat:"MPM",title:"MPM 9.8.1 NEF Decision Flowchart",refs:[]},
+  {cat:"MPM",title:"MPM 6.17.5 Non-Standard Operations for Public Relations/Marketing/Media Events (LIMIT 19 PASSENGERS)",refs:[]},
+  {cat:"MPM",title:"MPM 6.7.2 Delay Entry Procedure",refs:[]},
+  {cat:"MPM",title:"MPM 28.5.3 Install/Remove Tag and Aircraft Logbook Hard Copy Correction Procedures After an Aircraft Records Audit (Pilot Corrections)",refs:[]},
+  {cat:"MPM",title:"MPM 6.3.4.1 Pressurization Event Report and In-Service Bleed System Performance Policy",refs:[]},
+  {cat:"MPM",title:"MPM 6.5.3 Communications During Aircraft Operations Procedure (ACARS-SATCOM)",refs:[]},
+  {cat:"MPM",title:"MPM 10.3.4 Designation of Required Inspection Items RII LIST",refs:[]},
+  {cat:"MPM",title:"MPM 9.4.1 Application of MEL SP #2, MEL SP #2A, MEL SP #3, or MEL SP #3A Policy",refs:[]},
+  {cat:"MPM",title:"MPM 52.2.2 Documenting Faults in Maintenix Procedure (TPC W/O LOG PAGE) (DAY OF OPS - LOG PAGE ONLY)",refs:[]},
+  {cat:"MPM",title:"MPM 26.18 Tool, Precision Measuring Device, and Precision Test Equipment Periodic Inspection, Control, and Calibration",refs:[]},
+  {cat:"MPM",title:"MPM 54.6 Tool Effectivity (CALIBRATED TOOLS)",refs:["MXI ADDING CALIBRATED TOOLING (JOB STOP)"]},
+  {cat:"MPM",title:"MPM 24.9.1 Aircraft Maintenance Planning Potable Water System Disinfect Three-Day Exceedance Monitoring Procedure",refs:["MPM 33.4.2 EPA Potable Water Quality Policy"]},
+  {cat:"MPM",title:"MPM 52.6.7.1 Aircraft Logbook CDCS Entry and Review",refs:[]},
+  {cat:"MPM",title:"MPM 54.1.6.1 Removed Serviceable (Robbed Parts) Policy (TEAM LEAD) - non maintenance location for MEL",refs:[]},
+  {cat:"MXI",title:"MPM 9.2.1 MEL/CDL/MX Note/DEF/TLD Deferred Maintenance (FLT MEL CREW NO JOB STOP)",refs:[]},
+  {cat:"MXI",title:"MPM 52.2.2 Documenting Faults in Maintenix Procedure (LOG PAGE TO MXI)",refs:[]},
+  {cat:"MXI",title:"RECORDS (MXI PART CODES)",refs:[]},
+  {cat:"MXI",title:"MXI SEARCH",refs:["ALL EA SEARCH HELP", "MXI SEARCH PART NAME __%NAME__%"]},
+  {cat:"MXI",title:"CARRY OVER CODES MXI",refs:[]},
+  {cat:"MXI",title:"MAX CONIG 05-20 (805-PRD-15 (VCK - RODENT TREATMENT PROGRAM)",refs:["NG CONFIG SLOT 25-20 (725-SWA-110 RODENT)"]},
+  {cat:"SA-M",title:"SA-M 988 Aircraft Publications Checklist",refs:[]},
+  {cat:"SRM",title:"MISSING SCREW MAX SRM 51-10-05-0G-0",refs:["MISSING SCREW NG AMM 20-60-11", "MAX HORIZ STAB L/E PANELS AMM 55-10-00-200-802", "TTG8Q00HBUGD (MAX EA REQ EXAMPLE)"]},
+  {cat:"TOSM",title:"TOSM 11.6 Remain Overnight (RON) Aircraft at International Locations (SECURITY SEAL)",refs:[]},
+  {cat:"MXI",title:"TLD RED DEATH BAR",refs:[]},
+  {cat:"MAX",title:"DOWNLOADING SOFTWARE TO UMD",refs:[]},
+  {cat:"MISC",title:"1. MAX SPREADHSEET",refs:[]},
+  {cat:"MISC",title:"2. 800 SPREADSHEET",refs:[]},
+  {cat:"MISC",title:"3. NG SPREADSHEET",refs:[]},
+  {cat:"MISC",title:"4. AUGUST 800 PARTS LIST",refs:[]},
+  {cat:"MISC",title:"5. DESK PC/AVTEC",refs:[]},
+  {cat:"MISC",title:"6. FLEET INTERIOR/EXTERIOR",refs:[]},
+  {cat:"MISC",title:"7. Aircraft Liverys / Photos",refs:[]},
+  {cat:"MISC",title:"Aircraft 8721 has completed the SA-M 1149 approval process for ELR.",refs:[]},
+  {cat:"MISC",title:"AIRVAULT LOG PAGE & 8130 (MISC TAB)",refs:[]},
+  {cat:"MISC",title:"AUDIT U:\\MOC\\Int'l-Dom Contract MX Database\\",refs:[]},
+  {cat:"MISC",title:"CONFIG CONTROL 214-904-4360",refs:[]},
+  {cat:"MISC",title:"CONUS",refs:[]},
+  {cat:"MISC",title:"DocuNet Viewer",refs:[]},
+  {cat:"MISC",title:"FDAP REPORT VERBIAGE",refs:[]},
+  {cat:"MISC",title:"HERMES Log In",refs:[]},
+  {cat:"MISC",title:"MAX PLAYBOOK",refs:[]},
+  {cat:"MISC",title:"MPM CAT III MAX",refs:[]},
+  {cat:"MISC",title:"MPM CAT III NG",refs:[]},
+  {cat:"MISC",title:"MPM CAT III REQ SYSTEMS",refs:[]},
+  {cat:"MISC",title:"Percentage  CALC",refs:[]},
+  {cat:"MISC",title:"RECORDS CONTACT INFO",refs:[]},
+  {cat:"MISC",title:"SA-M 1065A DOMESTIC",refs:[]},
+  {cat:"MISC",title:"SA-M 1065E ETOPS STA",refs:[]},
+  {cat:"MISC",title:"SATCOM QUICK REF",refs:[]},
+  {cat:"MISC",title:"Service Engineering 214-792-3600 OPT 1",refs:[]},
+  {cat:"MISC",title:"TAPE OUTSTATION (NON MX KIT) P/N 25400006-01",refs:[]},
+  {cat:"MISC",title:"ICAO CALC (24 BIT DIP SWITCH)",refs:[]},
+  {cat:"MISC",title:"ADSB ICAO T/S TIP",refs:[]},
+  {cat:"MISC",title:"DAL PHONE LIST",refs:[]}
+        ];
+
+        // ---- SEARCH + FILTER ----
+        const searchInput = document.getElementById('searchInput');
+        const resultsArea = document.getElementById('resultsArea');
+        const filterChips = document.querySelectorAll('.filter-chip');
+        let activeFilter = 'ALL';
+
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                filterChips.forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                activeFilter = chip.dataset.filter;
+                render();
+            });
+        });
+
+        searchInput.addEventListener('input', render);
+
+        function render() {
+            const q = searchInput.value.trim().toLowerCase();
+
+            if (!q && activeFilter === 'ALL') {
+                resultsArea.innerHTML = `
+                    <div class="results-empty">
+                        <p>Search for anything -- ATA codes, procedures, faults, tips</p>
+                        <p class="hint">Type to search or select a category filter</p>
+                    </div>`;
+                return;
+            }
+
+            let results = DATA;
+
+            if (activeFilter !== 'ALL') {
+                results = results.filter(d => d.cat.toUpperCase().startsWith(activeFilter));
+            }
+
+            if (q) {
+                const words = q.split(/\s+/);
+                results = results.filter(d => {
+                    const hay = (d.cat + ' ' + d.title + ' ' + d.refs.join(' ')).toLowerCase();
+                    return words.every(w => hay.includes(w));
+                });
+            }
+
+            if (results.length === 0) {
+                resultsArea.innerHTML = '<div class="results-empty"><p>No results found</p></div>';
+                return;
+            }
+
+            let html = `<div class="result-count">${results.length} result${results.length !== 1 ? 's' : ''}</div>`;
+
+            results.forEach(d => {
+                html += `<div class="result-card"><div class="result-card-header">
+                    <span class="result-tag">${esc(d.cat)}</span>
+                    <span class="result-title">${esc(d.title)}</span>
+                </div>`;
+                if (d.refs.length) {
+                    html += '<div class="result-refs">';
+                    d.refs.forEach(r => { html += `<span class="result-ref">${esc(r)}</span>`; });
+                    html += '</div>';
+                }
+                html += '</div>';
+            });
+
+            resultsArea.innerHTML = html;
+        }
+
+        function esc(s) {
+            const el = document.createElement('span');
+            el.textContent = s;
+            return el.innerHTML;
+        }
+    </script>
+</body>
+</html>

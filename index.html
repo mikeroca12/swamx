@@ -573,6 +573,77 @@
             background: transparent !important;
         }
 
+        /* ---- QUICK LINKS ---- */
+        .quicklinks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+        }
+
+        .ql-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ql-card:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            background: var(--surface-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .ql-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .ql-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .ql-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+
+        .ql-section-title {
+            grid-column: 1 / -1;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 12px 0 4px 4px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2px;
+        }
+
+        @media (max-width: 480px) {
+            .quicklinks-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         /* ---- FOOTER ---- */
         footer {
             border-top: 1px solid var(--border);
@@ -614,6 +685,7 @@
             </div>
             <div class="nav-tabs">
                 <button class="nav-tab active" data-tab="apps">Apps</button>
+                <button class="nav-tab" data-tab="quicklinks">Quick Links</button>
                 <button class="nav-tab" data-tab="quickref">Quick Reference</button>
             </div>
         </header>
@@ -634,6 +706,11 @@
                     <p>More apps coming soon</p>
                 </div>
             </div>
+        </section>
+
+        <!-- QUICK LINKS -->
+        <section id="quicklinks" class="section">
+            <div class="quicklinks-grid" id="quicklinksGrid"></div>
         </section>
 
         <!-- QUICK REFERENCE -->
@@ -1051,6 +1128,34 @@
                 else chip.innerHTML += ` <span class="badge">${count}</span>`;
             });
         }
+        // ---- QUICK LINKS ----
+        const QUICK_LINKS = [
+            {section: "Core Manuals"},
+            {key:"AOM", abbr:"AOM", name:"Aircraft Operating Manual", color:"#4ade80"},
+            {key:"FOM", abbr:"FOM", name:"Flight Operations Manual", color:"#a78bfa"},
+            {key:"MPM", abbr:"MPM", name:"Maintenance Procedures Manual", color:"#fbbf24"},
+            {key:"DOM", abbr:"DOM", name:"Dispatch Operations Manual", color:"#60a5fa"},
+            {key:"GOM", abbr:"GOM", name:"Ground Operations Manual", color:"#2dd4bf"},
+            {key:"IFOM", abbr:"IFOM", name:"International Flight Ops Manual", color:"#f472b6"},
+            {key:"TOH", abbr:"TOH", name:"Technical Operations Handbook", color:"#fb923c"},
+            {section: "MEL"},
+            {key:"MEL MAX", abbr:"MAX", name:"B737 MAX MEL", color:"#f87171"},
+            {key:"MEL NG", abbr:"NG", name:"B737 NG MEL", color:"#f87171"},
+            {section: "FRM"},
+            {key:"FRM MAX", abbr:"MAX", name:"FRM MAX", color:"#fb923c"},
+            {key:"FRM 78", abbr:"-7/800", name:"FRM -7/-800", color:"#fb923c"},
+            {key:"FRM GIP", abbr:"GIP", name:"FRM General Inspection", color:"#fb923c"},
+            {section: "References"},
+            {key:"FRMP", abbr:"FRMP", name:"Fuel Resource Management", color:"#22d3ee"},
+            {key:"FQM", abbr:"FQM", name:"Fuel Quality Manual", color:"#22d3ee"},
+            {key:"ESP", abbr:"ESP", name:"Emergency & Security Proc", color:"#f87171"},
+            {key:"WBM", abbr:"WBM", name:"Weight & Balance Manual", color:"#a78bfa"},
+            {key:"EFBM", abbr:"EFBM", name:"Electronic Flight Bag Manual", color:"#2dd4bf"},
+            {key:"TOF", abbr:"TOF", name:"Technical Ops Forms", color:"#fb923c"},
+            {key:"FAM", abbr:"FAM", name:"Flight Attendant Manual", color:"#a78bfa"},
+            {key:"SMM", abbr:"SMM", name:"Safety Management Manual", color:"#9ca3af"},
+        ];
+
         // One place to update if DocuNet URLs ever change
         const defined = "https://sso.fed.prod.aws.swalife.com/idp/startSSO.ping?PartnerSpId=SWA.usernet.vistair.com&TARGET=https://docunet-online-us.vistair.com";
         const MANUAL_LINKS = {
@@ -1239,6 +1344,25 @@
 
         // ---- INIT ----
         updateBadges();
+
+        // Build Quick Links grid
+        (function() {
+            const grid = document.getElementById('quicklinksGrid');
+            if (!grid) return;
+            let html = '';
+            QUICK_LINKS.forEach(item => {
+                if (item.section) {
+                    html += `<div class="ql-section-title">${item.section}</div>`;
+                    return;
+                }
+                html += `<div class="ql-card" onclick="openManual('${item.key}')">
+                    <div class="ql-icon" style="background:${item.color}20;color:${item.color}">${item.abbr}</div>
+                    <div class="ql-name">${item.abbr}</div>
+                    <div class="ql-desc">${item.name}</div>
+                </div>`;
+            });
+            grid.innerHTML = html;
+        })();
     </script>
 </body>
 </html>

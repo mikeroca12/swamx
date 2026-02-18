@@ -374,6 +374,89 @@
             border: 1px solid var(--border);
         }
 
+        .result-ref-link {
+            cursor: pointer;
+            color: #60a5fa;
+            border-color: rgba(96, 165, 250, 0.3);
+            background: rgba(59, 130, 246, 0.08);
+            transition: all 0.15s;
+        }
+
+        .result-ref-link:hover {
+            background: rgba(59, 130, 246, 0.18);
+            border-color: rgba(96, 165, 250, 0.5);
+            color: #93bbfc;
+        }
+
+        .result-title-link {
+            cursor: pointer;
+            color: #60a5fa !important;
+            transition: color 0.15s;
+        }
+
+        .result-title-link:hover {
+            color: #93bbfc !important;
+            text-decoration: underline;
+        }
+
+        .manual-choice-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .manual-choice-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 240px;
+        }
+
+        .manual-choice-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+
+        .manual-choice-box button {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--surface-hover);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .manual-choice-box button:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .manual-choice-cancel {
+            background: transparent !important;
+            border-color: transparent !important;
+            color: var(--text-muted) !important;
+            font-weight: 400 !important;
+        }
+
+        .manual-choice-cancel:hover {
+            color: var(--text) !important;
+            background: transparent !important;
+        }
+
         /* ---- FOOTER ---- */
         footer {
             border-top: 1px solid var(--border);
@@ -746,6 +829,124 @@
   {cat:"MISC",title:"DAL PHONE LIST",refs:[]}
         ];
 
+        // ---- MASTER MANUAL LINKS ----
+        // One place to update if DocuNet URLs ever change
+        const defined = "https://sso.fed.prod.aws.swalife.com/idp/startSSO.ping?PartnerSpId=SWA.usernet.vistair.com&TARGET=https://docunet-online-us.vistair.com";
+        const MANUAL_LINKS = {
+            "AOM":     {name:"B737 Aircraft Operating Manual", url:defined+"/SWA?manualCode%3DSWA-CPUBS-B737AOM-HTML"},
+            "FOM":     {name:"Flight Operations Manual", url:defined+"/SWA?manualCode%3DSWA-CPUBS-FOM-HTML"},
+            "MPM":     {name:"Maintenance Procedures Manual", url:defined+"/?manualCode=SWA-CPUBS-MPM-HTML"},
+            "MEL MAX": {name:"B737 MAX MEL", url:defined+"/?manualCode=SWA-CPUBS-B737MAXMEL-HTML"},
+            "MEL NG":  {name:"B737 NG MEL", url:defined+"/?manualCode=SWA-CPUBS-B737NGMEL-HTML"},
+            "GOM":     {name:"Ground Operations Manual", url:defined+"/?manualCode=SWA-CPUBS-GOM-HTML"},
+            "IFOM":    {name:"International Flight Operations Manual", url:defined+"/SWA?manualCode%3DSWA-CPUBS-IFOM-HTML"},
+            "FRM MAX": {name:"FRM MAX", url:defined+"/?manualCode%3DSWA-CPUBS-FRMMAX-HTML"},
+            "FRM 78":  {name:"FRM -7/-800", url:defined+"/?manualCode%3DSWA-CPUBS-FRM78-HTML"},
+            "FRM GIP": {name:"FRM General Inspection Program", url:defined+"/SWA?manualCode%3DSWA-CPUBS-FRMGIP-HTML"},
+            "FAM":     {name:"Flight Attendant Manual", url:defined+"/?manualCode=SWA-CPUBS-FAM-HTML"},
+            "FAH":     {name:"Flight Attendant Handbook", url:defined+"/?manualCode=SWA-CPUBS-FAH-HTML"},
+            "FQM":     {name:"Fuel Quality Manual", url:defined+"/?manualCode=SWA-CPUBS-FQM-HTML"},
+            "DOM":     {name:"Dispatch Operations Manual", url:defined+"/SWA?manualCode%3DSWA-CPUBS-DOM-HTML"},
+            "TOH":     {name:"Technical Operations Handbook", url:defined+"/SWA?manualCode=SWA-CPUBS-TOH-HTML"},
+            "FRMP":    {name:"Fuel Resource Management Program", url:defined+"/?manualCode=SWA-CPUBS-FRMP-HTML"},
+            "ESP":     {name:"Emergency & Security Procedures", url:defined+"/?manualCode=SWA-CPUBS-ESP-HTML"},
+            "EFBM":    {name:"Electronic Flight Bag Manual", url:defined+"/?manualCode=SWA-CPUBS-EFBM-HTML"},
+            "ESPM":    {name:"Engine Shop Procedures Manual", url:defined+"/?manualCode=SWA-CPUBS-ESPM-HTML"},
+            "CAG":     {name:"Cabin Appearance Guide", url:defined+"/?manualCode=SWA-CPUBS-CAG-HTML"},
+            "SMM":     {name:"Safety Management Manual", url:defined+"/?manualCode=SWA-CPUBS-SMM-HTML"},
+            "WBM":     {name:"Weight & Balance Manual", url:defined+"/?manualCode=SWA-CPUBS-WBM-HTML"},
+            "STORM":   {name:"STORM Manual", url:defined+"/?manualCode=SWA-CPUBS-STORM-HTML"},
+            "AQPM":    {name:"Advanced Qualification Program Manual", url:defined+"/?manualCode=SWA-CPUBS-AQPM-HTML"},
+            "APOEM":   {name:"Aircraft Performance & Operations Engineering Manual", url:defined+"/?manualCode=SWA-CPUBS-APOEM-HTML"},
+            "GOEH":    {name:"Ground Operations Employee Handbook", url:defined+"/?manualCode=SWA-CPUBS-GOEH-HTML"},
+            "GOTM":    {name:"Ground Operations Training Manual", url:defined+"/?manualCode=SWA-CPUBS-GOTM-HTML"},
+            "NSOM":    {name:"Network & Station Operations Manual", url:defined+"/?manualCode=SWA-CPUBS-NSOM-HTML"},
+            "OPSM":    {name:"Operations Manual", url:defined+"/?manualCode=SWA-CPUBS-OPSM-HTML"},
+            "PBNPM":   {name:"PBN Program Manual", url:defined+"/?manualCode=SWA-CPUBS-PBNPM-HTML"},
+            "SWOM":    {name:"SWA Operations Manual", url:defined+"/?manualCode=SWA-CPUBS-SWOM-HTML"},
+            "SAMPM":   {name:"SWA Asset Management Procedures Manual", url:defined+"/?manualCode=SWA-CPUBS-SAMPM-HTML"},
+            "TOSM":    {name:"Tech Ops Security Manual", url:defined+"/?manualCode=SWA-CPUBS-TOSM-PDF"},
+            "GOSM":    {name:"Ground Ops Security Manual", url:defined+"/?manualCode%3DSWA-CPUBS-GOSM-PDF"},
+            "TOF":     {name:"Technical Operations Forms", url:defined+"/?manualCode=SWA-CPUBS-TOF-HTML"},
+            "ODA":     {name:"ODA Manual", url:defined+"/?manualCode=SWA-CPUBS-ODA-HTML"},
+            "ISG":     {name:"Inflight Service Guide", url:defined+"/?manualCode=SWA-CPUBS-ISG-HTML"},
+            "IFRMP":   {name:"International Fuel Resource Management Program", url:defined+"/?manualCode=SWA-CPUBS-IFRMP-HTML"},
+            "FODPM":   {name:"FOD Prevention Manual", url:defined+"/?manualCode=SWA-CPUBS-FODPM-HTML"},
+        };
+
+        // Match a ref string to a manual link key
+        function findManualKey(ref) {
+            const r = ref.toUpperCase();
+            // Try exact prefix matches (longest first to avoid false matches)
+            const keys = Object.keys(MANUAL_LINKS).sort((a,b) => b.length - a.length);
+            for (const k of keys) {
+                if (r.startsWith(k + " ") || r.startsWith(k + ".") || r === k) return k;
+            }
+            // Special cases
+            if (r.startsWith("MEL ")) return null; // handled separately
+            if (r.includes("FOM ") || r.startsWith("FOM")) return "FOM";
+            if (r.includes("AOM ") || r.startsWith("AOM")) return "AOM";
+            if (r.includes("MPM ") || r.startsWith("MPM")) return "MPM";
+            if (r.includes("GOM ") || r.startsWith("GOM")) return "GOM";
+            if (r.includes("IFOM ") || r.startsWith("IFOM")) return "IFOM";
+            return null;
+        }
+
+        // Render a ref as clickable link or plain text
+        function renderRef(ref) {
+            const r = ref.toUpperCase();
+            const escaped = esc(ref);
+
+            // MEL special case - show both MAX and NG
+            if (r.startsWith("MEL ") || r === "MEL") {
+                return `<span class="result-ref result-ref-link" onclick="showMelChoice()">${escaped}</span>`;
+            }
+
+            // FRM special case - show MAX and 78 options
+            if (r.startsWith("FRM ") && !r.startsWith("FRM MAX") && !r.startsWith("FRM 78") && !r.startsWith("FRM GIP")) {
+                return `<span class="result-ref result-ref-link" onclick="showFrmChoice()">${escaped}</span>`;
+            }
+
+            const key = findManualKey(ref);
+            if (key && MANUAL_LINKS[key]) {
+                const url = MANUAL_LINKS[key].url;
+                return `<span class="result-ref result-ref-link" onclick="openManual('${key}')" title="Open ${MANUAL_LINKS[key].name}">${escaped}</span>`;
+            }
+            return `<span class="result-ref">${escaped}</span>`;
+        }
+
+        function openManual(key) {
+            const link = MANUAL_LINKS[key];
+            if (link) window.open(link.url, '_blank', 'noopener');
+        }
+
+        function showMelChoice() {
+            const choice = document.createElement('div');
+            choice.className = 'manual-choice-overlay';
+            choice.innerHTML = `
+                <div class="manual-choice-box">
+                    <div class="manual-choice-title">Which MEL?</div>
+                    <button onclick="openManual('MEL MAX');this.closest('.manual-choice-overlay').remove()">MAX MEL</button>
+                    <button onclick="openManual('MEL NG');this.closest('.manual-choice-overlay').remove()">NG MEL</button>
+                    <button class="manual-choice-cancel" onclick="this.closest('.manual-choice-overlay').remove()">Cancel</button>
+                </div>`;
+            document.body.appendChild(choice);
+        }
+
+        function showFrmChoice() {
+            const choice = document.createElement('div');
+            choice.className = 'manual-choice-overlay';
+            choice.innerHTML = `
+                <div class="manual-choice-box">
+                    <div class="manual-choice-title">Which FRM?</div>
+                    <button onclick="openManual('FRM MAX');this.closest('.manual-choice-overlay').remove()">FRM MAX</button>
+                    <button onclick="openManual('FRM 78');this.closest('.manual-choice-overlay').remove()">FRM -7/-800</button>
+                    <button onclick="openManual('FRM GIP');this.closest('.manual-choice-overlay').remove()">FRM GIP</button>
+                    <button class="manual-choice-cancel" onclick="this.closest('.manual-choice-overlay').remove()">Cancel</button>
+                </div>`;
+            document.body.appendChild(choice);
+        }
+
         // ---- SEARCH + FILTER ----
         const searchInput = document.getElementById('searchInput');
         const resultsArea = document.getElementById('resultsArea');
@@ -797,13 +998,19 @@
             let html = `<div class="result-count">${results.length} result${results.length !== 1 ? 's' : ''}</div>`;
 
             results.forEach(d => {
+                // Check if the title itself references a manual
+                const titleKey = findManualKey(d.title);
+                const titleHtml = titleKey
+                    ? `<span class="result-title result-title-link" onclick="openManual('${titleKey}')" title="Open ${MANUAL_LINKS[titleKey].name}">${esc(d.title)}</span>`
+                    : `<span class="result-title">${esc(d.title)}</span>`;
+
                 html += `<div class="result-card"><div class="result-card-header">
                     <span class="result-tag">${esc(d.cat)}</span>
-                    <span class="result-title">${esc(d.title)}</span>
+                    ${titleHtml}
                 </div>`;
                 if (d.refs.length) {
                     html += '<div class="result-refs">';
-                    d.refs.forEach(r => { html += `<span class="result-ref">${esc(r)}</span>`; });
+                    d.refs.forEach(r => { html += renderRef(r); });
                     html += '</div>';
                 }
                 html += '</div>';

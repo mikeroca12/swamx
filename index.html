@@ -19,6 +19,18 @@
             --text-dim: #6880a0;
             --green: #22c55e;
             --amber: #f59e0b;
+            --cat-ata: #3b82f6;
+            --cat-aom: #22c55e;
+            --cat-mpm: #f59e0b;
+            --cat-fom: #a78bfa;
+            --cat-mel: #ef4444;
+            --cat-mxi: #06b6d4;
+            --cat-ifom: #ec4899;
+            --cat-frm: #f97316;
+            --cat-gom: #14b8a6;
+            --cat-misc: #6b7280;
+            --cat-fam: #8b5cf6;
+            --cat-default: #64748b;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -291,6 +303,19 @@
             color: var(--accent);
         }
 
+        .filter-chip .badge {
+            font-size: 9px;
+            font-weight: 700;
+            background: rgba(255,255,255,0.1);
+            padding: 1px 5px;
+            border-radius: 8px;
+            margin-left: 4px;
+        }
+
+        .filter-chip.active .badge {
+            background: rgba(59, 130, 246, 0.25);
+        }
+
         .results-area { min-height: 200px; }
 
         .results-empty {
@@ -342,9 +367,6 @@
             padding: 2px 8px;
             border-radius: 4px;
             white-space: nowrap;
-            background: var(--accent-dim);
-            color: var(--accent);
-            border: 1px solid rgba(59, 130, 246, 0.2);
             flex-shrink: 0;
             margin-top: 2px;
         }
@@ -353,6 +375,100 @@
             font-size: 14px;
             font-weight: 500;
             line-height: 1.4;
+        }
+
+        mark {
+            background: rgba(250, 204, 21, 0.35);
+            color: inherit;
+            border-radius: 2px;
+            padding: 0 1px;
+        }
+
+        .copy-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-dim);
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            padding: 2px 6px;
+            cursor: pointer;
+            margin-left: auto;
+            flex-shrink: 0;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            color: var(--text-muted);
+            border-color: var(--border);
+            background: var(--surface);
+        }
+
+        .copy-btn.copied {
+            color: var(--green);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 100;
+            transition: all 0.2s;
+        }
+
+        .scroll-top:hover {
+            transform: scale(1.1);
+        }
+
+        .scroll-top.visible {
+            display: flex;
+        }
+
+        .stats-line {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .stats-line span {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .search-hint {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-dim);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1px 6px;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .search-container {
+            position: relative;
         }
 
         .result-refs {
@@ -527,6 +643,7 @@
                     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 </div>
                 <input type="text" class="search-input" id="searchInput" placeholder="Search by ATA, keyword, manual reference..." autocomplete="off">
+                <span class="search-hint" id="searchHint">/</span>
             </div>
 
             <div class="filter-row" id="filterRow">
@@ -547,6 +664,7 @@
                 <div class="results-empty">
                     <p>Search for anything -- ATA codes, procedures, faults, tips</p>
                     <p class="hint">Type to search or select a category filter</p>
+                    <div class="stats-line" id="statsLine"></div>
                 </div>
             </div>
         </section>
@@ -556,6 +674,8 @@
         </footer>
 
     </div>
+
+    <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
 
     <script>
         // ---- TAB SWITCHING ----
@@ -829,7 +949,108 @@
   {cat:"MISC",title:"DAL PHONE LIST",refs:[]}
         ];
 
-        // ---- MASTER MANUAL LINKS ----
+        // ---- CORE ELEMENTS ----
+        const searchInput = document.getElementById('searchInput');
+        const resultsArea = document.getElementById('resultsArea');
+        const filterChips = document.querySelectorAll('.filter-chip');
+        let activeFilter = 'ALL';
+
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                filterChips.forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                activeFilter = chip.dataset.filter;
+                render();
+            });
+        });
+
+        searchInput.addEventListener('input', render);
+
+        // ---- CATEGORY COLORS ----
+        const CAT_COLORS = {
+            'ATA': {bg:'rgba(59,130,246,0.12)', color:'#60a5fa', border:'rgba(59,130,246,0.25)'},
+            'AOM': {bg:'rgba(34,197,94,0.12)', color:'#4ade80', border:'rgba(34,197,94,0.25)'},
+            'MPM': {bg:'rgba(245,158,11,0.12)', color:'#fbbf24', border:'rgba(245,158,11,0.25)'},
+            'FOM': {bg:'rgba(167,139,250,0.12)', color:'#a78bfa', border:'rgba(167,139,250,0.25)'},
+            'MEL': {bg:'rgba(239,68,68,0.12)', color:'#f87171', border:'rgba(239,68,68,0.25)'},
+            'MXI': {bg:'rgba(6,182,212,0.12)', color:'#22d3ee', border:'rgba(6,182,212,0.25)'},
+            'IFOM': {bg:'rgba(236,72,153,0.12)', color:'#f472b6', border:'rgba(236,72,153,0.25)'},
+            'FRM': {bg:'rgba(249,115,22,0.12)', color:'#fb923c', border:'rgba(249,115,22,0.25)'},
+            'GOM': {bg:'rgba(20,184,166,0.12)', color:'#2dd4bf', border:'rgba(20,184,166,0.25)'},
+            'FAM': {bg:'rgba(139,92,246,0.12)', color:'#a78bfa', border:'rgba(139,92,246,0.25)'},
+            'MISC': {bg:'rgba(107,114,128,0.12)', color:'#9ca3af', border:'rgba(107,114,128,0.25)'},
+        };
+
+        function getCatColor(cat) {
+            const c = cat.toUpperCase();
+            for (const key of Object.keys(CAT_COLORS)) {
+                if (c.startsWith(key)) return CAT_COLORS[key];
+            }
+            return {bg:'rgba(100,116,139,0.12)', color:'#94a3b8', border:'rgba(100,116,139,0.25)'};
+        }
+
+        function tagStyle(cat) {
+            const c = getCatColor(cat);
+            return `background:${c.bg};color:${c.color};border:1px solid ${c.border}`;
+        }
+
+        // ---- SEARCH HIGHLIGHTING ----
+        function highlight(text, words) {
+            if (!words.length) return esc(text);
+            const escaped = esc(text);
+            let result = escaped;
+            words.forEach(w => {
+                if (w.length < 2) return;
+                const regex = new RegExp('(' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+                result = result.replace(regex, '<mark>$1</mark>');
+            });
+            return result;
+        }
+
+        // ---- COPY TO CLIPBOARD ----
+        function copyRef(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'COPIED';
+                btn.classList.add('copied');
+                setTimeout(() => { btn.textContent = 'COPY'; btn.classList.remove('copied'); }, 1500);
+            });
+        }
+
+        // ---- KEYBOARD SHORTCUT ----
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && document.activeElement !== searchInput) {
+                e.preventDefault();
+                searchInput.focus();
+                // Switch to quick ref tab if not active
+                const qrTab = document.querySelector('[data-tab="quickref"]');
+                if (qrTab && !qrTab.classList.contains('active')) qrTab.click();
+            }
+            if (e.key === 'Escape' && document.activeElement === searchInput) {
+                searchInput.blur();
+            }
+        });
+
+        // Hide / hint when search focused
+        searchInput.addEventListener('focus', () => { document.getElementById('searchHint').style.display = 'none'; });
+        searchInput.addEventListener('blur', () => {
+            if (!searchInput.value) document.getElementById('searchHint').style.display = '';
+        });
+
+        // ---- SCROLL TO TOP ----
+        window.addEventListener('scroll', () => {
+            document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
+        });
+
+        // ---- FILTER BADGES ----
+        function updateBadges() {
+            filterChips.forEach(chip => {
+                const f = chip.dataset.filter;
+                let count = f === 'ALL' ? DATA.length : DATA.filter(d => d.cat.toUpperCase().startsWith(f)).length;
+                const existing = chip.querySelector('.badge');
+                if (existing) existing.textContent = count;
+                else chip.innerHTML += ` <span class="badge">${count}</span>`;
+            });
+        }
         // One place to update if DocuNet URLs ever change
         const defined = "https://sso.fed.prod.aws.swalife.com/idp/startSSO.ping?PartnerSpId=SWA.usernet.vistair.com&TARGET=https://docunet-online-us.vistair.com";
         const MANUAL_LINKS = {
@@ -893,9 +1114,9 @@
         }
 
         // Render a ref as clickable link or plain text
-        function renderRef(ref) {
+        function renderRef(ref, words) {
             const r = ref.toUpperCase();
-            const escaped = esc(ref);
+            const escaped = highlight(ref, words || []);
 
             // MEL special case - show both MAX and NG
             if (r.startsWith("MEL ") || r === "MEL") {
@@ -947,31 +1168,18 @@
             document.body.appendChild(choice);
         }
 
-        // ---- SEARCH + FILTER ----
-        const searchInput = document.getElementById('searchInput');
-        const resultsArea = document.getElementById('resultsArea');
-        const filterChips = document.querySelectorAll('.filter-chip');
-        let activeFilter = 'ALL';
-
-        filterChips.forEach(chip => {
-            chip.addEventListener('click', () => {
-                filterChips.forEach(c => c.classList.remove('active'));
-                chip.classList.add('active');
-                activeFilter = chip.dataset.filter;
-                render();
-            });
-        });
-
-        searchInput.addEventListener('input', render);
+        // ---- RENDER ----
 
         function render() {
             const q = searchInput.value.trim().toLowerCase();
+            const words = q ? q.split(/\s+/) : [];
 
             if (!q && activeFilter === 'ALL') {
                 resultsArea.innerHTML = `
                     <div class="results-empty">
                         <p>Search for anything -- ATA codes, procedures, faults, tips</p>
                         <p class="hint">Type to search or select a category filter</p>
+                        <div class="stats-line"><span>${DATA.length}</span> entries &middot; <span>${Object.keys(MANUAL_LINKS).length}</span> manuals linked &middot; <span>1</span> app</div>
                     </div>`;
                 return;
             }
@@ -983,7 +1191,6 @@
             }
 
             if (q) {
-                const words = q.split(/\s+/);
                 results = results.filter(d => {
                     const hay = (d.cat + ' ' + d.title + ' ' + d.refs.join(' ')).toLowerCase();
                     return words.every(w => hay.includes(w));
@@ -998,19 +1205,24 @@
             let html = `<div class="result-count">${results.length} result${results.length !== 1 ? 's' : ''}</div>`;
 
             results.forEach(d => {
-                // Check if the title itself references a manual
+                const style = tagStyle(d.cat);
                 const titleKey = findManualKey(d.title);
+                const titleText = highlight(d.title, words);
                 const titleHtml = titleKey
-                    ? `<span class="result-title result-title-link" onclick="openManual('${titleKey}')" title="Open ${MANUAL_LINKS[titleKey].name}">${esc(d.title)}</span>`
-                    : `<span class="result-title">${esc(d.title)}</span>`;
+                    ? `<span class="result-title result-title-link" onclick="openManual('${titleKey}')" title="Open ${MANUAL_LINKS[titleKey].name}">${titleText}</span>`
+                    : `<span class="result-title">${titleText}</span>`;
+
+                // Copy button shows the first manual ref or title
+                const copyText = d.refs.length ? d.refs[0] : d.title;
 
                 html += `<div class="result-card"><div class="result-card-header">
-                    <span class="result-tag">${esc(d.cat)}</span>
+                    <span class="result-tag" style="${style}">${highlight(d.cat, words)}</span>
                     ${titleHtml}
+                    <button class="copy-btn" onclick="event.stopPropagation();copyRef('${copyText.replace(/'/g,"\\'")}', this)" title="Copy reference">COPY</button>
                 </div>`;
                 if (d.refs.length) {
                     html += '<div class="result-refs">';
-                    d.refs.forEach(r => { html += renderRef(r); });
+                    d.refs.forEach(r => { html += renderRef(r, words); });
                     html += '</div>';
                 }
                 html += '</div>';
@@ -1024,6 +1236,9 @@
             el.textContent = s;
             return el.innerHTML;
         }
+
+        // ---- INIT ----
+        updateBadges();
     </script>
 </body>
 </html>

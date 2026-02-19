@@ -573,6 +573,51 @@
             background: transparent !important;
         }
 
+        /* ---- APP RESULT CARD ---- */
+        .app-result-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            border-left: 3px solid #fb923c;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .app-result-card:hover {
+            background: var(--surface-hover);
+            border-color: rgba(249,115,22,0.4);
+        }
+
+        .app-result-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .app-result-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .app-result-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        .app-result-launch {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: #fb923c;
+            margin-top: 8px;
+            letter-spacing: 0.5px;
+        }
+
         /* ---- DEFECT HISTORY ---- */
         .defect-controls {
             margin-bottom: 16px;
@@ -1432,7 +1477,13 @@
                 return words.every(w => hay.includes(w));
             }).slice(0, 3).map(d => ({...d, _type:'defect'}));
 
-            let allMatches = [...qrhMatches, ...defectMatches];
+            // Search apps
+            let appMatches = APPS.filter(a => {
+                const hay = (a.title + ' ' + a.description + ' ' + a.keywords).toLowerCase();
+                return words.every(w => hay.includes(w));
+            }).map(a => ({...a, _type:'app'}));
+
+            let allMatches = [...qrhMatches, ...defectMatches, ...appMatches];
 
             if (allMatches.length === 0) {
                 acDropdown.classList.remove('visible');
@@ -1450,11 +1501,16 @@
                         <span class="ac-item-tag" style="${style}">${esc(d.cat)}</span>
                         <span class="ac-item-title">${titleHl}</span>
                     </div>`;
-                } else {
+                } else if (d._type === 'defect') {
                     const stClass = 'defect-subtype-' + d.subtype;
                     html += `<div class="ac-item${i === acIndex ? ' selected' : ''}" data-index="${i}" data-type="defect" onmousedown="acSelect(${i})">
                         <span class="ac-type-badge ac-type-defect">DEFECT</span>
                         <span class="defect-subtype ${stClass}" style="font-size:9px">${d.subtype.toUpperCase()}</span>
+                        <span class="ac-item-title">${titleHl}</span>
+                    </div>`;
+                } else if (d._type === 'app') {
+                    html += `<div class="ac-item${i === acIndex ? ' selected' : ''}" data-index="${i}" data-type="app" onmousedown="acSelect(${i})">
+                        <span class="ac-type-badge ac-type-app">APP</span>
                         <span class="ac-item-title">${titleHl}</span>
                     </div>`;
                 }
@@ -1470,12 +1526,12 @@
             if (!allMatches[i]) return;
 
             const match = allMatches[i];
-            searchInput.value = match.title;
             acDropdown.classList.remove('visible');
             acIndex = -1;
 
-            if (match._type === 'defect') {
-                // Switch to defects tab
+            if (match._type === 'app') {
+                window.location.href = match.url;
+            } else if (match._type === 'defect') {
                 document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
                 document.querySelector('[data-tab="defects"]').classList.add('active');
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -1483,6 +1539,7 @@
                 defectSearchInput.value = match.title;
                 renderDefects();
             } else {
+                searchInput.value = match.title;
                 render();
             }
         }
@@ -1597,6 +1654,16 @@
                 else chip.innerHTML += ` <span class="badge">${count}</span>`;
             });
         }
+        // ---- APPS DATA (for super search) ----
+        const APPS = [
+            {
+                title:"MAX 737-8 Flap/Slat Overspeed",
+                description:"Decision tool for flap/slat overspeed inspection requirements. Phase I/II limits, Nz assessment, deferral windows.",
+                url:"flap-overspeed.html",
+                keywords:"flap slat overspeed speed exceedance inspection phase deferral nz 737 max boeing flight controls ata 27"
+            }
+        ];
+
         // ---- DEFECT HISTORY ----
         const DEFECTS = [
             {
@@ -1925,7 +1992,16 @@
                 });
             }
 
-            const totalResults = qrhResults.length + defectResults.length;
+            // App results (only when ALL filter or searching)
+            let appResults = [];
+            if (q && activeFilter === 'ALL') {
+                appResults = APPS.filter(a => {
+                    const hay = (a.title + ' ' + a.description + ' ' + a.keywords).toLowerCase();
+                    return words.every(w => hay.includes(w));
+                });
+            }
+
+            const totalResults = qrhResults.length + defectResults.length + appResults.length;
 
             if (totalResults === 0) {
                 resultsArea.innerHTML = '<div class="results-empty"><p>No results found</p></div>';
@@ -2011,6 +2087,18 @@
                         <div class="defect-section-label">RESOLUTION</div>
                         <div class="defect-section-text">${highlight(d.resolution, words)}</div>
                     </div>
+                </div>`;
+            });
+
+            // Render app cards inline
+            appResults.forEach(a => {
+                html += `<div class="app-result-card" onclick="window.location.href='${a.url}'">
+                    <div class="app-result-header">
+                        <span class="ac-type-badge ac-type-app">APP</span>
+                        <span class="app-result-title">${highlight(a.title, words)}</span>
+                    </div>
+                    <div class="app-result-desc">${highlight(a.description, words)}</div>
+                    <div class="app-result-launch">LAUNCH APP &rarr;</div>
                 </div>`;
             });
 

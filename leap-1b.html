@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LEAP-1B Inlet Cowl / Fan Module Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1b2a45;
+  --frame: #223352;
+  --frame-border: #2e4368;
+  --surface: #e2e7ef;
+  --surface2: #d9dee8;
+  --border: #c8ceda;
+  --border-strong: #b4bcc9;
+  --text: #1e293b;
+  --text-secondary: #475569;
+  --text-dim: #64748b;
+  --text-on-dark: #e2e8f0;
+  --text-on-dark-dim: #94a7c8;
+  --green: #16a34a;
+  --yellow: #d97706;
+  --red: #dc2626;
+  --blue: #2563eb;
+  --accent: #2563eb;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; line-height:1.5; }
+
+/* NAV */
+.moc-nav { background:var(--frame); border-bottom:1px solid var(--frame-border); padding:10px 24px; display:flex; align-items:center; gap:12px; }
+.moc-nav a { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text-on-dark-dim); font-size:13px; font-weight:500; transition:color 0.15s; }
+.moc-nav a:hover { color:var(--text-on-dark); }
+.moc-nav img { height:28px; width:auto; }
+.moc-nav .nav-title { font-weight:700; color:var(--text-on-dark); font-size:14px; }
+.moc-nav .nav-title span { color:#3b82f6; }
+.moc-nav .nav-sep { color:var(--frame-border); font-size:16px; }
+
+/* HEADER */
+.header { background:var(--frame); border-bottom:1px solid var(--frame-border); padding:16px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+.header-left { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+.header h1 { font-family:'JetBrains Mono',monospace; font-size:16px; font-weight:700; letter-spacing:-0.5px; color:var(--text-on-dark); }
+.header-ref { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-on-dark-dim); background:rgba(255,255,255,0.08); padding:4px 10px; border-radius:4px; border:1px solid var(--frame-border); }
+
+/* CONTAINER */
+.container { max-width:900px; margin:0 auto; padding:32px 24px 80px; }
+
+/* HERO */
+.hero-section { margin-bottom:32px; }
+.hero-img-wrap { position:relative; border-radius:12px; overflow:hidden; box-shadow:var(--card-shadow); border:1px solid var(--border); }
+.hero-img-wrap img { width:100%; display:block; }
+.hero-caption { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-on-dark-dim); text-align:center; margin-top:10px; }
+
+/* SECTION INTRO */
+.section-intro { color:var(--text-on-dark-dim); font-size:14px; margin-bottom:24px; line-height:1.7; }
+.section-intro strong { color:var(--text-on-dark); }
+
+/* COMPONENT NAV */
+.component-nav { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:32px; }
+@media (max-width:600px) { .component-nav { grid-template-columns:repeat(2, 1fr); } }
+.comp-nav-btn {
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  padding:14px 16px; cursor:pointer; text-align:center; transition:all 0.15s;
+  font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600;
+  color:var(--text); box-shadow:var(--card-shadow); display:flex;
+  flex-direction:column; align-items:center; gap:4px;
+}
+.comp-nav-btn:hover { border-color:var(--accent); background:var(--surface2); box-shadow:var(--card-shadow-hover); }
+.comp-nav-btn.active { border-color:var(--accent); background:rgba(37,99,235,0.08); }
+.comp-nav-btn .comp-num {
+  font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:700;
+  color:var(--text-dim); letter-spacing:0.5px;
+}
+
+/* COMPONENT SECTIONS */
+.component-section {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  margin-bottom:12px; overflow:hidden; box-shadow:var(--card-shadow);
+  transition:all 0.2s;
+}
+.comp-header {
+  padding:18px 24px; cursor:pointer; display:flex; align-items:center;
+  justify-content:space-between; transition:background 0.15s; user-select:none;
+}
+.comp-header:hover { background:var(--surface2); }
+.comp-header-left { display:flex; align-items:center; gap:14px; }
+.comp-number {
+  font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700;
+  background:var(--surface2); border:1px solid var(--border); color:var(--text-dim);
+  padding:3px 10px; border-radius:5px; flex-shrink:0;
+}
+.comp-title { font-size:15px; font-weight:700; color:var(--text); }
+.comp-ref { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-dim); margin-top:2px; }
+.comp-arrow { font-size:12px; color:var(--text-dim); transition:transform 0.2s; flex-shrink:0; }
+.component-section.open .comp-arrow { transform:rotate(180deg); }
+
+.comp-body { display:none; padding:0 24px 24px; }
+.component-section.open .comp-body { display:block; }
+
+/* CONTENT WITHIN SECTIONS */
+.comp-img { width:100%; border-radius:8px; border:1px solid var(--border); margin:12px 0; }
+.comp-note {
+  background:rgba(37,99,235,0.05); border:1px solid rgba(37,99,235,0.12);
+  border-radius:8px; padding:12px 16px; margin:12px 0; font-size:13px;
+  color:var(--text-secondary); line-height:1.6;
+}
+.comp-note strong { color:var(--text); }
+.comp-note.warning {
+  background:rgba(220,38,38,0.05); border-color:rgba(220,38,38,0.15);
+}
+.comp-note.warning strong { color:var(--red); }
+.comp-note.caution {
+  background:rgba(217,119,6,0.05); border-color:rgba(217,119,6,0.15);
+}
+
+.comp-divider { border:none; border-top:1px solid var(--border); margin:16px 0; }
+
+/* PARTS TABLE */
+.parts-table { width:100%; border-collapse:collapse; font-size:13px; margin:12px 0; border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+.parts-table th {
+  font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700;
+  color:var(--text-dim); text-align:left; padding:10px 14px;
+  background:var(--surface2); border-bottom:1px solid var(--border);
+  letter-spacing:0.5px; text-transform:uppercase;
+}
+.parts-table td { padding:8px 14px; border-bottom:1px solid var(--border); color:var(--text-secondary); }
+.parts-table tr:last-child td { border-bottom:none; }
+.parts-table td:nth-child(2) { font-family:'JetBrains Mono',monospace; font-size:12px; }
+
+/* INSPECTION CRITERIA */
+.criteria-list { list-style:none; padding:0; margin:12px 0; }
+.criteria-list li {
+  padding:10px 14px; margin-bottom:6px; border-radius:8px;
+  font-size:13px; line-height:1.6; color:var(--text-secondary);
+  border:1px solid var(--border); background:rgba(0,0,0,0.02);
+}
+.criteria-list li strong { color:var(--text); }
+.criteria-list .permitted { border-left:3px solid var(--green); }
+.criteria-list .not-permitted { border-left:3px solid var(--red); }
+.criteria-list .conditional { border-left:3px solid var(--yellow); }
+
+.ea-ref {
+  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--yellow);
+  background:rgba(217,119,6,0.06); border:1px solid rgba(217,119,6,0.15);
+  padding:8px 12px; border-radius:6px; margin:10px 0; display:inline-block;
+}
+
+@media print {
+  body { background:white; }
+  .header,.moc-nav { display:none; }
+  .comp-body { display:block !important; }
+}
+@media (max-width:600px) {
+  .header { flex-direction:column; gap:8px; align-items:flex-start; }
+  .header h1 { font-size:14px; }
+  .component-nav { grid-template-columns:1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="moc-nav">
+  <a href="index.html">
+    <img src="logo.webp" alt="MOC">
+    <span class="nav-title">MOC <span>Toolbox</span></span>
+  </a>
+  <span class="nav-sep">|</span>
+  <a href="index.html">Back to Apps</a>
+</div>
+
+<div class="header">
+  <div class="header-left">
+    <h1>LEAP-1B INLET COWL / FAN MODULE</h1>
+    <span class="header-ref">ATA 72 | AMM 72-21 / 72-22 / 72-23 | SRM 54-10</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero-section">
+    <div class="section-intro">
+      <strong>Visual identification guide</strong> for LEAP-1B inlet cowl and fan module components. Click any component below to view detailed diagrams, inspection criteria, AMM references, and parts information.
+    </div>
+    <div class="hero-img-wrap">
+      <img src="leap-images/LEAP_1B_INLET_COWL_FAN_MODULE-MAIN_START_HERE.jpg" alt="LEAP-1B Engine Component Overview">
+    </div>
+    <div class="hero-caption">LEAP-1B component identification -- click sections below for detail</div>
+  </div>
+
+  <!-- QUICK NAV -->
+  <div class="component-nav">
+    <button class="comp-nav-btn" onclick="scrollToComp('cowl-inner')">
+      <span class="comp-num">01</span>
+      Cowl Inner Barrel
+    </button>
+    <button class="comp-nav-btn" onclick="scrollToComp('acoustic-shroud')">
+      <span class="comp-num">02</span>
+      Acoustic Shroud
+    </button>
+    <button class="comp-nav-btn" onclick="scrollToComp('abradable')">
+      <span class="comp-num">03</span>
+      Fan Case Abradable
+    </button>
+    <button class="comp-nav-btn" onclick="scrollToComp('fan-blade')">
+      <span class="comp-num">04</span>
+      Fan Blade
+    </button>
+    <button class="comp-nav-btn" onclick="scrollToComp('aft-acoustic')">
+      <span class="comp-num">05</span>
+      Aft Acoustic Panel
+    </button>
+    <button class="comp-nav-btn" onclick="scrollToComp('ogv-platform')">
+      <span class="comp-num">06</span>
+      OGV Platform
+    </button>
+  </div>
+
+  <!-- 01: COWL INNER BARREL ACOUSTIC -->
+  <div class="component-section" id="cowl-inner">
+    <div class="comp-header" onclick="toggleComp(this)">
+      <div class="comp-header-left">
+        <span class="comp-number">01</span>
+        <div>
+          <div class="comp-title">Inlet Cowl Inner Barrel Acoustic Panel</div>
+          <div class="comp-ref">SRM 54-10-01-1A-1 4.C TABLE</div>
+        </div>
+      </div>
+      <span class="comp-arrow">&#9660;</span>
+    </div>
+    <div class="comp-body">
+      <div class="comp-note">
+        <strong>Perforated facesheet inspection.</strong> Zones A through F defined by distance from leading edge. Zone A starts at 1.00 inch (25.4 mm), Zone C extends to 4.00 inches (101.6 mm). Upper visible surface is primary inspection area.
+      </div>
+      <div class="ea-ref">PREVIOUS EA: A/C 8757 TTG8Q00TF5GV</div>
+      <img src="leap-images/INLET_COWL_INNER_BARREL_ACOUSTIC_PERFORATED_FACESHEET.jpg" class="comp-img" alt="Inlet Cowl Inner Barrel Acoustic Panel">
+      <hr class="comp-divider">
+      <div class="comp-note">
+        <strong>Key dimensions:</strong> Zone A = 1.00 inch (25.4 mm) from edge. Zone E upper = 3.50 inches (88.9 mm). Zone F = 1.00 inch (25.4 mm). Zone C = 4.00 inches (101.6 mm). Construction: fiberglass honeycomb core between outer barrel skin panel (aluminum) and inner barrel acoustic panel perforated facesheet. Inlet cowl lipskin is aluminum.
+      </div>
+    </div>
+  </div>
+
+  <!-- 02: ACOUSTIC SHROUD -->
+  <div class="component-section" id="acoustic-shroud">
+    <div class="comp-header" onclick="toggleComp(this)">
+      <div class="comp-header-left">
+        <span class="comp-number">02</span>
+        <div>
+          <div class="comp-title">Fan Case Module Acoustic Shroud</div>
+          <div class="comp-ref">AMM 72-21-00-200-802-G00 / G.(2)</div>
+        </div>
+      </div>
+      <span class="comp-arrow">&#9660;</span>
+    </div>
+    <div class="comp-body">
+      <div class="comp-note warning">
+        <strong>NOTE:</strong> If the inlet cowl and the acoustic shroud are installed, do not remove them.
+      </div>
+      <img src="leap-images/FAN_CASE_MODULE_ACOUSTIC_SHROUD_SEAL_MISSING_TORN_TRIM.jpg" class="comp-img" alt="Fan Case Acoustic Shroud">
+      <hr class="comp-divider">
+      <div style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--text)">Seal Examination Criteria</div>
+      <ul class="criteria-list">
+        <li class="conditional"><strong>Missing bonded seal:</strong> Permitted if not more than 39.37 in. (1000 mm) in cumulative length.</li>
+        <li class="conditional"><strong>Cut, worn through, and torn seal:</strong> Cut the seal when it is visible in the flowpath. Permitted if not more than 39.37 in. (1000 mm) in cumulative length.</li>
+        <li class="permitted"><strong>Crazing in seal:</strong> Permitted.</li>
+      </ul>
+      <div class="ea-ref">PREVIOUS EA: A/C 8779 TTG8Q00W9435 - APPLY SPD TAPE</div>
+      <div class="comp-note">
+        <strong>Construction:</strong> Inner surface has glass fiber coating areas. Structure consists of carbon plies with protective coating. Outer and inner surfaces identified in legend.
+      </div>
+    </div>
+  </div>
+
+  <!-- 03: FAN CASE ABRADABLE -->
+  <div class="component-section" id="abradable">
+    <div class="comp-header" onclick="toggleComp(this)">
+      <div class="comp-header-left">
+        <span class="comp-number">03</span>
+        <div>
+          <div class="comp-title">Fan Case Module Abradable (Flowpath Area)</div>
+          <div class="comp-ref">AMM 72-21-00-200-802-G00 / G.(1)(L)</div>
+        </div>
+      </div>
+      <span class="comp-arrow">&#9660;</span>
+    </div>
+    <div class="comp-body">
+      <div class="comp-note">
+        <strong>Flowpath examination.</strong> The abradable liner is measured from the forward edge in three areas plus the X plane. Look for impact marks, craters, and axial cracks.
+      </div>
+      <img src="leap-images/FAN_CASE_MODULE_ABRADABLE__FLOWPATH_AREA_.jpg" class="comp-img" alt="Fan Case Abradable Flowpath">
+      <hr class="comp-divider">
+      <div style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--text)">Area Definitions (from forward edge)</div>
+      <table class="parts-table">
+        <tr><th>Area</th><th>Start</th><th>End</th></tr>
+        <tr><td><strong>Area 1</strong></td><td>0.0</td><td>3.083 in (78.3 mm)</td></tr>
+        <tr><td><strong>Area 2</strong></td><td>0.0</td><td>5.594 in (142.1 mm)</td></tr>
+        <tr><td><strong>Area 3</strong></td><td>0.0</td><td>7.516 in (190.9 mm)</td></tr>
+        <tr><td><strong>X Plane</strong></td><td>0.0</td><td>9.444 in (239.9 mm)</td></tr>
+      </table>
+      <div class="comp-note">
+        <strong>Construction:</strong> Abradable liner sits on composite fan case with honeycomb layer and carbon plies. The abradable liner area has no carbon plies step. Typical damage includes impact marks/craters on the abradable surface and axial cracks.
+      </div>
+    </div>
+  </div>
+
+  <!-- 04: FAN BLADE -->
+  <div class="component-section" id="fan-blade">
+    <div class="comp-header" onclick="toggleComp(this)">
+      <div class="comp-header-left">
+        <span class="comp-number">04</span>
+        <div>
+          <div class="comp-title">Fan Blade</div>
+          <div class="comp-ref">AMM 72-22-02-200-801-G00</div>
+        </div>
+      </div>
+      <span class="comp-arrow">&#9660;</span>
+    </div>
+    <div class="comp-body">
+      <div class="comp-note">
+        <strong>18 fan blades total.</strong> Convex side = suction side. Concave side = pressure side. Blade #1 at 12 o'clock index reference, numbered clockwise looking forward.
+      </div>
+      <img src="leap-images/FAN_BLADE.jpg" class="comp-img" alt="Fan Blade Anatomy and Numbering">
+      <hr class="comp-divider">
+      <div style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--text)">Blade Anatomy</div>
+      <table class="parts-table">
+        <tr><th>Feature</th><th>Description</th></tr>
+        <tr><td><strong>Tip</strong></td><td>Outermost edge of blade</td></tr>
+        <tr><td><strong>MLE</strong></td><td>Metallic Leading Edge</td></tr>
+        <tr><td><strong>Trailing Edge</strong></td><td>Aft edge of airfoil</td></tr>
+        <tr><td><strong>Airfoil</strong></td><td>Main body of blade</td></tr>
+        <tr><td><strong>Platform Wearstrip</strong></td><td>At base of airfoil</td></tr>
+        <tr><td><strong>Dovetail &amp; Shank</strong></td><td>Root attachment to disk</td></tr>
+        <tr><td><strong>Dovetail Wearstrip</strong></td><td>At dovetail contact area</td></tr>
+      </table>
+      <div class="comp-note">
+        <strong>Cross-section (concave/pressure side):</strong> Black paint > Primer > PolyUrethane (PU) > Composite material > Glue > Metallic Leading Edge. Convex/suction side is reversed: Black paint > Primer > Composite material.
+      </div>
+      <div class="comp-note">
+        See the <strong>CFM LEAP Reference Book</strong> for additional blade damage assessment guidance.
+      </div>
+    </div>
+  </div>
+
+  <!-- 05: AFT ACOUSTIC PANEL -->
+  <div class="component-section" id="aft-acoustic">
+    <div class="comp-header" onclick="toggleComp(this)">
+      <div class="comp-header-left">
+        <span class="comp-number">05</span>
+        <div>
+          <div class="comp-title">Fan Case Module Aft Acoustic Panel</div>
+          <div class="comp-ref">AMM 72-21-00-200-802-G00 / G.(3)</div>
+        </div>
+      </div>
+      <span class="comp-arrow">&#9660;</span>
+    </div>
+    <div class="comp-body">
+      <div class="comp-note warning">
+        <strong>NOTE:</strong> The outer surface is only visible if the acoustic panel is removed. If it is installed, do not remove it.
+      </div>
+      <div class="ea-ref">PREVIOUS EA: A/C 8768 TTG8Q00U0R22 25 CYC'S</div>
+      <img src="leap-images/AFT_ACOUSTIC_PANEL.jpg" class="comp-img" alt="Aft Acoustic Panel">
+      <hr class="comp-divider">
+      <div style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--text)">Parts List (6 panels total)</div>
+      <table class="parts-table">
+        <tr><th>Part</th><th>P/N</th><th>Qty</th></tr>
+        <tr><td><strong>Panel</strong></td><td>364-050-110-0</td><td>6</td></tr>
+        <tr><td>Screw - Item 410</td><td>NAS5312E4-34</td><td>18</td></tr>
+        <tr><td>Screw - Item 410</td><td>NAS5312E4-36</td><td>18</td></tr>
+        <tr><td>Screw - Item 420</td><td>NAS5312E4-32</td><td>17</td></tr>
+        <tr><td>Screw - Item 420</td><td>NAS5312E4-36</td><td>17</td></tr>
+        <tr><td>Screw - Item 422</td><td>NAS5312E4-32</td><td>1</td></tr>
+        <tr><td>Screw - Item 422</td><td>J952P26A</td><td>1</td></tr>
+        <tr><td><strong>Sealant</strong></td><td>RTV108-2-80Z</td><td>1</td></tr>
+        <tr><td><strong>Anti Seize</strong></td><td>GP460-4OZ</td><td>1</td></tr>
+      </table>
+      <div class="comp-note">
+        <strong>Inspection:</strong> Inner surface is the primary inspection area. Images show examples of damage within limits vs. out of limits with tape measurement for reference.
+      </div>
+    </div>
+  </div>
+
+  <!-- 06: OGV PLATFORM -->
+  <div class="component-section" id="ogv-platform">
+    <div class="comp-header" onclick="toggleComp(this)">
+      <div class="comp-header-left">
+        <span class="comp-number">06</span>
+        <div>
+          <div class="comp-title">Fan Frame Module OGV Platform</div>
+          <div class="comp-ref">AMM 72-23-00-211-804-G00 / 2.H (23)</div>
+        </div>
+      </div>
+      <span class="comp-arrow">&#9660;</span>
+    </div>
+    <div class="comp-body">
+      <div class="comp-note">
+        <strong>40 OGV positions</strong> viewed looking forward. Platforms identified by position (1A through 1S) with varying quantities per position. 78 screw locations total.
+      </div>
+      <img src="leap-images/OGV_PLATFORM.jpg" class="comp-img" alt="OGV Platform Positions and Parts">
+      <hr class="comp-divider">
+      <div style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--text)">Inspection Criteria</div>
+      <ul class="criteria-list">
+        <li class="permitted"><strong>Cracks:</strong> Permitted.</li>
+        <li class="conditional"><strong>Broken or missing outer OGV platforms:</strong> Permitted for all areas -- up to 3 platforms affected AND up to 2 consecutive platforms.</li>
+        <li class="not-permitted"><strong>Erosion:</strong> Not permitted.</li>
+      </ul>
+      <hr class="comp-divider">
+      <div style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--text)">Platform Part Numbers</div>
+      <table class="parts-table">
+        <tr><th>Position</th><th>P/N</th><th>Qty</th><th>Position</th><th>P/N</th><th>Qty</th></tr>
+        <tr><td>1A</td><td>364-053-631-0</td><td>1</td><td>1K</td><td>364-054-531-0</td><td>3</td></tr>
+        <tr><td>1B</td><td>364-053-731-0</td><td>3</td><td>1L</td><td>364-054-631-0</td><td>2</td></tr>
+        <tr><td>1C</td><td>364-053-831-0</td><td>2</td><td>1M</td><td>364-054-731-0</td><td>5</td></tr>
+        <tr><td>1D</td><td>364-053-931-0</td><td>3</td><td>1N</td><td>364-054-831-0</td><td>2</td></tr>
+        <tr><td>1E</td><td>364-054-031-0</td><td>2</td><td>1P</td><td>364-057-331-0</td><td>1</td></tr>
+        <tr><td>1F</td><td>364-054-131-0</td><td>3</td><td>1Q</td><td>364-057-431-0</td><td>1</td></tr>
+        <tr><td>1G</td><td>364-054-231-0</td><td>2</td><td>1R</td><td>364-057-531-0</td><td>3</td></tr>
+        <tr><td>1H</td><td>364-054-331-0</td><td>4</td><td>1S</td><td>364-057-631-0</td><td>1</td></tr>
+        <tr><td>1J</td><td>364-054-431-0</td><td>2</td><td></td><td></td><td></td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleComp(header) {
+  var section = header.parentElement;
+  section.classList.toggle('open');
+}
+
+function scrollToComp(id) {
+  var el = document.getElementById(id);
+  if (!el.classList.contains('open')) el.classList.add('open');
+  el.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>

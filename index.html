@@ -1959,7 +1959,7 @@
 
         function openManual(key) {
             const link = MANUAL_LINKS[key];
-            if (link) window.open(link.url, '_blank', 'noopener');
+            if (link) window.open(link.url, 'docunet');
         }
 
         function showMelChoice() {
@@ -2182,7 +2182,7 @@
                     return;
                 }
                 const onclick = item.custom
-                    ? (item.url ? `window.open('${item.url}','_blank','noopener')` : `alert('URL coming soon')`)
+                    ? (item.url ? `window.open('${item.url}','docunet')` : `alert('URL coming soon')`)
                     : `openManual('${item.key}')`;
                 html += `<div class="ql-card" onclick="${onclick}">
                     <div class="ql-icon" style="background:${item.color}20;color:${item.color}">${item.abbr}</div>

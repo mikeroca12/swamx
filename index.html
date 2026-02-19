@@ -1899,32 +1899,43 @@
                     <div class="results-empty">
                         <p>Search for anything -- ATA codes, procedures, faults, tips</p>
                         <p class="hint">Type to search or select a category filter</p>
-                        <div class="stats-line"><span>${DATA.length}</span> entries &middot; <span>${Object.keys(MANUAL_LINKS).length}</span> manuals linked &middot; <span>1</span> app</div>
+                        <div class="stats-line"><span>${DATA.length}</span> entries &middot; <span>${DEFECTS.length}</span> defects &middot; <span>${Object.keys(MANUAL_LINKS).length}</span> manuals linked &middot; <span>1</span> app</div>
                     </div>`;
                 return;
             }
 
-            let results = DATA;
-
+            // QRH results
+            let qrhResults = DATA;
             if (activeFilter !== 'ALL') {
-                results = results.filter(d => d.cat.toUpperCase().startsWith(activeFilter));
+                qrhResults = qrhResults.filter(d => d.cat.toUpperCase().startsWith(activeFilter));
             }
-
             if (q) {
-                results = results.filter(d => {
+                qrhResults = qrhResults.filter(d => {
                     const hay = (d.cat + ' ' + d.title + ' ' + d.refs.join(' ') + ' ' + (d.note || '')).toLowerCase();
                     return words.every(w => hay.includes(w));
                 });
             }
 
-            if (results.length === 0) {
+            // Defect results (only when ALL filter or searching)
+            let defectResults = [];
+            if (q && activeFilter === 'ALL') {
+                defectResults = DEFECTS.filter(d => {
+                    const hay = [d.cat, d.title, d.tail, d.fleet, d.fault, d.discrepancy, d.resolution, d.note || ''].join(' ').toLowerCase();
+                    return words.every(w => hay.includes(w));
+                });
+            }
+
+            const totalResults = qrhResults.length + defectResults.length;
+
+            if (totalResults === 0) {
                 resultsArea.innerHTML = '<div class="results-empty"><p>No results found</p></div>';
                 return;
             }
 
-            let html = `<div class="result-count">${results.length} result${results.length !== 1 ? 's' : ''}</div>`;
+            let html = `<div class="result-count">${totalResults} result${totalResults !== 1 ? 's' : ''}</div>`;
 
-            results.forEach((d, idx) => {
+            // Render QRH cards
+            qrhResults.forEach((d, idx) => {
                 const style = tagStyle(d.cat);
                 const titleKey = findManualKey(d.title);
                 const titleText = highlight(d.title, words);
@@ -1932,17 +1943,13 @@
                     ? `<span class="result-title result-title-link" onclick="openManual('${titleKey}')" title="Open ${MANUAL_LINKS[titleKey].name}">${titleText}</span>`
                     : `<span class="result-title">${titleText}</span>`;
 
-                // Copy button shows the first manual ref or title
                 const copyText = d.refs.length ? d.refs[0] : d.title;
-
-                // Note and file indicators
                 const hasNote = d.note && d.note.trim();
                 const hasFile = d.file && d.file.trim();
                 let indicators = '';
                 if (hasNote) indicators += `<span class="card-indicator note-indicator" onclick="event.stopPropagation();toggleNote('note-${idx}')" title="Controller Note">NOTE</span>`;
                 if (hasFile) indicators += `<span class="card-indicator file-indicator" onclick="event.stopPropagation();openFile('${(d.file||'').replace(/'/g,"\\'")}')" title="Open file">FILE</span>`;
 
-                // Type badge
                 const typeBadge = d.type || 'qrh';
                 const typeLabel = {qrh:'QRH', defect:'DEFECT', template:'TEMPLATE', app:'APP'}[typeBadge] || 'QRH';
                 const typeClass = 'ac-type-' + typeBadge;
@@ -1963,6 +1970,48 @@
                     html += `<div class="card-note" id="note-${idx}"><div class="card-note-label">CONTROLLER NOTE</div><div class="card-note-text">${highlight(d.note, words)}</div></div>`;
                 }
                 html += '</div>';
+            });
+
+            // Render defect cards inline
+            defectResults.forEach((d, idx) => {
+                const subtypeClass = 'subtype-' + d.subtype;
+                const subtypeBadgeClass = 'defect-subtype-' + d.subtype;
+                const dIdx = 'main-' + idx;
+
+                html += `<div class="defect-card ${subtypeClass}">
+                    <div class="defect-card-top">
+                        <span class="ac-type-badge ac-type-defect">DEFECT</span>
+                        <span class="defect-subtype ${subtypeBadgeClass}">${d.subtype.toUpperCase()}</span>
+                        <span class="defect-ata">${highlight(d.cat, words)}</span>
+                        <span class="defect-title">${highlight(d.title, words)}</span>
+                    </div>
+                    <div class="defect-meta">
+                        <div class="defect-meta-item">
+                            <span class="defect-meta-label">TAIL</span>
+                            <span class="defect-meta-value">${highlight(d.tail, words)}</span>
+                        </div>
+                        <div class="defect-meta-item">
+                            <span class="defect-meta-label">FLEET</span>
+                            <span class="defect-meta-value">${highlight(d.fleet, words)}</span>
+                        </div>
+                        <div class="defect-meta-item">
+                            <span class="defect-meta-label">DATE</span>
+                            <span class="defect-meta-value">${d.date}</span>
+                        </div>
+                        <div class="defect-meta-item">
+                            <span class="defect-meta-label">FAULT</span>
+                            <span class="defect-meta-value">${highlight(d.fault, words)}</span>
+                        </div>
+                    </div>
+                    <div class="defect-section defect-section-discrepancy" id="mdisc-${dIdx}" onclick="toggleDefectSection('mdisc-${dIdx}')">
+                        <div class="defect-section-label">DISCREPANCY</div>
+                        <div class="defect-section-text">${highlight(d.discrepancy, words)}</div>
+                    </div>
+                    <div class="defect-section defect-section-resolution" id="mres-${dIdx}" onclick="toggleDefectSection('mres-${dIdx}')">
+                        <div class="defect-section-label">RESOLUTION</div>
+                        <div class="defect-section-text">${highlight(d.resolution, words)}</div>
+                    </div>
+                </div>`;
             });
 
             resultsArea.innerHTML = html;

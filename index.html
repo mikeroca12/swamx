@@ -1140,6 +1140,8 @@
                 <button class="filter-chip" data-filter="FRM">FRM</button>
                 <button class="filter-chip" data-filter="GOM">GOM</button>
                 <button class="filter-chip" data-filter="MISC">MISC</button>
+                <button class="filter-chip" data-filter="DEFECT">DEFECT</button>
+                <button class="filter-chip" data-filter="APP">APP</button>
             </div>
 
             <div class="results-area" id="resultsArea">
@@ -1648,7 +1650,11 @@
         function updateBadges() {
             filterChips.forEach(chip => {
                 const f = chip.dataset.filter;
-                let count = f === 'ALL' ? DATA.length : DATA.filter(d => d.cat.toUpperCase().startsWith(f)).length;
+                let count;
+                if (f === 'ALL') count = DATA.length + DEFECTS.length + APPS.length;
+                else if (f === 'DEFECT') count = DEFECTS.length;
+                else if (f === 'APP') count = APPS.length;
+                else count = DATA.filter(d => d.cat.toUpperCase().startsWith(f)).length;
                 const existing = chip.querySelector('.badge');
                 if (existing) existing.textContent = count;
                 else chip.innerHTML += ` <span class="badge">${count}</span>`;
@@ -1966,42 +1972,56 @@
                     <div class="results-empty">
                         <p>Search for anything -- ATA codes, procedures, faults, tips</p>
                         <p class="hint">Type to search or select a category filter</p>
-                        <div class="stats-line"><span>${DATA.length}</span> entries &middot; <span>${DEFECTS.length}</span> defects &middot; <span>${Object.keys(MANUAL_LINKS).length}</span> manuals linked &middot; <span>1</span> app</div>
+                        <div class="stats-line"><span>${DATA.length}</span> entries &middot; <span>${DEFECTS.length}</span> defects &middot; <span>${Object.keys(MANUAL_LINKS).length}</span> manuals linked &middot; <span>${APPS.length}</span> app${APPS.length !== 1 ? 's' : ''}</div>
                     </div>`;
                 return;
             }
 
+            // Determine what to show based on filter
+            const showQRH = activeFilter !== 'DEFECT' && activeFilter !== 'APP';
+            const showDefects = activeFilter === 'ALL' || activeFilter === 'DEFECT';
+            const showApps = activeFilter === 'ALL' || activeFilter === 'APP';
+
             // QRH results
-            let qrhResults = DATA;
-            if (activeFilter !== 'ALL') {
-                qrhResults = qrhResults.filter(d => d.cat.toUpperCase().startsWith(activeFilter));
-            }
-            if (q) {
-                qrhResults = qrhResults.filter(d => {
-                    const hay = (d.cat + ' ' + d.title + ' ' + d.refs.join(' ') + ' ' + (d.note || '')).toLowerCase();
-                    return words.every(w => hay.includes(w));
-                });
-            }
-
-            // Defect results (only when ALL filter or searching)
-            let defectResults = [];
-            if (q && activeFilter === 'ALL') {
-                defectResults = DEFECTS.filter(d => {
-                    const hay = [d.cat, d.title, d.tail, d.fleet, d.fault, d.discrepancy, d.resolution, d.note || ''].join(' ').toLowerCase();
-                    return words.every(w => hay.includes(w));
-                });
+            let qrhResults = [];
+            if (showQRH) {
+                qrhResults = DATA;
+                if (activeFilter !== 'ALL') {
+                    qrhResults = qrhResults.filter(d => d.cat.toUpperCase().startsWith(activeFilter));
+                }
+                if (q) {
+                    qrhResults = qrhResults.filter(d => {
+                        const hay = (d.cat + ' ' + d.title + ' ' + d.refs.join(' ') + ' ' + (d.note || '')).toLowerCase();
+                        return words.every(w => hay.includes(w));
+                    });
+                }
             }
 
-            // App results (only when ALL filter or searching)
+            // Defect results
+            let defectResultsList = [];
+            if (showDefects) {
+                defectResultsList = DEFECTS;
+                if (q) {
+                    defectResultsList = defectResultsList.filter(d => {
+                        const hay = [d.cat, d.title, d.tail, d.fleet, d.fault, d.discrepancy, d.resolution, d.note || ''].join(' ').toLowerCase();
+                        return words.every(w => hay.includes(w));
+                    });
+                }
+            }
+
+            // App results
             let appResults = [];
-            if (q && activeFilter === 'ALL') {
-                appResults = APPS.filter(a => {
-                    const hay = (a.title + ' ' + a.description + ' ' + a.keywords).toLowerCase();
-                    return words.every(w => hay.includes(w));
-                });
+            if (showApps) {
+                appResults = APPS;
+                if (q) {
+                    appResults = appResults.filter(a => {
+                        const hay = (a.title + ' ' + a.description + ' ' + a.keywords).toLowerCase();
+                        return words.every(w => hay.includes(w));
+                    });
+                }
             }
 
-            const totalResults = qrhResults.length + defectResults.length + appResults.length;
+            const totalResults = qrhResults.length + defectResultsList.length + appResults.length;
 
             if (totalResults === 0) {
                 resultsArea.innerHTML = '<div class="results-empty"><p>No results found</p></div>';
@@ -2049,7 +2069,7 @@
             });
 
             // Render defect cards inline
-            defectResults.forEach((d, idx) => {
+            defectResultsList.forEach((d, idx) => {
                 const subtypeClass = 'subtype-' + d.subtype;
                 const subtypeBadgeClass = 'defect-subtype-' + d.subtype;
                 const dIdx = 'main-' + idx;

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acoustic Shroud Inspection | MOC Toolbox</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1b2a45;
+  --frame: #223352;
+  --frame-border: #2e4368;
+  --surface: #e2e7ef;
+  --surface2: #d9dee8;
+  --surface3: #cdd3df;
+  --border: #c8ceda;
+  --border-strong: #b4bcc9;
+  --text: #1e293b;
+  --text-secondary: #475569;
+  --text-dim: #64748b;
+  --text-on-dark: #e2e8f0;
+  --text-on-dark-dim: #ffffff;
+  --green: #16a34a;
+  --green-bg: #dcfce7;
+  --green-border: #86efac;
+  --green-text: #15803d;
+  --yellow: #d97706;
+  --yellow-bg: #fef3c7;
+  --yellow-border: #fcd34d;
+  --yellow-text: #b45309;
+  --red: #dc2626;
+  --red-bg: #fee2e2;
+  --red-border: #fca5a5;
+  --red-text: #b91c1c;
+  --blue: #2563eb;
+  --blue-bg: #dbeafe;
+  --blue-border: #93c5fd;
+  --blue-text: #1d4ed8;
+  --accent: #2563eb;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; line-height:1.5; }
+
+/* NAV BAR */
+.nav-bar {
+  background:var(--frame); border-bottom:1px solid var(--frame-border);
+  padding:10px 24px; display:flex; align-items:center; gap:14px;
+  font-family:'DM Sans',sans-serif; font-size:14px;
+}
+.nav-bar a { color:var(--text-on-dark-dim); text-decoration:none; transition:color 0.15s; }
+.nav-bar a:hover { color:var(--text-on-dark); }
+.nav-bar .nav-logo { display:flex; align-items:center; gap:8px; }
+.nav-bar .nav-title { font-weight:700; color:var(--text-on-dark); }
+.nav-bar .nav-title span { color:#3b82f6; }
+.nav-bar .nav-sep { color:var(--frame-border); }
+.nav-bar img { height:28px; }
+
+/* HEADER */
+.header {
+  background:var(--frame); border-bottom:1px solid var(--frame-border);
+  padding:14px 24px; display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:100;
+}
+.header-left { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.header h1 { font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700; letter-spacing:-0.5px; color:var(--text-on-dark); }
+.header-ref {
+  font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-on-dark-dim);
+  background:rgba(255,255,255,0.08); padding:3px 10px; border-radius:4px; border:1px solid var(--frame-border);
+}
+.back-btn, .reset-btn {
+  background:rgba(255,255,255,0.1); border:1px solid var(--frame-border); color:var(--text-on-dark-dim);
+  font-family:'DM Sans',sans-serif; font-size:13px; padding:6px 14px; border-radius:6px;
+  cursor:pointer; transition:all 0.15s;
+}
+.back-btn:hover, .reset-btn:hover { background:rgba(255,255,255,0.15); color:var(--text-on-dark); }
+.back-btn { display:none; }
+
+/* CONTAINER */
+.container { max-width:820px; margin:0 auto; padding:28px 24px 80px; }
+
+/* GRID */
+.grid-title { font-size:12px; font-weight:600; color:var(--text-on-dark-dim); margin-bottom:14px; letter-spacing:1px; text-transform:uppercase; font-family:'JetBrains Mono',monospace; }
+.component-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:10px; }
+.comp-tile {
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  padding:14px 16px; cursor:pointer; transition:all 0.2s;
+  display:flex; flex-direction:column; gap:5px; box-shadow:var(--card-shadow);
+}
+.comp-tile:hover { border-color:var(--accent); box-shadow:var(--card-shadow-hover); transform:translateY(-1px); }
+.comp-fig { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-dim); }
+.comp-name { font-size:14px; font-weight:700; color:var(--text); overflow-wrap:break-word; }
+.comp-critical { font-size:11px; font-weight:600; padding:3px 8px; border-radius:4px; display:inline-block; width:fit-content; }
+.crit-red { background:var(--red-bg); color:var(--red-text); border:1px solid var(--red-border); }
+.crit-green { background:var(--green-bg); color:var(--green-text); border:1px solid var(--green-border); }
+.crit-yellow { background:var(--yellow-bg); color:var(--yellow-text); border:1px solid var(--yellow-border); }
+
+/* DETAIL VIEW */
+#detailView { display:none; }
+.detail-section-label { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-on-dark-dim); margin-bottom:4px; }
+.detail-title { font-size:20px; font-weight:700; margin-bottom:4px; color:var(--text-on-dark); }
+.detail-subtitle { font-size:12px; color:var(--text-on-dark-dim); font-family:'JetBrains Mono',monospace; margin-bottom:20px; }
+
+/* STATUS BOXES */
+.status-box { border-radius:10px; padding:14px 16px; margin-bottom:10px; border:1px solid; box-shadow:var(--card-shadow); }
+.status-box h4 { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; letter-spacing:1px; margin-bottom:8px; text-transform:uppercase; }
+.status-box ul { list-style:none; padding:0; }
+.status-box li { font-size:13px; line-height:1.7; padding-left:20px; position:relative; }
+.status-box li::before { position:absolute; left:0; font-weight:700; font-size:11px; }
+
+.box-nogo { background:var(--red-bg); border-color:var(--red-border); }
+.box-nogo h4 { color:var(--red); }
+.box-nogo li { color:var(--red-text); }
+.box-nogo li::before { content:"X "; color:var(--red); }
+
+.box-ok { background:var(--green-bg); border-color:var(--green-border); }
+.box-ok h4 { color:var(--green); }
+.box-ok li { color:var(--green-text); }
+.box-ok li::before { content:"OK "; color:var(--green); }
+
+.box-cond { background:var(--yellow-bg); border-color:var(--yellow-border); }
+.box-cond h4 { color:var(--yellow); }
+.box-cond li { color:var(--yellow-text); }
+.box-cond li::before { content:"~ "; color:var(--yellow); }
+
+.box-info { background:var(--blue-bg); border-color:var(--blue-border); }
+.box-info h4 { color:var(--blue); }
+.box-info li { color:var(--blue-text); }
+.box-info li::before { content:"i "; color:var(--blue); }
+
+/* NOTE BOX */
+.note-box {
+  background:var(--surface); border-left:3px solid var(--accent);
+  padding:10px 14px; border-radius:0 8px 8px 0; margin-bottom:10px;
+  font-size:12px; color:var(--text-secondary); line-height:1.6; box-shadow:var(--card-shadow);
+}
+.note-box strong { color:var(--text); }
+
+/* REPAIR REFS */
+.repair-refs {
+  background:var(--surface); border:1px solid var(--border); border-radius:8px;
+  padding:12px 16px; margin-bottom:10px; box-shadow:var(--card-shadow);
+}
+.repair-refs h4 { font-size:11px; font-weight:600; color:var(--text-dim); margin-bottom:6px; font-family:'JetBrains Mono',monospace; }
+.repair-refs p { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-secondary); line-height:1.8; }
+
+/* FIGURE CONTAINERS */
+.fig-container {
+  background:#ffffff; border:1px solid var(--border); border-radius:10px;
+  padding:14px; margin-bottom:10px; box-shadow:var(--card-shadow);
+}
+.fig-container img { width:100%; border-radius:6px; }
+.fig-container .fig-label {
+  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-dim); margin-top:8px; text-align:center;
+}
+
+/* RESPONSIVE */
+@media(max-width:640px) {
+  .component-grid { grid-template-columns:1fr; }
+  .header { padding:12px 16px; }
+  .header h1 { font-size:13px; }
+  .container { padding:16px 14px 40px; }
+  .detail-title { font-size:17px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV BAR -->
+<div class="nav-bar">
+  <a href="index.html" class="nav-logo">
+    <img src="logo.webp" alt="Logo">
+    <span class="nav-title">MOC <span>Toolbox</span></span>
+  </a>
+  <span class="nav-sep">|</span>
+  <a href="leap-1b.html">Back to LEAP-1B Hub</a>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <h1>Acoustic Shroud Inspection</h1>
+    <span class="header-ref">SUBTASK 72-21-00-211-011-G00 | Fig 601 | G.(2)</span>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <button class="back-btn" id="backBtn" onclick="goHome()">Back</button>
+    <button class="reset-btn" onclick="goHome()">Start Over</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- GRID VIEW -->
+  <div id="gridView">
+    <div class="grid-title">Acoustic Shroud [2] - Select Component</div>
+    <div class="component-grid" id="compGrid"></div>
+  </div>
+
+  <!-- DETAIL VIEW -->
+  <div id="detailView"></div>
+
+</div>
+
+<script>
+var COMPONENTS = [
+  {
+    section:"Inner Surface",
+    name:"Inner Surface",
+    fig:"601 Sheets 16, 21",
+    critical:"Tears on carbon plies - not permitted",
+    critClass:"crit-red",
+    nogo:[
+      "Tears, cracks, punctures on carbon plies - not permitted",
+      "Local collapse of inner surface - not permitted"
+    ],
+    ok:[
+      "Non-consecutive clogged hole or missing hole - permitted",
+      "Nicks, dents, scratches, cracks, flaking on protective coating - any amount permitted",
+      "Tears, punctures, cracks through skin of protective coating - permitted",
+      "Missing protective coating - permitted",
+      "Coloration aspect due to resin deposit - any amount",
+      "Micro-shrinkage on inner face around acoustic hole - any amount"
+    ],
+    cond:[
+      "Consecutive clogged holes - not more than 2 affected areas of diameter 1.18 in. (30 mm)",
+      "Consecutive missing holes - not more than 2 holes",
+      "Nicks, dents, scratches, impact marks on carbon plies - depth 0.011 in. (0.3 mm), length 0.78 in. (20 mm), width 0.11 in. (3 mm), distance between 7.88 in. (200 mm)",
+      "Wrinkles or folds on protective coating - depth 0.0118 in. (0.30 mm), cumulative length 5.90 in. (150 mm)"
+    ],
+    notes:"Protective coating damage is always permitted - it is the carbon plies underneath that matter. Missing holes and micro-shrinkage are manufacturing artifacts. Coloration and wrinkles/folds are also manufacturing.",
+    repairs:"72-21-05-300-801-G00 - Acoustic Shroud Repair by Filling Up",
+    figures:[
+      {src:"shroud-figures/fig601-sh16.png", label:"Fig 601 Sheet 16 - Acoustic Shroud Overview with Cross-Section B-B"},
+      {src:"shroud-figures/fig601-sh21.png", label:"Fig 601 Sheet 21 - Micro-Shrinkage and Wrinkles / Folds (Inner Face)"}
+    ]
+  },
+  {
+    section:"Outer Surface",
+    name:"Outer Surface",
+    fig:"601 Sheets 16, 17",
+    critical:"Tears on carbon plies - not permitted",
+    critClass:"crit-red",
+    nogo:[
+      "Tears, cracks, punctures on carbon plies - not permitted"
+    ],
+    ok:[
+      "Local collapse - any amount (manufacturing)",
+      "Porosities - permitted if less than 0.0118 in. (0.30 mm) depth (manufacturing)",
+      "Coloration grey-blue-white on forward edge and radius - permitted (manufacturing)"
+    ],
+    cond:[
+      "Nicks, dents, scratches, impact marks on carbon plies - depth 0.011 in. (0.3 mm), length 0.78 in. (20 mm), width 0.11 in. (3 mm), distance between 7.88 in. (200 mm)",
+      "Resin deposit coloration - cumulative area not more than 50% of outer surface",
+      "Green-blue-white coloration - not more than 1.55 in2 (10 cm2) cumulative area"
+    ],
+    notes:"Outer surface is only visible if the acoustic shroud is removed. If it is installed, do not remove it. Local collapse on the outer surface is a manufacturing condition and is always permitted.",
+    repairs:"72-21-05-300-801-G00 - Acoustic Shroud Repair by Filling Up",
+    figures:[
+      {src:"shroud-figures/fig601-sh16.png", label:"Fig 601 Sheet 16 - Acoustic Shroud Overview"},
+      {src:"shroud-figures/fig601-sh17.png", label:"Fig 601 Sheet 17 - Edges, Radius, and Cross-Section Details"}
+    ]
+  },
+  {
+    section:"Edges / Radius",
+    name:"Edges / Radius",
+    fig:"601 Sheets 17, 19",
+    critical:"Tears on carbon plies - not permitted",
+    critClass:"crit-red",
+    nogo:[
+      "Tears, cracks, punctures on carbon plies - not permitted"
+    ],
+    ok:[
+      "Porosities - any amount (manufacturing)",
+      "Dry area - any amount (manufacturing)",
+      "Voids - permitted",
+      "Coloration grey-blue-white on forward edge and radius - permitted (manufacturing)"
+    ],
+    cond:[
+      "Nicks, dents, scratches, impact marks on carbon plies - cumulative length 4 in. (101.6 mm), width 0.20 in. (5 mm), depth 0.040 in. (1 mm)",
+      "Fretting on forward edge - not more than 0.004 in. (0.1 mm) depth",
+      "Resin deposit on aftward edge - cumulative area not more than 50% of edge surface",
+      "Green-blue-white on aftward edge - not more than 0.775 in2 (5 cm2) cumulative area"
+    ],
+    notes:"Forward edge is only visible if the inlet cowl is removed. Aftward edge is only visible if the acoustic shroud is removed. If parts are installed, do not remove them.",
+    repairs:"",
+    figures:[
+      {src:"shroud-figures/fig601-sh17.png", label:"Fig 601 Sheet 17 - Forward Edge, Aft Edge, Cross-Section B-B with Seal and Radius"},
+      {src:"shroud-figures/fig601-sh19.png", label:"Fig 601 Sheet 19 - Typical Edge and Radius of the Acoustic Shroud"}
+    ]
+  },
+  {
+    section:"Seal",
+    name:"Seal",
+    fig:"601 Sheet 17",
+    critical:"Cumulative length limits apply",
+    critClass:"crit-yellow",
+    nogo:[],
+    ok:[
+      "Crazing in seal - permitted"
+    ],
+    cond:[
+      "Missing bonded seal - not more than 39.37 in. (1000 mm) cumulative length",
+      "Cut, worn through and torn seal - not more than 39.37 in. (1000 mm) cumulative length"
+    ],
+    notes:"If the inlet cowl and the acoustic shroud are installed, do not remove them. Cut the seal when it is visible in the flowpath. Both missing and cut/torn conditions share the same 39.37 in. cumulative limit. Maximum repairable limit for both: any amount.",
+    repairs:"72-21-05-300-802-G00 - Acoustic Shroud Seal Replacement",
+    figures:[
+      {src:"shroud-figures/fig601-sh17.png", label:"Fig 601 Sheet 17 - Cross-Section B-B Showing Seal, Carbon Plies, and Radius"}
+    ]
+  },
+  {
+    section:"Brackets - Fan Case",
+    name:"Brackets on Fan Case (13 locations)",
+    fig:"601 Sheet 14",
+    critical:"Multiple no-go conditions",
+    critClass:"crit-red",
+    nogo:[
+      "Nicks, dents, scratches, cracks on radius of brackets - not permitted",
+      "Missing bolt or captive nut on bracket - not permitted",
+      "Twisted or deformed bracket - not permitted",
+      "Torn, broken or unbonded bracket - not permitted",
+      "Missing replaceable rivetless nut - not permitted",
+      "Looseness of rivetless nut - not permitted"
+    ],
+    ok:[],
+    cond:[
+      "Nicks, dents, scratches, cracks around bolt holes - depth up to 0.0019 in. (0.05 mm) within 0.11 in. (3 mm) radius of holes",
+      "Nicks, dents, scratches, cracks on other surfaces - depth 0.003 in. (0.1 mm), length 0.59 in. (15 mm), width 0.007 in. (0.2 mm)",
+      "Fretting on other surfaces - up to 0.070 in. (1.8 mm) minimum thickness for the bracket"
+    ],
+    notes:"Brackets are visible when the acoustic shroud is removed. If it is installed, do not remove it. All no-go conditions are repairable to any amount. Rivetless nut issues use a separate repair task.",
+    repairs:"72-23-01-960-801-G00 - Fan Case Acoustic Shroud Bracket and/or Attachment Parts Replacement|72-23-01-960-804-G00 - Fan Case Rivetless Nut Plate Assembly Replacement",
+    figures:[
+      {src:"shroud-figures/fig601-sh14.png", label:"Fig 601 Sheet 14 - 13 Bracket Locations on Fan Case, Radius and Holes Detail"}
+    ]
+  },
+  {
+    section:"Brackets - Shroud",
+    name:"Brackets on Acoustic Shroud",
+    fig:"601 Sheet 18",
+    critical:"Torn / broken / deformed - not permitted",
+    critClass:"crit-red",
+    nogo:[
+      "Nicks, dents, scratches, cracks on radius of brackets - not permitted",
+      "Torn, broken or unbounded bracket - not permitted",
+      "Twisted or deformed bracket - not permitted",
+      "Missing rivets on bracket - not permitted"
+    ],
+    ok:[
+      "Porosities in sealing product under bracket - any amount (manufacturing)"
+    ],
+    cond:[
+      "Fretting on holes - up to 0.0098 in. (0.25 mm) depth over 20% of area around each hole",
+      "Elongated screw holes - not more than 0.2799 in. (7.11 mm) - nominal 0.2756 in. (7 mm)",
+      "Elongated pin holes - not more than 0.32116 in. (8.1575 mm) - nominal 0.3209 in. (8.15 mm)",
+      "Fretting on other surfaces - up to 0.070 in. (1.8 mm) minimum thickness of bracket",
+      "Nicks, dents, scratches, cracks on other surfaces - depth 0.003 in. (0.1 mm), length 0.59 in. (15 mm), width 0.007 in. (0.2 mm)"
+    ],
+    notes:"Brackets are only visible if the acoustic shroud is removed. If it is installed, do not remove it. Two bracket types: 11 locations and 2 locations (see figure). Screw holes and pin holes have different nominal diameters and limits.",
+    repairs:"",
+    figures:[
+      {src:"shroud-figures/fig601-sh18.png", label:"Fig 601 Sheet 18 - Bracket Details: Pin Hole, Screw Hole, 11 and 2 Bracket Locations"}
+    ]
+  }
+];
+
+function renderGrid() {
+  var html = '';
+  COMPONENTS.forEach(function(c, i) {
+    html += '<div class="comp-tile" onclick="showDetail(' + i + ')">' +
+      '<div class="comp-fig">Fig ' + c.fig + '</div>' +
+      '<div class="comp-name">' + c.name + '</div>' +
+      '<span class="comp-critical ' + c.critClass + '">' + c.critical + '</span>' +
+    '</div>';
+  });
+  document.getElementById('compGrid').innerHTML = html;
+}
+
+function showDetail(idx) {
+  var c = COMPONENTS[idx];
+  var dv = document.getElementById('detailView');
+  document.getElementById('gridView').style.display = 'none';
+  dv.style.display = 'block';
+  document.getElementById('backBtn').style.display = 'inline-block';
+  document.querySelector('.reset-btn').style.display = 'none';
+
+  var html = '<div class="detail-section-label">' + c.section + '</div>' +
+    '<div class="detail-title">' + c.name + '</div>' +
+    '<div class="detail-subtitle">Figure ' + c.fig + ' | SUBTASK 72-21-00-211-011-G00</div>';
+
+  if (c.nogo.length) {
+    html += '<div class="status-box box-nogo"><h4>Not Permitted - No-Go</h4><ul>';
+    c.nogo.forEach(function(n) { html += '<li>' + n + '</li>'; });
+    html += '</ul></div>';
+  }
+  if (c.ok.length) {
+    html += '<div class="status-box box-ok"><h4>Permitted - Within Limits</h4><ul>';
+    c.ok.forEach(function(n) { html += '<li>' + n + '</li>'; });
+    html += '</ul></div>';
+  }
+  if (c.cond.length) {
+    html += '<div class="status-box box-cond"><h4>Conditional - Limits Apply</h4><ul>';
+    c.cond.forEach(function(n) { html += '<li>' + n + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  if (c.notes) {
+    html += '<div class="note-box"><strong>Controller Notes:</strong> ' + c.notes + '</div>';
+  }
+  if (c.repairs) {
+    html += '<div class="repair-refs"><h4>Repair References</h4><p>' + c.repairs.split('|').join('<br>') + '</p></div>';
+  }
+
+  if (c.figures && c.figures.length) {
+    c.figures.forEach(function(f) {
+      html += '<div class="fig-container"><img src="' + f.src + '" alt="' + f.label + '"><div class="fig-label">' + f.label + '</div></div>';
+    });
+  }
+
+  dv.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  document.getElementById('detailView').style.display = 'none';
+  document.getElementById('gridView').style.display = 'block';
+  document.getElementById('backBtn').style.display = 'none';
+  document.querySelector('.reset-btn').style.display = 'inline-block';
+  window.scrollTo(0, 0);
+}
+
+renderGrid();
+</script>
+</body>
+</html>

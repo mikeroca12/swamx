@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LEAP-1B Inlet Cowl / Fan Module Reference</title>
+<title>LEAP-1B Engine Reference | MOC Toolbox</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -12,15 +12,38 @@
   --frame-border: #2e4368;
   --surface: #e2e7ef;
   --surface2: #d9dee8;
+  --surface3: #cdd3df;
   --border: #c8ceda;
+  --border-strong: #b4bcc9;
   --text: #1e293b;
   --text-secondary: #475569;
   --text-dim: #64748b;
   --text-on-dark: #e2e8f0;
   --text-on-dark-dim: #94a7c8;
   --green: #16a34a;
+  --green-bg: #dcfce7;
+  --green-border: #86efac;
+  --green-text: #15803d;
   --yellow: #d97706;
+  --yellow-bg: #fef3c7;
+  --yellow-border: #fcd34d;
+  --yellow-text: #b45309;
   --red: #dc2626;
+  --red-bg: #fee2e2;
+  --red-border: #fca5a5;
+  --red-text: #b91c1c;
+  --blue: #2563eb;
+  --blue-bg: #dbeafe;
+  --blue-border: #93c5fd;
+  --blue-text: #1d4ed8;
+  --cyan: #0891b2;
+  --cyan-bg: #cffafe;
+  --cyan-border: #67e8f9;
+  --cyan-text: #0e7490;
+  --purple: #7c3aed;
+  --purple-bg: #ede9fe;
+  --purple-border: #c4b5fd;
+  --purple-text: #6d28d9;
   --accent: #2563eb;
   --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
@@ -28,319 +51,438 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; line-height:1.5; }
 
-.moc-nav { background:var(--frame); border-bottom:1px solid var(--frame-border); padding:10px 24px; display:flex; align-items:center; gap:12px; }
-.moc-nav a { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text-on-dark-dim); font-size:13px; font-weight:500; transition:color 0.15s; }
-.moc-nav a:hover { color:var(--text-on-dark); }
-.moc-nav img { height:28px; width:auto; }
-.moc-nav .nav-title { font-weight:700; color:var(--text-on-dark); font-size:14px; }
-.moc-nav .nav-title span { color:#3b82f6; }
-.moc-nav .nav-sep { color:var(--frame-border); font-size:16px; }
+/* NAV BAR */
+.nav-bar {
+  background:var(--frame); border-bottom:1px solid var(--frame-border);
+  padding:10px 24px; display:flex; align-items:center; gap:14px;
+  font-family:'DM Sans',sans-serif; font-size:14px;
+}
+.nav-bar a { color:var(--text-on-dark-dim); text-decoration:none; transition:color 0.15s; }
+.nav-bar a:hover { color:var(--text-on-dark); }
+.nav-bar .nav-logo { display:flex; align-items:center; gap:8px; }
+.nav-bar .nav-title { font-weight:700; color:var(--text-on-dark); }
+.nav-bar .nav-title span { color:#f59e0b; }
+.nav-bar .nav-sep { color:var(--frame-border); }
+.nav-bar img { height:28px; }
 
-.header { background:var(--frame); border-bottom:1px solid var(--frame-border); padding:16px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
-.header-left { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
-.header h1 { font-family:'JetBrains Mono',monospace; font-size:16px; font-weight:700; letter-spacing:-0.5px; color:var(--text-on-dark); }
-.header-ref { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-on-dark-dim); background:rgba(255,255,255,0.08); padding:4px 10px; border-radius:4px; border:1px solid var(--frame-border); }
+/* HEADER HERO */
+.hero {
+  position:relative;
+  background:var(--frame);
+  border-bottom:1px solid var(--frame-border);
+  overflow:hidden;
+}
+.hero-img-wrap {
+  position:relative;
+  width:100%;
+  max-height:280px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.hero-img-wrap img {
+  width:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  opacity:0.55;
+}
+.hero-overlay {
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(27,42,69,0.3) 0%, rgba(27,42,69,0.85) 100%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  padding:24px;
+}
+.hero-badge {
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--text-on-dark-dim);
+  background:rgba(255,255,255,0.08);
+  border:1px solid var(--frame-border);
+  padding:4px 14px;
+  border-radius:4px;
+  margin-bottom:10px;
+}
+.hero h1 {
+  font-family:'JetBrains Mono',monospace;
+  font-size:22px;
+  font-weight:700;
+  color:var(--text-on-dark);
+  letter-spacing:-0.5px;
+  text-align:center;
+}
+.hero-sub {
+  font-size:13px;
+  color:var(--text-on-dark-dim);
+  text-align:center;
+  margin-top:6px;
+  max-width:600px;
+}
 
-.container { max-width:900px; margin:0 auto; padding:24px 24px 80px; }
+/* CONTAINER */
+.container { max-width:900px; margin:0 auto; padding:28px 24px 80px; }
 
-/* HERO */
-.hero-wrap { position:relative; border-radius:12px; overflow:hidden; margin-bottom:16px; box-shadow:0 4px 20px rgba(0,0,0,0.3); }
-.hero-grid { display:grid; grid-template-columns:1.2fr 0.8fr; }
-.hero-grid img { width:100%; height:100%; object-fit:cover; display:block; }
-.hero-labels { position:absolute; left:0; top:0; bottom:0; width:60%; display:flex; flex-direction:column; justify-content:space-between; padding:4% 0 4% 2.5%; }
-.hero-label { display:flex; align-items:center; gap:0; cursor:pointer; }
-.hero-label:hover .hero-label-text { background:var(--accent); color:white; border-color:var(--accent); }
-.hero-label.active .hero-label-text { background:var(--accent); color:white; border-color:var(--accent); }
-.hero-label-text { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; color:var(--text-on-dark); background:rgba(27,42,69,0.85); backdrop-filter:blur(4px); padding:5px 12px; border-radius:6px; border:1px solid var(--frame-border); white-space:nowrap; letter-spacing:0.5px; transition:all 0.15s; }
-.hero-label-line { height:1px; background:rgba(255,255,255,0.4); flex:1; min-width:20px; margin-left:-1px; }
+/* TIER LABELS */
+.tier-label {
+  font-family:'JetBrains Mono',monospace;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:#ffffff;
+  margin-bottom:10px;
+}
+.tier-hint {
+  font-size:12px;
+  color:#ffffff;
+  margin-top:-4px;
+  margin-bottom:14px;
+  opacity:0.7;
+}
 
-/* NAV GRID */
-.component-nav { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:20px; }
-.comp-nav-btn { background:var(--surface); border:2px solid var(--border); border-radius:10px; padding:14px 16px; cursor:pointer; text-align:center; transition:all 0.15s; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:var(--text); box-shadow:var(--card-shadow); display:flex; flex-direction:column; align-items:center; gap:4px; }
-.comp-nav-btn:hover { border-color:var(--accent); background:var(--surface2); box-shadow:var(--card-shadow-hover); }
-.comp-nav-btn.active { border-color:var(--accent); background:rgba(37,99,235,0.08); color:var(--accent); }
-.comp-nav-btn .comp-num { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:700; color:var(--text-dim); }
-.comp-nav-btn.active .comp-num { color:var(--accent); }
+/* FULL AMM WALKTHROUGHS */
+.wt-divider {
+  border:none;
+  border-top:1px solid var(--frame-border);
+  margin:8px 0 0;
+}
+.wt-label {
+  font-family:'JetBrains Mono',monospace;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:#ffffff;
+  margin:24px 0 12px;
+}
+.wt-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+  gap:10px;
+}
+.wt-card {
+  background:#fef3c7;
+  border:1px solid #fcd34d;
+  border-radius:8px;
+  padding:12px 16px;
+  text-decoration:none;
+  color:var(--text);
+  transition:all 0.2s;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  box-shadow:var(--card-shadow);
+}
+.wt-card:hover {
+  border-color:#f59e0b;
+  box-shadow:var(--card-shadow-hover);
+  transform:translateY(-1px);
+}
+.wt-card-left { display:flex; flex-direction:column; gap:2px; min-width:0; }
+.wt-card-title { font-size:13px; font-weight:700; color:var(--text); }
+.wt-card-ref {
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--text-secondary);
+}
+.wt-card-arrow {
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  font-weight:700;
+  color:#b45309;
+  flex-shrink:0;
+}
 
-/* DETAIL PANEL - single panel that swaps content */
-#detailPanel { display:none; background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:var(--card-shadow); animation:panelIn 0.2s ease; }
-#detailPanel.visible { display:block; }
-@keyframes panelIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+/* HOTSPOT PHOTO */
+.hotspot-photo {
+  position:relative;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid var(--frame-border);
+  cursor:pointer;
+  margin-bottom:16px;
+  transition:border-color 0.2s;
+}
+.hotspot-photo:hover { border-color:var(--accent); }
+.hotspot-photo img { width:100%; display:block; }
+.hotspot-photo-hint {
+  position:absolute;
+  bottom:8px;
+  right:10px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  color:#fff;
+  background:rgba(0,0,0,0.5);
+  padding:3px 8px;
+  border-radius:4px;
+}
+/* MODULE GRID */
+.module-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+  gap:8px;
+  margin-bottom:32px;
+}
 
-.panel-header { padding:18px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
-.panel-header-left { display:flex; align-items:center; gap:14px; }
-.panel-number { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; background:var(--accent); color:white; padding:3px 10px; border-radius:5px; flex-shrink:0; }
-.panel-title { font-size:15px; font-weight:700; color:var(--text); }
-.panel-ref { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-dim); margin-top:2px; }
-.panel-close { background:var(--surface2); border:1px solid var(--border); color:var(--text-dim); font-size:18px; width:32px; height:32px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
-.panel-close:hover { color:var(--text); border-color:var(--accent); }
+.grid-section-header {
+  grid-column:1 / -1;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:#ffffff;
+  padding:12px 0 4px;
+  border-top:1px solid var(--frame-border);
+  margin-top:4px;
+}
+.grid-section-header:first-child {
+  border-top:none;
+  margin-top:0;
+  padding-top:0;
+}
 
-.panel-body { padding:24px; }
+/* MODULE TILE */
+.mod-tile {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px 12px;
+  text-decoration:none;
+  color:var(--text);
+  transition:all 0.2s;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  box-shadow:var(--card-shadow);
+  position:relative;
+  overflow:hidden;
+}
+.mod-tile:hover {
+  border-color:var(--accent);
+  box-shadow:var(--card-shadow-hover);
+  transform:translateY(-1px);
+}
+.mod-tile.disabled {
+  opacity:0.45;
+  pointer-events:none;
+  border-style:dashed;
+}
 
-/* IMAGE CARDS */
-.img-card { border-radius:10px; overflow:hidden; border:1px solid var(--border); margin:14px 0; background:#fff; box-shadow:var(--card-shadow); }
-.img-card img { width:100%; display:block; cursor:pointer; transition:opacity 0.15s; }
-.img-card img:hover { opacity:0.95; }
-.img-card-caption { padding:8px 14px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-dim); background:var(--surface2); border-top:1px solid var(--border); }
-.img-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
-.img-row-3 { grid-template-columns:1fr 1fr 1fr; }
+.mod-info { display:flex; flex-direction:column; gap:1px; min-width:0; }
 
-/* NOTES */
-.comp-note { background:rgba(37,99,235,0.05); border:1px solid rgba(37,99,235,0.12); border-radius:8px; padding:12px 16px; margin:12px 0; font-size:13px; color:var(--text-secondary); line-height:1.6; }
-.comp-note strong { color:var(--text); }
-.comp-note.warning { background:rgba(220,38,38,0.05); border-color:rgba(220,38,38,0.15); }
-.comp-note.warning strong { color:var(--red); }
-.comp-divider { border:none; border-top:1px solid var(--border); margin:16px 0; }
-.section-label { font-size:14px; font-weight:700; color:var(--text); margin:16px 0 8px; }
+.mod-tile-top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
 
-/* TABLES */
-.parts-table { width:100%; border-collapse:collapse; font-size:13px; margin:12px 0; border-radius:8px; overflow:hidden; border:1px solid var(--border); }
-.parts-table th { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; color:var(--text-dim); text-align:left; padding:10px 14px; background:var(--surface2); border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:0.5px; }
-.parts-table td { padding:8px 14px; border-bottom:1px solid var(--border); color:var(--text-secondary); }
-.parts-table tr:last-child td { border-bottom:none; }
-.parts-table td:nth-child(2), .parts-table td:nth-child(5) { font-family:'JetBrains Mono',monospace; font-size:12px; }
+.mod-label-num {
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  font-weight:700;
+  padding:2px 8px;
+  border-radius:4px;
+  flex-shrink:0;
+}
+.label-cyan { background:var(--cyan-bg); color:var(--cyan-text); border:1px solid var(--cyan-border); }
+.label-blue { background:var(--blue-bg); color:var(--blue-text); border:1px solid var(--blue-border); }
+.label-green { background:var(--green-bg); color:var(--green-text); border:1px solid var(--green-border); }
+.label-red { background:var(--red-bg); color:var(--red-text); border:1px solid var(--red-border); }
+.label-yellow { background:var(--yellow-bg); color:var(--yellow-text); border:1px solid var(--yellow-border); }
+.label-purple { background:var(--purple-bg); color:var(--purple-text); border:1px solid var(--purple-border); }
 
-/* CRITERIA */
-.criteria-list { list-style:none; padding:0; margin:12px 0; }
-.criteria-list li { padding:10px 14px; margin-bottom:6px; border-radius:8px; font-size:13px; line-height:1.6; color:var(--text-secondary); border:1px solid var(--border); background:rgba(0,0,0,0.02); }
-.criteria-list li strong { color:var(--text); }
-.criteria-list .permitted { border-left:3px solid var(--green); }
-.criteria-list .not-permitted { border-left:3px solid var(--red); }
-.criteria-list .conditional { border-left:3px solid var(--yellow); }
-.ea-ref { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--yellow); background:rgba(217,119,6,0.06); border:1px solid rgba(217,119,6,0.15); padding:8px 12px; border-radius:6px; margin:10px 0; display:inline-block; }
+.mod-name {
+  font-size:13px;
+  font-weight:700;
+  color:var(--text);
+  line-height:1.3;
+}
+
+.mod-ref {
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--text-dim);
+  line-height:1.5;
+}
 
 /* LIGHTBOX */
-.lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:1000; align-items:center; justify-content:center; cursor:zoom-out; }
-.lightbox.open { display:flex; }
-.lightbox img { max-width:95%; max-height:95%; object-fit:contain; border-radius:8px; }
-
-@media (max-width:700px) {
-  .header { flex-direction:column; gap:8px; align-items:flex-start; }
-  .header h1 { font-size:14px; }
-  .hero-grid { grid-template-columns:1fr; }
-  .hero-grid img:last-child { display:none; }
-  .hero-labels { display:none; }
-  .component-nav { grid-template-columns:repeat(2, 1fr); }
-  .img-row, .img-row-3 { grid-template-columns:1fr; }
+.lightbox {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85);
+  z-index:9999; align-items:center; justify-content:center; cursor:zoom-out;
 }
-@media print { body { background:white; } .header,.moc-nav { display:none; } }
+.lightbox.open { display:flex; }
+.lightbox img { max-width:95%; max-height:90vh; border-radius:8px; box-shadow:0 8px 32px rgba(0,0,0,0.5); }
+.lightbox-close {
+  position:fixed; top:16px; right:20px; color:#fff; font-family:'JetBrains Mono',monospace;
+  font-size:18px; cursor:pointer; z-index:10000; background:rgba(0,0,0,0.5);
+  width:36px; height:36px; border-radius:50%; display:flex; align-items:center;
+  justify-content:center; border:1px solid rgba(255,255,255,0.2);
+}
+
+/* FOOTER */
+.hub-footer {
+  text-align:center;
+  padding:20px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:#ffffff;
+  opacity:0.4;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px) {
+  .hero h1 { font-size:17px; }
+  .hero-img-wrap { max-height:180px; }
+  .module-grid { grid-template-columns:1fr; }
+  .nav-bar { padding:10px 16px; font-size:13px; }
+  .container { padding:20px 16px 60px; }
+}
 </style>
 </head>
 <body>
-<div class="moc-nav">
-  <a href="index.html"><img src="logo.webp" alt="MOC"><span class="nav-title">MOC <span>Toolbox</span></span></a>
+
+<!-- NAV BAR -->
+<div class="nav-bar">
+  <a href="index.html" class="nav-logo">
+    <img src="logo.webp" alt="Logo">
+    <span class="nav-title">MOC <span>Toolbox</span></span>
+  </a>
   <span class="nav-sep">|</span>
   <a href="index.html">Back to Apps</a>
 </div>
-<div class="header">
-  <div class="header-left">
-    <h1>LEAP-1B INLET COWL / FAN MODULE</h1>
-    <span class="header-ref">ATA 72 | AMM 72-21 / 72-22 / 72-23 | SRM 54-10</span>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-img-wrap">
+    <img src="leap1bheader.png" alt="LEAP-1B Engine Front View">
+  </div>
+  <div class="hero-overlay">
+    <div class="hero-badge">CFM LEAP-1B / 737 MAX</div>
+    <h1>LEAP-1B Engine Reference</h1>
   </div>
 </div>
+
 <div class="container">
 
-  <!-- HERO -->
-  <div class="hero-wrap">
-    <div class="hero-grid">
-      <img src="leapimages/hero-front.png" alt="LEAP-1B Front View">
-      <img src="leapimages/hero-aft.png" alt="LEAP-1B Aft View">
-    </div>
-    <div class="hero-labels">
-      <div class="hero-label" data-comp="ogv-platform" onclick="showComp('ogv-platform')"><span class="hero-label-text">OGV PLATFORM</span><span class="hero-label-line"></span></div>
-      <div class="hero-label" data-comp="aft-acoustic" onclick="showComp('aft-acoustic')"><span class="hero-label-text">AFT ACOUSTIC PANEL</span><span class="hero-label-line"></span></div>
-      <div class="hero-label" data-comp="fan-blade" onclick="showComp('fan-blade')"><span class="hero-label-text">FAN BLADE</span><span class="hero-label-line"></span></div>
-      <div class="hero-label" data-comp="abradable" onclick="showComp('abradable')"><span class="hero-label-text">FAN CASE ABRADABLE</span><span class="hero-label-line"></span></div>
-      <div class="hero-label" data-comp="acoustic-shroud" onclick="showComp('acoustic-shroud')"><span class="hero-label-text">ACOUSTIC SHROUD</span><span class="hero-label-line"></span></div>
-      <div class="hero-label" data-comp="cowl-inner" onclick="showComp('cowl-inner')"><span class="hero-label-text">COWL INNER BARREL</span><span class="hero-label-line"></span></div>
-    </div>
+  <!-- HOTSPOTS -->
+  <div class="tier-label">Hotspots</div>
+  <div class="tier-hint">Match the number to the photo -- click a tile to open</div>
+
+  <!-- ANNOTATED PHOTO -->
+  <div class="hotspot-photo" onclick="openLightbox('leap1bheader.png')">
+    <img src="leap1bheader.png" alt="LEAP-1B numbered component diagram">
+    <div class="hotspot-photo-hint">Click to enlarge</div>
   </div>
 
-  <!-- NAV GRID -->
-  <div class="component-nav" id="compNav">
-    <button class="comp-nav-btn" data-comp="cowl-inner" onclick="showComp('cowl-inner')"><span class="comp-num">01</span>Cowl Inner Barrel</button>
-    <button class="comp-nav-btn" data-comp="acoustic-shroud" onclick="showComp('acoustic-shroud')"><span class="comp-num">02</span>Acoustic Shroud</button>
-    <button class="comp-nav-btn" data-comp="abradable" onclick="showComp('abradable')"><span class="comp-num">03</span>Fan Case Abradable</button>
-    <button class="comp-nav-btn" data-comp="fan-blade" onclick="showComp('fan-blade')"><span class="comp-num">04</span>Fan Blade</button>
-    <button class="comp-nav-btn" data-comp="aft-acoustic" onclick="showComp('aft-acoustic')"><span class="comp-num">05</span>Aft Acoustic Panel</button>
-    <button class="comp-nav-btn" data-comp="ogv-platform" onclick="showComp('ogv-platform')"><span class="comp-num">06</span>OGV Platform</button>
-  </div>
+  <!-- HOTSPOT GRID -->
+  <div class="module-grid">
 
-  <!-- SINGLE DETAIL PANEL -->
-  <div id="detailPanel">
-    <div class="panel-header">
-      <div class="panel-header-left">
-        <span class="panel-number" id="panelNum"></span>
-        <div><div class="panel-title" id="panelTitle"></div><div class="panel-ref" id="panelRef"></div></div>
+    <div class="grid-section-header">Inlet Cowl</div>
+
+    <a href="inlet-cowl-acoustic.html" class="mod-tile">
+      <span class="mod-label-num label-cyan">1</span>
+      <div class="mod-info">
+        <div class="mod-name">Cowl Inner Barrel Acoustic</div>
+        <div class="mod-ref">SRM 54-10-01-1A-1</div>
       </div>
-      <button class="panel-close" onclick="closePanel()">&#10005;</button>
+    </a>
+
+    <div class="grid-section-header">Fan Case Module</div>
+
+    <div class="mod-tile disabled">
+      <span class="mod-label-num label-blue">2</span>
+      <div class="mod-info">
+        <div class="mod-name">Acoustic Shroud</div>
+        <div class="mod-ref">AMM 72-21-00-200-802-G00 / G.(2)</div>
+      </div>
     </div>
-    <div class="panel-body" id="panelBody"></div>
+
+    <div class="mod-tile disabled">
+      <span class="mod-label-num label-green">3</span>
+      <div class="mod-info">
+        <div class="mod-name">Abradable</div>
+        <div class="mod-ref">AMM 72-21-00-200-802-G00 / G.(1)(L)</div>
+      </div>
+    </div>
+
+    <a href="fan-blade-inspection.html" class="mod-tile">
+      <span class="mod-label-num label-red">4</span>
+      <div class="mod-info">
+        <div class="mod-name">Fan Blade</div>
+        <div class="mod-ref">AMM 72-22-02-200-801-G00</div>
+      </div>
+    </a>
+
+    <div class="mod-tile disabled">
+      <span class="mod-label-num label-yellow">5</span>
+      <div class="mod-info">
+        <div class="mod-name">Aft Acoustic Panel</div>
+        <div class="mod-ref">AMM 72-21-00-200-802-G00 / G.(3)</div>
+      </div>
+    </div>
+
+    <div class="grid-section-header">Fan Frame Module</div>
+
+    <a href="ogv-platform-inspection.html" class="mod-tile">
+      <span class="mod-label-num label-purple">6</span>
+      <div class="mod-info">
+        <div class="mod-name">OGV Platform</div>
+        <div class="mod-ref">AMM 72-23-00-211-804-G00 / 2.H(23)</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- FULL AMM WALKTHROUGHS -->
+  <div class="wt-divider"></div>
+  <div class="wt-label">Full AMM Walkthroughs</div>
+  <div class="wt-grid">
+
+    <a href="fan-booster-inspection.html" class="wt-card">
+      <div class="wt-card-left">
+        <div class="wt-card-title">Fan & Booster Module Inspection</div>
+        <div class="wt-card-ref">TASK 72-22-00-200-808-G00 | Rev 26 -- 11 components, full sequence</div>
+      </div>
+      <span class="wt-card-arrow">--></span>
+    </a>
+
   </div>
 
 </div>
 
+<!-- FOOTER -->
+<div class="hub-footer">LEAP-1B Engine Reference | swamx.com | Unofficial MOC Resource</div>
+
 <!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()"><img id="lightboxImg" src="" alt=""></div>
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close" onclick="closeLightbox()">X</span>
+  <img id="lightboxImg" src="" alt="Diagram">
+</div>
 
 <script>
-var COMPONENTS = {
-  'cowl-inner': {
-    num:'01', title:'Inlet Cowl Inner Barrel Acoustic Panel', ref:'SRM 54-10-01-1A-1 4.C TABLE',
-    html: '<div class="comp-note"><strong>Perforated facesheet inspection.</strong> Zones A through F defined by distance from leading edge. Upper visible surface is primary inspection area.</div>' +
-      '<div class="ea-ref">PREVIOUS EA: A/C 8757 TTG8Q00TF5GV</div>' +
-      '<div class="section-label">Zone Definitions</div>' +
-      '<div class="img-card"><img src="leapimages/cowl-zones.png" alt="Zone diagram" onclick="openLightbox(this)"><div class="img-card-caption">Section A-A -- Zone layout with dimensions</div></div>' +
-      '<div class="section-label">Construction</div>' +
-      '<div class="img-card"><img src="leapimages/cowl-cutaway.png" alt="Cowl cutaway" onclick="openLightbox(this)"><div class="img-card-caption">3D cutaway -- fiberglass honeycomb core, aluminum outer barrel, perforated facesheet</div></div>' +
-      '<div class="section-label">Damage Examples</div>' +
-      '<div class="img-row"><div class="img-card"><img src="leapimages/cowl-damage.png" alt="Impact" onclick="openLightbox(this)"><div class="img-card-caption">Impact damage on perforated facesheet (Zone A/B)</div></div>' +
-      '<div class="img-card"><img src="leapimages/cowl-surface.png" alt="Surface" onclick="openLightbox(this)"><div class="img-card-caption">Inner barrel surface texture</div></div></div>' +
-      '<div class="comp-note"><strong>Key dimensions:</strong> Zone A = 1.00 in (25.4 mm). Zone E upper = 3.50 in (88.9 mm). Zone F = 1.00 in (25.4 mm). Zone C = 4.00 in (101.6 mm).</div>'
-  },
-  'acoustic-shroud': {
-    num:'02', title:'Fan Case Module Acoustic Shroud', ref:'AMM 72-21-00-200-802-G00 / G.(2)',
-    html: '<div class="comp-note warning"><strong>NOTE:</strong> If the inlet cowl and the acoustic shroud are installed, do not remove them.</div>' +
-      '<div class="ea-ref">PREVIOUS EA: A/C 8779 TTG8Q00W9435 - APPLY SPD TAPE</div>' +
-      '<div class="section-label">Assembly</div>' +
-      '<div class="img-row"><div class="img-card"><img src="leapimages/shroud-assembly.png" alt="Assembly" onclick="openLightbox(this)"><div class="img-card-caption">Acoustic shroud [2] assembly -- 3D view</div></div>' +
-      '<div class="img-card"><img src="leapimages/shroud-glassfiber.png" alt="Glass fiber" onclick="openLightbox(this)"><div class="img-card-caption">Section B-B -- glass fiber coating areas</div></div></div>' +
-      '<div class="section-label">Inner Surface &amp; Damage</div>' +
-      '<div class="img-row"><div class="img-card"><img src="leapimages/shroud-inner.png" alt="Inner surface" onclick="openLightbox(this)"><div class="img-card-caption">Acoustic shroud inner surface</div></div>' +
-      '<div class="img-card"><img src="leapimages/shroud-damage.png" alt="Damage" onclick="openLightbox(this)"><div class="img-card-caption">Torn/missing bonded seal</div></div></div>' +
-      '<div class="section-label">Construction</div>' +
-      '<div class="img-card"><img src="leapimages/shroud-crosssection.png" alt="Cross section" onclick="openLightbox(this)"><div class="img-card-caption">Section A -- carbon plies with protective coating</div></div>' +
-      '<hr class="comp-divider">' +
-      '<div class="section-label">Seal Examination Criteria</div>' +
-      '<ul class="criteria-list"><li class="conditional"><strong>Missing bonded seal:</strong> Permitted if not more than 39.37 in. (1000 mm) cumulative length.</li>' +
-      '<li class="conditional"><strong>Cut, worn through, and torn seal:</strong> Cut the seal when visible in flowpath. Permitted if not more than 39.37 in. (1000 mm) cumulative length.</li>' +
-      '<li class="permitted"><strong>Crazing in seal:</strong> Permitted.</li></ul>'
-  },
-  'abradable': {
-    num:'03', title:'Fan Case Module Abradable (Flowpath Area)', ref:'AMM 72-21-00-200-802-G00 / G.(1)(L)',
-    html: '<div class="comp-note"><strong>Flowpath examination.</strong> Abradable liner measured from forward edge in three areas plus the X plane. Inspect for impact marks, craters, and axial cracks.</div>' +
-      '<div class="section-label">Fan Case Location</div>' +
-      '<div class="img-row"><div class="img-card"><img src="leapimages/abradable-fancase.png" alt="Fan case" onclick="openLightbox(this)"><div class="img-card-caption">Fan case [1] -- abradable location</div></div>' +
-      '<div class="img-card"><img src="leapimages/abradable-fancase2.png" alt="Fan case 3D" onclick="openLightbox(this)"><div class="img-card-caption">Fan case 3D view</div></div></div>' +
-      '<div class="section-label">Area Definitions</div>' +
-      '<div class="img-card"><img src="leapimages/abradable-areas.png" alt="Areas" onclick="openLightbox(this)"><div class="img-card-caption">Section B-B -- Area 1/2/3 and X Plane dimensions</div></div>' +
-      '<table class="parts-table"><tr><th>Area</th><th>Start</th><th>End</th></tr>' +
-      '<tr><td><strong>Area 1</strong></td><td>0.0</td><td>3.083 in (78.3 mm)</td></tr>' +
-      '<tr><td><strong>Area 2</strong></td><td>0.0</td><td>5.594 in (142.1 mm)</td></tr>' +
-      '<tr><td><strong>Area 3</strong></td><td>0.0</td><td>7.516 in (190.9 mm)</td></tr>' +
-      '<tr><td><strong>X Plane</strong></td><td>0.0</td><td>9.444 in (239.9 mm)</td></tr></table>' +
-      '<div class="section-label">Construction</div>' +
-      '<div class="img-card"><img src="leapimages/abradable-construction.png" alt="Construction" onclick="openLightbox(this)"><div class="img-card-caption">Abradable liner, composite fan case, honeycomb, carbon plies</div></div>' +
-      '<div class="section-label">Damage Examples</div>' +
-      '<div class="img-row img-row-3"><div class="img-card"><img src="leapimages/abradable-impact.png" alt="Impact" onclick="openLightbox(this)"><div class="img-card-caption">Impact marks / craters</div></div>' +
-      '<div class="img-card"><img src="leapimages/abradable-cracks.png" alt="Cracks" onclick="openLightbox(this)"><div class="img-card-caption">Axial cracks</div></div>' +
-      '<div class="img-card"><img src="leapimages/abradable-fancase.png" alt="Overview" onclick="openLightbox(this)"><div class="img-card-caption">Overview</div></div></div>'
-  },
-  'fan-blade': {
-    num:'04', title:'Fan Blade', ref:'AMM 72-22-02-200-801-G00',
-    html: '<div class="comp-note"><strong>18 fan blades total.</strong> Convex side = suction. Concave side = pressure. Blade #1 at 12 o\'clock, numbered clockwise looking forward.</div>' +
-      '<div class="section-label">Blade Anatomy</div>' +
-      '<div class="img-row"><div class="img-card"><img src="leapimages/blade-anatomy.png" alt="Anatomy" onclick="openLightbox(this)"><div class="img-card-caption">Concave side -- component identification</div></div>' +
-      '<div class="img-card"><img src="leapimages/blade-convex.png" alt="Convex" onclick="openLightbox(this)"><div class="img-card-caption">Convex (suction) side</div></div></div>' +
-      '<div class="section-label">Material Cross-Section</div>' +
-      '<div class="img-card"><img src="leapimages/blade-crosssection.png" alt="Cross section" onclick="openLightbox(this)"><div class="img-card-caption">Concave: Black paint > Primer > PU > Composite > Glue > MLE. Convex: Black paint > Primer > Composite</div></div>' +
-      '<div class="section-label">Blade Numbering &amp; Index</div>' +
-      '<div class="img-row"><div class="img-card"><img src="leapimages/blade-numbering.png" alt="Numbering" onclick="openLightbox(this)"><div class="img-card-caption">18-blade numbering (1-18)</div></div>' +
-      '<div class="img-card"><img src="leapimages/blade-index.png" alt="Index" onclick="openLightbox(this)"><div class="img-card-caption">Blade #1 at 12 o\'clock index reference</div></div></div>' +
-      '<div class="section-label">Platform Area</div>' +
-      '<div class="img-card"><img src="leapimages/blade-platform.png" alt="Platform" onclick="openLightbox(this)"><div class="img-card-caption">Platform wearstrip area</div></div>' +
-      '<div class="comp-note">See the <strong>CFM LEAP Reference Book</strong> for additional blade damage assessment guidance.</div>'
-  },
-  'aft-acoustic': {
-    num:'05', title:'Fan Case Module Aft Acoustic Panel', ref:'AMM 72-21-00-200-802-G00 / G.(3)',
-    html: '<div class="comp-note warning"><strong>NOTE:</strong> The outer surface is only visible if the acoustic panel is removed. If installed, do not remove it.</div>' +
-      '<div class="ea-ref">PREVIOUS EA: A/C 8768 TTG8Q00U0R22 25 CYC\'S</div>' +
-      '<div class="section-label">Panel Assembly</div>' +
-      '<div class="img-card"><img src="leapimages/aft-assembly.png" alt="Assembly" onclick="openLightbox(this)"><div class="img-card-caption">[3] Acoustic panel -- outer surface (hatched) and inner surface views</div></div>' +
-      '<div class="section-label">Damage Example</div>' +
-      '<div class="img-card"><img src="leapimages/aft-damage.png" alt="Damage" onclick="openLightbox(this)"><div class="img-card-caption">Out-of-limits damage with measurement -- inner surface</div></div>' +
-      '<hr class="comp-divider">' +
-      '<div class="section-label">Parts List (6 panels total)</div>' +
-      '<table class="parts-table"><tr><th>Part</th><th>P/N</th><th>Qty</th></tr>' +
-      '<tr><td><strong>Panel</strong></td><td>364-050-110-0</td><td>6</td></tr>' +
-      '<tr><td>Screw - Item 410</td><td>NAS5312E4-34</td><td>18</td></tr>' +
-      '<tr><td>Screw - Item 410</td><td>NAS5312E4-36</td><td>18</td></tr>' +
-      '<tr><td>Screw - Item 420</td><td>NAS5312E4-32</td><td>17</td></tr>' +
-      '<tr><td>Screw - Item 420</td><td>NAS5312E4-36</td><td>17</td></tr>' +
-      '<tr><td>Screw - Item 422</td><td>NAS5312E4-32</td><td>1</td></tr>' +
-      '<tr><td>Screw - Item 422</td><td>J952P26A</td><td>1</td></tr>' +
-      '<tr><td><strong>Sealant</strong></td><td>RTV108-2-80Z</td><td>1</td></tr>' +
-      '<tr><td><strong>Anti Seize</strong></td><td>GP460-4OZ</td><td>1</td></tr></table>'
-  },
-  'ogv-platform': {
-    num:'06', title:'Fan Frame Module OGV Platform', ref:'AMM 72-23-00-211-804-G00 / 2.H (23)',
-    html: '<div class="comp-note"><strong>40 OGV positions</strong> viewed looking forward. 78 screw locations total.</div>' +
-      '<div class="section-label">Position Map</div>' +
-      '<div class="img-card"><img src="leapimages/ogv-positions.png" alt="Positions" onclick="openLightbox(this)"><div class="img-card-caption">40 OGV positions (1-40) with platform designations (1A-1S)</div></div>' +
-      '<div class="section-label">Platform Detail</div>' +
-      '<div class="img-card"><img src="leapimages/ogv-detail.png" alt="Detail" onclick="openLightbox(this)"><div class="img-card-caption">OGV platforms, screw locations (78), and OGV vanes -- view looking forward</div></div>' +
-      '<hr class="comp-divider">' +
-      '<div class="section-label">Inspection Criteria</div>' +
-      '<ul class="criteria-list"><li class="permitted"><strong>Cracks:</strong> Permitted.</li>' +
-      '<li class="conditional"><strong>Broken or missing outer OGV platforms:</strong> Permitted for all areas -- up to 3 platforms affected AND up to 2 consecutive.</li>' +
-      '<li class="not-permitted"><strong>Erosion:</strong> Not permitted.</li></ul>' +
-      '<hr class="comp-divider">' +
-      '<div class="section-label">Platform Part Numbers</div>' +
-      '<table class="parts-table"><tr><th>Pos</th><th>P/N</th><th>Qty</th><th>Pos</th><th>P/N</th><th>Qty</th></tr>' +
-      '<tr><td>1A</td><td>364-053-631-0</td><td>1</td><td>1K</td><td>364-054-531-0</td><td>3</td></tr>' +
-      '<tr><td>1B</td><td>364-053-731-0</td><td>3</td><td>1L</td><td>364-054-631-0</td><td>2</td></tr>' +
-      '<tr><td>1C</td><td>364-053-831-0</td><td>2</td><td>1M</td><td>364-054-731-0</td><td>5</td></tr>' +
-      '<tr><td>1D</td><td>364-053-931-0</td><td>3</td><td>1N</td><td>364-054-831-0</td><td>2</td></tr>' +
-      '<tr><td>1E</td><td>364-054-031-0</td><td>2</td><td>1P</td><td>364-057-331-0</td><td>1</td></tr>' +
-      '<tr><td>1F</td><td>364-054-131-0</td><td>3</td><td>1Q</td><td>364-057-431-0</td><td>1</td></tr>' +
-      '<tr><td>1G</td><td>364-054-231-0</td><td>2</td><td>1R</td><td>364-057-531-0</td><td>3</td></tr>' +
-      '<tr><td>1H</td><td>364-054-331-0</td><td>4</td><td>1S</td><td>364-057-631-0</td><td>1</td></tr>' +
-      '<tr><td>1J</td><td>364-054-431-0</td><td>2</td><td></td><td></td><td></td></tr></table>'
-  }
-};
-
-var activeComp = null;
-
-function showComp(id) {
-  var comp = COMPONENTS[id];
-  if (!comp) return;
-
-  // If clicking same comp, close it
-  if (activeComp === id) { closePanel(); return; }
-  activeComp = id;
-
-  // Update panel
-  document.getElementById('panelNum').textContent = comp.num;
-  document.getElementById('panelTitle').textContent = comp.title;
-  document.getElementById('panelRef').textContent = comp.ref;
-  document.getElementById('panelBody').innerHTML = comp.html;
-  document.getElementById('detailPanel').classList.add('visible');
-
-  // Update active states
-  document.querySelectorAll('.comp-nav-btn').forEach(function(b) {
-    b.classList.toggle('active', b.getAttribute('data-comp') === id);
-  });
-  document.querySelectorAll('.hero-label').forEach(function(l) {
-    l.classList.toggle('active', l.getAttribute('data-comp') === id);
-  });
-
-  // Scroll to panel
-  document.getElementById('detailPanel').scrollIntoView({ behavior:'smooth', block:'start' });
-}
-
-function closePanel() {
-  activeComp = null;
-  document.getElementById('detailPanel').classList.remove('visible');
-  document.querySelectorAll('.comp-nav-btn').forEach(function(b) { b.classList.remove('active'); });
-  document.querySelectorAll('.hero-label').forEach(function(l) { l.classList.remove('active'); });
-}
-
-function openLightbox(img) {
-  document.getElementById('lightboxImg').src = img.src;
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
   document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
-function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLightbox();
+});
 </script>
 </body>
 </html>

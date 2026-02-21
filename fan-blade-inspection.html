@@ -980,10 +980,7 @@ function renderGrid() {
     c._section = currentSection;
     html += `
       <div class="comp-tile" onclick="showDetail(${i})">
-        <div class="comp-tile-header">
-          <span class="comp-num ${c.numClass}">${c.numLabel}</span>
-          <span class="comp-fig">Fig ${c.fig}</span>
-        </div>
+        <div class="comp-fig">Fig ${c.fig}</div>
         <div class="comp-name">${c.name}</div>
         <span class="comp-critical ${c.critClass}">${c.critical}</span>
       </div>

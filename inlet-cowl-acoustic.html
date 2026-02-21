@@ -220,11 +220,9 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 
 .fig-section { margin-top:18px; }
 .fig-section h4 { color:#94a3b8; font-size:0.85rem; margin-bottom:10px; font-family:'JetBrains Mono',monospace; }
-.fig-gallery { display:flex; flex-wrap:wrap; gap:12px; }
-.fig-thumb { background:#1e293b; border:1px solid #334155; border-radius:8px; padding:6px; cursor:pointer; transition:border-color 0.2s; max-width:280px; }
-.fig-thumb:hover { border-color:#3b82f6; }
-.fig-thumb img { width:100%; border-radius:4px; display:block; }
-.fig-thumb .fig-label { color:#94a3b8; font-size:0.72rem; font-family:'JetBrains Mono',monospace; margin-top:5px; text-align:center; }
+.fig-inline { background:#ffffff; border:1px solid #334155; border-radius:8px; padding:8px; margin-bottom:12px; }
+.fig-inline img { width:100%; border-radius:4px; display:block; }
+.fig-inline .fig-label { color:#1e293b; font-size:0.75rem; font-family:'JetBrains Mono',monospace; margin-top:6px; text-align:center; font-weight:600; }
 .lightbox-close {
   position:fixed; top:16px; right:20px; color:white; font-size:28px;
   cursor:pointer; z-index:1001; font-family:sans-serif; line-height:1;
@@ -725,11 +723,11 @@ function showDetail(idx) {
   }
 
   if (c.figures && c.figures.length) {
-    html += `<div class="fig-section"><h4>REFERENCE FIGURES (tap to enlarge)</h4><div class="fig-gallery">`;
+    html += `<div class="fig-section"><h4>REFERENCE FIGURES</h4>`;
     c.figures.forEach(f => {
-      html += `<div class="fig-thumb" onclick="openLightbox('${f.src}')"><img src="${f.src}" alt="${f.label}" loading="lazy"><div class="fig-label">${f.label}</div></div>`;
+      html += `<div class="fig-inline"><img src="${f.src}" alt="${f.label}" loading="lazy"><div class="fig-label">${f.label}</div></div>`;
     });
-    html += `</div></div>`;
+    html += `</div>`;
   }
 
   dv.innerHTML = html;

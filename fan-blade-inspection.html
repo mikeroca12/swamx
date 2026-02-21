@@ -19,7 +19,7 @@
   --text-secondary: #475569;
   --text-dim: #64748b;
   --text-on-dark: #e2e8f0;
-  --text-on-dark-dim: #94a7c8;
+  --text-on-dark-dim: #ffffff;
   --green: #16a34a;
   --green-bg: #dcfce7;
   --green-border: #86efac;
@@ -145,7 +145,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 .num-cyan { background:var(--cyan-bg); color:var(--cyan-text); border-color:var(--cyan-border); }
 .num-purple { background:var(--purple-bg); color:var(--purple-text); border-color:var(--purple-border); }
 .comp-fig { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-dim); }
-.comp-name { font-size:14px; font-weight:700; color:var(--text); }
+.comp-name { font-size:14px; font-weight:700; color:var(--text); overflow-wrap:break-word; }
 .comp-critical { font-size:11px; font-weight:600; padding:3px 8px; border-radius:4px; display:inline-block; width:fit-content; }
 .crit-red { background:var(--red-bg); color:var(--red-text); border:1px solid var(--red-border); }
 .crit-green { background:var(--green-bg); color:var(--green-text); border:1px solid var(--green-border); }
@@ -213,6 +213,27 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 .lightbox-close {
   position:fixed; top:16px; right:20px; color:white; font-size:28px;
   cursor:pointer; z-index:1001; font-family:sans-serif; line-height:1;
+}
+
+
+/* SECTION LABEL */
+.detail-section-label {
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  color:#ffffff; margin-bottom:4px;
+}
+
+/* INLINE FIGURES */
+.fig-container {
+  background:#ffffff; border-radius:10px; padding:16px;
+  margin-bottom:10px; box-shadow:var(--card-shadow);
+}
+.fig-container img {
+  width:100%; height:auto; display:block; border-radius:6px;
+}
+.fig-container .fig-label {
+  font-family:'JetBrains Mono',monospace; font-size:11px;
+  color:var(--text-dim); margin-top:8px; text-align:center;
 }
 
 /* RESPONSIVE */
@@ -304,74 +325,79 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 const COMPONENTS = [
   // ========== MLE NOSE ==========
   {
-    section:"Metallic Leading Edge (MLE) -- Nose",
-    id:"mle-nose-b", name:"MLE Nose -- Area B", fig:"601 Sheet 1", numLabel:"B", numClass:"num-blue",
+    section:"Metallic Leading Edge (MLE) - Nose",
+    id:"mle-nose-b", name:"MLE Nose - Area B", fig:"601 Sheet 1", numLabel:"B", numClass:"num-blue",
     critical:"Cracks not permitted", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh01-blade-areas-ABN-OP.png", label:"Fig 601 Sheet 1 - Fan Blade Areas A, B, N, O, P"}],
     nogo:[
-      "Cracks and tears -- not permitted"
+      "Cracks and tears - not permitted"
     ],
     ok:[
-      "Nicks, dents, scratches -- up to 0.0059\" (0.15mm) depth"
+      "Nicks, dents, scratches - up to 0.0059\" (0.15mm) depth"
     ],
     cis:[],
     notes:"Area B is on the lower portion of the blade (from dovetail up to 22.17\" / 563mm from tip). Max repairable limit: within limits of applicable repair.",
     repairs:"Fan Blade Metal Leading Edge Blending: TASK 72-22-02-900-805-G00"
   },
   {
-    id:"mle-nose-c", name:"MLE Nose -- Area C", fig:"601 Sheet 2", numLabel:"C", numClass:"num-blue",
+    id:"mle-nose-c", name:"MLE Nose - Area C", fig:"601 Sheet 2", numLabel:"C", numClass:"num-blue",
     critical:"Cracks not permitted", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh02-areas-CD.png", label:"Fig 601 Sheet 2 - Areas C, D"}],
     nogo:[
-      "Cracks and tears -- not permitted"
+      "Cracks and tears - not permitted"
     ],
     ok:[
-      "Nicks, dents, scratches -- up to 0.0078\" (0.20mm) depth"
+      "Nicks, dents, scratches - up to 0.0078\" (0.20mm) depth"
     ],
     cis:[],
     notes:"Area C is mid-blade (between 15.75\" and 19.09\" / 400-485mm from tip). Max repairable limit: within limits of applicable repair.",
     repairs:"Fan Blade Metal Leading Edge Blending: TASK 72-22-02-900-805-G00"
   },
   {
-    id:"mle-nose-d", name:"MLE Nose -- Area D", fig:"601 Sheet 2", numLabel:"D", numClass:"num-yellow",
+    id:"mle-nose-d", name:"MLE Nose - Area D", fig:"601 Sheet 2", numLabel:"D", numClass:"num-yellow",
     critical:"CIS 50 cycles available", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh02-areas-CD.png", label:"Fig 601 Sheet 2 - Areas C, D"}],
     nogo:[
-      "Cracks and tears -- not permitted"
+      "Cracks and tears - not permitted"
     ],
     ok:[
-      "Nicks, dents, scratches -- up to 0.0098\" (0.25mm) depth"
+      "Nicks, dents, scratches - up to 0.0098\" (0.25mm) depth"
     ],
     cis:[
-      "50 cycles: Nicks/dents/scratches up to 0.011\" (0.3mm) depth -- one-time CIS"
+      "50 cycles: Nicks/dents/scratches up to 0.011\" (0.3mm) depth - one-time CIS"
     ],
     notes:"Area D is upper-mid blade. The CIS extension is a one-time application only. Max repairable limit: within limits of applicable repair.",
     repairs:"Fan Blade Metal Leading Edge Blending: TASK 72-22-02-900-805-G00"
   },
   {
-    id:"mle-nose-e", name:"MLE Nose -- Area E", fig:"601 Sheet 3", numLabel:"E", numClass:"num-yellow",
+    id:"mle-nose-e", name:"MLE Nose - Area E", fig:"601 Sheet 3", numLabel:"E", numClass:"num-yellow",
     critical:"CIS 50 cycles available", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh03-areas-EFGHU.png", label:"Fig 601 Sheet 3 - Areas E, F, G, H, U"}],
     nogo:[
-      "Cracks and tears -- not permitted"
+      "Cracks and tears - not permitted"
     ],
     ok:[
-      "Nicks, dents, scratches -- up to 0.0137\" (0.35mm) depth"
+      "Nicks, dents, scratches - up to 0.0137\" (0.35mm) depth"
     ],
     cis:[
-      "50 cycles: Nicks/dents/scratches up to 0.0157\" (0.40mm) depth -- one-time CIS"
+      "50 cycles: Nicks/dents/scratches up to 0.0157\" (0.40mm) depth - one-time CIS"
     ],
     notes:"Area E is near the blade tip region. One-time CIS only. Max repairable limit: within limits of applicable repair.",
     repairs:"Fan Blade Metal Leading Edge Blending: TASK 72-22-02-900-805-G00"
   },
   {
-    id:"mle-nose-f", name:"MLE Nose -- Area F", fig:"601 Sheet 3", numLabel:"F", numClass:"num-yellow",
+    id:"mle-nose-f", name:"MLE Nose - Area F", fig:"601 Sheet 3", numLabel:"F", numClass:"num-yellow",
     critical:"CIS 50 cycles / Coloration OK", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh03-areas-EFGHU.png", label:"Fig 601 Sheet 3 - Areas E, F, G, H, U"}, {src:"amm-figures/fig603-MLE-coloration.png", label:"Fig 603 - Coloration on Metallic Leading Edge"}],
     nogo:[
-      "Cracks and tears -- not permitted"
+      "Cracks and tears - not permitted"
     ],
     ok:[
-      "Nicks, dents, scratches -- up to 0.039\" (1.0mm) depth",
-      "Coloration up to 0.197\" (5.0mm) from tip at concave side -- permitted (Fig 603)"
+      "Nicks, dents, scratches - up to 0.039\" (1.0mm) depth",
+      "Coloration up to 0.197\" (5.0mm) from tip at concave side - permitted (Fig 603)"
     ],
     cis:[
-      "50 cycles: Nicks/dents/scratches up to 0.0531\" (1.35mm) depth -- one-time CIS"
+      "50 cycles: Nicks/dents/scratches up to 0.0531\" (1.35mm) depth - one-time CIS"
     ],
     notes:"Area F is the blade tip leading edge. Most generous MLE nose limits. Coloration near tip on concave side is normal wear. One-time CIS only.",
     repairs:"Fan Blade Metal Leading Edge Blending: TASK 72-22-02-900-805-G00"
@@ -379,113 +405,119 @@ const COMPONENTS = [
 
   // ========== MLE SIDEWALL ==========
   {
-    section:"Metallic Leading Edge (MLE) -- Sidewall",
-    id:"mle-sw-a", name:"MLE Sidewall -- Area A", fig:"601 Sheet 1", numLabel:"A", numClass:"num-cyan",
+    section:"Metallic Leading Edge (MLE) - Sidewall",
+    id:"mle-sw-a", name:"MLE Sidewall - Area A", fig:"601 Sheet 1", numLabel:"A", numClass:"num-cyan",
     critical:"Wear/erosion & crease not permitted", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh01-blade-areas-ABN-OP.png", label:"Fig 601 Sheet 1 - Fan Blade Areas A, B, N, O, P"}],
     nogo:[
-      "Wear and erosion -- not permitted",
-      "Crease -- not permitted",
-      "Cracks/tears on convex (suction) side -- not permitted"
+      "Wear and erosion - not permitted",
+      "Crease - not permitted",
+      "Cracks/tears on convex (suction) side - not permitted"
     ],
     ok:[
-      "Disbonding -- one area up to 0.223 in2 (144 mm2) on concave or convex side",
-      "Nicks/dents/scratches on concave (pressure) side -- up to 0.0007\" (0.02mm) depth",
-      "Cracks/tears on concave (pressure) side -- permitted",
-      "Glazing -- permitted, any amount without depth"
+      "Disbonding - one area up to 0.223 in2 (144 mm2) on concave or convex side",
+      "Nicks/dents/scratches on concave (pressure) side - up to 0.0007\" (0.02mm) depth",
+      "Cracks/tears on concave (pressure) side - permitted",
+      "Glazing - permitted, any amount without depth"
     ],
     cis:[],
     notes:"Area A is the root section of the MLE sidewall. Tap test required for disbonding: solid click = bonded, hollow sound = disbonded. Tap on each side (convex/concave), from MLE nose to sidewalls, from bottom to tip.",
     repairs:""
   },
   {
-    id:"mle-sw-b", name:"MLE Sidewall -- Area B", fig:"601 Sheet 1", numLabel:"B", numClass:"num-cyan",
+    id:"mle-sw-b", name:"MLE Sidewall - Area B", fig:"601 Sheet 1", numLabel:"B", numClass:"num-cyan",
     critical:"Wear/erosion & crease not permitted", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh01-blade-areas-ABN-OP.png", label:"Fig 601 Sheet 1 - Fan Blade Areas A, B, N, O, P"}],
     nogo:[
-      "Wear and erosion -- not permitted",
-      "Cracks and tears -- not permitted",
-      "Crease -- not permitted"
+      "Wear and erosion - not permitted",
+      "Cracks and tears - not permitted",
+      "Crease - not permitted"
     ],
     ok:[
-      "Disbonding -- one area up to 0.223 in2 (144 mm2) on concave or convex side",
-      "Nicks/dents/scratches on concave (pressure) side -- up to 0.00078\" (0.020mm) depth"
+      "Disbonding - one area up to 0.223 in2 (144 mm2) on concave or convex side",
+      "Nicks/dents/scratches on concave (pressure) side - up to 0.00078\" (0.020mm) depth"
     ],
     cis:[],
     notes:"Area B sidewall is slightly tighter than Area A on nicks/dents (0.00078\" vs 0.0007\"). Same tap test procedure applies for disbonding check.",
     repairs:""
   },
   {
-    id:"mle-sw-c", name:"MLE Sidewall -- Area C", fig:"601 Sheet 2", numLabel:"C", numClass:"num-cyan",
+    id:"mle-sw-c", name:"MLE Sidewall - Area C", fig:"601 Sheet 2", numLabel:"C", numClass:"num-cyan",
     critical:"Wear/erosion & crease not permitted", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh02-areas-CD.png", label:"Fig 601 Sheet 2 - Areas C, D"}],
     nogo:[
-      "Wear and erosion -- not permitted",
-      "Cracks and tears -- not permitted",
-      "Crease -- not permitted"
+      "Wear and erosion - not permitted",
+      "Cracks and tears - not permitted",
+      "Crease - not permitted"
     ],
     ok:[
-      "Disbonding -- one area up to 0.223 in2 (144 mm2) on concave or convex side",
-      "Nicks/dents/scratches on concave (pressure) side -- up to 0.0007\" (0.02mm) depth"
+      "Disbonding - one area up to 0.223 in2 (144 mm2) on concave or convex side",
+      "Nicks/dents/scratches on concave (pressure) side - up to 0.0007\" (0.02mm) depth"
     ],
     cis:[],
     notes:"Area C sidewall. Same tap test procedure. Same 0.0007\" limit as Area A.",
     repairs:""
   },
   {
-    id:"mle-sw-d", name:"MLE Sidewall -- Area D", fig:"601 Sheet 2", numLabel:"D", numClass:"num-cyan",
+    id:"mle-sw-d", name:"MLE Sidewall - Area D", fig:"601 Sheet 2", numLabel:"D", numClass:"num-cyan",
     critical:"Wear/erosion & crease not permitted", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh02-areas-CD.png", label:"Fig 601 Sheet 2 - Areas C, D"}],
     nogo:[
-      "Wear and erosion -- not permitted",
-      "Cracks and tears -- not permitted",
-      "Crease -- not permitted"
+      "Wear and erosion - not permitted",
+      "Cracks and tears - not permitted",
+      "Crease - not permitted"
     ],
     ok:[
-      "Disbonding -- one area up to 0.223 in2 (144 mm2) on concave or convex side",
-      "Nicks/dents/scratches on concave (pressure) -- up to 0.0039\" (0.10mm) depth",
-      "Nicks/dents/scratches on convex (suction) -- up to 0.0059\" (0.15mm) depth"
+      "Disbonding - one area up to 0.223 in2 (144 mm2) on concave or convex side",
+      "Nicks/dents/scratches on concave (pressure) - up to 0.0039\" (0.10mm) depth",
+      "Nicks/dents/scratches on convex (suction) - up to 0.0059\" (0.15mm) depth"
     ],
     cis:[],
     notes:"Area D sidewall has split limits: concave 0.0039\" vs convex 0.0059\". Convex side is actually more generous here. Same tap test procedure.",
     repairs:""
   },
   {
-    id:"mle-sw-e", name:"MLE Sidewall -- Area E", fig:"601 Sheet 3", numLabel:"E", numClass:"num-yellow",
+    id:"mle-sw-e", name:"MLE Sidewall - Area E", fig:"601 Sheet 3", numLabel:"E", numClass:"num-yellow",
     critical:"Complex distance-based limits", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh03-areas-EFGHU.png", label:"Fig 601 Sheet 3 - Areas E, F, G, H, U"}],
     nogo:[
-      "Wear and erosion -- not permitted",
-      "Cracks and tears -- not permitted",
-      "Crease -- not permitted",
-      "Disbonding at concave and convex side -- not permitted"
+      "Wear and erosion - not permitted",
+      "Cracks and tears - not permitted",
+      "Crease - not permitted",
+      "Disbonding at concave and convex side - not permitted"
     ],
     ok:[
-      "Nicks/dents concave -- if tip distance <= 10.24\" AND LE distance <= 2.09\": up to 0.0027\" depth (any number)",
-      "Nicks/dents concave -- if tip distance <= 10.24\" AND LE distance > 2.09\": up to 0.0007\" depth (any number)",
-      "Nicks/dents concave -- if tip distance > 10.24\" AND LE distance <= 2.80\": up to 0.0027\" depth (any number)",
-      "Nicks/dents concave -- if tip distance > 10.24\" AND LE distance > 2.80\": up to 0.0007\" depth (any number)",
-      "Scratches at concave side -- up to 0.0007\" (0.02mm) depth",
-      "Nicks/dents/scratches convex (suction) side -- up to 0.0019\" (0.05mm) depth"
+      "Nicks/dents concave - if tip distance <= 10.24\" AND LE distance <= 2.09\": up to 0.0027\" depth (any number)",
+      "Nicks/dents concave - if tip distance <= 10.24\" AND LE distance > 2.09\": up to 0.0007\" depth (any number)",
+      "Nicks/dents concave - if tip distance > 10.24\" AND LE distance <= 2.80\": up to 0.0027\" depth (any number)",
+      "Nicks/dents concave - if tip distance > 10.24\" AND LE distance > 2.80\": up to 0.0007\" depth (any number)",
+      "Scratches at concave side - up to 0.0007\" (0.02mm) depth",
+      "Nicks/dents/scratches convex (suction) side - up to 0.0019\" (0.05mm) depth"
     ],
     cis:[],
     notes:"Area E sidewall has a complex decision matrix based on distance from tip (10.24\" / 260mm threshold) and distance from leading edge (2.09\" or 2.80\" / 53 or 71mm threshold). No disbonding permitted at all in this area.",
     repairs:""
   },
   {
-    id:"mle-sw-f", name:"MLE Sidewall -- Area F", fig:"601 Sheets 3,5", numLabel:"F", numClass:"num-red",
-    critical:"F1/F2 disbonding -- CIS 100 cyc", critClass:"crit-yellow",
+    id:"mle-sw-f", name:"MLE Sidewall - Area F", fig:"601 Sheets 3,5", numLabel:"F", numClass:"num-red",
+    critical:"F1/F2 disbonding - CIS 100 cyc", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh03-areas-EFGHU.png", label:"Fig 601 Sheet 3 - Areas E, F, G, H, U"}, {src:"amm-figures/fig601-sh05-areas-F1-F2.png", label:"Fig 601 Sheet 5 - Areas F1, F2"}],
     nogo:[
-      "Wear and erosion -- not permitted",
-      "Cracks and tears -- not permitted",
-      "Crease -- not permitted",
-      "Disbonding at concave side in Area F (except F1) -- not permitted",
-      "Disbonding at concave side in Area F2 -- not permitted (standard limit)"
+      "Wear and erosion - not permitted",
+      "Cracks and tears - not permitted",
+      "Crease - not permitted",
+      "Disbonding at concave side in Area F (except F1) - not permitted",
+      "Disbonding at concave side in Area F2 - not permitted (standard limit)"
     ],
     ok:[
-      "Nicks/dents/scratches -- up to 0.0059\" (0.15mm) depth",
-      "Coloration up to 0.197\" (5.0mm) from tip at concave side -- permitted (Fig 603)",
-      "Disbonding at concave side in Area F1 -- permitted"
+      "Nicks/dents/scratches - up to 0.0059\" (0.15mm) depth",
+      "Coloration up to 0.197\" (5.0mm) from tip at concave side - permitted (Fig 603)",
+      "Disbonding at concave side in Area F1 - permitted"
     ],
     cis:[
-      "100 cycles: Disbonding in Area F2 (concave/pressure side) -- for one of two engines, up to 3 fan blades. One-time CIS.",
-      "100 cycles: Step between sidewall and blade profile in F1/F2 (concave) -- up to 0.059\" (1.5mm) at tip. Max 6 blades per engine. One-time CIS.",
-      "100 cycles: Disbonding at convex (suction) side -- up to 0.47\" (12mm) width, 3.93\" (100mm) cumulative length. For one engine, up to 3 blades. One-time CIS.",
+      "100 cycles: Disbonding in Area F2 (concave/pressure side) - for one of two engines, up to 3 fan blades. One-time CIS.",
+      "100 cycles: Step between sidewall and blade profile in F1/F2 (concave) - up to 0.059\" (1.5mm) at tip. Max 6 blades per engine. One-time CIS.",
+      "100 cycles: Disbonding at convex (suction) side - up to 0.47\" (12mm) width, 3.93\" (100mm) cumulative length. For one engine, up to 3 blades. One-time CIS.",
       "100 cycles (convex CIS): Up to 0.78\" (20mm) width, 4.33\" (110mm) cumulative length. One-time CIS."
     ],
     notes:"Area F sidewall is the most complex MLE area. F1 and F2 are sub-areas near the tip (Fig 601 Sheet 5). Disbonding rules differ significantly between F1 (permitted) and F2 (not permitted / CIS). Only one engine approved for over-serviceable-limit blades, max 3 blades total over limit per engine. Tap test required using tool T016089 on areas C, D, E, F, F1, F2.",
@@ -497,65 +529,70 @@ const COMPONENTS = [
     section:"MLE Glue / Adhesive Transition",
     id:"mle-glue", name:"MLE Glue/Adhesive Transition Areas", fig:"604", numLabel:"--", numClass:"num-green",
     critical:"Porosities & micro-cracking OK", critClass:"crit-green",
+    figures:[{src:"amm-figures/fig604-MLE-glue-adhesive.png", label:"Fig 604 - MLE Glue/Adhesive Transition Areas"}],
     nogo:[],
     ok:[
-      "Porosities -- permitted (any number, any amount) if restricted within glue and not in contact with composite",
-      "Micro-cracking -- permitted (any number, any amount)"
+      "Porosities - permitted (any number, any amount) if restricted within glue and not in contact with composite",
+      "Micro-cracking - permitted (any number, any amount)"
     ],
     cis:[],
-    notes:"This is the transition zone where the MLE attaches to the composite blade body. Very permissive -- both porosities and micro-cracking are fully permitted.",
+    notes:"This is the transition zone where the MLE attaches to the composite blade body. Very permissive - both porosities and micro-cracking are fully permitted.",
     repairs:""
   },
 
   // ========== BLADE TIP ==========
   {
     section:"Blade Tip",
-    id:"tip-g", name:"Blade Tip -- Area G", fig:"601 Sheet 3", numLabel:"G", numClass:"num-purple",
+    id:"tip-g", name:"Blade Tip - Area G", fig:"601 Sheet 3", numLabel:"G", numClass:"num-purple",
     critical:"Tears/cracks on convex = NO-GO", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh03-areas-EFGHU.png", label:"Fig 601 Sheet 3 - Areas E, F, G, H, U"}],
     nogo:[
-      "Tears, cracks, fiber breakage on convex (suction) side -- not permitted",
-      "Tears, cracks, fiber breakage on concave (pressure) side -- not permitted"
+      "Tears, cracks, fiber breakage on convex (suction) side - not permitted",
+      "Tears, cracks, fiber breakage on concave (pressure) side - not permitted"
     ],
     ok:[
-      "Tip contact, tip rub, melt resin, frayed carbon fiber -- permitted",
-      "Material deposit on surface -- permitted",
-      "Decohesions on convex side -- one permitted, up to 1.96\" (50mm) radial direction",
-      "Decohesions on concave side -- one permitted, up to 0.78\" (20mm) radial direction"
+      "Tip contact, tip rub, melt resin, frayed carbon fiber - permitted",
+      "Material deposit on surface - permitted",
+      "Decohesions on convex side - one permitted, up to 1.96\" (50mm) radial direction",
+      "Decohesions on concave side - one permitted, up to 0.78\" (20mm) radial direction"
     ],
     cis:[],
     notes:"If a decohesion is detected, do the visual inspection of MLE sidewall on areas C, D, E, F and F1 on both concave and convex sides.",
     repairs:""
   },
   {
-    id:"tip-h", name:"Blade Tip -- Area H", fig:"601 Sheets 3,4", numLabel:"H", numClass:"num-purple",
+    id:"tip-h", name:"Blade Tip - Area H", fig:"601 Sheets 3,4", numLabel:"H", numClass:"num-purple",
     critical:"Decohesions with tangential limit", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh03-areas-EFGHU.png", label:"Fig 601 Sheet 3 - Areas E, F, G, H, U"}, {src:"amm-figures/fig601-sh04-tip-decohesion-HU.png", label:"Fig 601 Sheet 4 - Tip Decohesion in Areas H, U"}],
     nogo:[],
     ok:[
-      "Tip contact, tip rub, melt resin, frayed carbon fiber -- permitted",
-      "Material deposit on surface -- permitted",
-      "Decohesions, tears, cracks, fiber breakage -- permitted, tangential length up to 0.11\" (3mm) (Fig 601 Sheet 4)"
+      "Tip contact, tip rub, melt resin, frayed carbon fiber - permitted",
+      "Material deposit on surface - permitted",
+      "Decohesions, tears, cracks, fiber breakage - permitted, tangential length up to 0.11\" (3mm) (Fig 601 Sheet 4)"
     ],
     cis:[],
     notes:"Area H is a small zone at the very tip corner. The 0.11\" tangential limit is the key threshold.",
     repairs:""
   },
   {
-    id:"tip-u", name:"Blade Tip -- Area U", fig:"601 Sheets 3,4", numLabel:"U", numClass:"num-purple",
+    id:"tip-u", name:"Blade Tip - Area U", fig:"601 Sheets 3,4", numLabel:"U", numClass:"num-purple",
     critical:"Distance-from-tip criteria", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh03-areas-EFGHU.png", label:"Fig 601 Sheet 3 - Areas E, F, G, H, U"}, {src:"amm-figures/fig601-sh04-tip-decohesion-HU.png", label:"Fig 601 Sheet 4 - Tip Decohesion in Areas H, U"}],
     nogo:[],
     ok:[
-      "Tip contact, tip rub, melt resin, frayed carbon fiber -- permitted",
-      "Material deposit on surface -- permitted",
-      "Decohesions/tears/cracks in 0.19\" (5mm) from tip -- tangential length up to 0.11\" (3mm)",
-      "Decohesions line if not starting from trailing edge, > 0.19\" to 4.33\" from tip -- permitted"
+      "Tip contact, tip rub, melt resin, frayed carbon fiber - permitted",
+      "Material deposit on surface - permitted",
+      "Decohesions/tears/cracks in 0.19\" (5mm) from tip - tangential length up to 0.11\" (3mm)",
+      "Decohesions line if not starting from trailing edge, > 0.19\" to 4.33\" from tip - permitted"
     ],
     cis:[],
     notes:"Area U is the trailing edge near the tip. If an indication is detected, do visual inspection of MLE sidewall on areas C, D, E, F and F1 on both sides.",
     repairs:""
   },
   {
-    id:"tip-ghu-missing", name:"Missing Material -- Areas G, H, U", fig:"601 Sheet 3", numLabel:"G/H/U", numClass:"num-purple",
+    id:"tip-ghu-missing", name:"Missing Material - Areas G, H, U", fig:"601 Sheet 3", numLabel:"G/H/U", numClass:"num-purple",
     critical:"Through-thickness = strict limits", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh03-areas-EFGHU.png", label:"Fig 601 Sheet 3 - Areas E, F, G, H, U"}],
     nogo:[],
     ok:[
       "Missing material NOT through thickness (one side only): up to 1.969\" (50mm) axial chord length, up to 0.126\" (3.2mm) from tip, any depth",
@@ -570,36 +607,39 @@ const COMPONENTS = [
   // ========== TRAILING EDGE ==========
   {
     section:"Trailing Edge & Airfoil",
-    id:"te-ujkl", name:"Trailing Edge -- Areas U, J, K, L", fig:"601 Sheets 3,6", numLabel:"TE", numClass:"num-red",
+    id:"te-ujkl", name:"Trailing Edge - Areas U, J, K, L", fig:"601 Sheets 3,6", numLabel:"TE", numClass:"num-red",
     critical:"Distance-from-TE criteria / CIS 50 cyc", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh03-areas-EFGHU.png", label:"Fig 601 Sheet 3 - Areas E, F, G, H, U"}, {src:"amm-figures/fig601-sh06-areas-JKLM.png", label:"Fig 601 Sheet 6 - Areas J, K, L, M"}],
     nogo:[],
     ok:[
-      "Decohesions/tears/fiber breakage in 0.19\" (5mm) from trailing edge -- permitted",
+      "Decohesions/tears/fiber breakage in 0.19\" (5mm) from trailing edge - permitted",
       "Decohesions/tears 0.19\" to 1.18\" from TE for areas U, J, K: up to 2 in area L, up to 5 cumulated over U/J/K, cumulative axial length up to 5.11\" (130mm) from TE",
-      "Steps in trailing edge area in U, J, K -- up to 0.039\" (1.0mm)"
+      "Steps in trailing edge area in U, J, K - up to 0.039\" (1.0mm)"
     ],
     cis:[
-      "50 cycles: Decohesions/tears 1.18\" to 1.57\" from TE -- up to 2 in area L, up to 5 cumulated, axial length up to 7.08\" (180mm). One-time CIS."
+      "50 cycles: Decohesions/tears 1.18\" to 1.57\" from TE - up to 2 in area L, up to 5 cumulated, axial length up to 7.08\" (180mm). One-time CIS."
     ],
     notes:"Steps in trailing edge in area L are NOT permitted (vs U/J/K where up to 0.039\" is OK). If indications detected, do MLE sidewall visual on areas C, D, E, F and F1 on both sides.",
     repairs:""
   },
   {
-    id:"te-j-decohesion", name:"Decohesion Line -- Area J", fig:"601 Sheet 6", numLabel:"J", numClass:"num-red",
+    id:"te-j-decohesion", name:"Decohesion Line - Area J", fig:"601 Sheet 6", numLabel:"J", numClass:"num-red",
     critical:"Only if not starting from TE", critClass:"crit-green",
+    figures:[{src:"amm-figures/fig601-sh06-areas-JKLM.png", label:"Fig 601 Sheet 6 - Areas J, K, L, M"}],
     nogo:[],
     ok:[
-      "Decohesion line if not starting from trailing edge -- permitted"
+      "Decohesion line if not starting from trailing edge - permitted"
     ],
     cis:[],
     notes:"If indication is detected, do the visual inspection of MLE sidewall on areas C, D, E, F and F1 on both sides.",
     repairs:""
   },
   {
-    id:"airfoil-m", name:"Blade Airfoil -- Area M", fig:"601 Sheet 6", numLabel:"M", numClass:"num-red",
+    id:"airfoil-m", name:"Blade Airfoil - Area M", fig:"601 Sheet 6", numLabel:"M", numClass:"num-red",
     critical:"Decohesions/tears = NO-GO", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh06-areas-JKLM.png", label:"Fig 601 Sheet 6 - Areas J, K, L, M"}],
     nogo:[
-      "Decohesions, tears, cracks, fiber breakage -- not permitted"
+      "Decohesions, tears, cracks, fiber breakage - not permitted"
     ],
     ok:[],
     cis:[],
@@ -609,36 +649,38 @@ const COMPONENTS = [
 
   // ========== BLADE AIRFOIL COATINGS ==========
   {
-    section:"Blade Airfoil -- Coatings & Surface (Areas G,H,U,J,K,L,M)",
+    section:"Blade Airfoil - Coatings & Surface (Areas G,H,U,J,K,L,M)",
     id:"airfoil-coatings", name:"Airfoil Coatings & Surface Damage", fig:"601 Sheets 3,6,7", numLabel:"COAT", numClass:"num-blue",
     critical:"Coating thickness matters", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh07-wear-strips-convex-concave.png", label:"Fig 601 Sheet 7 - Wear Strips Convex/Concave"}, {src:"amm-figures/fig601-sh23-paint-porosities.png", label:"Fig 601 Sheet 23 - Paint Porosities, Foreign Material, Fish Eyes"}, {src:"amm-figures/fig601-sh24-rect-indentation.png", label:"Fig 601 Sheet 24 - Rectangular Indentation"}],
     nogo:[],
     ok:[
-      "Micro-cracking -- permitted",
-      "Black paint coat missing (concave & convex) -- permitted",
-      "Primer on convex side for erosion -- permitted if composite fiber not visible",
-      "Primer on concave side for erosion/loose/missing -- permitted",
-      "Nicks/dents in composite <= 0.0078\" (0.20mm) depth -- permitted",
-      "Scratches in composite <= 0.0078\" (0.20mm) depth -- permitted",
-      "Indentation line at end of MLE side wall (convex & concave) -- permitted",
-      "Rectangular indentation / paint cracking near LE at tip (area G/H) -- up to 3.93\" (100mm) axial x 1.96\" (50mm) radial",
-      "Rectangular indentation with black rubber PU visible (concave) -- up to 3.93\" x 1.96\"",
-      "Paint porosities, foreign material, fish eyes -- permitted (Fig 601 Sheet 23)"
+      "Micro-cracking - permitted",
+      "Black paint coat missing (concave & convex) - permitted",
+      "Primer on convex side for erosion - permitted if composite fiber not visible",
+      "Primer on concave side for erosion/loose/missing - permitted",
+      "Nicks/dents in composite <= 0.0078\" (0.20mm) depth - permitted",
+      "Scratches in composite <= 0.0078\" (0.20mm) depth - permitted",
+      "Indentation line at end of MLE side wall (convex & concave) - permitted",
+      "Rectangular indentation / paint cracking near LE at tip (area G/H) - up to 3.93\" (100mm) axial x 1.96\" (50mm) radial",
+      "Rectangular indentation with black rubber PU visible (concave) - up to 3.93\" x 1.96\"",
+      "Paint porosities, foreign material, fish eyes - permitted (Fig 601 Sheet 23)"
     ],
     cis:[
-      "100 cycles: Primer on convex side missing material -- up to 0.0387 in2 (25mm2) if loose coating cut away. One-time CIS.",
-      "100 cycles: Black rubber PU on concave for erosion/disbonding -- permitted if composite fiber not visible. One-time CIS.",
-      "100 cycles: Black rubber PU on concave 0-0.39\" from tip loose/missing -- up to 0.6975 in2 (450mm2) if loose cut away. Max cumulated 3.4875 in2 (2250mm2) for 18 blades. One-time CIS.",
-      "100 cycles: Black rubber PU on concave beyond 0.39\" from tip loose/missing -- up to 0.0387 in2 (25mm2). One-time CIS.",
-      "100 cycles: Scratches in composite 0.0078\" < depth <= 0.019\" -- all amounts. One-time CIS.",
-      "100 cycles: Paint porosities -- up to 32 cumulated indications. One-time CIS."
+      "100 cycles: Primer on convex side missing material - up to 0.0387 in2 (25mm2) if loose coating cut away. One-time CIS.",
+      "100 cycles: Black rubber PU on concave for erosion/disbonding - permitted if composite fiber not visible. One-time CIS.",
+      "100 cycles: Black rubber PU on concave 0-0.39\" from tip loose/missing - up to 0.6975 in2 (450mm2) if loose cut away. Max cumulated 3.4875 in2 (2250mm2) for 18 blades. One-time CIS.",
+      "100 cycles: Black rubber PU on concave beyond 0.39\" from tip loose/missing - up to 0.0387 in2 (25mm2). One-time CIS.",
+      "100 cycles: Scratches in composite 0.0078\" < depth <= 0.019\" - all amounts. One-time CIS.",
+      "100 cycles: Paint porosities - up to 32 cumulated indications. One-time CIS."
     ],
     notes:"NOTE: When measuring nick/dent depth from intact black-painted surface, account for coating thickness: 0.01783\" (0.453mm) on concave (pressure) side, 0.00216\" (0.055mm) on convex (suction) side. Black rubber PU coating reference: if missing on concave, refer to PU loose/missing criteria by distance from tip.",
     repairs:"Fan Blade Coating Replacement (Anti-Erosion Paint): TASK 72-22-02-900-802-G00|Fan Blade Repair of Missing PU Film with PU Paste: TASK 72-22-02-300-801-G00"
   },
   {
-    id:"airfoil-nicks-deep", name:"Composite Nicks/Dents -- Deep", fig:"601 Sheets 3,6,7", numLabel:"N/D", numClass:"num-red",
+    id:"airfoil-nicks-deep", name:"Composite Nicks/Dents - Deep", fig:"601 Sheets 3,6,7", numLabel:"N/D", numClass:"num-red",
     critical:"Depth-tiered limits", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh03-areas-EFGHU.png", label:"Fig 601 Sheet 3 - Areas E, F, G, H, U"}, {src:"amm-figures/fig601-sh06-areas-JKLM.png", label:"Fig 601 Sheet 6 - Areas J, K, L, M"}, {src:"amm-figures/fig601-sh11-dovetail-nicks-depth.png", label:"Fig 601 Sheet 11 - Nicks/Dents Depth and Width"}],
     nogo:[],
     ok:[
       "Depth <= 0.0078\" (0.20mm): Permitted",
@@ -655,39 +697,41 @@ const COMPONENTS = [
   // ========== DOVETAIL & SHANK (BLADE REMOVED) ==========
   {
     section:"Dovetail & Shank (Blade Removed from Fan Disk)",
-    id:"dt-n", name:"Dovetail/Shank -- Area N", fig:"601 Sheets 1,8", numLabel:"N", numClass:"num-cyan",
+    id:"dt-n", name:"Dovetail/Shank - Area N", fig:"601 Sheets 1,8", numLabel:"N", numClass:"num-cyan",
     critical:"Cracks NOT permitted", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh01-blade-areas-ABN-OP.png", label:"Fig 601 Sheet 1 - Fan Blade Areas A, B, N, O, P"}, {src:"amm-figures/fig601-sh08-root-shank-area-P.png", label:"Fig 601 Sheet 8 - Root and Shank"}, {src:"amm-figures/fig602-CIS-1000-no-label.png", label:"Fig 602 - CIS 1000 Cycles Serviceable Without Label"}],
     nogo:[
-      "Cracks, tears, fiber breakage -- not permitted"
+      "Cracks, tears, fiber breakage - not permitted"
     ],
     ok:[
       "Nicks/dents concave: up to 0.01575\" (0.40mm) depth, 0.15748\" (4.0mm) width, cumulated length up to 1.97\" (50mm)",
       "Nicks/dents convex: up to 0.01575\" (0.40mm) depth, 0.15748\" (4.0mm) width, cumulated length up to 1.97\" (50mm)",
       "Scratches concave: up to 0.004\" (0.1mm) depth, any length",
       "Scratches concave 0.004-0.008\" depth: up to 1.18\" (30mm) length",
-      "Disbonding/missing material of the label -- not permitted (standard)"
+      "Disbonding/missing material of the label - not permitted (standard)"
     ],
     cis:[
       "100 cycles: Nicks/dents concave up to 0.04\" (1mm) depth, 0.2\" (5mm) width, cumulated 1.97\" length. One-time CIS.",
       "100 cycles: Nicks/dents convex up to 0.04\" (1mm) depth, 0.2\" (5mm) width, cumulated 1.97\" length. One-time CIS.",
       "100 cycles: Scratches concave > 0.008\" depth up to 0.04\" (1mm): one scratch up to 3.54\" (90mm). One-time CIS.",
       "100 cycles: Scratches convex > 0.008\" depth up to 0.04\" (1mm): one scratch up to 3.54\" (90mm). One-time CIS.",
-      "1000 cycles: Label missing/disbonded -- if P/N and S/N of MLE is fully legible (Fig 602). Reduced interval, repeat inspection for new 1000-cycle CIS."
+      "1000 cycles: Label missing/disbonded - if P/N and S/N of MLE is fully legible (Fig 602). Reduced interval, repeat inspection for new 1000-cycle CIS."
     ],
-    notes:"Area N applies only when blade is removed from fan disk. The label CIS of 1000 cycles is unique -- it's a reduced interval (repeatable), not one-time.",
+    notes:"Area N applies only when blade is removed from fan disk. The label CIS of 1000 cycles is unique - it's a reduced interval (repeatable), not one-time.",
     repairs:"Fan Blade Label Replacement: TASK 72-22-02-900-804-G00"
   },
   {
-    id:"dt-o", name:"Dovetail/Shank -- Area O", fig:"601 Sheets 1,8", numLabel:"O", numClass:"num-cyan",
+    id:"dt-o", name:"Dovetail/Shank - Area O", fig:"601 Sheets 1,8", numLabel:"O", numClass:"num-cyan",
     critical:"Cracks NOT permitted", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh01-blade-areas-ABN-OP.png", label:"Fig 601 Sheet 1 - Fan Blade Areas A, B, N, O, P"}, {src:"amm-figures/fig601-sh08-root-shank-area-P.png", label:"Fig 601 Sheet 8 - Root and Shank"}],
     nogo:[
-      "Cracks, tears, fiber breakage -- not permitted"
+      "Cracks, tears, fiber breakage - not permitted"
     ],
     ok:[
-      "Nicks/dents concave: below 1.555\" (39.5mm) from blade root -- up to 0.008\" (0.20mm) depth, 0.08\" (2mm) width, cumulated 0.39\" (10mm)",
-      "Nicks/dents convex: below 1.555\" (39.5mm) from blade root -- up to 0.008\" (0.20mm) depth, 0.08\" (2mm) width, cumulated 0.39\" (10mm)",
-      "Nicks/dents concave: above 1.555\" from root -- up to 0.01575\" (0.40mm) depth, 0.15748\" (4.0mm) width, cumulated 0.39\" (10mm)",
-      "Nicks/dents convex: above 1.555\" from root -- up to 0.01575\" (0.40mm) depth, 0.15748\" (4.0mm) width, cumulated 0.39\" (10mm)",
+      "Nicks/dents concave: below 1.555\" (39.5mm) from blade root - up to 0.008\" (0.20mm) depth, 0.08\" (2mm) width, cumulated 0.39\" (10mm)",
+      "Nicks/dents convex: below 1.555\" (39.5mm) from blade root - up to 0.008\" (0.20mm) depth, 0.08\" (2mm) width, cumulated 0.39\" (10mm)",
+      "Nicks/dents concave: above 1.555\" from root - up to 0.01575\" (0.40mm) depth, 0.15748\" (4.0mm) width, cumulated 0.39\" (10mm)",
+      "Nicks/dents convex: above 1.555\" from root - up to 0.01575\" (0.40mm) depth, 0.15748\" (4.0mm) width, cumulated 0.39\" (10mm)",
       "Scratches concave: up to 0.004\" (0.1mm) depth, any length",
       "Scratches concave 0.004-0.008\" depth: up to 1.18\" (30mm), min 1.18\" between scratches, cumulated up to 4.72\" (120mm)"
     ],
@@ -698,12 +742,13 @@ const COMPONENTS = [
       "100 cycles: Scratches concave > 0.008\" depth up to 0.02\" (0.5mm): one scratch up to 2.36\" (60mm). One-time CIS.",
       "100 cycles: Scratches convex > 0.008\" depth up to 0.02\" (0.5mm): one scratch up to 2.36\" (60mm). One-time CIS."
     ],
-    notes:"Area O has a split at 1.555\" (39.5mm) from blade root -- limits change above vs below this line. Below the line is tighter (0.008\" max depth vs 0.01575\").",
+    notes:"Area O has a split at 1.555\" (39.5mm) from blade root - limits change above vs below this line. Below the line is tighter (0.008\" max depth vs 0.01575\").",
     repairs:""
   },
   {
-    id:"dt-w", name:"Dovetail/Shank -- Areas N+O Combined", fig:"601 Sheets 1,8,11,25", numLabel:"N+O", numClass:"num-cyan",
+    id:"dt-w", name:"Dovetail/Shank - Areas N+O Combined", fig:"601 Sheets 1,8,11,25", numLabel:"N+O", numClass:"num-cyan",
     critical:"LE/TE radius criteria", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh01-blade-areas-ABN-OP.png", label:"Fig 601 Sheet 1 - Fan Blade Areas"}, {src:"amm-figures/fig601-sh08-root-shank-area-P.png", label:"Fig 601 Sheet 8 - Root and Shank"}, {src:"amm-figures/fig601-sh11-dovetail-nicks-depth.png", label:"Fig 601 Sheet 11 - Nicks/Dents Depth and Width"}, {src:"amm-figures/fig601-sh25-decohesion-example.png", label:"Fig 601 Sheet 25 - Example of Decohesion"}],
     nogo:[],
     ok:[
       "Nicks/dents on LE/TE radius > 1.18\" from bottom root: any number, 0.029\" (0.74mm) depth, 0.00155 in2 (1mm2) damaged section, any length",
@@ -714,7 +759,7 @@ const COMPONENTS = [
       "Scratches on leading edge surface: up to 2, 0.0078\" (0.20mm) depth, 0.78\" (20mm) length",
       "Nicks/dents on trailing edge surface: up to 0.019\" (0.5mm) depth, 0.01 in2 (6mm2) unitary, cumulated 0.06 in2 (39mm2)",
       "Scratches on trailing edge surface: up to 0.0078\" (0.20mm) depth, 1.18\" (30mm) length, cumulated 3.93\" (100mm)",
-      "Decohesion on LE/TE radius -- any amount"
+      "Decohesion on LE/TE radius - any amount"
     ],
     cis:[
       "100 cycles: Nicks/dents on LE/TE radius > 1.18\" from root: up to 0.039\" (1.0mm) depth, 0.0054 in2 (3.5mm2). One-time CIS.",
@@ -730,10 +775,11 @@ const COMPONENTS = [
     repairs:""
   },
   {
-    id:"dt-p", name:"Dovetail/Shank -- Area P", fig:"601 Sheet 8", numLabel:"P", numClass:"num-cyan",
+    id:"dt-p", name:"Dovetail/Shank - Area P", fig:"601 Sheet 8", numLabel:"P", numClass:"num-cyan",
     critical:"Cracks NOT permitted", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh08-root-shank-area-P.png", label:"Fig 601 Sheet 8 - Root and Shank"}, {src:"amm-figures/fig601-sh25-decohesion-example.png", label:"Fig 601 Sheet 25 - Example of Decohesion"}],
     nogo:[
-      "Cracks, tears, fiber breakage -- not permitted"
+      "Cracks, tears, fiber breakage - not permitted"
     ],
     ok:[
       "Nicks/dents: up to 0.0098\" (0.25mm) depth, 0.01 in2 (6mm2) unitary surface, min 0.39\" (10mm) between indications",
@@ -748,14 +794,15 @@ const COMPONENTS = [
     repairs:""
   },
   {
-    id:"dt-qrs", name:"Dovetail -- Areas Q, R, S", fig:"601 Sheets 8,9,10", numLabel:"Q/R/S", numClass:"num-cyan",
+    id:"dt-qrs", name:"Dovetail - Areas Q, R, S", fig:"601 Sheets 8,9,10", numLabel:"Q/R/S", numClass:"num-cyan",
     critical:"Decohesion limits", critClass:"crit-green",
+    figures:[{src:"amm-figures/fig601-sh08-root-shank-area-P.png", label:"Fig 601 Sheet 8 - Root and Shank"}, {src:"amm-figures/fig601-sh09-area-Q-adhesive.png", label:"Fig 601 Sheet 9 - Area Q Adhesive"}, {src:"amm-figures/fig601-sh10-areas-RS-microcracking.png", label:"Fig 601 Sheet 10 - Areas R, S Microcracking"}],
     nogo:[],
     ok:[
-      "Area Q: Decohesion on LE face concave side -- up to 1 permitted, all lengths, 0.11\" (3mm) width",
-      "Area Q: Decohesion on LE face convex side -- up to 1 permitted, all lengths, 0.11\" (3mm) width",
-      "Area R: Micro-cracking in resin (concave & convex) -- permitted",
-      "Area S: Decohesion on concave and convex side -- permitted"
+      "Area Q: Decohesion on LE face concave side - up to 1 permitted, all lengths, 0.11\" (3mm) width",
+      "Area Q: Decohesion on LE face convex side - up to 1 permitted, all lengths, 0.11\" (3mm) width",
+      "Area R: Micro-cracking in resin (concave & convex) - permitted",
+      "Area S: Decohesion on concave and convex side - permitted"
     ],
     cis:[],
     notes:"Areas Q, R, S are the dovetail leading edge face, resin area, and decohesion zone respectively. Relatively permissive criteria.",
@@ -767,37 +814,39 @@ const COMPONENTS = [
     section:"Wear Strips (Platform, Dovetail, Leading Edge, Trailing Edge)",
     id:"ws-platform", name:"Platform Wear Strips", fig:"601 Sheets 7,8", numLabel:"WS", numClass:"num-green",
     critical:"Composite exposure = check fraying", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh07-wear-strips-convex-concave.png", label:"Fig 601 Sheet 7 - Wear Strips Convex/Concave"}, {src:"amm-figures/fig601-sh08-root-shank-area-P.png", label:"Fig 601 Sheet 8 - Root and Shank"}],
     nogo:[],
     ok:[
-      "Loose or missing -- permitted if missing material up to 0.039\" (1.0mm) from one edge",
+      "Loose or missing - permitted if missing material up to 0.039\" (1.0mm) from one edge",
       "Wear on visible pressure side: up to 5.2\" (132mm) wear strip length (blade installed) / 5.23\" (133mm) upper pressure (blade removed)",
       "Wear on suction side: any amount if not worn through composite and not frayed",
       "Nicks/dents/scratches: any amount if composite not visible and wear strip not frayed",
       "Frayed/disbonded corners: up to 0.11\" (3mm) across diagonal",
       "Frayed/disbonded edges: up to 0.039\" (1.0mm) from one edge",
-      "Discoloration -- permitted (NOTE: wear strips can be brown or gray)"
+      "Discoloration - permitted (NOTE: wear strips can be brown or gray)"
     ],
     cis:[
-      "100 cycles: All above criteria -- one-time CIS on all amounts",
+      "100 cycles: All above criteria - one-time CIS on all amounts",
       "100 cycles: Wear on pressure side up to 7.1\" (180mm) blade installed / 7.12\" (181mm) blade removed. One-time CIS."
     ],
-    notes:"Platform wear strips can be brown or gray -- that is normal. The key check is whether composite blade surface is exposed and frayed. Max repairable: in limits of applicable repair.",
+    notes:"Platform wear strips can be brown or gray - that is normal. The key check is whether composite blade surface is exposed and frayed. Max repairable: in limits of applicable repair.",
     repairs:"Fan Blade Coating Replacement (Platform Wear-Strips): TASK 72-22-02-900-803-G00"
   },
   {
     id:"ws-dt-le-te", name:"Dovetail / LE / TE Wear Strips", fig:"601 Sheets 7,8", numLabel:"WS", numClass:"num-green",
     critical:"Same criteria as platform WS", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh07-wear-strips-convex-concave.png", label:"Fig 601 Sheet 7 - Wear Strips Convex/Concave"}, {src:"amm-figures/fig601-sh08-root-shank-area-P.png", label:"Fig 601 Sheet 8 - Root and Shank"}],
     nogo:[],
     ok:[
-      "Loose or missing -- permitted if missing material up to 0.039\" (1.0mm) from one edge",
-      "Wear -- permitted if not worn through composite and not frayed",
-      "Nicks/dents/scratches -- permitted if composite not visible and not frayed",
+      "Loose or missing - permitted if missing material up to 0.039\" (1.0mm) from one edge",
+      "Wear - permitted if not worn through composite and not frayed",
+      "Nicks/dents/scratches - permitted if composite not visible and not frayed",
       "Frayed/disbonded corners: up to 0.11\" (3mm) across diagonal",
       "Frayed/disbonded edges: up to 0.039\" (1.0mm) from one edge",
-      "Discoloration -- permitted (brown or gray is normal)"
+      "Discoloration - permitted (brown or gray is normal)"
     ],
     cis:[
-      "100 cycles: All above criteria -- one-time CIS on all amounts"
+      "100 cycles: All above criteria - one-time CIS on all amounts"
     ],
     notes:"Dovetail, leading edge, and trailing edge wear strips share the same criteria as platform wear strips. Same discoloration note applies.",
     repairs:""
@@ -808,24 +857,25 @@ const COMPONENTS = [
     section:"Fan Blade Lock [2]",
     id:"lock", name:"Fan Blade Lock", fig:"601 Sheets 13,14,15", numLabel:"[2]", numClass:"num-blue",
     critical:"Cracks NOT permitted", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh13-blade-lock.png", label:"Fig 601 Sheet 13 - Fan Blade Lock"}, {src:"amm-figures/fig601-sh14-blade-lock-dims.png", label:"Fig 601 Sheet 14 - Blade Lock Dimensions"}, {src:"amm-figures/fig601-sh15-honeycomb-mfg.png", label:"Fig 601 Sheet 15 - Honeycomb Manufacturing Artifacts"}],
     nogo:[
-      "Cracks (titanium areas) -- not permitted",
-      "Honeycomb disbonding of adhesive -- not permitted",
-      "Honeycomb cracks in adhesive -- not permitted"
+      "Cracks (titanium areas) - not permitted",
+      "Honeycomb disbonding of adhesive - not permitted",
+      "Honeycomb cracks in adhesive - not permitted"
     ],
     ok:[
-      "Dents (titanium) -- up to 0.0039\" (0.10mm) depth",
-      "Nicks (titanium) -- up to 0.0039\" (0.10mm) depth",
-      "Scratches (titanium) -- up to 0.0039\" (0.10mm) depth",
+      "Dents (titanium) - up to 0.0039\" (0.10mm) depth",
+      "Nicks (titanium) - up to 0.0039\" (0.10mm) depth",
+      "Scratches (titanium) - up to 0.0039\" (0.10mm) depth",
       "Fretting/wear contact area with fan disk: Dim A between 0.2815-0.2854\" (7.15-7.25mm)",
       "Fretting/wear area A: less than 0.0011\" (0.03mm) depth",
       "Honeycomb crushed/collapsed cells out of blade contact: up to 3 locations, 0.02311\" (0.587mm) depth, 0.17074\" (4.337mm) length",
       "Honeycomb crushed/collapsed on blade contact: up to 3 cells, 0.02499\" (0.635mm) depth",
       "Honeycomb sheet metal cover nicks/dents/scratches out of blade contact: up to 3 locations, 0.02311\" depth, 0.17074\" length",
       "Honeycomb sheet metal cover nicks/dents/scratches on blade contact: up to 3 cells, 0.01181\" (0.300mm) depth, 0.06830\" (1.735mm) length",
-      "Local twist from manufacturing -- permitted",
-      "Local holes from manufacturing -- permitted",
-      "Local cut in honeycomb cell without crushing from manufacturing -- permitted"
+      "Local twist from manufacturing - permitted",
+      "Local holes from manufacturing - permitted",
+      "Local cut in honeycomb cell without crushing from manufacturing - permitted"
     ],
     cis:[],
     dims:[
@@ -835,18 +885,19 @@ const COMPONENTS = [
       {dim:"Dim G", range:"0.2067\" - 0.2185\" (5.25-5.55mm)"},
       {dim:"Dim H", range:"0.0142\" - 0.0173\" (0.36-0.44mm)"}
     ],
-    notes:"Titanium areas are the structural load path -- zero tolerance for cracks. Honeycomb areas have more generous limits. Manufacturing artifacts (twist, holes, cuts without crushing) are explicitly permitted.",
+    notes:"Titanium areas are the structural load path - zero tolerance for cracks. Honeycomb areas have more generous limits. Manufacturing artifacts (twist, holes, cuts without crushing) are explicitly permitted.",
     repairs:""
   },
 
   // ========== FAN BLADE SPACER ==========
   {
     section:"Fan Blade Spacer [3]",
-    id:"spacer-pre", name:"Spacer -- Pre SB 72-0331", fig:"601 Sheet 19", numLabel:"PRE", numClass:"num-yellow",
+    id:"spacer-pre", name:"Spacer - Pre SB 72-0331", fig:"601 Sheet 19", numLabel:"PRE", numClass:"num-yellow",
     critical:"Wear limited to 0.004\" depth", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh19-spacer-pre-SB.png", label:"Fig 601 Sheet 19 - Spacer Pre SB 72-0331"}],
     nogo:[],
     ok:[
-      "Missing material, frayed, disbonded, wear, dents (flat area) -- any amount",
+      "Missing material, frayed, disbonded, wear, dents (flat area) - any amount",
       "Wear in area B: up to 0.004\" (0.1mm) depth"
     ],
     cis:[],
@@ -854,15 +905,16 @@ const COMPONENTS = [
     repairs:""
   },
   {
-    id:"spacer-post", name:"Spacer -- Post SB 72-0331", fig:"601 Sheets 16,17,18,20", numLabel:"POST", numClass:"num-yellow",
+    id:"spacer-post", name:"Spacer - Post SB 72-0331", fig:"601 Sheets 16,17,18,20", numLabel:"POST", numClass:"num-yellow",
     critical:"Thickness checks required", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh16-spacer-post-SB.png", label:"Fig 601 Sheet 16 - Spacer Post SB 72-0331"}, {src:"amm-figures/fig601-sh17-spacer-post-SB-detail.png", label:"Fig 601 Sheet 17 - Spacer Detail"}, {src:"amm-figures/fig601-sh18-spacer-head-area.png", label:"Fig 601 Sheet 18 - Spacer Head Area"}, {src:"amm-figures/fig601-sh20-spacer-head-wear.png", label:"Fig 601 Sheet 20 - Spacer Head Wear"}],
     nogo:[
-      "Tears, fiber breakage in head area (outside extraction hole) -- not permitted",
-      "Tears, fiber breakage in extraction hole area -- not permitted (if thickness H < 0.138\" / 3.51mm)",
-      "Micro-cracks/decohesion in extraction hole area -- not permitted"
+      "Tears, fiber breakage in head area (outside extraction hole) - not permitted",
+      "Tears, fiber breakage in extraction hole area - not permitted (if thickness H < 0.138\" / 3.51mm)",
+      "Micro-cracks/decohesion in extraction hole area - not permitted"
     ],
     ok:[
-      "Composite material outside head area -- wear permitted per surface thickness checks:",
+      "Composite material outside head area - wear permitted per surface thickness checks:",
       "  Surface D (fan blade contact): thickness >= 0.1831\" (4.65mm)",
       "  Surface E: permitted",
       "  Surface F (fan disk contact): thickness >= 0.178\" (4.52mm)",
@@ -872,7 +924,7 @@ const COMPONENTS = [
       "Micro-cracks/decohesion outside head: up to 2 indications, up to 0.19\" (4.83mm) length",
       "Tears/fiber breakage in extraction hole area: any amount (if thickness H >= 0.138\")",
       "Missing material in extraction hole: any amount if thickness H >= 0.138\" (3.51mm)",
-      "Ovalisation of extraction hole -- permitted",
+      "Ovalisation of extraction hole - permitted",
       "Micro-cracks/decohesion outside extraction hole: up to 2 indications, up to 0.19\" (4.83mm) length",
       "Nicks/dents/missing in head area: max depth 0.019\", max surface 0.0155 in2",
       "Scratches in head area: any number if depth < 0.019\" (0.48mm)",
@@ -888,10 +940,11 @@ const COMPONENTS = [
     section:"Fan Disk Shim [4]",
     id:"shim", name:"Fan Disk Shim", fig:"601 Sheet 21", numLabel:"[4]", numClass:"num-blue",
     critical:"All damage NOT permitted", critClass:"crit-red",
+    figures:[{src:"amm-figures/fig601-sh21-fan-disk-shim.png", label:"Fig 601 Sheet 21 - Fan Disk Shim"}],
     nogo:[
-      "Nicks/dents/scratches/fretting on all surfaces (except pressure face) -- not permitted",
-      "Cracks, tears, punctures -- not permitted",
-      "Nicks/dents/scratches/fretting on pressure faces -- not permitted"
+      "Nicks/dents/scratches/fretting on all surfaces (except pressure face) - not permitted",
+      "Cracks, tears, punctures - not permitted",
+      "Nicks/dents/scratches/fretting on pressure faces - not permitted"
     ],
     ok:[],
     cis:[],
@@ -904,6 +957,7 @@ const COMPONENTS = [
     section:"MLE Tap Test [7]",
     id:"tap-test", name:"MLE Tap Test Procedure", fig:"601 Sheet 22", numLabel:"TAP", numClass:"num-green",
     critical:"Hollow sound = disbonded", critClass:"crit-yellow",
+    figures:[{src:"amm-figures/fig601-sh22-tap-test.png", label:"Fig 601 Sheet 22 - Tap Test"}, {src:"amm-figures/fig601-sh12-reference-photos.png", label:"Fig 601 Sheet 12 - Reference Photos"}],
     nogo:[],
     ok:[
       "Solid click = area is bonded (OK)",
@@ -923,6 +977,7 @@ function renderGrid() {
       currentSection = c.section;
       html += `<div class="grid-section-header">${currentSection}</div>`;
     }
+    c._section = currentSection;
     html += `
       <div class="comp-tile" onclick="showDetail(${i})">
         <div class="comp-tile-header">
@@ -945,19 +1000,23 @@ function showDetail(idx) {
   document.getElementById('backBtn').style.display = 'inline-block';
   document.querySelector('.reset-btn').style.display = 'none';
 
-  let html = `
+  let html = '';
+  if (c._section) {
+    html += `<div class="detail-section-label">${c._section}</div>`;
+  }
+  html += `
     <div class="detail-title">${c.name}</div>
     <div class="detail-subtitle">Figure ${c.fig} | TASK 72-22-02-200-801-G00</div>
   `;
 
   if (c.nogo && c.nogo.length) {
-    html += `<div class="status-box box-nogo"><h4>Not Permitted -- No-Go</h4><ul>${c.nogo.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
+    html += `<div class="status-box box-nogo"><h4>Not Permitted - No-Go</h4><ul>${c.nogo.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
   }
   if (c.ok && c.ok.length) {
-    html += `<div class="status-box box-ok"><h4>Permitted -- Within Limits</h4><ul>${c.ok.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
+    html += `<div class="status-box box-ok"><h4>Permitted - Within Limits</h4><ul>${c.ok.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
   }
   if (c.cis && c.cis.length) {
-    html += `<div class="status-box box-cis"><h4>Continue in Service -- Deferred Limits</h4><ul>${c.cis.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
+    html += `<div class="status-box box-cis"><h4>Continue in Service - Deferred Limits</h4><ul>${c.cis.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
   }
   if (c.notes) {
     html += `<div class="note-box"><strong>Controller Notes:</strong> ${c.notes}</div>`;
@@ -968,6 +1027,12 @@ function showDetail(idx) {
   }
   if (c.repairs) {
     html += `<div class="repair-refs"><h4>Repair References</h4><p>${c.repairs.split('|').join('<br>')}</p></div>`;
+  }
+
+  if (c.figures && c.figures.length) {
+    c.figures.forEach(fig => {
+      html += `<div class="fig-container"><img src="${fig.src}" alt="${fig.label}"><div class="fig-label">${fig.label}</div></div>`;
+    });
   }
 
   dv.innerHTML = html;

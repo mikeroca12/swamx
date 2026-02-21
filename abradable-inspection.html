@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abradable Inspection | MOC Toolbox</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1b2a45;
+  --frame: #223352;
+  --frame-border: #2e4368;
+  --surface: #e2e7ef;
+  --surface2: #d9dee8;
+  --surface3: #cdd3df;
+  --border: #c8ceda;
+  --border-strong: #b4bcc9;
+  --text: #1e293b;
+  --text-secondary: #475569;
+  --text-dim: #64748b;
+  --text-on-dark: #e2e8f0;
+  --text-on-dark-dim: #ffffff;
+  --green: #16a34a;
+  --green-bg: #dcfce7;
+  --green-border: #86efac;
+  --green-text: #15803d;
+  --yellow: #d97706;
+  --yellow-bg: #fef3c7;
+  --yellow-border: #fcd34d;
+  --yellow-text: #b45309;
+  --red: #dc2626;
+  --red-bg: #fee2e2;
+  --red-border: #fca5a5;
+  --red-text: #b91c1c;
+  --blue: #2563eb;
+  --blue-bg: #dbeafe;
+  --blue-border: #93c5fd;
+  --blue-text: #1d4ed8;
+  --accent: #2563eb;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; line-height:1.5; }
+
+/* NAV BAR */
+.nav-bar {
+  background:var(--frame); border-bottom:1px solid var(--frame-border);
+  padding:10px 24px; display:flex; align-items:center; gap:14px;
+  font-family:'DM Sans',sans-serif; font-size:14px;
+}
+.nav-bar a { color:var(--text-on-dark-dim); text-decoration:none; transition:color 0.15s; }
+.nav-bar a:hover { color:var(--text-on-dark); }
+.nav-bar .nav-logo { display:flex; align-items:center; gap:8px; }
+.nav-bar .nav-title { font-weight:700; color:var(--text-on-dark); }
+.nav-bar .nav-title span { color:#3b82f6; }
+.nav-bar .nav-sep { color:var(--frame-border); }
+.nav-bar img { height:28px; }
+
+/* HEADER */
+.header {
+  background:var(--frame); border-bottom:1px solid var(--frame-border);
+  padding:14px 24px; display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:100;
+}
+.header-left { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.header h1 { font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700; letter-spacing:-0.5px; color:var(--text-on-dark); }
+.header-ref {
+  font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-on-dark-dim);
+  background:rgba(255,255,255,0.08); padding:3px 10px; border-radius:4px; border:1px solid var(--frame-border);
+}
+.back-btn, .reset-btn {
+  background:rgba(255,255,255,0.1); border:1px solid var(--frame-border); color:var(--text-on-dark-dim);
+  font-family:'DM Sans',sans-serif; font-size:13px; padding:6px 14px; border-radius:6px;
+  cursor:pointer; transition:all 0.15s;
+}
+.back-btn:hover, .reset-btn:hover { background:rgba(255,255,255,0.15); color:var(--text-on-dark); }
+.back-btn { display:none; }
+
+/* CONTAINER */
+.container { max-width:820px; margin:0 auto; padding:28px 24px 80px; }
+
+/* GRID */
+.grid-title { font-size:12px; font-weight:600; color:var(--text-on-dark-dim); margin-bottom:14px; letter-spacing:1px; text-transform:uppercase; font-family:'JetBrains Mono',monospace; }
+.component-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:10px; }
+.comp-tile {
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  padding:14px 16px; cursor:pointer; transition:all 0.2s;
+  display:flex; flex-direction:column; gap:5px; box-shadow:var(--card-shadow);
+}
+.comp-tile:hover { border-color:var(--accent); box-shadow:var(--card-shadow-hover); transform:translateY(-1px); }
+.comp-fig { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-dim); }
+.comp-name { font-size:14px; font-weight:700; color:var(--text); overflow-wrap:break-word; }
+.comp-critical { font-size:11px; font-weight:600; padding:3px 8px; border-radius:4px; display:inline-block; width:fit-content; }
+.crit-red { background:var(--red-bg); color:var(--red-text); border:1px solid var(--red-border); }
+.crit-green { background:var(--green-bg); color:var(--green-text); border:1px solid var(--green-border); }
+.crit-yellow { background:var(--yellow-bg); color:var(--yellow-text); border:1px solid var(--yellow-border); }
+
+/* DETAIL VIEW */
+#detailView { display:none; }
+.detail-section-label { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-on-dark-dim); margin-bottom:4px; }
+.detail-title { font-size:20px; font-weight:700; margin-bottom:4px; color:var(--text-on-dark); }
+.detail-subtitle { font-size:12px; color:var(--text-on-dark-dim); font-family:'JetBrains Mono',monospace; margin-bottom:20px; }
+
+/* STATUS BOXES */
+.status-box { border-radius:10px; padding:14px 16px; margin-bottom:10px; border:1px solid; box-shadow:var(--card-shadow); }
+.status-box h4 { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; letter-spacing:1px; margin-bottom:8px; text-transform:uppercase; }
+.status-box ul { list-style:none; padding:0; }
+.status-box li { font-size:13px; line-height:1.7; padding-left:20px; position:relative; }
+.status-box li::before { position:absolute; left:0; font-weight:700; font-size:11px; }
+
+.box-nogo { background:var(--red-bg); border-color:var(--red-border); }
+.box-nogo h4 { color:var(--red); }
+.box-nogo li { color:var(--red-text); }
+.box-nogo li::before { content:"X "; color:var(--red); }
+
+.box-ok { background:var(--green-bg); border-color:var(--green-border); }
+.box-ok h4 { color:var(--green); }
+.box-ok li { color:var(--green-text); }
+.box-ok li::before { content:"OK "; color:var(--green); }
+
+.box-cond { background:var(--yellow-bg); border-color:var(--yellow-border); }
+.box-cond h4 { color:var(--yellow); }
+.box-cond li { color:var(--yellow-text); }
+.box-cond li::before { content:"~ "; color:var(--yellow); }
+
+.box-info { background:var(--blue-bg); border-color:var(--blue-border); }
+.box-info h4 { color:var(--blue); }
+.box-info li { color:var(--blue-text); }
+.box-info li::before { content:"i "; color:var(--blue); }
+
+/* NOTE BOX */
+.note-box {
+  background:var(--surface); border-left:3px solid var(--accent);
+  padding:10px 14px; border-radius:0 8px 8px 0; margin-bottom:10px;
+  font-size:12px; color:var(--text-secondary); line-height:1.6; box-shadow:var(--card-shadow);
+}
+.note-box strong { color:var(--text); }
+
+/* REPAIR REFS */
+.repair-refs {
+  background:var(--surface); border:1px solid var(--border); border-radius:8px;
+  padding:12px 16px; margin-bottom:10px; box-shadow:var(--card-shadow);
+}
+.repair-refs h4 { font-size:11px; font-weight:600; color:var(--text-dim); margin-bottom:6px; font-family:'JetBrains Mono',monospace; }
+.repair-refs p { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-secondary); line-height:1.8; }
+
+/* FIGURE CONTAINERS */
+.fig-container {
+  background:#ffffff; border:1px solid var(--border); border-radius:10px;
+  padding:14px; margin-bottom:10px; box-shadow:var(--card-shadow);
+}
+.fig-container img { width:100%; border-radius:6px; }
+.fig-container .fig-label {
+  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-dim); margin-top:8px; text-align:center;
+}
+
+/* RESPONSIVE */
+@media(max-width:640px) {
+  .component-grid { grid-template-columns:1fr; }
+  .header { padding:12px 16px; }
+  .header h1 { font-size:13px; }
+  .container { padding:16px 14px 40px; }
+  .detail-title { font-size:17px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV BAR -->
+<div class="nav-bar">
+  <a href="index.html" class="nav-logo">
+    <img src="logo.webp" alt="Logo">
+    <span class="nav-title">MOC <span>Toolbox</span></span>
+  </a>
+  <span class="nav-sep">|</span>
+  <a href="leap-1b.html">Back to LEAP-1B Hub</a>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <button class="back-btn" id="backBtn" onclick="goHome()">Back</button>
+    <h1>Abradable - Flowpath Inspection</h1>
+    <span class="header-ref">AMM 72-21-00-200-802-G00 / G.(1)(L)</span>
+  </div>
+  <button class="reset-btn" onclick="goHome()">Start Over</button>
+</div>
+
+<div class="container">
+  <div id="gridView">
+    <div class="grid-title">Select a condition to inspect</div>
+    <div class="component-grid" id="compGrid"></div>
+  </div>
+  <div id="detailView"></div>
+</div>
+
+<script>
+var COMPONENTS = [
+  {
+    section:"Flowpath",
+    name:"Impacts / Craters",
+    fig:"601 Sheets 12, 30",
+    critical:"Carbon plies depth - CIS limit",
+    critClass:"crit-yellow",
+    nogo:[],
+    ok:[],
+    cond:[
+      "Single impacted surface - not more than 3.8750 in2 (2500 mm2)",
+      "Cumulated impacted surface - not more than 155 in2 (100,000 mm2)",
+      "Minimum distance between affected areas equals the maximum width of the nearest affected area",
+      "Depth - carbon plies of the trench filler must not show through",
+      "If carbon plies show through - CIS limit of 50 cycles or 125 hours. Carbon plies must remain within the carbon plies criteria. Daily inspection of the crater required"
+    ],
+    notes:"Maximum repairable limit: any amount. Refer to Figure 601 Sheet 30 for minimum distance measurement method: d = minimum distance between affected areas, W1 and W2 are widths, W1 < W2, d >= W2.",
+    repairs:"72-23-01-300-801-G00 - Fan Case Abradable Coating Repair",
+    figures:[
+      {src:"abradable-figures/fig601-sh12.png", label:"Fig 601 Sheet 12 - Abradable Overview with Areas 1, 2, 3 and X Plane"},
+      {src:"abradable-figures/fig601-sh30.png", label:"Fig 601 Sheet 30 - Impact Craters and Minimum Distance Method"}
+    ]
+  },
+  {
+    section:"Circumferential Grooves",
+    name:"Circumferential Groove - Area 1",
+    fig:"601 Sheets 12, 31",
+    critical:"Depth/width limits by rub condition",
+    critClass:"crit-yellow",
+    nogo:[],
+    ok:[],
+    cond:[
+      "Without rub in same area: any number, cumulative width up to 0.59 in. (15 mm), carbon plies must not show through, unitary groove width up to 0.098 in. (2.5 mm)",
+      "Without rub - NOTE: if groove cumulative width > 0.59 in. (15 mm) and < 0.78 in. (20 mm), CIS limit of 50 cycles is permitted",
+      "With rub - average depth up to 0.118 in. (3.0 mm): any number permitted up to 0.39 in. (10 mm) width",
+      "With rub - average depth 0.118-0.196 in. (3.0-5.0 mm): any number up to 0.59 in. (15 mm) cumulated width",
+      "With rub - both criteria can be cumulated up to 1.29 in. (33 mm) total width. Rub criteria is still applicable",
+      "Carbon plies of the trench filler must not show through"
+    ],
+    notes:"Groove oriented within 80-90 degrees from engine axis. For each AREA, the measure is equal to the angular location where the depth is the highest. Depth is measured from area of abradable which shows no sign of missing material. If carbon plies show through, CIS limit of 50 cycles or 125 hours - daily inspection of groove or rub required. Maximum repairable limit: any amount.",
+    repairs:"72-23-01-300-801-G00 - Fan Case Abradable Coating Repair",
+    figures:[
+      {src:"abradable-figures/fig601-sh31.png", label:"Fig 601 Sheet 31 - Circumferential Groove or Rub on Abradable (Example)"},
+      {src:"abradable-figures/fig601-sh12.png", label:"Fig 601 Sheet 12 - Areas 1, 2, 3 Dimensions"}
+    ]
+  },
+  {
+    section:"Circumferential Grooves",
+    name:"Circumferential Groove - Areas 2 and 3",
+    fig:"601 Sheets 12, 31",
+    critical:"Cumulative width limits apply",
+    critClass:"crit-yellow",
+    nogo:[],
+    ok:[],
+    cond:[
+      "Any number, cumulative width up to 1.96 in. (50 mm) with respect of the grooves criteria in Area 1",
+      "Unitary groove width up to 0.098 in. (2.5 mm)",
+      "Carbon plies of the trench filler must not show through"
+    ],
+    notes:"Same measurement notes as Area 1. If carbon plies show through, CIS limit of 50 cycles or 125 hours - daily inspection of groove or rub required. Maximum repairable limit: any amount.",
+    repairs:"72-23-01-300-801-G00 - Fan Case Abradable Coating Repair",
+    figures:[
+      {src:"abradable-figures/fig601-sh31.png", label:"Fig 601 Sheet 31 - Circumferential Groove or Rub Examples"},
+      {src:"abradable-figures/fig601-sh12.png", label:"Fig 601 Sheet 12 - Areas 1, 2, 3 Dimensions"}
+    ]
+  },
+  {
+    section:"Other Grooves",
+    name:"Other Grooves",
+    fig:"601 Sheet 32",
+    critical:"Max 4 grooves, width limit",
+    critClass:"crit-yellow",
+    nogo:[],
+    ok:[],
+    cond:[
+      "Up to 4 grooves permitted",
+      "Width not more than 1.10 in. (28 mm) each",
+      "All depths permitted",
+      "Carbon plies of the trench filler must not show through"
+    ],
+    notes:"If carbon plies show through, CIS limit of 50 cycles or 125 hours - daily inspection of groove required. Maximum repairable limit: any amount.",
+    repairs:"72-23-01-300-801-G00 - Fan Case Abradable Coating Repair",
+    figures:[
+      {src:"abradable-figures/fig601-sh32.png", label:"Fig 601 Sheet 32 - Other Grooves on Abradable (Examples)"}
+    ]
+  },
+  {
+    section:"Rub Along Airflow",
+    name:"Rub Along Airflow - Area 1",
+    fig:"601 Sheets 31, 33, 34",
+    critical:"Avg depth limit 0.027 in.",
+    critClass:"crit-yellow",
+    nogo:[],
+    ok:[],
+    cond:[
+      "Average depth up to 0.027 in. (0.7 mm) based on measurement at 8 equally spaced locations on abradable",
+      "Any number permitted",
+      "Carbon plies of the trench filler must not show through"
+    ],
+    notes:"Rub is defined as shown in Figure 601 Sheet 33. Depth is measured from area of abradable which shows no sign of missing material. For each AREA, the measure is equal to the angular location where the depth is the highest. If carbon plies show through, CIS limit of 50 cycles or 125 hours - daily inspection of groove or rub required. Maximum repairable limit: any amount.",
+    repairs:"72-23-01-300-801-G00 - Fan Case Abradable Coating Repair",
+    figures:[
+      {src:"abradable-figures/fig601-sh33.png", label:"Fig 601 Sheet 33 - Rub Area on Abradable (Examples)"},
+      {src:"abradable-figures/fig601-sh34.png", label:"Fig 601 Sheet 34 - Eight Points of Measurement on Abradable"}
+    ]
+  },
+  {
+    section:"Rub Along Airflow",
+    name:"Rub Along Airflow - Area 2",
+    fig:"601 Sheets 31, 33, 34",
+    critical:"Avg depth limit 0.027 in.",
+    critClass:"crit-yellow",
+    nogo:[],
+    ok:[],
+    cond:[
+      "Average depth up to 0.027 in. (0.7 mm) based on measurement at 8 equally spaced locations on abradable",
+      "Any number permitted",
+      "Carbon plies of the trench filler must not show through"
+    ],
+    notes:"Same measurement method as Area 1. If carbon plies show through, CIS limit of 50 cycles or 125 hours - daily inspection of groove or rub required. Maximum repairable limit: any amount.",
+    repairs:"72-23-01-300-801-G00 - Fan Case Abradable Coating Repair",
+    figures:[
+      {src:"abradable-figures/fig601-sh33.png", label:"Fig 601 Sheet 33 - Rub Area on Abradable (Examples)"},
+      {src:"abradable-figures/fig601-sh34.png", label:"Fig 601 Sheet 34 - Eight Points of Measurement on Abradable"}
+    ]
+  },
+  {
+    section:"Rub Along Airflow",
+    name:"Rub Along Airflow - Area 3",
+    fig:"601 Sheets 31, 33, 34",
+    critical:"Avg depth limit 0.118 in.",
+    critClass:"crit-yellow",
+    nogo:[],
+    ok:[],
+    cond:[
+      "Average depth up to 0.118 in. (3.0 mm) based on measurement at 8 equally spaced locations on abradable",
+      "Any number permitted",
+      "Carbon plies of the trench filler must not show through"
+    ],
+    notes:"Same measurement method as Areas 1 and 2. If carbon plies show through, CIS limit of 50 cycles or 125 hours - daily inspection of groove or rub required. Maximum repairable limit: any amount.",
+    repairs:"72-23-01-300-801-G00 - Fan Case Abradable Coating Repair",
+    figures:[
+      {src:"abradable-figures/fig601-sh33.png", label:"Fig 601 Sheet 33 - Rub Area on Abradable (Examples)"},
+      {src:"abradable-figures/fig601-sh34.png", label:"Fig 601 Sheet 34 - Eight Points of Measurement on Abradable"}
+    ]
+  },
+  {
+    section:"Cracks",
+    name:"Cracks on Abradable",
+    fig:"601 Sheets 35, 36",
+    critical:"Any amount permitted",
+    critClass:"crit-green",
+    nogo:[],
+    ok:[
+      "Any amount permitted",
+      "Maximum repairable limit: any amount"
+    ],
+    cond:[],
+    notes:"",
+    repairs:"72-23-01-300-801-G00 - Fan Case Abradable Coating Repair",
+    figures:[
+      {src:"abradable-figures/fig601-sh35.png", label:"Fig 601 Sheet 35 - Crack on Abradable (Examples 1 and 2)"},
+      {src:"abradable-figures/fig601-sh36.png", label:"Fig 601 Sheet 36 - Cracks on Abradable (Example 3)"}
+    ]
+  },
+  {
+    section:"Riddled Impacts",
+    name:"Riddled Impacts",
+    fig:"601 Sheets 12, 37",
+    critical:"Aft of X plane - any amount",
+    critClass:"crit-yellow",
+    nogo:[],
+    ok:[
+      "Aft of X plane - any amount permitted"
+    ],
+    cond:[
+      "Carbon plies of the trench filler must not show through"
+    ],
+    notes:"Refer to Figure 601 Sheet 12 for X plane location. Maximum repairable limit: any amount.",
+    repairs:"72-23-01-300-801-G00 - Fan Case Abradable Coating Repair",
+    figures:[
+      {src:"abradable-figures/fig601-sh37.png", label:"Fig 601 Sheet 37 - Riddled Area on Abradable (Examples)"},
+      {src:"abradable-figures/fig601-sh12.png", label:"Fig 601 Sheet 12 - Abradable Overview with X Plane"}
+    ]
+  },
+  {
+    section:"Carbon Plies / RTV",
+    name:"Carbon Plies and Missing RTV",
+    fig:"601 Sheet 13",
+    critical:"Tears/cracks/punctures - not permitted",
+    critClass:"crit-red",
+    nogo:[
+      "Tears, cracks, punctures on carbon plies - not permitted"
+    ],
+    ok:[
+      "Missing RTV between each acoustic panel - permitted"
+    ],
+    cond:[
+      "Nicks, dents, scratches, impact marks on carbon plies - depth up to 0.011 in. (0.3 mm), length up to 0.78 in. (20 mm), width up to 0.11 in. (3 mm)",
+      "Distance between nicks, dents, scratches, impact marks - more than 7.88 in. (200 mm)",
+      "Local collapse of inner surface on carbon plies - not more than 5, distance between collapses more than 9.85 in. (250 mm), diameter not more than 1.57 in. (40 mm)"
+    ],
+    notes:"Carbon plies are visible when abradable is missing. Do not remove abradable. Tears/cracks/punctures are repairable in the limit of the applicable repair. Local collapse is also repairable.",
+    repairs:"72-23-01-960-803-G00 - Fan Case Impact Repair on the Trench Filler",
+    figures:[
+      {src:"abradable-figures/fig601-sh13.png", label:"Fig 601 Sheet 13 - Carbon Plies Inspection Area"}
+    ]
+  },
+  {
+    section:"Surface Porosity",
+    name:"Surface Porosity on Abradable",
+    fig:"601 Sheet 15",
+    critical:"Tiered limits by size",
+    critClass:"crit-yellow",
+    nogo:[],
+    ok:[
+      "Any amount up to 0.03 in. (1 mm) diameter - permitted"
+    ],
+    cond:[
+      "Up to 0.04 in. (1 mm) depth and up to 0.19 in. (5 mm) diameter - any amount permitted",
+      "Between 0.04 in. (1 mm) and 0.15 in. (4 mm) diameter - permitted",
+      "Between 0.04 in. (1 mm) and 0.07 in. (2 mm) depth - permitted",
+      "No more than 20 porosities in this size range",
+      "Minimum distance of 0.79 in. (20 mm) between 2 porosities"
+    ],
+    notes:"Refer to Figure 601 Sheet 15 for typical aspect of surface porosities on abradable. Three tiers: Tier 1 - any amount up to 1 mm dia. Tier 2 - any amount up to 1 mm depth and 5 mm dia. Tier 3 - larger porosities limited to 20 max with minimum spacing.",
+    repairs:"",
+    figures:[
+      {src:"abradable-figures/fig601-sh15.png", label:"Fig 601 Sheet 15 - Porosity Examples on Abradable"}
+    ]
+  }
+];
+
+function renderGrid() {
+  var html = '';
+  COMPONENTS.forEach(function(c, i) {
+    html += '<div class="comp-tile" onclick="showDetail(' + i + ')">' +
+      '<div class="comp-fig">Fig ' + c.fig + '</div>' +
+      '<div class="comp-name">' + c.name + '</div>' +
+      '<span class="comp-critical ' + c.critClass + '">' + c.critical + '</span>' +
+    '</div>';
+  });
+  document.getElementById('compGrid').innerHTML = html;
+}
+
+function showDetail(idx) {
+  var c = COMPONENTS[idx];
+  var dv = document.getElementById('detailView');
+  document.getElementById('gridView').style.display = 'none';
+  dv.style.display = 'block';
+  document.getElementById('backBtn').style.display = 'inline-block';
+  document.querySelector('.reset-btn').style.display = 'none';
+
+  var html = '<div class="detail-section-label">' + c.section + '</div>' +
+    '<div class="detail-title">' + c.name + '</div>' +
+    '<div class="detail-subtitle">Figure ' + c.fig + ' | SUBTASK 72-21-00-211-001-G00</div>';
+
+  if (c.nogo.length) {
+    html += '<div class="status-box box-nogo"><h4>Not Permitted - No-Go</h4><ul>';
+    c.nogo.forEach(function(n) { html += '<li>' + n + '</li>'; });
+    html += '</ul></div>';
+  }
+  if (c.ok.length) {
+    html += '<div class="status-box box-ok"><h4>Permitted - Within Limits</h4><ul>';
+    c.ok.forEach(function(n) { html += '<li>' + n + '</li>'; });
+    html += '</ul></div>';
+  }
+  if (c.cond.length) {
+    html += '<div class="status-box box-cond"><h4>Conditional - Limits Apply</h4><ul>';
+    c.cond.forEach(function(n) { html += '<li>' + n + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  if (c.notes) {
+    html += '<div class="note-box"><strong>Controller Notes:</strong> ' + c.notes + '</div>';
+  }
+  if (c.repairs) {
+    html += '<div class="repair-refs"><h4>Repair References</h4><p>' + c.repairs.split('|').join('<br>') + '</p></div>';
+  }
+
+  if (c.figures && c.figures.length) {
+    c.figures.forEach(function(f) {
+      html += '<div class="fig-container"><img src="' + f.src + '" alt="' + f.label + '"><div class="fig-label">' + f.label + '</div></div>';
+    });
+  }
+
+  dv.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  document.getElementById('detailView').style.display = 'none';
+  document.getElementById('gridView').style.display = 'block';
+  document.getElementById('backBtn').style.display = 'none';
+  document.querySelector('.reset-btn').style.display = 'inline-block';
+  window.scrollTo(0, 0);
+}
+
+renderGrid();
+</script>
+</body>
+</html>

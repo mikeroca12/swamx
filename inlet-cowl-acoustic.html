@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cowl Inner Barrel Acoustic | MOC Toolbox</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1b2a45;
+  --frame: #223352;
+  --frame-border: #2e4368;
+  --surface: #e2e7ef;
+  --surface2: #d9dee8;
+  --surface3: #cdd3df;
+  --border: #c8ceda;
+  --border-strong: #b4bcc9;
+  --text: #1e293b;
+  --text-secondary: #475569;
+  --text-dim: #64748b;
+  --text-on-dark: #e2e8f0;
+  --text-on-dark-dim: #94a7c8;
+  --green: #16a34a;
+  --green-bg: #dcfce7;
+  --green-border: #86efac;
+  --green-text: #15803d;
+  --yellow: #d97706;
+  --yellow-bg: #fef3c7;
+  --yellow-border: #fcd34d;
+  --yellow-text: #b45309;
+  --red: #dc2626;
+  --red-bg: #fee2e2;
+  --red-border: #fca5a5;
+  --red-text: #b91c1c;
+  --blue: #2563eb;
+  --blue-bg: #dbeafe;
+  --blue-border: #93c5fd;
+  --blue-text: #1d4ed8;
+  --cyan: #0891b2;
+  --cyan-bg: #cffafe;
+  --cyan-border: #67e8f9;
+  --cyan-text: #0e7490;
+  --purple: #7c3aed;
+  --purple-bg: #ede9fe;
+  --purple-border: #c4b5fd;
+  --purple-text: #6d28d9;
+  --accent: #2563eb;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; line-height:1.5; }
+
+/* NAV BAR */
+.nav-bar {
+  background:var(--frame); border-bottom:1px solid var(--frame-border);
+  padding:10px 24px; display:flex; align-items:center; gap:14px;
+  font-family:'DM Sans',sans-serif; font-size:14px;
+}
+.nav-bar a { color:var(--text-on-dark-dim); text-decoration:none; transition:color 0.15s; }
+.nav-bar a:hover { color:var(--text-on-dark); }
+.nav-bar .nav-logo { display:flex; align-items:center; gap:8px; }
+.nav-bar .nav-title { font-weight:700; color:var(--text-on-dark); }
+.nav-bar .nav-title span { color:#f59e0b; }
+.nav-bar .nav-sep { color:var(--frame-border); }
+.nav-bar img { height:28px; }
+
+/* HEADER */
+.header {
+  background:var(--frame); border-bottom:1px solid var(--frame-border);
+  padding:14px 24px; display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:100;
+}
+.header-left { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.header h1 { font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700; letter-spacing:-0.5px; color:var(--text-on-dark); }
+.header-ref {
+  font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-on-dark-dim);
+  background:rgba(255,255,255,0.08); padding:3px 10px; border-radius:4px; border:1px solid var(--frame-border);
+}
+.back-btn, .reset-btn {
+  background:rgba(255,255,255,0.1); border:1px solid var(--frame-border); color:var(--text-on-dark-dim);
+  font-family:'DM Sans',sans-serif; font-size:13px; padding:6px 14px; border-radius:6px;
+  cursor:pointer; transition:all 0.15s;
+}
+.back-btn:hover, .reset-btn:hover { background:rgba(255,255,255,0.15); color:var(--text-on-dark); }
+.back-btn { display:none; }
+
+/* CONTAINER */
+.container { max-width:820px; margin:0 auto; padding:28px 24px 80px; }
+
+/* EA NOTE */
+.ea-note {
+  background:var(--blue-bg); border:1px solid var(--blue-border); border-radius:10px;
+  padding:10px 14px; margin-bottom:12px; font-size:12px; color:var(--blue-text);
+  font-family:'JetBrains Mono',monospace; line-height:1.6; box-shadow:var(--card-shadow);
+}
+
+/* CAUTION */
+.caution-note {
+  background:var(--red-bg); border:1px solid var(--red-border); border-radius:10px;
+  padding:10px 14px; margin-bottom:12px; font-size:12px; color:var(--red-text);
+  font-family:'JetBrains Mono',monospace; line-height:1.6; box-shadow:var(--card-shadow);
+}
+
+/* COLLAPSIBLE */
+.collapsible-toggle {
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  padding:12px 16px; cursor:pointer; display:flex; align-items:center;
+  justify-content:space-between; margin-bottom:12px; transition:all 0.15s; box-shadow:var(--card-shadow);
+}
+.collapsible-toggle:hover { border-color:var(--accent); box-shadow:var(--card-shadow-hover); }
+.collapsible-toggle.open { border-radius:10px 10px 0 0; border-bottom-color:transparent; margin-bottom:0; }
+.collapsible-toggle h4 { font-size:13px; font-weight:600; color:var(--text-secondary); }
+.collapsible-toggle .arrow { color:var(--text-dim); transition:transform 0.2s; font-size:14px; }
+.collapsible-toggle.open .arrow { transform:rotate(180deg); }
+.collapsible-content {
+  display:none; background:var(--surface); border:1px solid var(--border);
+  border-top:none; border-radius:0 0 10px 10px; padding:14px 16px; margin-top:0; margin-bottom:12px;
+}
+.collapsible-content.open { display:block; }
+.collapsible-content table { width:100%; border-collapse:collapse; font-size:12px; }
+.collapsible-content th { text-align:left; padding:6px 8px; color:var(--text-dim); font-family:'JetBrains Mono',monospace; font-size:11px; border-bottom:1px solid var(--border); }
+.collapsible-content td { padding:6px 8px; color:var(--text); border-bottom:1px solid rgba(200,206,218,0.5); }
+
+/* GRID */
+.grid-title { font-size:12px; font-weight:600; color:var(--text-on-dark-dim); margin-bottom:14px; letter-spacing:1px; text-transform:uppercase; font-family:'JetBrains Mono',monospace; }
+.component-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:10px; }
+.grid-section-header {
+  grid-column:1 / -1;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  color:#ffffff; padding:12px 0 4px;
+  border-top:1px solid var(--frame-border); margin-top:4px;
+}
+.grid-section-header:first-child { border-top:none; margin-top:0; padding-top:0; }
+
+.comp-tile {
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  padding:14px 16px; cursor:pointer; transition:all 0.2s;
+  display:flex; flex-direction:column; gap:5px; box-shadow:var(--card-shadow);
+}
+.comp-tile:hover { border-color:var(--accent); box-shadow:var(--card-shadow-hover); transform:translateY(-1px); }
+.comp-tile-header { display:flex; align-items:center; justify-content:space-between; }
+.comp-num {
+  font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700;
+  padding:2px 8px; border-radius:4px; border:1px solid;
+}
+.num-red { background:var(--red-bg); color:var(--red-text); border-color:var(--red-border); }
+.num-blue { background:var(--blue-bg); color:var(--blue-text); border-color:var(--blue-border); }
+.num-green { background:var(--green-bg); color:var(--green-text); border-color:var(--green-border); }
+.num-yellow { background:var(--yellow-bg); color:var(--yellow-text); border-color:var(--yellow-border); }
+.num-cyan { background:var(--cyan-bg); color:var(--cyan-text); border-color:var(--cyan-border); }
+.num-purple { background:var(--purple-bg); color:var(--purple-text); border-color:var(--purple-border); }
+.comp-fig { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-dim); }
+.comp-name { font-size:14px; font-weight:700; color:var(--text); }
+.comp-critical { font-size:11px; font-weight:600; padding:3px 8px; border-radius:4px; display:inline-block; width:fit-content; }
+.crit-red { background:var(--red-bg); color:var(--red-text); border:1px solid var(--red-border); }
+.crit-green { background:var(--green-bg); color:var(--green-text); border:1px solid var(--green-border); }
+.crit-yellow { background:var(--yellow-bg); color:var(--yellow-text); border:1px solid var(--yellow-border); }
+
+/* DETAIL VIEW */
+#detailView { display:none; }
+.detail-title { font-size:20px; font-weight:700; margin-bottom:4px; color:var(--text-on-dark); }
+.detail-subtitle { font-size:12px; color:var(--text-on-dark-dim); font-family:'JetBrains Mono',monospace; margin-bottom:20px; }
+
+/* STATUS BOXES */
+.status-box { border-radius:10px; padding:14px 16px; margin-bottom:10px; border:1px solid; box-shadow:var(--card-shadow); }
+.status-box h4 { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; letter-spacing:1px; margin-bottom:8px; text-transform:uppercase; }
+.status-box ul { list-style:none; padding:0; }
+.status-box li { font-size:13px; line-height:1.7; padding-left:20px; position:relative; }
+.status-box li::before { position:absolute; left:0; font-weight:700; font-size:11px; }
+
+.box-nogo { background:var(--red-bg); border-color:var(--red-border); }
+.box-nogo h4 { color:var(--red); }
+.box-nogo li { color:var(--red-text); }
+.box-nogo li::before { content:"X "; color:var(--red); }
+
+.box-ok { background:var(--green-bg); border-color:var(--green-border); }
+.box-ok h4 { color:var(--green); }
+.box-ok li { color:var(--green-text); }
+.box-ok li::before { content:"OK "; color:var(--green); }
+
+.box-cis { background:var(--yellow-bg); border-color:var(--yellow-border); }
+.box-cis h4 { color:var(--yellow); }
+.box-cis li { color:var(--yellow-text); }
+.box-cis li::before { content:"~ "; color:var(--yellow); }
+
+.box-info { background:var(--blue-bg); border-color:var(--blue-border); }
+.box-info h4 { color:var(--blue); }
+.box-info li { color:var(--blue-text); }
+.box-info li::before { content:"i "; color:var(--blue); }
+
+/* NOTE BOX */
+.note-box {
+  background:var(--surface); border-left:3px solid var(--accent);
+  padding:10px 14px; border-radius:0 8px 8px 0; margin-bottom:10px;
+  font-size:12px; color:var(--text-secondary); line-height:1.6; box-shadow:var(--card-shadow);
+}
+.note-box strong { color:var(--text); }
+
+/* REPAIR REFS */
+.repair-refs {
+  background:var(--surface); border:1px solid var(--border); border-radius:8px;
+  padding:12px 16px; margin-bottom:10px; box-shadow:var(--card-shadow);
+}
+.repair-refs h4 { font-size:11px; font-weight:600; color:var(--text-dim); margin-bottom:6px; font-family:'JetBrains Mono',monospace; }
+.repair-refs p { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-secondary); line-height:1.8; }
+
+/* DIMS */
+.dims-section { margin-bottom:10px; }
+.dims-section .collapsible-content table th { font-size:10px; }
+
+/* LIGHTBOX */
+.lightbox {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9);
+  z-index:1000; align-items:center; justify-content:center; cursor:zoom-out;
+}
+.lightbox.open { display:flex; }
+.lightbox img { max-width:95vw; max-height:95vh; border-radius:4px; }
+.lightbox-close {
+  position:fixed; top:16px; right:20px; color:white; font-size:28px;
+  cursor:pointer; z-index:1001; font-family:sans-serif; line-height:1;
+}
+
+/* RESPONSIVE */
+@media(max-width:640px) {
+  .component-grid { grid-template-columns:1fr; }
+  .header { padding:12px 16px; }
+  .header h1 { font-size:13px; }
+  .container { padding:16px 14px 40px; }
+  .detail-title { font-size:17px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV BAR -->
+<div class="nav-bar">
+  <a href="index.html" class="nav-logo">
+    <img src="logo.webp" alt="Logo">
+    <span class="nav-title">MOC <span>Toolbox</span></span>
+  </a>
+  <span class="nav-sep">|</span>
+  <a href="leap-1b.html">Back to LEAP-1B Hub</a>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <h1>Cowl Inner Barrel Acoustic</h1>
+    <span class="header-ref">SRM 54-10-01-1A-1 | Rev 27</span>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <button class="back-btn" id="backBtn" onclick="goHome()">Back</button>
+    <button class="reset-btn" onclick="goHome()">Start Over</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="ea-note">
+    NOTE: For continue-in-service relief of a dent, EA M-20-154-01289 (latest revision) may be used in lieu of the SRM. Reference the EA for applicability.
+  </div>
+
+  <div class="caution-note">
+    CAUTION: DO NOT USE TAPE FOR EROSION PROTECTION ON NOSE LIP SKIN. Tape can become loose and enter the engine.
+  </div>
+
+  <!-- SEAL PROCEDURES -->
+  <div class="collapsible-toggle" onclick="toggleEl(this)">
+    <h4>Seal Procedures (After Damage Removal)</h4>
+    <span class="arrow">&#9660;</span>
+  </div>
+  <div class="collapsible-content">
+    <table>
+      <tr><th>Type</th><th>Method</th><th>Limits</th></tr>
+      <tr><td>Temporary</td><td>Aluminum foil tape (speed tape)</td><td>Inspect every 1,000 FH. Permanent seal required within 2,400 FC.</td></tr>
+      <tr><td>Permanent</td><td>EC-3501 epoxy resin (per 51-70-08) + BMS 5-92 Type I adhesive</td><td>Indefinite</td></tr>
+    </table>
+    <div style="margin-top:8px;font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;">
+      Primer after permanent seal: S/N 1-54: BMS 10-103 Type I (bagside). S/N 55+: BAC 5755 Type 10 (bagside). All: BAC 5755 Type 10 on perforated facesheet (toolside).
+    </div>
+  </div>
+
+  <!-- DAMAGE SPACING -->
+  <div class="collapsible-toggle" onclick="toggleEl(this)">
+    <h4>Damage Spacing Rules (Figure 105)</h4>
+    <span class="arrow">&#9660;</span>
+  </div>
+  <div class="collapsible-content">
+    <table>
+      <tr><th>Parameter</th><th>Requirement</th></tr>
+      <tr><td>Min distance (a) between two damage areas</td><td>Larger of 0.75D or 3d</td></tr>
+      <tr><td>D</td><td>Larger diameter of two adjacent damage areas</td></tr>
+      <tr><td>d</td><td>Smaller diameter of two adjacent damage areas</td></tr>
+    </table>
+    <div style="margin-top:8px;font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;">
+      Diameter of a damage area = the larger of visual damage diameter or delamination diameter. A group of small damage areas near each other can be treated as one damage area.
+    </div>
+  </div>
+
+  <!-- GRID VIEW -->
+  <div id="gridView">
+    <div class="grid-title">Select Damage Type or Zone to Inspect</div>
+    <div class="component-grid" id="compGrid"></div>
+  </div>
+
+  <!-- DETAIL VIEW -->
+  <div id="detailView"></div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close" onclick="closeLightbox()">X</span>
+  <img id="lightboxImg" src="" alt="Figure">
+</div>
+
+<script>
+const COMPONENTS = [
+  // ========== INNER BARREL ACOUSTIC PANELS (4.C) ==========
+  {
+    section:"Inner Barrel Acoustic Panels -- Zones A-F (Fig 103)",
+    id:"nicks-no-fiber", name:"Nicks / Gouges / Scratches -- No Fiber Damage", fig:"103, 105", numLabel:"NGS", numClass:"num-green",
+    critical:"No limits all zones", critClass:"crit-green",
+    nogo:[],
+    ok:[
+      "Zones A-F: All dimensions permitted -- no limits when carbon fibers are NOT damaged",
+      "Applies to acoustic facesheet and outer facesheet of inlet extension only"
+    ],
+    cis:[],
+    notes:"This is the most permissive category. If carbon fibers are not damaged (surface only), any nick/gouge/scratch is acceptable regardless of size. Seal the repair per Paragraph 2.B.",
+    repairs:"Seal per 2.B/ALLOWABLE DAMAGE 1"
+  },
+  {
+    id:"nicks-fiber", name:"Nicks / Gouges / Scratches -- With Fiber Damage", fig:"103, 105", numLabel:"NGS", numClass:"num-yellow",
+    critical:"Zone D = NOT PERMITTED", critClass:"crit-red",
+    nogo:[
+      "Zone D (T12 probe area): Nicks/gouges/scratches with fiber damage -- NOT permitted"
+    ],
+    ok:[
+      "Zones B, C, E, F: Length up to 2.00\" (50.8mm), Width up to 0.23\" (5.8mm), Depth up to 1 ply",
+      "Zone A: Length up to 2.00\" (50.8mm), Width up to 0.23\" (5.8mm), Depth up to 1 ply",
+      "Damage spacing per Figure 105"
+    ],
+    cis:[],
+    notes:"When fibers ARE damaged, Zone D (T12 probe hole area) is zero tolerance. All other zones share the same 2.00\" x 0.23\" x 1 ply limit. Applies to acoustic facesheet only. Seal the repair per Paragraph 2.B.",
+    repairs:"Seal per 2.B/ALLOWABLE DAMAGE 1"
+  },
+  {
+    id:"dents-no-fiber", name:"Dents -- No Fiber Damage or Delamination", fig:"104 Detail H, 105", numLabel:"DNT", numClass:"num-yellow",
+    critical:"Only Zone B permitted", critClass:"crit-yellow",
+    nogo:[
+      "Zone A: Dents -- not permitted",
+      "Zones C, D, E, F: Dents -- not permitted"
+    ],
+    ok:[
+      "Zone B: Permitted per Figure 104 Detail H if ALL of the following:",
+      "  Smooth, no creases, gouges, or cracks. No pulled/loose fasteners.",
+      "  A/Y ratio >= 8 at all locations along the dent",
+      "  Y (depth) <= 0.100\" (2.54mm)",
+      "  Major axis (A) <= 1.20\" (30.5mm) for acoustic panels",
+      "  1.00\" (25.4mm) min from fastener/hole/edge/other damage",
+      "  Max 2 dents per quadrant (Fig 102), 15.0\" (381mm) min between edges",
+      "Damage spacing per Figure 105"
+    ],
+    cis:[
+      "5 cycles / 25 FH: Dents exceeding limits in Zone B if smooth, no gouges/cracks, and either:",
+      "  (a) Max 2 dents/quadrant, 15.0\" between, Y <= 0.25\" (6.4mm), W <= 4.00\", L <= 4.00\", crease <= 7.00\", OR",
+      "  (b) Max 1 dent/quadrant, Y <= 0.35\" (8.9mm), W <= 7.00\", L <= 7.00\"",
+      "  Dent must be inspected every 24 months with no cracks found"
+    ],
+    notes:"Dents usually cause fiber damage or delamination. If there IS fiber damage or delamination, do not use dent limits -- use the applicable fiber damage data instead. Do NOT fill the dents. Applies to acoustic facesheet only.",
+    repairs:""
+  },
+  {
+    id:"dents-fiber", name:"Dents -- With Fiber Damage", fig:"103", numLabel:"DNT", numClass:"num-red",
+    critical:"NOT permitted all zones", critClass:"crit-red",
+    nogo:[
+      "Zones A-F: Dents with fiber damage or delamination -- NOT permitted"
+    ],
+    ok:[],
+    cis:[],
+    notes:"If the dent caused fiber damage or delamination, the dent limits do not apply. This is a no-go across all zones.",
+    repairs:""
+  },
+  {
+    id:"holes", name:"Holes and Punctures", fig:"103, 105", numLabel:"H/P", numClass:"num-red",
+    critical:"Zones A/C/D/F = NOT PERMITTED", critClass:"crit-red",
+    nogo:[
+      "Zone A: Holes/punctures -- NOT permitted",
+      "Zone C: Holes/punctures -- NOT permitted",
+      "Zone D: Holes/punctures -- NOT permitted",
+      "Zone F: Holes/punctures -- NOT permitted"
+    ],
+    ok:[
+      "Zone B: Diameter up to 0.25\" (6.4mm), depth through all of the facesheet",
+      "Zone E: Diameter up to 0.25\" (6.4mm), depth through all of the facesheet",
+      "Damage spacing per Figure 105"
+    ],
+    cis:[],
+    notes:"Clean up holes to circular shape before applying seal. Measure hole dimension after cleanup. Damage must have carbon fiber involvement. Center of damage must be 1.00\" (25.4mm) min from center of adjacent hole or edge of part.",
+    repairs:"Seal per 2.B/ALLOWABLE DAMAGE 1"
+  },
+  {
+    id:"disbond-no-fiber", name:"Disbond -- No Fiber Damage", fig:"103, 105", numLabel:"DSB", numClass:"num-red",
+    critical:"Only Zone B permitted", critClass:"crit-red",
+    nogo:[
+      "Zone A: Disbond -- NOT permitted",
+      "Zones C, D, E, F: Disbond -- NOT permitted"
+    ],
+    ok:[
+      "Zone B: Diameter up to 0.25\" (6.4mm), depth through all of the facesheet",
+      "Damage spacing per Figure 105"
+    ],
+    cis:[],
+    notes:"Disbond without fiber damage only permitted in Zone B. Same 0.25\" diameter limit as holes. Applies to acoustic facesheet only. Seal per 2.B.",
+    repairs:"Seal per 2.B/ALLOWABLE DAMAGE 1"
+  },
+  {
+    id:"disbond-fiber", name:"Disbond -- With Fiber Damage", fig:"103, 105", numLabel:"DSB", numClass:"num-yellow",
+    critical:"Refer to Holes/Punctures limits", critClass:"crit-yellow",
+    nogo:[],
+    ok:[
+      "Use the same limits as Holes and Punctures (with fiber damage):",
+      "Zone B: Diameter up to 0.25\" (6.4mm)",
+      "Zone E: Diameter up to 0.25\" (6.4mm)",
+      "Zones A, C, D, F: NOT permitted"
+    ],
+    cis:[],
+    notes:"When disbond has fiber damage, it follows the holes/punctures criteria exactly. Same zone restrictions apply.",
+    repairs:"Seal per 2.B/ALLOWABLE DAMAGE 1"
+  },
+  {
+    id:"edge-damage", name:"Edge Damage", fig:"103, 104 Detail I", numLabel:"EDG", numClass:"num-red",
+    critical:"Only Zone C permitted", critClass:"crit-red",
+    nogo:[
+      "Zone A: Edge damage -- NOT permitted",
+      "Zone B: Edge damage -- NOT permitted",
+      "Zone D: Edge damage -- NOT permitted",
+      "Zone E: Edge damage -- NOT permitted",
+      "Zone F: Edge damage -- NOT permitted"
+    ],
+    ok:[
+      "Zone C: Width and length per Figure 104, Detail I",
+      "Zone C: Damage spacing min 1.0\" (25mm)",
+      "Zone C: Material removed max 0.20\" (5.1mm) width, min radius 1.0\" (25mm) cleanup"
+    ],
+    cis:[],
+    notes:"Edge damage requires fiber involvement. Only the aft edge (Zone C, 4.00\" wide) permits any edge damage. Do a permanent seal per 2.B.",
+    repairs:"Permanent seal per 2.B/ALLOWABLE DAMAGE 1"
+  },
+  {
+    id:"edge-erosion-no-fiber", name:"Edge Erosion -- No Fiber Damage", fig:"103", numLabel:"ERO", numClass:"num-yellow",
+    critical:"Only Zone C = no limit", critClass:"crit-yellow",
+    nogo:[
+      "Zones A, B: Edge erosion -- NOT permitted",
+      "Zones D, E, F: Edge erosion -- NOT permitted"
+    ],
+    ok:[
+      "Zone C: No limit on edge erosion without fiber damage"
+    ],
+    cis:[],
+    notes:"Edge erosion without fiber damage is fully permitted in Zone C (aft edge) with no dimensional restrictions.",
+    repairs:""
+  },
+  {
+    id:"edge-erosion-fiber", name:"Edge Erosion -- With Fiber Damage", fig:"103, 107", numLabel:"ERO", numClass:"num-red",
+    critical:"Only Zone C per Fig 107", critClass:"crit-red",
+    nogo:[
+      "Zones A, B: Edge erosion with fiber damage -- NOT permitted",
+      "Zones D, E, F: Edge erosion with fiber damage -- NOT permitted"
+    ],
+    ok:[
+      "Zone C: Depth per Figure 107 -- max 0.30\" (7.6mm) material removed",
+      "Zone C: Max 2 plies permitted in forward edge",
+      "Zone C: Edge of material removed min 2D from all holes (D = hole diameter)",
+      "Zone C: Remove burrs, smooth the contour, seal area per Paragraph 2"
+    ],
+    cis:[],
+    notes:"Figure 107 shows the cross-section of permitted erosion depth. Max 0.30\" removed. Abrasive blasting is NOT permitted for erosion cleanup.",
+    repairs:"Seal per 2.B/ALLOWABLE DAMAGE 1"
+  },
+  {
+    id:"delam-no-fiber", name:"Delamination -- No Fiber Damage", fig:"103", numLabel:"DLM", numClass:"num-red",
+    critical:"NOT permitted all zones", critClass:"crit-red",
+    nogo:[
+      "Zones A-F: Delamination without fiber damage -- NOT permitted"
+    ],
+    ok:[],
+    cis:[],
+    notes:"Delamination without visible fiber damage is still a no-go across all zones. Use NDT (737 NDT Part 1, 51-01-02) to verify delamination extent.",
+    repairs:""
+  },
+  {
+    id:"delam-fiber", name:"Delamination -- With Fiber Damage", fig:"103, 105", numLabel:"DLM", numClass:"num-yellow",
+    critical:"Refer to Holes/Punctures limits", critClass:"crit-yellow",
+    nogo:[],
+    ok:[
+      "Use the same limits as Holes and Punctures:",
+      "Zone B: Diameter up to 0.25\" (6.4mm)",
+      "Zone E: Diameter up to 0.25\" (6.4mm)",
+      "Zones A, C, D, F: NOT permitted"
+    ],
+    cis:[],
+    notes:"When delamination has fiber damage, it follows holes/punctures criteria. Same zone restrictions apply.",
+    repairs:""
+  },
+
+  // ========== NOSE LIP SKIN (4.A) ==========
+  {
+    section:"Nose Lip Skin (4.A) -- Aluminum",
+    id:"lip-cracks", name:"Nose Lip -- Cracks", fig:"104 Details A, B, E", numLabel:"LIP", numClass:"num-cyan",
+    critical:"Remove per Fig 104", critClass:"crit-yellow",
+    nogo:[],
+    ok:[
+      "Edge cracks: Remove per Figure 104, Details A (no overlap), B (overlap), and E (at edge)",
+      "Material removed width max 0.10\" (2.54mm) at edges",
+      "Material removed depth max 0.10T at surfaces (T = material thickness)",
+      "Min radius 1.00\" (25.4mm) cleanup, taper min 20X depth"
+    ],
+    cis:[],
+    notes:"Cracks must be fully removed. This is aluminum -- blend/remove per the applicable detail in Fig 104.",
+    repairs:"51-10-02 (Inspection & Removal) | 51-30-03 (Abrasive Materials) | 51-30-05 (Equipment & Tools)"
+  },
+  {
+    id:"lip-ngs", name:"Nose Lip -- Nicks/Gouges/Scratches/Corrosion", fig:"104 Details A-E", numLabel:"LIP", numClass:"num-cyan",
+    critical:"Remove per Fig 104", critClass:"crit-yellow",
+    nogo:[],
+    ok:[
+      "Remove damage per Figure 104, Details A, B, C, D, and E",
+      "Post-rework: Chemical conversion coating (51-20-01), primer, finish per AMM 51-21-00/701"
+    ],
+    cis:[],
+    notes:"After damage removal, the rework area must be treated: conversion coating, two layers BMS 10-79 Type III primer (outer barrel skin only), then finish per AMM.",
+    repairs:"51-20-01 (Protective Treatment) | SOPM 20-44-04 (Primer) | AMM 51-21-00/701 (Finishes)"
+  },
+  {
+    id:"lip-dents", name:"Nose Lip -- Dents", fig:"104 Detail F", numLabel:"LIP", numClass:"num-cyan",
+    critical:"Do NOT fill dents", critClass:"crit-yellow",
+    nogo:[
+      "Creases, gouges, or cracks in dent -- not permitted (standard)",
+      "Pulled or loose fasteners -- not permitted"
+    ],
+    ok:[
+      "Smooth dents with W/Y >= 30, Y <= 0.125\" (3.18mm), W <= 4.00\" (101.6mm), L <= 4.00\"",
+      "Max 2 dents per quadrant (Fig 102), 15.0\" min between edges",
+      "1.00\" min from fastener/hole/edge/other damage"
+    ],
+    cis:[
+      "5 cycles / 25 FH: Oversize dents -- 2 per quadrant, Y <= 0.25\", W/L <= 4.00\", crease <= 7.00\"",
+      "5 cycles / 25 FH: Single oversize dent -- 1 per quadrant, Y <= 0.35\", W/L <= 7.00\"",
+      "Inspect every 24 months, no cracks"
+    ],
+    notes:"Do NOT fill the dents. W/Y ratio of 30 means a very shallow, spread-out dent. These are aluminum-specific limits -- different from the acoustic panel limits.",
+    repairs:""
+  },
+  {
+    id:"lip-holes", name:"Nose Lip -- Holes/Punctures", fig:"104", numLabel:"LIP", numClass:"num-cyan",
+    critical:"Max 0.25\" diameter", critClass:"crit-green",
+    nogo:[],
+    ok:[
+      "Diameter up to 0.25\" (6.35mm)",
+      "Center of damage min 1.00\" (25.4mm) from center of adjacent hole or edge",
+      "Install NAS1398D blind rivet wet with BMS 5-63 sealant"
+    ],
+    cis:[],
+    notes:"Clean up to circular hole before riveting. Simple fix -- blind rivet with sealant.",
+    repairs:""
+  },
+  {
+    id:"lip-erosion", name:"Nose Lip -- Erosion", fig:"106", numLabel:"LIP", numClass:"num-cyan",
+    critical:"Per Fig 106 -- NO TAPE", critClass:"crit-red",
+    nogo:[
+      "DO NOT use tape for erosion protection -- tape can enter the engine"
+    ],
+    ok:[
+      "Erosion permitted per Figure 106 limits",
+      "Cleanup: max 0.10T depth, min 1.00\" radius, smooth, taper 20X",
+      "Apply erosion coatings per 51-20-08"
+    ],
+    cis:[],
+    notes:"CRITICAL: No tape on nose lip skin for erosion. Apply erosion coatings only per 51-20-08.",
+    repairs:"51-20-08 (Erosion Protection)"
+  },
+
+  // ========== OUTER BARREL SKIN (4.B) ==========
+  {
+    section:"Outer Barrel Skin Panels (4.B) -- Aluminum",
+    id:"ob-cracks", name:"Outer Barrel -- Cracks", fig:"104 Details A, B, E", numLabel:"OB", numClass:"num-purple",
+    critical:"Surface cracks NOT permitted", critClass:"crit-red",
+    nogo:[
+      "Surface cracks on outer barrel skin panels -- NOT permitted"
+    ],
+    ok:[
+      "Edge cracks: Remove per Figure 104, Details A, B, and E"
+    ],
+    cis:[],
+    notes:"Key difference from nose lip: surface cracks are a hard no-go on outer barrel. Only edge cracks can be repaired.",
+    repairs:"51-10-02 (Inspection & Removal)"
+  },
+  {
+    id:"ob-ngs", name:"Outer Barrel -- Nicks/Gouges/Scratches/Corrosion", fig:"104 Details A-E", numLabel:"OB", numClass:"num-purple",
+    critical:"Remove per Fig 104", critClass:"crit-yellow",
+    nogo:[],
+    ok:[
+      "Remove damage per Figure 104, Details A, B, C, D, and E",
+      "Post-rework: Chemical conversion coating, primer, finish per AMM 51-21-00/701"
+    ],
+    cis:[],
+    notes:"Same removal and rework procedure as nose lip skin.",
+    repairs:"51-20-01 (Protective Treatment) | SOPM 20-44-04 (Primer)"
+  },
+  {
+    id:"ob-dents", name:"Outer Barrel -- Dents", fig:"104 Detail F", numLabel:"OB", numClass:"num-purple",
+    critical:"Same limits as nose lip", critClass:"crit-yellow",
+    nogo:[
+      "Creases, gouges, or cracks in dent -- not permitted",
+      "Pulled or loose fasteners -- not permitted"
+    ],
+    ok:[
+      "Smooth dents with W/Y >= 30, Y <= 0.125\" (3.18mm), W <= 4.00\", L <= 4.00\"",
+      "Max 2 per quadrant, 15.0\" between edges, 1.00\" from fastener/hole/edge"
+    ],
+    cis:[
+      "5 cycles / 25 FH: Oversize -- 2/quadrant, Y <= 0.25\", W/L <= 4.00\", crease <= 7.00\"",
+      "5 cycles / 25 FH: Single oversize -- 1/quadrant, Y <= 0.35\", W/L <= 7.00\""
+    ],
+    notes:"Do NOT fill the dents. Identical limits to nose lip skin (both aluminum).",
+    repairs:""
+  },
+  {
+    id:"ob-holes", name:"Outer Barrel -- Holes/Punctures", fig:"104", numLabel:"OB", numClass:"num-purple",
+    critical:"Max 0.25\" diameter", critClass:"crit-green",
+    nogo:[],
+    ok:[
+      "Diameter up to 0.25\" (6.35mm)",
+      "Center min 1.00\" from adjacent hole or edge",
+      "Install NAS1398D blind rivet wet with BMS 5-63 sealant"
+    ],
+    cis:[],
+    notes:"Same as nose lip -- blind rivet with sealant.",
+    repairs:""
+  }
+];
+
+function renderGrid() {
+  let html = '';
+  let currentSection = '';
+  COMPONENTS.forEach((c, i) => {
+    if (c.section && c.section !== currentSection) {
+      currentSection = c.section;
+      html += `<div class="grid-section-header">${currentSection}</div>`;
+    }
+    html += `
+      <div class="comp-tile" onclick="showDetail(${i})">
+        <div class="comp-tile-header">
+          <span class="comp-num ${c.numClass}">${c.numLabel}</span>
+          <span class="comp-fig">Fig ${c.fig}</span>
+        </div>
+        <div class="comp-name">${c.name}</div>
+        <span class="comp-critical ${c.critClass}">${c.critical}</span>
+      </div>
+    `;
+  });
+  document.getElementById('compGrid').innerHTML = html;
+}
+
+function showDetail(idx) {
+  const c = COMPONENTS[idx];
+  const dv = document.getElementById('detailView');
+  document.getElementById('gridView').style.display = 'none';
+  dv.style.display = 'block';
+  document.getElementById('backBtn').style.display = 'inline-block';
+  document.querySelector('.reset-btn').style.display = 'none';
+
+  let html = `
+    <div class="detail-title">${c.name}</div>
+    <div class="detail-subtitle">Figure ${c.fig} | SRM 54-10-01-1A-1</div>
+  `;
+
+  if (c.nogo && c.nogo.length) {
+    html += `<div class="status-box box-nogo"><h4>Not Permitted -- No-Go</h4><ul>${c.nogo.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
+  }
+  if (c.ok && c.ok.length) {
+    html += `<div class="status-box box-ok"><h4>Permitted -- Within Limits</h4><ul>${c.ok.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
+  }
+  if (c.cis && c.cis.length) {
+    html += `<div class="status-box box-cis"><h4>Continue in Service -- Deferred Limits</h4><ul>${c.cis.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
+  }
+  if (c.notes) {
+    html += `<div class="note-box"><strong>Controller Notes:</strong> ${c.notes}</div>`;
+  }
+  if (c.repairs) {
+    html += `<div class="repair-refs"><h4>Repair / Rework References</h4><p>${c.repairs.split('|').join('<br>')}</p></div>`;
+  }
+
+  dv.innerHTML = html;
+  window.scrollTo(0,0);
+}
+
+function goHome() {
+  document.getElementById('detailView').style.display = 'none';
+  document.getElementById('gridView').style.display = 'block';
+  document.getElementById('backBtn').style.display = 'none';
+  document.querySelector('.reset-btn').style.display = 'inline-block';
+  window.scrollTo(0,0);
+}
+
+function toggleEl(el) {
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('open');
+}
+
+function openLightbox(src) {
+  event.stopPropagation();
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
+
+renderGrid();
+</script>
+</body>
+</html>

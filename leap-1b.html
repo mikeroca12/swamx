@@ -65,40 +65,24 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 .nav-bar .nav-sep { color:var(--frame-border); }
 .nav-bar img { height:28px; }
 
-/* HEADER HERO */
-.hero {
-  position:relative;
+/* COMPACT HEADER */
+.page-header {
   background:var(--frame);
   border-bottom:1px solid var(--frame-border);
-  overflow:hidden;
-}
-.hero-img-wrap {
-  position:relative;
-  width:100%;
-  max-height:280px;
-  overflow:hidden;
+  padding:16px 24px;
   display:flex;
   align-items:center;
-  justify-content:center;
+  justify-content:space-between;
+  gap:16px;
+  overflow:hidden;
 }
-.hero-img-wrap img {
-  width:100%;
-  object-fit:cover;
-  object-position:center;
-  display:block;
-  opacity:0.55;
-}
-.hero-overlay {
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg, rgba(27,42,69,0.3) 0%, rgba(27,42,69,0.85) 100%);
+.page-header-left {
   display:flex;
   flex-direction:column;
-  align-items:center;
-  justify-content:flex-end;
-  padding:24px;
+  gap:6px;
+  min-width:0;
 }
-.hero-badge {
+.page-header-badge {
   font-family:'JetBrains Mono',monospace;
   font-size:10px;
   font-weight:700;
@@ -107,24 +91,22 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
   color:var(--text-on-dark-dim);
   background:rgba(255,255,255,0.08);
   border:1px solid var(--frame-border);
-  padding:4px 14px;
+  padding:3px 12px;
   border-radius:4px;
-  margin-bottom:10px;
+  width:fit-content;
 }
-.hero h1 {
+.page-header h1 {
   font-family:'JetBrains Mono',monospace;
-  font-size:22px;
+  font-size:20px;
   font-weight:700;
-  color:var(--text-on-dark);
+  color:#ffffff;
   letter-spacing:-0.5px;
-  text-align:center;
 }
-.hero-sub {
-  font-size:13px;
-  color:var(--text-on-dark-dim);
-  text-align:center;
-  margin-top:6px;
-  max-width:600px;
+.page-header-img {
+  height:72px;
+  opacity:0.7;
+  flex-shrink:0;
+  object-fit:contain;
 }
 
 /* CONTAINER */
@@ -342,8 +324,8 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 
 /* RESPONSIVE */
 @media(max-width:600px) {
-  .hero h1 { font-size:17px; }
-  .hero-img-wrap { max-height:180px; }
+  .page-header h1 { font-size:16px; }
+  .page-header-img { height:52px; }
   .module-grid { grid-template-columns:1fr; }
   .nav-bar { padding:10px 16px; font-size:13px; }
   .container { padding:20px 16px 60px; }
@@ -362,15 +344,13 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
   <a href="index.html">Back to Apps</a>
 </div>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-img-wrap">
-    <img src="leap1bheader.png" alt="LEAP-1B Engine Front View">
-  </div>
-  <div class="hero-overlay">
-    <div class="hero-badge">CFM LEAP-1B / 737 MAX</div>
+<!-- COMPACT HEADER -->
+<div class="page-header">
+  <div class="page-header-left">
+    <div class="page-header-badge">CFM LEAP-1B / 737 MAX</div>
     <h1>LEAP-1B Engine Reference</h1>
   </div>
+  <img src="leap1b-engine.png" alt="LEAP-1B Engine" class="page-header-img">
 </div>
 
 <div class="container">

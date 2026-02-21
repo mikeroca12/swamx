@@ -138,6 +138,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
   background:var(--surface); border:1px solid var(--border); border-radius:10px;
   padding:14px 16px; cursor:pointer; transition:all 0.2s;
   display:flex; flex-direction:column; gap:5px; box-shadow:var(--card-shadow);
+  overflow:visible;
 }
 .comp-tile:hover { border-color:var(--accent); box-shadow:var(--card-shadow-hover); transform:translateY(-1px); }
 .comp-tile-header { display:flex; align-items:center; justify-content:space-between; }
@@ -152,7 +153,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 .num-cyan { background:var(--cyan-bg); color:var(--cyan-text); border-color:var(--cyan-border); }
 .num-purple { background:var(--purple-bg); color:var(--purple-text); border-color:var(--purple-border); }
 .comp-fig { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-dim); }
-.comp-name { font-size:14px; font-weight:700; color:var(--text); }
+.comp-name { font-size:14px; font-weight:700; color:var(--text); overflow-wrap:break-word; }
 .comp-critical { font-size:11px; font-weight:600; padding:3px 8px; border-radius:4px; display:inline-block; width:fit-content; }
 .crit-red { background:var(--red-bg); color:var(--red-text); border:1px solid var(--red-border); }
 .crit-green { background:var(--green-bg); color:var(--green-text); border:1px solid var(--green-border); }
@@ -303,6 +304,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
     <div style="margin-top:8px;font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;">
       Diameter of a damage area = the larger of visual damage diameter or delamination diameter. A group of small damage areas near each other can be treated as one damage area.
     </div>
+    <div class="fig-inline" style="margin-top:12px;"><img src="srm-figures/fig105-damage-spacing.png" alt="Figure 105 - Damage Size and Spacing Limits" loading="lazy"><div class="fig-label">Fig 105 - Damage Size and Spacing Limits</div></div>
   </div>
 
   <!-- GRID VIEW -->
@@ -326,13 +328,13 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 const COMPONENTS = [
   // ========== INNER BARREL ACOUSTIC PANELS (4.C) ==========
   {
-    section:"Inner Barrel Acoustic Panels -- Zones A-F (Fig 103)",
-    id:"nicks-no-fiber", name:"Nicks / Gouges / Scratches -- No Fiber Damage", fig:"103, 105", numLabel:"NGS", numClass:"num-green",
-    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 -- Inner Barrel Zoning"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 -- Damage Spacing"}], 
+    section:"Inner Barrel Acoustic Panels - Zones A-F (Fig 103)",
+    id:"nicks-no-fiber", name:"Nicks / Gouges / Scratches - No Fiber Damage", fig:"103, 105", numLabel:"NGS", numClass:"num-green",
+    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 - Inner Barrel Zoning"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 - Damage Spacing"}], 
     critical:"No limits all zones", critClass:"crit-green",
     nogo:[],
     ok:[
-      "Zones A-F: All dimensions permitted -- no limits when carbon fibers are NOT damaged",
+      "Zones A-F: All dimensions permitted - no limits when carbon fibers are NOT damaged",
       "Applies to acoustic facesheet and outer facesheet of inlet extension only"
     ],
     cis:[],
@@ -340,11 +342,11 @@ const COMPONENTS = [
     repairs:"Seal per 2.B/ALLOWABLE DAMAGE 1"
   },
   {
-    id:"nicks-fiber", name:"Nicks / Gouges / Scratches -- With Fiber Damage", fig:"103, 105", numLabel:"NGS", numClass:"num-yellow",
-    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 -- Inner Barrel Zoning"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 -- Damage Spacing"}],
+    id:"nicks-fiber", name:"Nicks / Gouges / Scratches - With Fiber Damage", fig:"103, 105", numLabel:"NGS", numClass:"num-yellow",
+    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 - Inner Barrel Zoning"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 - Damage Spacing"}],
     critical:"Zone D = NOT PERMITTED", critClass:"crit-red",
     nogo:[
-      "Zone D (T12 probe area): Nicks/gouges/scratches with fiber damage -- NOT permitted"
+      "Zone D (T12 probe area): Nicks/gouges/scratches with fiber damage - NOT permitted"
     ],
     ok:[
       "Zones B, C, E, F: Length up to 2.00\" (50.8mm), Width up to 0.23\" (5.8mm), Depth up to 1 ply",
@@ -356,12 +358,12 @@ const COMPONENTS = [
     repairs:"Seal per 2.B/ALLOWABLE DAMAGE 1"
   },
   {
-    id:"dents-no-fiber", name:"Dents -- No Fiber Damage or Delamination", fig:"104 Detail H, 105", numLabel:"DNT", numClass:"num-yellow",
-    figures:[{src:"srm-figures/fig104-sh5-damage-limits-H.png",label:"Fig 104 Detail H -- Dent Limits"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 -- Damage Spacing"}],
+    id:"dents-no-fiber", name:"Dents - No Fiber Damage or Delamination", fig:"104 Detail H, 105", numLabel:"DNT", numClass:"num-yellow",
+    figures:[{src:"srm-figures/fig104-sh5-damage-limits-H.png",label:"Fig 104 Detail H - Dent Limits"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 - Damage Spacing"}],
     critical:"Only Zone B permitted", critClass:"crit-yellow",
     nogo:[
-      "Zone A: Dents -- not permitted",
-      "Zones C, D, E, F: Dents -- not permitted"
+      "Zone A: Dents - not permitted",
+      "Zones C, D, E, F: Dents - not permitted"
     ],
     ok:[
       "Zone B: Permitted per Figure 104 Detail H if ALL of the following:",
@@ -379,15 +381,15 @@ const COMPONENTS = [
       "  (b) Max 1 dent/quadrant, Y <= 0.35\" (8.9mm), W <= 7.00\", L <= 7.00\"",
       "  Dent must be inspected every 24 months with no cracks found"
     ],
-    notes:"Dents usually cause fiber damage or delamination. If there IS fiber damage or delamination, do not use dent limits -- use the applicable fiber damage data instead. Do NOT fill the dents. Applies to acoustic facesheet only.",
+    notes:"Dents usually cause fiber damage or delamination. If there IS fiber damage or delamination, do not use dent limits - use the applicable fiber damage data instead. Do NOT fill the dents. Applies to acoustic facesheet only.",
     repairs:""
   },
   {
-    id:"dents-fiber", name:"Dents -- With Fiber Damage", fig:"103", numLabel:"DNT", numClass:"num-red",
-    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 -- Inner Barrel Zoning"}],
+    id:"dents-fiber", name:"Dents - With Fiber Damage", fig:"103", numLabel:"DNT", numClass:"num-red",
+    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 - Inner Barrel Zoning"}],
     critical:"NOT permitted all zones", critClass:"crit-red",
     nogo:[
-      "Zones A-F: Dents with fiber damage or delamination -- NOT permitted"
+      "Zones A-F: Dents with fiber damage or delamination - NOT permitted"
     ],
     ok:[],
     cis:[],
@@ -396,13 +398,13 @@ const COMPONENTS = [
   },
   {
     id:"holes", name:"Holes and Punctures", fig:"103, 105", numLabel:"H/P", numClass:"num-red",
-    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 -- Inner Barrel Zoning"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 -- Damage Spacing"}],
+    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 - Inner Barrel Zoning"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 - Damage Spacing"}],
     critical:"Zones A/C/D/F = NOT PERMITTED", critClass:"crit-red",
     nogo:[
-      "Zone A: Holes/punctures -- NOT permitted",
-      "Zone C: Holes/punctures -- NOT permitted",
-      "Zone D: Holes/punctures -- NOT permitted",
-      "Zone F: Holes/punctures -- NOT permitted"
+      "Zone A: Holes/punctures - NOT permitted",
+      "Zone C: Holes/punctures - NOT permitted",
+      "Zone D: Holes/punctures - NOT permitted",
+      "Zone F: Holes/punctures - NOT permitted"
     ],
     ok:[
       "Zone B: Diameter up to 0.25\" (6.4mm), depth through all of the facesheet",
@@ -414,12 +416,12 @@ const COMPONENTS = [
     repairs:"Seal per 2.B/ALLOWABLE DAMAGE 1"
   },
   {
-    id:"disbond-no-fiber", name:"Disbond -- No Fiber Damage", fig:"103, 105", numLabel:"DSB", numClass:"num-red",
-    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 -- Inner Barrel Zoning"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 -- Damage Spacing"}],
+    id:"disbond-no-fiber", name:"Disbond - No Fiber Damage", fig:"103, 105", numLabel:"DSB", numClass:"num-red",
+    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 - Inner Barrel Zoning"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 - Damage Spacing"}],
     critical:"Only Zone B permitted", critClass:"crit-red",
     nogo:[
-      "Zone A: Disbond -- NOT permitted",
-      "Zones C, D, E, F: Disbond -- NOT permitted"
+      "Zone A: Disbond - NOT permitted",
+      "Zones C, D, E, F: Disbond - NOT permitted"
     ],
     ok:[
       "Zone B: Diameter up to 0.25\" (6.4mm), depth through all of the facesheet",
@@ -430,8 +432,8 @@ const COMPONENTS = [
     repairs:"Seal per 2.B/ALLOWABLE DAMAGE 1"
   },
   {
-    id:"disbond-fiber", name:"Disbond -- With Fiber Damage", fig:"103, 105", numLabel:"DSB", numClass:"num-yellow",
-    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 -- Inner Barrel Zoning"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 -- Damage Spacing"}],
+    id:"disbond-fiber", name:"Disbond - With Fiber Damage", fig:"103, 105", numLabel:"DSB", numClass:"num-yellow",
+    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 - Inner Barrel Zoning"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 - Damage Spacing"}],
     critical:"Refer to Holes/Punctures limits", critClass:"crit-yellow",
     nogo:[],
     ok:[
@@ -446,14 +448,14 @@ const COMPONENTS = [
   },
   {
     id:"edge-damage", name:"Edge Damage", fig:"103, 104 Detail I", numLabel:"EDG", numClass:"num-red",
-    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 -- Inner Barrel Zoning"},{src:"srm-figures/fig104-sh6-damage-limits-I.png",label:"Fig 104 Detail I -- Edge Damage"}],
+    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 - Inner Barrel Zoning"},{src:"srm-figures/fig104-sh6-damage-limits-I.png",label:"Fig 104 Detail I - Edge Damage"}],
     critical:"Only Zone C permitted", critClass:"crit-red",
     nogo:[
-      "Zone A: Edge damage -- NOT permitted",
-      "Zone B: Edge damage -- NOT permitted",
-      "Zone D: Edge damage -- NOT permitted",
-      "Zone E: Edge damage -- NOT permitted",
-      "Zone F: Edge damage -- NOT permitted"
+      "Zone A: Edge damage - NOT permitted",
+      "Zone B: Edge damage - NOT permitted",
+      "Zone D: Edge damage - NOT permitted",
+      "Zone E: Edge damage - NOT permitted",
+      "Zone F: Edge damage - NOT permitted"
     ],
     ok:[
       "Zone C: Width and length per Figure 104, Detail I",
@@ -465,12 +467,12 @@ const COMPONENTS = [
     repairs:"Permanent seal per 2.B/ALLOWABLE DAMAGE 1"
   },
   {
-    id:"edge-erosion-no-fiber", name:"Edge Erosion -- No Fiber Damage", fig:"103", numLabel:"ERO", numClass:"num-yellow",
-    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 -- Inner Barrel Zoning"}],
+    id:"edge-erosion-no-fiber", name:"Edge Erosion - No Fiber Damage", fig:"103", numLabel:"ERO", numClass:"num-yellow",
+    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 - Inner Barrel Zoning"}],
     critical:"Only Zone C = no limit", critClass:"crit-yellow",
     nogo:[
-      "Zones A, B: Edge erosion -- NOT permitted",
-      "Zones D, E, F: Edge erosion -- NOT permitted"
+      "Zones A, B: Edge erosion - NOT permitted",
+      "Zones D, E, F: Edge erosion - NOT permitted"
     ],
     ok:[
       "Zone C: No limit on edge erosion without fiber damage"
@@ -480,15 +482,15 @@ const COMPONENTS = [
     repairs:""
   },
   {
-    id:"edge-erosion-fiber", name:"Edge Erosion -- With Fiber Damage", fig:"103, 107", numLabel:"ERO", numClass:"num-red",
-    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 -- Inner Barrel Zoning"},{src:"srm-figures/fig107-inner-barrel-erosion.png",label:"Fig 107 -- Inner Barrel Erosion"}],
+    id:"edge-erosion-fiber", name:"Edge Erosion - With Fiber Damage", fig:"103, 107", numLabel:"ERO", numClass:"num-red",
+    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 - Inner Barrel Zoning"},{src:"srm-figures/fig107-inner-barrel-erosion.png",label:"Fig 107 - Inner Barrel Erosion"}],
     critical:"Only Zone C per Fig 107", critClass:"crit-red",
     nogo:[
-      "Zones A, B: Edge erosion with fiber damage -- NOT permitted",
-      "Zones D, E, F: Edge erosion with fiber damage -- NOT permitted"
+      "Zones A, B: Edge erosion with fiber damage - NOT permitted",
+      "Zones D, E, F: Edge erosion with fiber damage - NOT permitted"
     ],
     ok:[
-      "Zone C: Depth per Figure 107 -- max 0.30\" (7.6mm) material removed",
+      "Zone C: Depth per Figure 107 - max 0.30\" (7.6mm) material removed",
       "Zone C: Max 2 plies permitted in forward edge",
       "Zone C: Edge of material removed min 2D from all holes (D = hole diameter)",
       "Zone C: Remove burrs, smooth the contour, seal area per Paragraph 2"
@@ -498,11 +500,11 @@ const COMPONENTS = [
     repairs:"Seal per 2.B/ALLOWABLE DAMAGE 1"
   },
   {
-    id:"delam-no-fiber", name:"Delamination -- No Fiber Damage", fig:"103", numLabel:"DLM", numClass:"num-red",
-    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 -- Inner Barrel Zoning"}],
+    id:"delam-no-fiber", name:"Delamination - No Fiber Damage", fig:"103", numLabel:"DLM", numClass:"num-red",
+    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 - Inner Barrel Zoning"}],
     critical:"NOT permitted all zones", critClass:"crit-red",
     nogo:[
-      "Zones A-F: Delamination without fiber damage -- NOT permitted"
+      "Zones A-F: Delamination without fiber damage - NOT permitted"
     ],
     ok:[],
     cis:[],
@@ -510,8 +512,8 @@ const COMPONENTS = [
     repairs:""
   },
   {
-    id:"delam-fiber", name:"Delamination -- With Fiber Damage", fig:"103, 105", numLabel:"DLM", numClass:"num-yellow",
-    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 -- Inner Barrel Zoning"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 -- Damage Spacing"}],
+    id:"delam-fiber", name:"Delamination - With Fiber Damage", fig:"103, 105", numLabel:"DLM", numClass:"num-yellow",
+    figures:[{src:"srm-figures/fig103-sh2-zoning-cross.png",label:"Fig 103 - Inner Barrel Zoning"},{src:"srm-figures/fig105-damage-spacing.png",label:"Fig 105 - Damage Spacing"}],
     critical:"Refer to Holes/Punctures limits", critClass:"crit-yellow",
     nogo:[],
     ok:[
@@ -527,9 +529,9 @@ const COMPONENTS = [
 
   // ========== NOSE LIP SKIN (4.A) ==========
   {
-    section:"Nose Lip Skin (4.A) -- Aluminum",
-    id:"lip-cracks", name:"Nose Lip -- Cracks", fig:"104 Details A, B, E", numLabel:"LIP", numClass:"num-cyan",
-    figures:[{src:"srm-figures/fig104-sh1-damage-limits-ABC.png",label:"Fig 104 Details A, B -- Material Removal"},{src:"srm-figures/fig104-sh2-damage-limits-DE.png",label:"Fig 104 Details D, E -- Fastener/Edge"}],
+    section:"Nose Lip Skin (4.A) - Aluminum",
+    id:"lip-cracks", name:"Cracks", fig:"104 Details A, B, E", numLabel:"LIP", numClass:"num-cyan",
+    figures:[{src:"srm-figures/fig104-sh1-damage-limits-ABC.png",label:"Fig 104 Details A, B - Material Removal"},{src:"srm-figures/fig104-sh2-damage-limits-DE.png",label:"Fig 104 Details D, E - Fastener/Edge"}],
     critical:"Remove per Fig 104", critClass:"crit-yellow",
     nogo:[],
     ok:[
@@ -539,12 +541,12 @@ const COMPONENTS = [
       "Min radius 1.00\" (25.4mm) cleanup, taper min 20X depth"
     ],
     cis:[],
-    notes:"Cracks must be fully removed. This is aluminum -- blend/remove per the applicable detail in Fig 104.",
+    notes:"Cracks must be fully removed. This is aluminum - blend/remove per the applicable detail in Fig 104.",
     repairs:"51-10-02 (Inspection & Removal) | 51-30-03 (Abrasive Materials) | 51-30-05 (Equipment & Tools)"
   },
   {
-    id:"lip-ngs", name:"Nose Lip -- Nicks/Gouges/Scratches/Corrosion", fig:"104 Details A-E", numLabel:"LIP", numClass:"num-cyan",
-    figures:[{src:"srm-figures/fig104-sh1-damage-limits-ABC.png",label:"Fig 104 Details A-C -- Material Removal"},{src:"srm-figures/fig104-sh2-damage-limits-DE.png",label:"Fig 104 Details D, E -- Fastener/Edge"}],
+    id:"lip-ngs", name:"Nicks / Gouges / Scratches / Corrosion", fig:"104 Details A-E", numLabel:"LIP", numClass:"num-cyan",
+    figures:[{src:"srm-figures/fig104-sh1-damage-limits-ABC.png",label:"Fig 104 Details A-C - Material Removal"},{src:"srm-figures/fig104-sh2-damage-limits-DE.png",label:"Fig 104 Details D, E - Fastener/Edge"}],
     critical:"Remove per Fig 104", critClass:"crit-yellow",
     nogo:[],
     ok:[
@@ -556,12 +558,12 @@ const COMPONENTS = [
     repairs:"51-20-01 (Protective Treatment) | SOPM 20-44-04 (Primer) | AMM 51-21-00/701 (Finishes)"
   },
   {
-    id:"lip-dents", name:"Nose Lip -- Dents", fig:"104 Detail F", numLabel:"LIP", numClass:"num-cyan",
-    figures:[{src:"srm-figures/fig104-sh3-damage-limits-F.png",label:"Fig 104 Detail F -- Dent Limits"}],
+    id:"lip-dents", name:"Dents", fig:"104 Detail F", numLabel:"LIP", numClass:"num-cyan",
+    figures:[{src:"srm-figures/fig104-sh3-damage-limits-F.png",label:"Fig 104 Detail F - Dent Limits"}],
     critical:"Do NOT fill dents", critClass:"crit-yellow",
     nogo:[
-      "Creases, gouges, or cracks in dent -- not permitted (standard)",
-      "Pulled or loose fasteners -- not permitted"
+      "Creases, gouges, or cracks in dent - not permitted (standard)",
+      "Pulled or loose fasteners - not permitted"
     ],
     ok:[
       "Smooth dents with W/Y >= 30, Y <= 0.125\" (3.18mm), W <= 4.00\" (101.6mm), L <= 4.00\"",
@@ -569,16 +571,16 @@ const COMPONENTS = [
       "1.00\" min from fastener/hole/edge/other damage"
     ],
     cis:[
-      "5 cycles / 25 FH: Oversize dents -- 2 per quadrant, Y <= 0.25\", W/L <= 4.00\", crease <= 7.00\"",
-      "5 cycles / 25 FH: Single oversize dent -- 1 per quadrant, Y <= 0.35\", W/L <= 7.00\"",
+      "5 cycles / 25 FH: Oversize dents - 2 per quadrant, Y <= 0.25\", W/L <= 4.00\", crease <= 7.00\"",
+      "5 cycles / 25 FH: Single oversize dent - 1 per quadrant, Y <= 0.35\", W/L <= 7.00\"",
       "Inspect every 24 months, no cracks"
     ],
-    notes:"Do NOT fill the dents. W/Y ratio of 30 means a very shallow, spread-out dent. These are aluminum-specific limits -- different from the acoustic panel limits.",
+    notes:"Do NOT fill the dents. W/Y ratio of 30 means a very shallow, spread-out dent. These are aluminum-specific limits - different from the acoustic panel limits.",
     repairs:""
   },
   {
-    id:"lip-holes", name:"Nose Lip -- Holes/Punctures", fig:"104", numLabel:"LIP", numClass:"num-cyan",
-    figures:[{src:"srm-figures/fig104-sh1-damage-limits-ABC.png",label:"Fig 104 -- Allowable Damage Limits"}],
+    id:"lip-holes", name:"Holes / Punctures", fig:"104", numLabel:"LIP", numClass:"num-cyan",
+    figures:[{src:"srm-figures/fig104-sh1-damage-limits-ABC.png",label:"Fig 104 - Allowable Damage Limits"}],
     critical:"Max 0.25\" diameter", critClass:"crit-green",
     nogo:[],
     ok:[
@@ -587,15 +589,15 @@ const COMPONENTS = [
       "Install NAS1398D blind rivet wet with BMS 5-63 sealant"
     ],
     cis:[],
-    notes:"Clean up to circular hole before riveting. Simple fix -- blind rivet with sealant.",
+    notes:"Clean up to circular hole before riveting. Simple fix - blind rivet with sealant.",
     repairs:""
   },
   {
-    id:"lip-erosion", name:"Nose Lip -- Erosion", fig:"106", numLabel:"LIP", numClass:"num-cyan",
-    figures:[{src:"srm-figures/fig106-lip-erosion.png",label:"Fig 106 -- Lip Skin Erosion"}],
-    critical:"Per Fig 106 -- NO TAPE", critClass:"crit-red",
+    id:"lip-erosion", name:"Erosion", fig:"106", numLabel:"LIP", numClass:"num-cyan",
+    figures:[{src:"srm-figures/fig106-lip-erosion.png",label:"Fig 106 - Lip Skin Erosion"}],
+    critical:"Per Fig 106 - NO TAPE", critClass:"crit-red",
     nogo:[
-      "DO NOT use tape for erosion protection -- tape can enter the engine"
+      "DO NOT use tape for erosion protection - tape can enter the engine"
     ],
     ok:[
       "Erosion permitted per Figure 106 limits",
@@ -609,12 +611,12 @@ const COMPONENTS = [
 
   // ========== OUTER BARREL SKIN (4.B) ==========
   {
-    section:"Outer Barrel Skin Panels (4.B) -- Aluminum",
-    id:"ob-cracks", name:"Outer Barrel -- Cracks", fig:"104 Details A, B, E", numLabel:"OB", numClass:"num-purple",
-    figures:[{src:"srm-figures/fig104-sh1-damage-limits-ABC.png",label:"Fig 104 Details A, B -- Material Removal"},{src:"srm-figures/fig104-sh2-damage-limits-DE.png",label:"Fig 104 Details D, E -- Fastener/Edge"}],
+    section:"Outer Barrel Skin Panels (4.B) - Aluminum",
+    id:"ob-cracks", name:"Cracks", fig:"104 Details A, B, E", numLabel:"OB", numClass:"num-purple",
+    figures:[{src:"srm-figures/fig104-sh1-damage-limits-ABC.png",label:"Fig 104 Details A, B - Material Removal"},{src:"srm-figures/fig104-sh2-damage-limits-DE.png",label:"Fig 104 Details D, E - Fastener/Edge"}],
     critical:"Surface cracks NOT permitted", critClass:"crit-red",
     nogo:[
-      "Surface cracks on outer barrel skin panels -- NOT permitted"
+      "Surface cracks on outer barrel skin panels - NOT permitted"
     ],
     ok:[
       "Edge cracks: Remove per Figure 104, Details A, B, and E"
@@ -624,8 +626,8 @@ const COMPONENTS = [
     repairs:"51-10-02 (Inspection & Removal)"
   },
   {
-    id:"ob-ngs", name:"Outer Barrel -- Nicks/Gouges/Scratches/Corrosion", fig:"104 Details A-E", numLabel:"OB", numClass:"num-purple",
-    figures:[{src:"srm-figures/fig104-sh1-damage-limits-ABC.png",label:"Fig 104 Details A-C -- Material Removal"},{src:"srm-figures/fig104-sh2-damage-limits-DE.png",label:"Fig 104 Details D, E -- Fastener/Edge"}],
+    id:"ob-ngs", name:"Nicks / Gouges / Scratches / Corrosion", fig:"104 Details A-E", numLabel:"OB", numClass:"num-purple",
+    figures:[{src:"srm-figures/fig104-sh1-damage-limits-ABC.png",label:"Fig 104 Details A-C - Material Removal"},{src:"srm-figures/fig104-sh2-damage-limits-DE.png",label:"Fig 104 Details D, E - Fastener/Edge"}],
     critical:"Remove per Fig 104", critClass:"crit-yellow",
     nogo:[],
     ok:[
@@ -637,27 +639,27 @@ const COMPONENTS = [
     repairs:"51-20-01 (Protective Treatment) | SOPM 20-44-04 (Primer)"
   },
   {
-    id:"ob-dents", name:"Outer Barrel -- Dents", fig:"104 Detail F", numLabel:"OB", numClass:"num-purple",
-    figures:[{src:"srm-figures/fig104-sh3-damage-limits-F.png",label:"Fig 104 Detail F -- Dent Limits"}],
+    id:"ob-dents", name:"Dents", fig:"104 Detail F", numLabel:"OB", numClass:"num-purple",
+    figures:[{src:"srm-figures/fig104-sh3-damage-limits-F.png",label:"Fig 104 Detail F - Dent Limits"}],
     critical:"Same limits as nose lip", critClass:"crit-yellow",
     nogo:[
-      "Creases, gouges, or cracks in dent -- not permitted",
-      "Pulled or loose fasteners -- not permitted"
+      "Creases, gouges, or cracks in dent - not permitted",
+      "Pulled or loose fasteners - not permitted"
     ],
     ok:[
       "Smooth dents with W/Y >= 30, Y <= 0.125\" (3.18mm), W <= 4.00\", L <= 4.00\"",
       "Max 2 per quadrant, 15.0\" between edges, 1.00\" from fastener/hole/edge"
     ],
     cis:[
-      "5 cycles / 25 FH: Oversize -- 2/quadrant, Y <= 0.25\", W/L <= 4.00\", crease <= 7.00\"",
-      "5 cycles / 25 FH: Single oversize -- 1/quadrant, Y <= 0.35\", W/L <= 7.00\""
+      "5 cycles / 25 FH: Oversize - 2/quadrant, Y <= 0.25\", W/L <= 4.00\", crease <= 7.00\"",
+      "5 cycles / 25 FH: Single oversize - 1/quadrant, Y <= 0.35\", W/L <= 7.00\""
     ],
     notes:"Do NOT fill the dents. Identical limits to nose lip skin (both aluminum).",
     repairs:""
   },
   {
-    id:"ob-holes", name:"Outer Barrel -- Holes/Punctures", fig:"104", numLabel:"OB", numClass:"num-purple",
-    figures:[{src:"srm-figures/fig104-sh1-damage-limits-ABC.png",label:"Fig 104 -- Allowable Damage Limits"}],
+    id:"ob-holes", name:"Holes / Punctures", fig:"104", numLabel:"OB", numClass:"num-purple",
+    figures:[{src:"srm-figures/fig104-sh1-damage-limits-ABC.png",label:"Fig 104 - Allowable Damage Limits"}],
     critical:"Max 0.25\" diameter", critClass:"crit-green",
     nogo:[],
     ok:[
@@ -666,7 +668,7 @@ const COMPONENTS = [
       "Install NAS1398D blind rivet wet with BMS 5-63 sealant"
     ],
     cis:[],
-    notes:"Same as nose lip -- blind rivet with sealant.",
+    notes:"Same as nose lip - blind rivet with sealant.",
     repairs:""
   }
 ];
@@ -682,7 +684,6 @@ function renderGrid() {
     html += `
       <div class="comp-tile" onclick="showDetail(${i})">
         <div class="comp-tile-header">
-          <span class="comp-num ${c.numClass}">${c.numLabel}</span>
           <span class="comp-fig">Fig ${c.fig}</span>
         </div>
         <div class="comp-name">${c.name}</div>
@@ -707,13 +708,13 @@ function showDetail(idx) {
   `;
 
   if (c.nogo && c.nogo.length) {
-    html += `<div class="status-box box-nogo"><h4>Not Permitted -- No-Go</h4><ul>${c.nogo.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
+    html += `<div class="status-box box-nogo"><h4>Not Permitted - No-Go</h4><ul>${c.nogo.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
   }
   if (c.ok && c.ok.length) {
-    html += `<div class="status-box box-ok"><h4>Permitted -- Within Limits</h4><ul>${c.ok.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
+    html += `<div class="status-box box-ok"><h4>Permitted - Within Limits</h4><ul>${c.ok.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
   }
   if (c.cis && c.cis.length) {
-    html += `<div class="status-box box-cis"><h4>Continue in Service -- Deferred Limits</h4><ul>${c.cis.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
+    html += `<div class="status-box box-cis"><h4>Continue in Service - Deferred Limits</h4><ul>${c.cis.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
   }
   if (c.notes) {
     html += `<div class="note-box"><strong>Controller Notes:</strong> ${c.notes}</div>`;

@@ -19,7 +19,7 @@
   --text-secondary: #475569;
   --text-dim: #64748b;
   --text-on-dark: #e2e8f0;
-  --text-on-dark-dim: #94a7c8;
+  --text-on-dark-dim: #ffffff;
   --green: #16a34a;
   --green-bg: #dcfce7;
   --green-border: #86efac;
@@ -53,7 +53,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 .nav-bar a:hover { color:var(--text-on-dark); }
 .nav-bar .nav-logo { display:flex; align-items:center; gap:8px; }
 .nav-bar .nav-title { font-weight:700; color:var(--text-on-dark); }
-.nav-bar .nav-title span { color:#f59e0b; }
+.nav-bar .nav-title span { color:#3b82f6; }
 .nav-bar .nav-sep { color:var(--frame-border); }
 .nav-bar img { height:28px; }
 
@@ -122,7 +122,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
   background:var(--blue-bg); color:var(--blue-text); padding:2px 8px; border-radius:4px; border:1px solid var(--blue-border);
 }
 .comp-fig { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-dim); }
-.comp-name { font-size:14px; font-weight:700; color:var(--text); }
+.comp-name { font-size:14px; font-weight:700; color:var(--text); overflow-wrap:break-word; }
 .comp-critical { font-size:11px; font-weight:600; padding:3px 8px; border-radius:4px; display:inline-block; width:fit-content; }
 .crit-red { background:var(--red-bg); color:var(--red-text); border:1px solid var(--red-border); }
 .crit-green { background:var(--green-bg); color:var(--green-text); border:1px solid var(--green-border); }
@@ -189,7 +189,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 }
 .fig-gallery {
   display:flex; flex-direction:column; gap:10px;
-  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  background:#ffffff; border:1px solid var(--border); border-radius:10px;
   padding:14px; box-shadow:var(--card-shadow);
 }
 .fig-gallery img {
@@ -230,7 +230,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
     <span class="nav-title">MOC <span>Toolbox</span></span>
   </a>
   <span class="nav-sep">|</span>
-  <a href="index.html">Back to Apps</a>
+  <a href="leap-1b.html">Back to LEAP-1B Hub</a>
 </div>
 
 <!-- HEADER -->
@@ -248,7 +248,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 <div class="container">
 
   <div class="etops-note">
-    ETOPS SIGNIFICANT SYSTEM -- Steps in this task may disturb an ETOPS significant system. If accomplished on an ETOPS aircraft, refer to MPM Chapter 46.
+    ETOPS SIGNIFICANT SYSTEM - Steps in this task may disturb an ETOPS significant system. If accomplished on an ETOPS aircraft, refer to MPM Chapter 46.
   </div>
 
   <!-- PREP -->
@@ -259,8 +259,8 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
   <div class="collapsible-content">
     <table>
       <tr><th>Step</th><th>Action</th></tr>
-      <tr><td>1</td><td>ENGINE START switch (P5 overhead) -- AUTO or OFF. Tag STD-858.</td></tr>
-      <tr><td>2</td><td>START LEVER switch (P10 control stand) -- CUTOFF. Tag STD-858.</td></tr>
+      <tr><td>1</td><td>ENGINE START switch (P5 overhead) - AUTO or OFF. Tag STD-858.</td></tr>
+      <tr><td>2</td><td>START LEVER switch (P10 control stand) - CUTOFF. Tag STD-858.</td></tr>
       <tr><td>3</td><td>Open CB: CAPT P18-2 Row B Col 8 (C01103) ENG 1 START VALVE</td></tr>
       <tr><td>4</td><td>Open CB: F/O P6-2 Row C Col 4 (C00154) ENG 2 START VALVE</td></tr>
     </table>
@@ -289,27 +289,27 @@ const COMPONENTS = [
     num:"1", name:"Front Spinner", fig:"601", sheets:2,
     critical:"Cracks NOT permitted", critClass:"crit-red",
     nogo:[
-      "Cracks -- not permitted anywhere",
+      "Cracks - not permitted anywhere",
       "Missing coating on Area C inner surfaces (internal + aft flange surfaces)",
       "Missing coating on Area G (spinner attachment pads + aft flange lateral surfaces)"
     ],
     ok:[
-      "Dents -- up to 0.019\" (0.5mm) depth, 0.19\" (5mm) length",
-      "Nicks -- up to 0.019\" (0.5mm) depth, 0.19\" (5mm) length",
-      "Scratches -- up to 0.019\" (0.5mm) depth, 0.19\" (5mm) length",
-      "Missing black paint -- OK if no corrosion mark (white mushroom pattern)",
-      "Missing primer -- OK if no corrosion mark visible",
-      "Missing sulfuric anodizing -- OK if no corrosion mark visible",
-      "Missing white spiral mark on Area D -- permitted",
-      "Bolt thread contact marks (DIA B) -- up to 0.003\" (0.1mm)"
+      "Dents - up to 0.019\" (0.5mm) depth, 0.19\" (5mm) length",
+      "Nicks - up to 0.019\" (0.5mm) depth, 0.19\" (5mm) length",
+      "Scratches - up to 0.019\" (0.5mm) depth, 0.19\" (5mm) length",
+      "Missing black paint - OK if no corrosion mark (white mushroom pattern)",
+      "Missing primer - OK if no corrosion mark visible",
+      "Missing sulfuric anodizing - OK if no corrosion mark visible",
+      "Missing white spiral mark on Area D - permitted",
+      "Bolt thread contact marks (DIA B) - up to 0.003\" (0.1mm)"
     ],
     cis:[
-      "Dents exceeding limits -- 100 cyc / 150 hrs if up to 0.055\" depth, 0.55\" length",
-      "Nicks exceeding limits -- 100 cyc / 150 hrs if up to 0.055\" depth, 0.55\" length",
-      "Scratches exceeding limits -- 100 cyc / 150 hrs if up to 0.055\" depth, 0.55\" length",
-      "Missing paint with corrosion visible -- 100 cyc / 150 hrs",
-      "Area A dents/nicks/scratches -- 100 cyc / 150 hrs if up to 0.03\" depth, 0.39\" length",
-      "Area E dents/nicks/scratches -- 100 cyc / 150 hrs if up to 0.047\" depth, 0.47\" length"
+      "Dents exceeding limits - 100 cyc / 150 hrs if up to 0.055\" depth, 0.55\" length",
+      "Nicks exceeding limits - 100 cyc / 150 hrs if up to 0.055\" depth, 0.55\" length",
+      "Scratches exceeding limits - 100 cyc / 150 hrs if up to 0.055\" depth, 0.55\" length",
+      "Missing paint with corrosion visible - 100 cyc / 150 hrs",
+      "Area A dents/nicks/scratches - 100 cyc / 150 hrs if up to 0.03\" depth, 0.39\" length",
+      "Area E dents/nicks/scratches - 100 cyc / 150 hrs if up to 0.047\" depth, 0.47\" length"
     ],
     dims:[
       {dim:"DIM A (erosion)", range:"0.1693\" - 0.1850\" (4.30-4.70mm), DIM U min 0.4382\""}
@@ -322,29 +322,29 @@ const COMPONENTS = [
     critical:"Extremely tight limits (0.003\")", critClass:"crit-yellow",
     nogo:[],
     ok:[
-      "Dents -- up to 0.003\" (0.1mm) depth and 0.003\" (0.1mm) length",
-      "Nicks -- up to 0.003\" (0.1mm) depth and 0.003\" (0.1mm) length",
-      "Scratches -- up to 0.003\" (0.1mm) depth and 0.003\" (0.1mm) length"
+      "Dents - up to 0.003\" (0.1mm) depth and 0.003\" (0.1mm) length",
+      "Nicks - up to 0.003\" (0.1mm) depth and 0.003\" (0.1mm) length",
+      "Scratches - up to 0.003\" (0.1mm) depth and 0.003\" (0.1mm) length"
     ],
     cis:[],
     dims:[
       {dim:"DIM A (hole peening)", range:"0.2717\" - 0.2803\" (6.90-7.12mm)"},
       {dim:"DIM B (peening/fretting/wear)", range:"0.0426\" - 0.0519\" (1.08-1.32mm)"}
     ],
-    notes:"All limits are the same for dents, nicks, and scratches. Very tight tolerances -- 0.003\" max.",
+    notes:"All limits are the same for dents, nicks, and scratches. Very tight tolerances - 0.003\" max.",
     repairs:""
   },
   {
     num:"3", name:"Platform Front Shroud", fig:"603", sheets:5,
     critical:"Cracks NOT permitted / Self-lock nuts critical", critClass:"crit-red",
     nogo:[
-      "Cracks -- not permitted (upper or lower side)",
-      "Rotating crimped self-locking nuts -- not permitted",
-      "Self-locking nut loss of locking (torque < 3.5 in-lb / 0.4 N-m) -- not serviceable",
-      "Self-locking nut looseness -- not serviceable",
-      "Self-locking nut missing -- not serviceable",
-      "Self-locking nut cracked -- not serviceable",
-      "Internal thread bent/torn/worn/missing -- not serviceable"
+      "Cracks - not permitted (upper or lower side)",
+      "Rotating crimped self-locking nuts - not permitted",
+      "Self-locking nut loss of locking (torque < 3.5 in-lb / 0.4 N-m) - not serviceable",
+      "Self-locking nut looseness - not serviceable",
+      "Self-locking nut missing - not serviceable",
+      "Self-locking nut cracked - not serviceable",
+      "Internal thread bent/torn/worn/missing - not serviceable"
     ],
     ok:[
       "Upper side: Dents/nicks/scratches up to 0.003\" depth, 0.11\" length",
@@ -353,12 +353,12 @@ const COMPONENTS = [
       "Area A2 (inner): up to 0.0007\" depth any length, or 0.0015\" depth / 0.0157\" length",
       "Area B: Dents/nicks up to 0.0031\" depth and 0.0031\" length",
       "Area C: Dents/nicks up to 0.0023\" depth, 0.0027\" length",
-      "Area D: Stains with no depth -- permitted",
+      "Area D: Stains with no depth - permitted",
       "Area P: Dents/nicks up to 0.0023\" depth, 0.0027\" length or 0.0007\" depth all lengths"
     ],
     cis:[
-      "Area A1 -- 2000 cyc if up to 0.0295\" depth, or 800 cyc if up to 0.00551\" depth",
-      "Area A2 -- 2000 cyc if up to 0.0098\" depth, or 800 cyc if up to 0.0157\" depth"
+      "Area A1 - 2000 cyc if up to 0.0295\" depth, or 800 cyc if up to 0.00551\" depth",
+      "Area A2 - 2000 cyc if up to 0.0098\" depth, or 800 cyc if up to 0.0157\" depth"
     ],
     dims:[
       {dim:"DIM L", range:"0.0749\" - 0.0826\" (1.90-2.10mm)"},
@@ -373,15 +373,15 @@ const COMPONENTS = [
   {
     num:"4", name:"Fan Disk", fig:"604", sheets:5,
     critical:"Cracks NOT permitted / Shot-peened areas very tight", critClass:"crit-red",
-    nogo:["Cracks -- not permitted anywhere"],
+    nogo:["Cracks - not permitted anywhere"],
     ok:[
       "Teeth top: Dents/nicks/scratches up to 0.0019\" depth, any length",
       "Teeth top: Contact wear up to 0.0027\" depth, any length",
       "Area C: Dents/nicks/scratches up to 0.0019\" depth, any length",
       "Area E: Dents/nicks/scratches up to 0.0212\" depth, 0.2146\" length",
       "Area F: Dents/nicks/scratches up to 0.00098\" depth, 0.0098\" length",
-      "Area K: Stains with no depth -- permitted",
-      "Area M: Contact marks with no depth -- permitted",
+      "Area K: Stains with no depth - permitted",
+      "Area M: Contact marks with no depth - permitted",
       "Area N (shot-peened): Dents/nicks up to 0.0003\" depth",
       "Area J (shot-peened): Dents/nicks up to 0.00098\" depth",
       "Area L (shot-peened): Dents/nicks up to 0.0007\" depth",
@@ -402,17 +402,17 @@ const COMPONENTS = [
     num:"5", name:"LPC Shaft", fig:"605", sheets:2,
     critical:"No corrosion/cracks/metal loss", critClass:"crit-red",
     nogo:[
-      "Corrosion or pitting -- not permitted (unpainted areas)",
-      "Cracks -- not permitted",
-      "Metal loss -- not permitted",
-      "Peeling or blistering of paint -- not permitted",
-      "Weep plug hole Area K: All damage -- not permitted"
+      "Corrosion or pitting - not permitted (unpainted areas)",
+      "Cracks - not permitted",
+      "Metal loss - not permitted",
+      "Peeling or blistering of paint - not permitted",
+      "Weep plug hole Area K: All damage - not permitted"
     ],
     ok:[
       "Unpainted: Dents/nicks/scratches up to 0.003\" depth, 0.019\" length",
       "Painted: OK if parent material not affected + min 0.00138\" paint remains",
       "Missing paint (except Area P): OK if min 0.00138\" thickness remains",
-      "Area P (fwd anti-rotation lugs): Missing paint -- permitted"
+      "Area P (fwd anti-rotation lugs): Missing paint - permitted"
     ],
     cis:[],
     dims:[
@@ -427,11 +427,11 @@ const COMPONENTS = [
     num:"6", name:"Low Pressure Compressor Cover", fig:"606", sheets:2,
     critical:"Cracks NOT permitted", critClass:"crit-red",
     nogo:[
-      "Cracks -- not permitted anywhere",
-      "Seal groove Area E: All damage -- not permitted",
-      "Pitting on DIA A -- not permitted",
-      "Anti-rotation tang/lug: Breaking or distortion -- not permitted",
-      "Thread Area F: All damage -- not permitted"
+      "Cracks - not permitted anywhere",
+      "Seal groove Area E: All damage - not permitted",
+      "Pitting on DIA A - not permitted",
+      "Anti-rotation tang/lug: Breaking or distortion - not permitted",
+      "Thread Area F: All damage - not permitted"
     ],
     ok:[
       "Dents/nicks/scratches up to 0.0098\" depth, 0.098\" length"
@@ -443,15 +443,15 @@ const COMPONENTS = [
       {dim:"DIM B", range:"0.1536\" - 0.1614\" (3.90-4.10mm)"},
       {dim:"DIM D", range:"0.1536\" - 0.1614\" (3.90-4.10mm)"}
     ],
-    notes:"Seal groove (Area E) is zero-tolerance -- any damage is a no-go.",
+    notes:"Seal groove (Area E) is zero-tolerance - any damage is a no-go.",
     repairs:""
   },
   {
     num:"7", name:"LPC Slotted Nut", fig:"607", sheets:1,
     critical:"Cracks NOT permitted", critClass:"crit-red",
-    nogo:["Cracks -- not permitted"],
+    nogo:["Cracks - not permitted"],
     ok:[
-      "Missing silver plating -- permitted",
+      "Missing silver plating - permitted",
       "All areas (except threads/slots): Dents/nicks/scratches up to 0.003\" depth",
       "Area C (slots): Dents/nicks/scratches up to 0.003\" depth"
     ],
@@ -465,39 +465,39 @@ const COMPONENTS = [
     critical:"Very tight limits (0.0007\")", critClass:"crit-yellow",
     nogo:[],
     ok:[
-      "Nicks, dents, scratches -- up to 0.0007\" (0.02mm) depth",
-      "Fretting or wear -- up to 0.0007\" (0.02mm) depth",
-      "Contact marks -- up to 0.0007\" (0.02mm) depth",
-      "Glazing -- permitted"
+      "Nicks, dents, scratches - up to 0.0007\" (0.02mm) depth",
+      "Fretting or wear - up to 0.0007\" (0.02mm) depth",
+      "Contact marks - up to 0.0007\" (0.02mm) depth",
+      "Glazing - permitted"
     ],
     cis:[],
     dims:[],
-    notes:"Extremely tight -- 0.0007\" across all damage types. Glazing is the only thing with no limit.",
+    notes:"Extremely tight - 0.0007\" across all damage types. Glazing is the only thing with no limit.",
     repairs:""
   },
   {
     num:"9/10", name:"Silicone O-Ring & Fan Platform", fig:"609", sheets:1,
     critical:"Cuts on O-ring = REMOVE/REPLACE", critClass:"crit-red",
-    nogo:["Cuts on O-ring -- NOT permitted. Remove or replace immediately."],
+    nogo:["Cuts on O-ring - NOT permitted. Remove or replace immediately."],
     ok:[
-      "O-ring cracks -- permitted",
-      "O-ring wear -- permitted",
-      "O-ring missing adhesion -- permitted",
-      "O-ring distortion -- permitted",
-      "O-ring torn -- permitted",
-      "O-ring nicks, dents, scratches -- permitted",
-      "Partially exposed after assembly -- OK if within flowpath profile",
-      "Missing silicone O-ring entirely -- permitted"
+      "O-ring cracks - permitted",
+      "O-ring wear - permitted",
+      "O-ring missing adhesion - permitted",
+      "O-ring distortion - permitted",
+      "O-ring torn - permitted",
+      "O-ring nicks, dents, scratches - permitted",
+      "Partially exposed after assembly - OK if within flowpath profile",
+      "Missing silicone O-ring entirely - permitted"
     ],
     cis:[],
     dims:[],
-    notes:"ONLY no-go is actual cuts. Everything else -- cracks, tears, wear, distortion, even missing entirely -- is permitted.",
+    notes:"ONLY no-go is actual cuts. Everything else - cracks, tears, wear, distortion, even missing entirely - is permitted.",
     repairs:""
   },
   {
     num:"11", name:"Booster Spool", fig:"610", sheets:1,
     critical:"Cracks NOT permitted (Surface A)", critClass:"crit-red",
-    nogo:["Cracks on Surface A -- not permitted"],
+    nogo:["Cracks on Surface A - not permitted"],
     ok:[
       "Surface A: Nicks/dents/scratches up to 0.00098\" (0.025mm) depth",
       "Surface A: Fretting/wear up to 0.00098\" (0.025mm) depth"
@@ -511,7 +511,7 @@ const COMPONENTS = [
     num:"--", name:"Flowpath Fairing & Shroud Segments", fig:"611", sheets:1,
     critical:"Surface oxidation on screws = OK", critClass:"crit-green",
     nogo:[],
-    ok:["Surface oxidation on screw heads -- permitted"],
+    ok:["Surface oxidation on screw heads - permitted"],
     cis:[],
     dims:[],
     notes:"Simplest check. Screw heads (8 + 10 locations), segment shroud (2 locations), splitter flow, fairing flow path.",
@@ -522,10 +522,7 @@ const COMPONENTS = [
 function renderGrid() {
   document.getElementById('compGrid').innerHTML = COMPONENTS.map((c,i) => `
     <div class="comp-tile" onclick="showDetail(${i})">
-      <div class="comp-tile-header">
-        <span class="comp-num">[${c.num}]</span>
-        <span class="comp-fig">Fig ${c.fig}</span>
-      </div>
+      <div class="comp-fig">Fig ${c.fig}</div>
       <div class="comp-name">${c.name}</div>
       <span class="comp-critical ${c.critClass}">${c.critical}</span>
     </div>
@@ -541,18 +538,18 @@ function showDetail(idx) {
   document.querySelector('.reset-btn').style.display = 'none';
 
   let html = `
-    <div class="detail-title">[${c.num}] ${c.name}</div>
+    <div class="detail-title">${c.name}</div>
     <div class="detail-subtitle">Figure ${c.fig} | TASK 72-22-00-200-808-G00</div>
   `;
 
   if (c.nogo.length) {
-    html += `<div class="status-box box-nogo"><h4>Not Permitted -- No-Go</h4><ul>${c.nogo.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
+    html += `<div class="status-box box-nogo"><h4>Not Permitted - No-Go</h4><ul>${c.nogo.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
   }
   if (c.ok.length) {
-    html += `<div class="status-box box-ok"><h4>Permitted -- Within Limits</h4><ul>${c.ok.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
+    html += `<div class="status-box box-ok"><h4>Permitted - Within Limits</h4><ul>${c.ok.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
   }
   if (c.cis.length) {
-    html += `<div class="status-box box-cis"><h4>Continue in Service -- Deferred Limits</h4><ul>${c.cis.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
+    html += `<div class="status-box box-cis"><h4>Continue in Service - Deferred Limits</h4><ul>${c.cis.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;
   }
   if (c.notes) {
     html += `<div class="note-box"><strong>Controller Notes:</strong> ${c.notes}</div>`;
@@ -565,13 +562,13 @@ function showDetail(idx) {
     html += `<div class="repair-refs"><h4>Repair References</h4><p>${c.repairs.split('|').join('<br>')}</p></div>`;
   }
 
-  // Figure images -- shown inline
+  // Figure images - shown inline
   let figImgs = [];
   for (let s = 1; s <= c.sheets; s++) {
     figImgs.push(`images/fig${c.fig}_sheet${s}.jpg`);
   }
   html += `<div class="fig-section">
-    <div class="fig-section-title">AMM Figure ${c.fig} -- ${c.sheets} sheet${c.sheets>1?'s':''} (click to zoom)</div>
+    <div class="fig-section-title">AMM Figure ${c.fig} - ${c.sheets} sheet${c.sheets>1?'s':''} (click to zoom)</div>
     <div class="fig-gallery">${figImgs.map((src,i) => `<div><div class="fig-label">Sheet ${i+1}</div><img src="${src}" alt="Figure ${c.fig} Sheet ${i+1}" onclick="openLightbox(this.src)"></div>`).join('')}</div>
   </div>`;
 

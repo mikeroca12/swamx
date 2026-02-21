@@ -72,7 +72,6 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
   padding:16px 24px;
   display:flex;
   align-items:center;
-  justify-content:space-between;
   gap:16px;
   overflow:hidden;
 }
@@ -101,12 +100,16 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
   font-weight:700;
   color:#ffffff;
   letter-spacing:-0.5px;
+  display:flex;
+  align-items:center;
+  gap:14px;
 }
 .page-header-img {
-  height:72px;
-  opacity:0.7;
+  height:48px;
+  opacity:0.85;
   flex-shrink:0;
   object-fit:contain;
+  vertical-align:middle;
 }
 
 /* CONTAINER */
@@ -348,9 +351,8 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 <div class="page-header">
   <div class="page-header-left">
     <div class="page-header-badge">CFM LEAP-1B / 737 MAX</div>
-    <h1>LEAP-1B Engine Reference</h1>
+    <h1>LEAP-1B Engine Reference <img src="leap1b-engine.png" alt="LEAP-1B Engine" class="page-header-img"></h1>
   </div>
-  <img src="leap1b-engine.png" alt="LEAP-1B Engine" class="page-header-img">
 </div>
 
 <div class="container">

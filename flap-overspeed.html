@@ -794,7 +794,7 @@ function validateSpeed() {
 }
 function showSpeedPreview(s) {
   const f=state.flapPos, te202=getTE202(f), te203=getTE203(f);
-  let h='<div style="font-size:12px;color:var(--text-dim);font-family:JetBrains Mono,monospace;line-height:1.8">';
+  let h='<div style="font-size:12px;color:var(--text-on-dark-dim);font-family:JetBrains Mono,monospace;line-height:1.8">';
   h+=`<div>TE: Phase I=${te202.phaseI} | Phase II=${te202.phaseII} | Deferral(203)=${te203.deferral}</div>`;
   if (state.system==='normal') { const le=TABLE_204[f], le5=TABLE_205[f]; h+=`<div>LE: Phase I=${le.phaseI} | Phase II=${le.phaseII} | Deferral(205)=${le5.deferral}</div>`; }
   h+='</div>'; document.getElementById('speedPreview').innerHTML=h;

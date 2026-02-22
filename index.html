@@ -25,7 +25,7 @@
             --text-dim: #94a3b8;
             --text-on-dark: #e2e8f0;
             --text-on-dark-muted: #94a7c8;
-            --text-on-dark-dim: #6880a0;
+            --text-on-dark-dim: #ffffff;
             --green: #16a34a;
             --amber: #d97706;
             --red: #dc2626;
@@ -1041,6 +1041,11 @@
             color: #ea580c;
         }
 
+        .ac-type-link {
+            background: rgba(8, 145, 178, 0.1);
+            color: #0891b2;
+        }
+
         .ac-item-title {
             white-space: nowrap;
             overflow: hidden;
@@ -1166,7 +1171,7 @@
                 <div class="search-icon">
                     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 </div>
-                <input type="text" class="search-input" id="searchInput" placeholder="Search by ATA, keyword, manual reference..." autocomplete="off">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search the entire Toolbox..." autocomplete="off">
                 <span class="search-hint" id="searchHint">/</span>
                 <div class="autocomplete-dropdown" id="acDropdown"></div>
             </div>
@@ -1528,7 +1533,14 @@
                 return words.every(w => hay.includes(w));
             }).map(a => ({...a, _type:'app'}));
 
-            let allMatches = [...qrhMatches, ...defectMatches, ...appMatches];
+            // Search Quick Links
+            let qlMatches = QUICK_LINKS.filter(ql => {
+                if (ql.section) return false;
+                const hay = ((ql.abbr || '') + ' ' + (ql.name || '') + ' ' + (ql.key || '')).toLowerCase();
+                return words.every(w => hay.includes(w));
+            }).slice(0, 4).map(ql => ({...ql, title: ql.name, _type:'link'}));
+
+            let allMatches = [...qrhMatches, ...defectMatches, ...appMatches, ...qlMatches];
 
             if (allMatches.length === 0) {
                 acDropdown.classList.remove('visible');
@@ -1558,6 +1570,12 @@
                         <span class="ac-type-badge ac-type-app">APP</span>
                         <span class="ac-item-title">${titleHl}</span>
                     </div>`;
+                } else if (d._type === 'link') {
+                    html += `<div class="ac-item${i === acIndex ? ' selected' : ''}" data-index="${i}" data-type="link" onmousedown="acSelect(${i})">
+                        <span class="ac-type-badge ac-type-link">LINK</span>
+                        <span class="ac-item-tag" style="background:${d.color}20;color:${d.color};border-color:${d.color}40">${esc(d.abbr)}</span>
+                        <span class="ac-item-title">${titleHl}</span>
+                    </div>`;
                 }
             });
 
@@ -1576,6 +1594,12 @@
 
             if (match._type === 'app') {
                 window.location.href = match.url;
+            } else if (match._type === 'link') {
+                if (match.custom && match.url) {
+                    window.open(match.url, 'docunet');
+                } else if (match.key && MANUAL_LINKS[match.key]) {
+                    openManual(match.key);
+                }
             } else if (match._type === 'defect') {
                 document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
                 document.querySelector('[data-tab="defects"]').classList.add('active');
@@ -2025,7 +2049,7 @@
             if (!q && activeFilter === 'ALL') {
                 resultsArea.innerHTML = `
                     <div class="results-empty">
-                        <p>Search for anything -- ATA codes, procedures, faults, tips</p>
+                        <p><strong>All references. All manuals. All apps. One search.</strong></p>
                         <p class="hint">Type to search or select a category filter</p>
                         <div class="stats-line"><span>${DATA.length}</span> entries &middot; <span>${DEFECTS.length}</span> defects &middot; <span>${Object.keys(MANUAL_LINKS).length}</span> manuals linked &middot; <span>${APPS.length}</span> app${APPS.length !== 1 ? 's' : ''}</div>
                     </div>`;
@@ -2076,7 +2100,17 @@
                 }
             }
 
-            const totalResults = qrhResults.length + defectResultsList.length + appResults.length;
+            // Quick Link results
+            let qlResults = [];
+            if (q && (activeFilter === 'ALL' || activeFilter === 'APP')) {
+                qlResults = QUICK_LINKS.filter(ql => {
+                    if (ql.section) return false;
+                    const hay = ((ql.abbr || '') + ' ' + (ql.name || '') + ' ' + (ql.key || '')).toLowerCase();
+                    return words.every(w => hay.includes(w));
+                });
+            }
+
+            const totalResults = qrhResults.length + defectResultsList.length + appResults.length + qlResults.length;
 
             if (totalResults === 0) {
                 resultsArea.innerHTML = '<div class="results-empty"><p>No results found</p></div>';
@@ -2174,6 +2208,21 @@
                     </div>
                     <div class="app-result-desc">${highlight(a.description, words)}</div>
                     <div class="app-result-launch">LAUNCH APP &rarr;</div>
+                </div>`;
+            });
+
+            // Render Quick Link cards inline
+            qlResults.forEach(ql => {
+                const onclick = ql.custom
+                    ? (ql.url ? `window.open('${ql.url}','docunet')` : '')
+                    : (ql.key && MANUAL_LINKS[ql.key] ? `openManual('${ql.key}')` : '');
+                html += `<div class="app-result-card" onclick="${onclick}" style="cursor:pointer">
+                    <div class="app-result-header">
+                        <span class="ac-type-badge ac-type-link">LINK</span>
+                        <span class="app-result-title">${highlight(ql.name, words)}</span>
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin-left:auto">${ql.abbr}</span>
+                    </div>
+                    <div class="app-result-launch">OPEN MANUAL &rarr;</div>
                 </div>`;
             });
 

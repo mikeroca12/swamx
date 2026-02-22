@@ -18,7 +18,7 @@
   --text-secondary: #475569;
   --text-dim: #64748b;
   --text-on-dark: #e2e8f0;
-  --text-on-dark-dim: #94a7c8;
+  --text-on-dark-dim: #ffffff;
   --green: #16a34a;
   --green-bg: #dcfce7;
   --green-border: #86efac;
@@ -135,6 +135,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 .details-toggle:hover { background:var(--surface2); }
 .details-toggle .arrow { transition:transform 0.2s; font-size:12px; color:var(--text-dim); }
 .details-toggle.open .arrow { transform:rotate(180deg); }
+.details-toggle.open { border-radius:10px 10px 0 0; margin-bottom:0; }
 .details-content {
   display:none; background:var(--surface); border:1px solid var(--border);
   border-top:none; border-radius:0 0 10px 10px; padding:20px;

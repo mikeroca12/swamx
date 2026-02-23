@@ -1136,8 +1136,8 @@
         <section id="quicklinks" class="section">
             <div class="ql-search">
                 <span class="qs-icon">&#128269;</span>
-                <input type="text" id="qlSearchInput" placeholder="Search all links..." oninput="qlFilter()" onkeydown="if(event.key==='Enter')qlLaunchFirst()">
-                <span class="qs-hint" id="qlHint">ENTER to open</span>
+                <input type="text" id="qlSearchInput" placeholder="Search all links..." oninput="qlFilter()" onkeydown="qlKeyNav(event)">
+                <span class="qs-hint" id="qlHint">TAB to cycle, ENTER to open</span>
                 <button class="qs-clear" id="qlClear" onclick="qlClearSearch()">&#10005;</button>
             </div>
             <div class="ql-fav-sec" id="qlFavSec">
@@ -1501,8 +1501,8 @@
         });
 
         searchInput.addEventListener('input', () => {
-            render();
             updateAutocomplete();
+            if (!searchInput.value.trim()) render();
         });
 
         // ---- AUTOCOMPLETE ----
@@ -1613,8 +1613,49 @@
                 renderDefects();
             } else {
                 searchInput.value = match.title;
-                render();
+                renderSingleResult(match);
             }
+        }
+
+        function renderSingleResult(d) {
+            const q = searchInput.value.trim().toLowerCase();
+            const words = q ? q.split(/\s+/) : [];
+            const style = tagStyle(d.cat);
+            const titleKey = findManualKey(d.title);
+            const titleText = highlight(d.title, words);
+            const titleHtml = titleKey
+                ? `<span class="result-title result-title-link" onclick="openManual('${titleKey}')" title="Open ${MANUAL_LINKS[titleKey].name}">${titleText}</span>`
+                : `<span class="result-title">${titleText}</span>`;
+
+            const copyText = d.refs.length ? d.refs[0] : d.title;
+            const hasNote = d.note && d.note.trim();
+            const hasFile = d.file && d.file.trim();
+            let indicators = '';
+            if (hasNote) indicators += `<span class="card-indicator note-indicator" onclick="event.stopPropagation();toggleNote('note-single')" title="Controller Note">NOTE</span>`;
+            if (hasFile) indicators += `<span class="card-indicator file-indicator" onclick="event.stopPropagation();openFile('${(d.file||'').replace(/'/g,"\\'")}')" title="Open file">FILE</span>`;
+
+            const typeBadge = d.type || 'qrh';
+            const typeLabel = {qrh:'QRH', defect:'DEFECT', template:'TEMPLATE', app:'APP'}[typeBadge] || 'QRH';
+            const typeClass = 'ac-type-' + typeBadge;
+
+            let html = `<div class="result-count">1 result</div>`;
+            html += `<div class="result-card"><div class="result-card-header">
+                <span class="ac-type-badge ${typeClass}">${typeLabel}</span>
+                <span class="result-tag" style="${style}">${highlight(d.cat, words)}</span>
+                ${titleHtml}
+                ${indicators}
+                <button class="copy-btn" onclick="event.stopPropagation();copyRef('${copyText.replace(/'/g,"\\'")}', this)" title="Copy reference">COPY</button>
+            </div>`;
+            if (d.refs.length) {
+                html += '<div class="result-refs">';
+                d.refs.forEach(r => { html += renderRef(r, words); });
+                html += '</div>';
+            }
+            if (hasNote) {
+                html += `<div class="card-note" id="note-single"><div class="card-note-label">CONTROLLER NOTE</div><div class="card-note-text">${highlight(d.note, words)}</div></div>`;
+            }
+            html += '</div>';
+            resultsArea.innerHTML = html;
         }
 
         searchInput.addEventListener('keydown', (e) => {
@@ -2455,6 +2496,7 @@
                 var hd = c.querySelector('.ql-sec-hdr'); if (hd) hd.classList.remove('collapsed');
             });
             var any = false, first = true;
+            qlSelIdx = 0;
             tiles.forEach(function(t) {
                 t.classList.remove('ql-sm-first');
                 var n = t.getAttribute('data-n') || '', d = t.getAttribute('data-d') || '';
@@ -2468,6 +2510,32 @@
                 c.classList.toggle('ql-sh', v.length === 0);
             });
             if (nr) nr.classList.toggle('show', !any);
+        }
+
+        var qlSelIdx = 0;
+
+        function qlKeyNav(e) {
+            var visible = Array.from(document.querySelectorAll('.ql-tile.ql-sm'));
+            if (!visible.length) return;
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                visible.forEach(function(t) { t.classList.remove('ql-sm-first'); });
+                if (e.shiftKey) {
+                    qlSelIdx = qlSelIdx > 0 ? qlSelIdx - 1 : visible.length - 1;
+                } else {
+                    qlSelIdx = qlSelIdx < visible.length - 1 ? qlSelIdx + 1 : 0;
+                }
+                visible[qlSelIdx].classList.add('ql-sm-first');
+                visible[qlSelIdx].scrollIntoView({block:'nearest'});
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                var sel = document.querySelector('.ql-tile.ql-sm-first');
+                if (sel) sel.click();
+                else if (visible[0]) visible[0].click();
+            } else if (e.key === 'Escape') {
+                qlClearSearch();
+                document.getElementById('qlSearchInput').blur();
+            }
         }
 
         function qlLaunchFirst() {

@@ -870,6 +870,7 @@
         .k-sp{color:#93c5fd;text-shadow:0 0 6px rgba(147,197,253,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(147,197,253,0.25);}
         .k-wx{color:#5eead4;text-shadow:0 0 6px rgba(94,234,212,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(94,234,212,0.25);}
         .k-trn{color:#fcd34d;text-shadow:0 0 6px rgba(252,211,77,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(252,211,77,0.25);}
+        .k-mbf{color:#67e8f9;text-shadow:0 0 6px rgba(103,232,249,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(103,232,249,0.25);}
         .k-aom{color:#fca5a5;text-shadow:0 0 6px rgba(252,165,165,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(252,165,165,0.25);}
         .k-fom{color:#fdba74;text-shadow:0 0 6px rgba(253,186,116,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(253,186,116,0.25);}
         .k-mpm{color:#fcd34d;text-shadow:0 0 6px rgba(252,211,77,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(252,211,77,0.25);}
@@ -1892,57 +1893,18 @@
 
         // ---- QUICK LINKS ----
         const QL_SECTIONS = [
-          {id:"quickbase",t:"QuickBase",bl:"QB",kc:"k-qb",l:[
-            {n:"NRFO",d:"Non-Routine Flight Ops",u:"#"},
-            {n:"WWI",d:"Work Without Items",u:"#"},
-            {n:"AOG",d:"Aircraft on Ground",u:"#"},
-            {n:"W/O",d:"Work Orders",u:"#"},
-            {n:"CATIII",d:"Category III",u:"#"},
-            {n:"HRON Request",d:"HRON Parts",u:"#"},
-            {n:"TSR Dashboard",d:"Tech Service Requests",u:"#"},
-            {n:"CESE",d:"Compliance Engine",u:"#"},
-            {n:"INTL Checklist",d:"MOC Downline",u:"#"},
-            {n:"MX Control Tools",d:"LGA, ISP Downline",u:"#"},
-            {n:"INTL Badge/Travel",d:"Dress Code",u:"#"},
-            {n:"INTL STA Mgr",d:"Must Email List",u:"#"},
-            {n:"AOG TSR",d:"Retired",u:"#"},
-          ]},
           {id:"programs",t:"Programs",bl:"PRG",kc:"k-prg",l:[
-            {n:"EVA",d:"Fleet Summary",u:"#"},
-            {n:"Flightkeys",d:"Flight Planning",u:"#"},
-            {n:"AirVault",d:"AC Logs by Date",u:"#"},
-            {n:"PARAPP",d:"Salesforce Tech Ops",u:"#"},
-            {n:"TSR",d:"Salesforce Lightning",u:"#"},
-            {n:"Hermes",d:"Maintenance Login",u:"#"},
-            {n:"Comply365",d:"Document Access",u:"#"},
-            {n:"Ops Dashboard",d:"Operations Suite",u:"#"},
-            {n:"PAGE",d:"Everbridge Paging",u:"#"},
-            {n:"DocuNet",d:"Manuals SSO",u:"#"},
-            {n:"LMS",d:"SumTotal Training",u:"#"},
-            {n:"Cargo SLI",d:"APM Login",u:"#"},
-            {n:"OCMP",d:"File System",u:"#"},
-            {n:"Jeppesen",d:"Charts SWA8FO",u:"#"},
-            {n:"Wheel & Brake",d:"Search Q & S/N",u:"#"},
-            {n:"O/T",d:"swamoc.com Schedule",u:"#"},
-            {n:"AirlineTechs",d:"MAX Flight Deck",u:"#"},
-            {n:"Toolbox Backup",d:"Remote Access",u:"#"},
-          ]},
-          {id:"swalife",t:"SWALife / SharePoint",bl:"SP",kc:"k-sp",l:[
-            {n:"FDR/CVR Request",d:"Flight Data Recorder",u:"#"},
-            {n:"NOC-SOD-MAP",d:"Current SOD Map",u:"#"},
-            {n:"Shadow Board",d:"Digital MX Links",u:"#"},
-            {n:"All Manuals",d:"SWALife Manuals Page",u:"#"},
-            {n:"Parts - August",d:"800 + MAX Parts",u:"#"},
-            {n:"Parts - NG",d:"Whittington NG",u:"#"},
-            {n:"Parts - 800",d:"Whittington 800",u:"#"},
-            {n:"Parts - MAX",d:"Whittington MAX",u:"#"},
-            {n:"Parts - Misc",d:"Whittington Misc",u:"#"},
-            {n:"MOC Schedule",d:"2026 Schedule",u:"#"},
-            {n:"Field Tech Cal",d:"2026 Calendar",u:"#"},
-            {n:"Turnover",d:"Short Tails Turnover",u:"#"},
-            {n:"Chris Notes",d:"Szymanek Notes",u:"#"},
-            {n:"HOZ Notes",d:"OneNote",u:"#"},
-            {n:"OneDrive",d:"Personal Drive",u:"#"},
+            {n:"MXI",d:"Maintenix",u:"https://maintenix.acmx.prod.swacorp.com/maintenix/common/security/login.jsp"},
+            {n:"WOLF Flowsheet",d:"Ops Suite Schedule",u:"https://opssuitemain.swacorp.com/schedule"},
+            {n:"EVA",d:"Fleet Summary",u:"https://eva.acmx.prod.swacorp.com/v3/mx_eva_webapp/#/summary/lists/fleet"},
+            {n:"AirlineTechs",d:"MAX Flight Deck",u:"http://www.airlinetechs.com/flightdeckzoom/MAXflightdeck.php"},
+            {n:"Hermes",d:"Maintenance Login",u:"https://hwm.swacorp.com/MaintUser/Account/LogOn?ReturnUrl=%2fMaintUser%2f"},
+            {n:"DocuNet",d:"Manuals SSO",u:"https://docunet-online-us.vistair.com/"},
+            {n:"TSR",d:"Salesforce Lightning",u:"https://techopsappportal.lightning.force.com/lightning/page/home"},
+            {n:"PARAPP",d:"Salesforce Tech Ops",u:"https://techopsappportal.my.salesforce.com/"},
+            {n:"Comply365",d:"Document Access",u:"https://swa.comply365.net/"},
+            {n:"Toolbox Backup",d:"Remote Access",u:"http://w11pcwtbr1ap001:8080/ToolboxRemote.html"},
+            {n:"Wheel & Brake",d:"Search Q & S/N",u:"https://prod.wb-acmx.swalife.com/#/tag-list"},
           ]},
           {id:"manuals",t:"Manuals",bl:"",kc:"",l:[
             {n:"AOM",d:"Aircraft Operating Manual",b:"AOM",kc:"k-aom",mk:"AOM"},
@@ -1958,25 +1920,62 @@
             {n:"FRM - -7/800",d:"Fault Reporting -7/800",b:"FRM",kc:"k-frm",mk:"FRM 78"},
             {n:"FRM - GIP",d:"General Inspection",b:"FRM",kc:"k-frm",mk:"FRM GIP"},
           ]},
+          {id:"quickbase",t:"QuickBase",bl:"QB",kc:"k-qb",l:[
+            {n:"W/O",d:"Work Orders",u:"https://southwest.quickbase.com/db/bmxb4hwm5?a=nwr"},
+            {n:"HRON Request",d:"HRON Parts",u:"https://southwest.quickbase.com/db/bp2ra8s7e?a=nwr"},
+            {n:"CATIII",d:"Category III",u:"https://southwest.quickbase.com/db/bmxb4mp6b?a=nwr"},
+            {n:"AOG",d:"Aircraft on Ground",u:"https://southwest.quickbase.com/db/bmq3qfu94"},
+            {n:"NRFO",d:"Non-Routine Flight Ops",u:"https://southwest.quickbase.com/db/bpux4n44k"},
+            {n:"WWI",d:"Work Without Items",u:"https://southwest.quickbase.com/db/btdkqvnze"},
+            {n:"INTL Checklist",d:"MOC Downline",u:"https://southwest.quickbase.com/db/bmc2jq3ms"},
+            {n:"INTL STA Mgr",d:"Must Email List",u:"https://southwest.quickbase.com/db/bn77k9b4c/tablereport?a=td"},
+            {n:"INTL Badge/Travel",d:"Dress Code",u:"https://southwest.quickbase.com/db/bn9xycn7x?a=td"},
+          ]},
+          {id:"swalife",t:"SWALife / SharePoint",bl:"SP",kc:"k-sp",l:[
+            {n:"All Manuals",d:"SWALife Manuals Page",u:"https://wnco.sharepoint.com/sites/SWALife-Manuals"},
+            {n:"NOC Manuals",d:"Manuals & Regs",u:"https://wnco.sharepoint.com/sites/SWALife-NOC-Secure/SitePages/Manuals-Regs.aspx"},
+            {n:"SA-M Forms",d:"DocuNet TOF Forms",u:"https://sso.fed.prod.aws.swalife.com/idp/startSSO.ping?PartnerSpId=SWA.usernet.vistair.com&TARGET=https://docunet-online-us.vistair.com/?manualCode=SWA-CPUBS-TOF-HTML"},
+            {n:"FDR/CVR Request",d:"Flight Data Recorder",u:"https://wnco.sharepoint.com/sites/SWALife-Departments/SitePages/FDR-CVR-Request-Form.aspx"},
+            {n:"Parts - August",d:"800 + MAX Parts",u:"https://wnco-my.sharepoint.com/:x:/r/personal/august_stefkovich_wnco_com/_layouts/15/Doc.aspx?sourcedoc=%7B85042E4A-67F8-4806-9B5B-94413A8CD9D4%7D&file=New%20800%20%2B%20MAX%20Parts%20List.xlsx&action=default&mobileredirect=true"},
+            {n:"Parts - MAX",d:"Whittington MAX",u:"https://wnco-my.sharepoint.com/:x:/r/personal/michael_whittington_wnco_com/_layouts/15/Doc.aspx?sourcedoc=%7B993277FB-ADE7-4AF9-8683-0FE5A3D2999E%7D&file=Max%20Spreadsheet.xlsx&wdOrigin=OFFICECOM-WEB.START.REC&ct=1648416000257&action=default&mobileredirect=true"},
+            {n:"Parts - 800",d:"Whittington 800",u:"https://wnco-my.sharepoint.com/:x:/r/personal/michael_whittington_wnco_com/_layouts/15/Doc.aspx?sourcedoc=%7BB5425EC5-FC51-47FC-AE31-DE711C4BA4BB%7D&file=800%20Spreadsheet.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1&ct=1649979558093&wdOrigin=OFFICECOM-WEB.MAIN.EDGEWORTH&cid=7d691ba0-24b7-4512-b074-209a32ab1071"},
+            {n:"Parts - NG",d:"Whittington NG",u:"https://wnco-my.sharepoint.com/:x:/r/personal/michael_whittington_wnco_com/_layouts/15/Doc.aspx?sourcedoc=%7B4605EAA3-DC1C-4639-BA97-D7B3C57835E1%7D&file=NG%20Spreadsheet.xlsx&wdOrigin=OFFICECOM-WEB.START.REC&ct=1648416039990&action=default&mobileredirect=true"},
+            {n:"Parts - MISC",d:"Whittington Misc",u:"https://wnco-my.sharepoint.com/:x:/r/personal/michael_whittington_wnco_com/_layouts/15/Doc.aspx?sourcedoc=%7B25DEE148-0B92-4C0B-83D0-903E128D1E31%7D&file=Misc%20Spreadsheet.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1&ct=1649979571309&wdOrigin=OFFICECOM-WEB.MAIN.EDGEWORTH&cid=fe0faa20-d85c-430d-9254-fcf3838d2907"},
+            {n:"Shadow Board",d:"Digital MX Links",u:"https://wnco.sharepoint.com/sites/SWALife-MXLinks/Lists/Digital%20Shadow%20Board/AllItems.aspx?env=WebViewList"},
+            {n:"Specialty Aircraft",d:"Stock Images",u:"https://wnco.sharepoint.com/sites/SouthwestStockImages/SitePages/Aircraft.aspx"},
+            {n:"ACFT Interior/SATCOM",d:"Aircraft Info",u:"https://wnco.sharepoint.com/sites/SWALife-NOC-Secure/SitePages/Aircraft.aspx?csf=1&web=1&e=POhazZ"},
+            {n:"Campus Resources",d:"Getting to TOPS",u:"https://wnco.sharepoint.com/sites/SWALife-Training/SitePages/Resources.aspx#getting-to-tops"},
+          ]},
+          {id:"boeing",t:"Boeing Toolbox",bl:"MBF",kc:"k-mbf",edge:true,l:[
+            {n:"MBF",d:"My Boeing Fleet Home",u:"https://sso.fed.prod.aws.swalife.com/idp/startSSO.ping?PartnerSpId=urn%3Aexostar%3Adaf&TargetResource=https://sso.aviationid.com/idprov/pages/home/dispatch.jsp%3FSpName=MBF"},
+            {n:"MAX Req Placards",d:"Task Cards",u:"https://myboeingfleet.boeing.com/toolbox/library/ViewAirlineDoc/linked_doc/89893F70D27DDB73/MAX_taskcards.html?mimeType=text/html"},
+            {n:"Emergency Equip",d:"Equipment Drawing",u:"https://myboeingfleet.boeing.com/toolbox/library/ViewAirlineDoc/linked_doc/89893F70A50AD549/emergency_equip_install.html?mimeType=text/html"},
+            {n:"Ext Markings",d:"Placards Drawing",u:"https://myboeingfleet.boeing.com/toolbox/library/ViewAirlineDoc/linked_doc/89893F6B2564D285/exterior_markings.html?mimeType=text/html"},
+            {n:"Tamper Strips",d:"Strip Drawings",u:"https://myboeingfleet.boeing.com/toolbox/library/ViewAirlineDoc/linked_doc/89893F6BD7D82575/antitamperstrips.html?mimeType=text/html"},
+            {n:"Carpet Layout",d:"Layout Drawings",u:"https://myboeingfleet.boeing.com/toolbox/library/ViewAirlineDoc/linked_doc/89893F6B3CCC2CFF/carpetlayouts.html?mimeType=text/html"},
+            {n:"PMA List",d:"Parts Approval",u:"https://myboeingfleet.boeing.com/toolbox/library/html/library/openAirlineDoc.htm?queryString=/toolbox/library/ViewAirlineDoc/89893F6BE50A7A10.pdf?mimeType=application/pdf"},
+            {n:"Life Limited Parts",d:"NG Parts List",u:"https://myboeingfleet.boeing.com/toolbox/library/ViewAirlineDoc/linked_doc/89893F6DED09AE65/parentng.html?mimeType=text/html"},
+            {n:"HAZMAT Search",d:"MAXCOM SDS",u:"https://app.maxcomsc.com/maxcomsc/index.jsp?ju=Southwest&jp=msds"},
+          ]},
           {id:"weather",t:"Weather / Ops",bl:"WX",kc:"k-wx",l:[
-            {n:"Windy",d:"Wind & Weather Map",u:"https://www.windy.com"},
-            {n:"Icing",d:"Aviation Weather Center",u:"https://www.aviationweather.gov/icing"},
-            {n:"Winds Aloft",d:"Aviation Weather Center",u:"https://aviationweather.gov/windtemp"},
-            {n:"GPSJAM",d:"GPS/GNSS Interference",u:"https://gpsjam.org"},
-            {n:"Defense NOTAMS",d:"GPS & Center Select",u:"#"},
-            {n:"BirdCast",d:"Live Bird Migration",u:"https://birdcast.info"},
+            {n:"Windy",d:"Wind & Weather Map",u:"https://www.windy.com/-Menu/menu?31.579,-98.361,6"},
+            {n:"Icing",d:"Aviation Weather GFA",u:"https://aviationweather.gov/gfa/#ice"},
+            {n:"Winds Aloft",d:"Aviation Weather GFA",u:"https://aviationweather.gov/gfa/#winds"},
+            {n:"GPSJAM",d:"GPS/GNSS Interference",u:"https://gpsjam.org/?lat=34.40449&lon=-97.18424&z=7.1&date=2024-10-10"},
+            {n:"Defense NOTAMS",d:"GPS & Center Select",u:"https://www.notams.faa.gov/dinsQueryWeb/"},
+            {n:"BirdCast",d:"Live Bird Migration",u:"https://birdcast.info/migration-tools/live-migration-maps/"},
           ]},
           {id:"training",t:"Training / Reference",bl:"TRN",kc:"k-trn",l:[
-            {n:"Lightning CBT",d:"Strike - MOC123",u:"#"},
-            {n:"FAA MEL Search",d:"DRS Search",u:"#"},
-            {n:"Nav Data Cycle",d:"Jeppesen Effective Dates",u:"#"},
-            {n:"NG ETOPS Auth",d:"LMS Authorization",u:"#"},
-            {n:"MAX ETOPS Auth",d:"LMS Authorization",u:"#"},
-            {n:"Tech Ops Dash",d:"LMS Dashboard",u:"#"},
-            {n:"FAR 121.374",d:"ETOPS CAMP",u:"#"},
-            {n:"AC 120-42B",d:"ETOPS & Polar Ops",u:"#"},
-            {n:"MAX YouTube",d:"Video Library",u:"#"},
-            {n:"MAX OMF",d:"Web Version",u:"#"},
+            {n:"Lightning CBT",d:"Strike - MOC123",u:"https://www.swamaintenancetraining.com/secure/CMP/LightningStrike/story.html"},
+            {n:"LMS",d:"SumTotal Training",u:"https://southwest.sumtotal.host/rcore/c/pillarRedirect?relyingParty=AdvancedReport&url=https%3A%2F%2Fsouthwest.sumtotal.host%2Fjasperserver-pro%2F&nodeKey=Advanced_Reporting&nodeUrl=https%3A%2F%2Fsouthwest.sumtotal.host%2Fjasperserver-pro"},
+            {n:"NG ETOPS Auth",d:"LMS Authorization",u:"https://southwest.sumtotal.host/jasperserver-pro/flow.html?_flowId=viewReportFlow&reportUnit=%2FCustom%2FReports%2FSub_Reports%2FTOD_Authorization_Reports%2FTech_Ops_Authorization_Report_06&Activity=236571&reportLocale=en"},
+            {n:"MAX ETOPS Auth",d:"LMS Authorization",u:"https://southwest.sumtotal.host/jasperserver-pro/flow.html?_flowId=viewReportFlow&reportUnit=%2FCustom%2FReports%2FSub_Reports%2FTOD_Authorization_Reports%2FTech_Ops_Authorization_Report_06&Activity=237216&reportLocale=en"},
+            {n:"FAA MEL Search",d:"DRS Search",u:"https://drs.faa.gov/search"},
+            {n:"Nav Data Cycle",d:"Jeppesen Effective Dates",u:"https://ww2.jeppesen.com/update-cycle-and-effective-dates-schedule/"},
+            {n:"MAX YouTube",d:"Video Library",u:"https://www.youtube.com/playlist?list=PLoYyKExFyTLvbOPiBn5IkOSBx2RNVRpwt"},
+            {n:"MAX OMF",d:"Web Version",u:"http://www.airlinetechs.com/PDF/Boeing%20MAX/MAX%20Display%20System/07.html"},
+            {n:"FAR 121.374",d:"ETOPS CAMP",u:"https://www.ecfr.gov/current/title-14/chapter-I/subchapter-G/part-121/subpart-L/section-121.374"},
+            {n:"AC 120-42B",d:"ETOPS & Polar Ops",u:"https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentid/73587"},
           ]}
         ];
 
@@ -2350,21 +2349,39 @@
             qlRenderMasonry();
         }
 
+        var isEdge = /Edg\//.test(navigator.userAgent);
+
         function qlOpenLink(lk, sec) {
             if (lk.mk && MANUAL_LINKS[lk.mk]) {
                 openManual(lk.mk);
             } else if (lk.u && lk.u !== '#') {
-                window.open(lk.u, '_blank');
+                if (sec && sec.edge && !isEdge) {
+                    navigator.clipboard.writeText(lk.u).then(function() {
+                        qlToast('URL copied - open in Edge browser');
+                    });
+                } else {
+                    window.open(lk.u, '_blank');
+                }
             }
         }
 
+        function qlToast(msg) {
+            var t = document.createElement('div');
+            t.textContent = msg;
+            t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-family:DM Sans,sans-serif;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:opacity 0.3s;';
+            document.body.appendChild(t);
+            setTimeout(function() { t.style.opacity = '0'; setTimeout(function() { t.remove(); }, 300); }, 2500);
+        }
+
         function qlTileH(sec, lk, fv) {
+            var si = QL_SECTIONS.indexOf(sec);
+            var li = sec.l.indexOf(lk);
             var e = lk.n.replace(/'/g, "\\'");
             var bl = lk.b || sec.bl;
             var kc = lk.kc || sec.kc;
             var sc = fv ? 'ql-star fv' : 'ql-star';
             var ch = fv ? '&#9733;' : '&#9734;';
-            return '<a class="ql-tile" href="#" data-n="' + lk.n.toLowerCase() + '" data-d="' + (lk.d || '').toLowerCase() + '" title="' + (lk.d || '') + '" onclick="event.preventDefault();qlOpenLink(QL_SECTIONS.find(s=>s.id===\'' + sec.id + '\').l.find(x=>x.n===\'' + e + '\'),QL_SECTIONS.find(s=>s.id===\'' + sec.id + '\'))">' +
+            return '<a class="ql-tile" href="#" data-n="' + lk.n.toLowerCase() + '" data-d="' + (lk.d || '').toLowerCase() + '" title="' + (lk.d || '') + '" onclick="event.preventDefault();qlOpenLink(QL_SECTIONS[' + si + '].l[' + li + '],QL_SECTIONS[' + si + '])">' +
                 '<span class="korry ' + kc + '">' + bl + '</span>' +
                 '<span class="ql-name">' + lk.n + '</span>' +
                 '<button class="' + sc + '" onclick="qlToggleFav(\'' + sec.id + '\',\'' + e + '\',event)">' + ch + '</button>' +
@@ -2381,7 +2398,8 @@
                 if (!found) continue;
                 var lk = found.lk, sec = found.sec, e = lk.n.replace(/'/g, "\\'");
                 var bl = lk.b || sec.bl, kc = lk.kc || sec.kc;
-                h += '<div class="ql-fav-chip" onclick="qlOpenLink(QL_SECTIONS.find(s=>s.id===\'' + sec.id + '\').l.find(x=>x.n===\'' + e + '\'),QL_SECTIONS.find(s=>s.id===\'' + sec.id + '\'))">';
+                var si = QL_SECTIONS.indexOf(sec), li = sec.l.indexOf(lk);
+                h += '<div class="ql-fav-chip" onclick="qlOpenLink(QL_SECTIONS[' + si + '].l[' + li + '],QL_SECTIONS[' + si + '])">';
                 h += '<span class="korry ' + kc + '" style="font-size:8px;padding:2px 4px;">' + bl + '</span>';
                 h += '<span class="qfc-n">' + lk.n + '</span>';
                 h += '<span class="qfc-x" onclick="event.stopPropagation();qlToggleFav(\'' + sec.id + '\',\'' + e + '\',event)">&#10005;</span>';
@@ -2398,7 +2416,7 @@
                 var sec = QL_SECTIONS[s], col = qlCollapsed.indexOf(sec.id) !== -1;
                 h += '<div class="ql-sec-card" data-s="' + sec.id + '">';
                 h += '<div class="ql-sec-hdr ' + (col ? 'collapsed' : '') + '" onclick="qlToggleSec(\'' + sec.id + '\')">';
-                h += '<div style="display:flex;align-items:center"><h3>' + sec.t + '</h3><span class="ql-cnt">' + sec.l.length + '</span></div>';
+                h += '<div style="display:flex;align-items:center"><h3>' + sec.t + '</h3>' + (sec.edge && !isEdge ? '<span style="font-size:9px;color:#ffffff;margin-left:8px;font-family:JetBrains Mono,monospace;">EDGE ONLY</span>' : '') + '<span class="ql-cnt">' + sec.l.length + '</span></div>';
                 h += '<span class="ql-arr">&#9660;</span></div>';
                 h += '<div class="ql-sec-list ' + (col ? 'hidden' : '') + '">';
                 for (var j = 0; j < sec.l.length; j++) h += qlTileH(sec, sec.l[j], qlIsF(sec.id, sec.l[j].n));

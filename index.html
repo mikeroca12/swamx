@@ -968,16 +968,22 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-top: none;
-            border-radius: 0 0 10px 10px;
+            border-radius: 0 0 12px 12px;
             max-height: 260px;
             overflow-y: auto;
             z-index: 50;
             display: none;
             box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            margin-top: -1px;
         }
 
         .autocomplete-dropdown.visible {
             display: block;
+        }
+
+        .search-container:has(.autocomplete-dropdown.visible) .search-input {
+            border-radius: 12px 12px 0 0;
+            border-bottom-color: var(--border);
         }
 
         .ac-item {

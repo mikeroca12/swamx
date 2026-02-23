@@ -826,76 +826,68 @@
         }
 
         /* ---- QUICK LINKS ---- */
-        .quicklinks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 10px;
-        }
+        /* ---- QUICK LINKS v2: Masonry + Korry ---- */
+        .ql-search{background:#fff;border:2px solid var(--accent-light,#2563eb);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:12px;box-shadow:0 2px 8px rgba(37,99,235,0.1);}
+        .ql-search input{flex:1;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--text);outline:none;}
+        .ql-search input::placeholder{color:var(--text-dim);}
+        .ql-search .qs-icon{color:var(--accent-light,#2563eb);font-size:14px;}
+        .ql-search .qs-clear{background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:14px;display:none;padding:0 2px;}
+        .ql-search .qs-clear.show{display:block;}
+        .ql-search .qs-hint{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);background:var(--surface);padding:2px 6px;border-radius:3px;border:1px solid var(--border);flex-shrink:0;display:none;}
+        .ql-search .qs-hint.show{display:block;}
 
-        .ql-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            box-shadow: var(--card-shadow);
-        }
+        .ql-fav-sec{margin-bottom:12px;background:rgba(250,204,21,0.04);border:1px solid rgba(250,204,21,0.15);border-radius:8px;padding:8px 10px;}
+        .ql-fav-hdr{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#facc15;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+        .ql-fav-row{display:flex;flex-wrap:wrap;gap:5px;min-height:24px;align-items:center;}
+        .ql-fav-empty{font-size:10px;color:var(--text-on-dark);opacity:0.3;padding:2px 0;}
+        .ql-fav-chip{background:rgba(255,255,255,0.1);border:1px solid rgba(250,204,21,0.2);border-radius:5px;padding:4px 9px;display:inline-flex;align-items:center;gap:5px;text-decoration:none;cursor:pointer;transition:all 0.1s;}
+        .ql-fav-chip:hover{background:rgba(255,255,255,0.16);border-color:rgba(250,204,21,0.4);}
+        .ql-fav-chip .qfc-n{font-size:11px;font-weight:700;color:var(--text-on-dark-dim);white-space:nowrap;}
+        .ql-fav-chip .qfc-x{font-size:9px;color:var(--text-on-dark);opacity:0.3;cursor:pointer;}
+        .ql-fav-chip .qfc-x:hover{opacity:1;}
 
-        .ql-card:hover {
-            border-color: var(--accent-light);
-            background: var(--surface);
-            transform: translateY(-2px);
-            box-shadow: var(--card-shadow-hover);
-        }
+        .ql-masonry{column-width:175px;column-gap:10px;}
+        .ql-sec-card{break-inside:avoid;background:rgba(0,0,0,0.15);border:1px solid var(--frame-border);border-radius:7px;overflow:hidden;margin-bottom:10px;}
+        .ql-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:pointer;user-select:none;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--frame-border);}
+        .ql-sec-hdr h3{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#ffffff;margin:0;}
+        .ql-sec-hdr .ql-cnt{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--text-on-dark);background:rgba(255,255,255,0.1);padding:1px 5px;border-radius:3px;margin-left:5px;}
+        .ql-sec-hdr .ql-arr{color:var(--text-on-dark-dim);font-size:9px;transition:transform 0.15s;}
+        .ql-sec-hdr.collapsed .ql-arr{transform:rotate(-90deg);}
+        .ql-sec-list{padding:3px;}
+        .ql-sec-list.hidden{display:none;}
 
-        .ql-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            font-size: 13px;
-        }
+        .ql-tile{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:5px 8px;display:flex;align-items:center;gap:7px;margin-bottom:2px;cursor:pointer;transition:all 0.12s;text-decoration:none;box-shadow:var(--card-shadow);position:relative;}
+        .ql-tile:hover{border-color:var(--accent-light,#2563eb);box-shadow:var(--card-shadow-hover);transform:translateY(-1px);background:#fff;}
+        .ql-tile .ql-name{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;}
+        .ql-tile .ql-star{background:none;border:none;cursor:pointer;font-size:10px;color:var(--border-strong,#b4bcc9);opacity:0.25;transition:opacity 0.1s;flex-shrink:0;}
+        .ql-tile:hover .ql-star{opacity:0.5;}
+        .ql-tile .ql-star.fv{color:#facc15;opacity:1;}
+        .ql-tile .ql-star:hover{opacity:1;}
 
-        .ql-name {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text);
-        }
+        .korry{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.5px;padding:3px 5px;background:#1a1a1a;border-radius:2px;border:1px solid #444;box-shadow:inset 0 1px 3px rgba(0,0,0,0.5);flex-shrink:0;line-height:1;}
+        .k-qb{color:#c4b5fd;text-shadow:0 0 6px rgba(196,181,253,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(196,181,253,0.25);}
+        .k-prg{color:#fda4af;text-shadow:0 0 6px rgba(253,164,175,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(253,164,175,0.25);}
+        .k-sp{color:#93c5fd;text-shadow:0 0 6px rgba(147,197,253,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(147,197,253,0.25);}
+        .k-wx{color:#5eead4;text-shadow:0 0 6px rgba(94,234,212,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(94,234,212,0.25);}
+        .k-trn{color:#fcd34d;text-shadow:0 0 6px rgba(252,211,77,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(252,211,77,0.25);}
+        .k-aom{color:#fca5a5;text-shadow:0 0 6px rgba(252,165,165,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(252,165,165,0.25);}
+        .k-fom{color:#fdba74;text-shadow:0 0 6px rgba(253,186,116,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(253,186,116,0.25);}
+        .k-mpm{color:#fcd34d;text-shadow:0 0 6px rgba(252,211,77,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(252,211,77,0.25);}
+        .k-dom{color:#d8b4fe;text-shadow:0 0 6px rgba(216,180,254,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(216,180,254,0.25);}
+        .k-gom{color:#86efac;text-shadow:0 0 6px rgba(134,239,172,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(134,239,172,0.25);}
+        .k-mel{color:#fca5a5;text-shadow:0 0 8px rgba(252,165,165,0.6);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 6px rgba(252,165,165,0.3);}
+        .k-frm{color:#fdba74;text-shadow:0 0 6px rgba(253,186,116,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(253,186,116,0.25);}
+        .k-ifom{color:#fca5a5;text-shadow:0 0 6px rgba(252,165,165,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(252,165,165,0.25);}
+        .k-toh{color:#fdba74;text-shadow:0 0 6px rgba(253,186,116,0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(253,186,116,0.25);}
 
-        .ql-desc {
-            font-size: 11px;
-            color: var(--text-secondary);
-            line-height: 1.3;
-        }
-
-        .ql-section-title {
-            grid-column: 1 / -1;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-on-dark-dim);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 12px 0 4px 4px;
-            border-bottom: 1px solid var(--frame-border);
-            margin-bottom: 2px;
-        }
-
-        @media (max-width: 480px) {
-            .quicklinks-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+        .ql-tile.ql-sh{display:none;}
+        .ql-tile.ql-sm{border-color:var(--accent-light,#2563eb);background:#fff !important;box-shadow:0 0 0 1px var(--accent-light,#2563eb);}
+        .ql-tile.ql-sm .ql-name{color:#1d4ed8;}
+        .ql-tile.ql-sm-first{border-color:var(--accent-light,#2563eb);background:#dbeafe !important;box-shadow:0 0 0 2px var(--accent-light,#2563eb);}
+        .ql-tile.ql-sm-first .ql-name{color:#1e40af;}
+        .ql-sec-card.ql-sh{display:none;}
+        .ql-no-results{text-align:center;padding:30px;color:var(--text-on-dark-dim);font-size:13px;display:none;}
+        .ql-no-results.show{display:block;}
 
         /* ---- CARD NOTES & FILES ---- */
         .card-indicator {
@@ -1141,7 +1133,18 @@
 
         <!-- QUICK LINKS -->
         <section id="quicklinks" class="section">
-            <div class="quicklinks-grid" id="quicklinksGrid"></div>
+            <div class="ql-search">
+                <span class="qs-icon">&#128269;</span>
+                <input type="text" id="qlSearchInput" placeholder="Search all links..." oninput="qlFilter()" onkeydown="if(event.key==='Enter')qlLaunchFirst()">
+                <span class="qs-hint" id="qlHint">ENTER to open</span>
+                <button class="qs-clear" id="qlClear" onclick="qlClearSearch()">&#10005;</button>
+            </div>
+            <div class="ql-fav-sec" id="qlFavSec">
+                <div class="ql-fav-hdr"><span>&#9733;</span> FAVORITES</div>
+                <div class="ql-fav-row" id="qlFavRow"></div>
+            </div>
+            <div class="ql-masonry" id="qlMasonry"></div>
+            <div class="ql-no-results" id="qlNoResults">No links match your search.</div>
         </section>
 
         <!-- DEFECT HISTORY -->
@@ -1888,40 +1891,110 @@
         renderDefects();
 
         // ---- QUICK LINKS ----
-        const QUICK_LINKS = [
-            {section: "Core Manuals"},
-            {key:"AOM", abbr:"AOM", name:"Aircraft Operating Manual", color:"#4ade80"},
-            {key:"FOM", abbr:"FOM", name:"Flight Operations Manual", color:"#a78bfa"},
-            {key:"MPM", abbr:"MPM", name:"Maintenance Procedures Manual", color:"#fbbf24"},
-            {key:"DOM", abbr:"DOM", name:"Dispatch Operations Manual", color:"#60a5fa"},
-            {key:"GOM", abbr:"GOM", name:"Ground Operations Manual", color:"#2dd4bf"},
-            {key:"IFOM", abbr:"IFOM", name:"International Flight Ops Manual", color:"#f472b6"},
-            {key:"TOH", abbr:"TOH", name:"Technical Operations Handbook", color:"#fb923c"},
-            {section: "MEL"},
-            {key:"MEL MAX", abbr:"MAX", name:"B737 MAX MEL", color:"#f87171"},
-            {key:"MEL NG", abbr:"NG", name:"B737 NG MEL", color:"#f87171"},
-            {section: "FRM"},
-            {key:"FRM MAX", abbr:"MAX", name:"FRM MAX", color:"#fb923c"},
-            {key:"FRM 78", abbr:"-7/800", name:"FRM -7/-800", color:"#fb923c"},
-            {key:"FRM GIP", abbr:"GIP", name:"FRM General Inspection", color:"#fb923c"},
-            {section: "References"},
-            {key:"FRMP", abbr:"FRMP", name:"Fuel Resource Management", color:"#22d3ee"},
-            {key:"FQM", abbr:"FQM", name:"Fuel Quality Manual", color:"#22d3ee"},
-            {key:"ESP", abbr:"ESP", name:"Emergency & Security Proc", color:"#f87171"},
-            {key:"WBM", abbr:"WBM", name:"Weight & Balance Manual", color:"#a78bfa"},
-            {key:"EFBM", abbr:"EFBM", name:"Electronic Flight Bag Manual", color:"#2dd4bf"},
-            {key:"TOF", abbr:"TOF", name:"Technical Ops Forms", color:"#fb923c"},
-            {key:"FAM", abbr:"FAM", name:"Flight Attendant Manual", color:"#a78bfa"},
-            {key:"SMM", abbr:"SMM", name:"Safety Management Manual", color:"#9ca3af"},
-            {section: "Systems & Tools"},
-            {custom:true, abbr:"SWALife", name:"SWALife Portal", color:"#3b82f6", url:"https://swalife.com"},
-            {custom:true, abbr:"DocuNet", name:"DocuNet Manuals", color:"#60a5fa", url:"https://docunet-online-us.vistair.com"},
-            {custom:true, abbr:"MXI", name:"Maintenix", color:"#22d3ee", url:""},
-            {custom:true, abbr:"QB", name:"QuickBase", color:"#f97316", url:""},
-            {custom:true, abbr:"TAB", name:"Tableau", color:"#a78bfa", url:""},
-            {custom:true, abbr:"ACMS", name:"ACMS", color:"#2dd4bf", url:""},
-            {custom:true, abbr:"TBX", name:"Toolbox", color:"#fbbf24", url:""},
+        const QL_SECTIONS = [
+          {id:"quickbase",t:"QuickBase",bl:"QB",kc:"k-qb",l:[
+            {n:"NRFO",d:"Non-Routine Flight Ops",u:"#"},
+            {n:"WWI",d:"Work Without Items",u:"#"},
+            {n:"AOG",d:"Aircraft on Ground",u:"#"},
+            {n:"W/O",d:"Work Orders",u:"#"},
+            {n:"CATIII",d:"Category III",u:"#"},
+            {n:"HRON Request",d:"HRON Parts",u:"#"},
+            {n:"TSR Dashboard",d:"Tech Service Requests",u:"#"},
+            {n:"CESE",d:"Compliance Engine",u:"#"},
+            {n:"INTL Checklist",d:"MOC Downline",u:"#"},
+            {n:"MX Control Tools",d:"LGA, ISP Downline",u:"#"},
+            {n:"INTL Badge/Travel",d:"Dress Code",u:"#"},
+            {n:"INTL STA Mgr",d:"Must Email List",u:"#"},
+            {n:"AOG TSR",d:"Retired",u:"#"},
+          ]},
+          {id:"programs",t:"Programs",bl:"PRG",kc:"k-prg",l:[
+            {n:"EVA",d:"Fleet Summary",u:"#"},
+            {n:"Flightkeys",d:"Flight Planning",u:"#"},
+            {n:"AirVault",d:"AC Logs by Date",u:"#"},
+            {n:"PARAPP",d:"Salesforce Tech Ops",u:"#"},
+            {n:"TSR",d:"Salesforce Lightning",u:"#"},
+            {n:"Hermes",d:"Maintenance Login",u:"#"},
+            {n:"Comply365",d:"Document Access",u:"#"},
+            {n:"Ops Dashboard",d:"Operations Suite",u:"#"},
+            {n:"PAGE",d:"Everbridge Paging",u:"#"},
+            {n:"DocuNet",d:"Manuals SSO",u:"#"},
+            {n:"LMS",d:"SumTotal Training",u:"#"},
+            {n:"Cargo SLI",d:"APM Login",u:"#"},
+            {n:"OCMP",d:"File System",u:"#"},
+            {n:"Jeppesen",d:"Charts SWA8FO",u:"#"},
+            {n:"Wheel & Brake",d:"Search Q & S/N",u:"#"},
+            {n:"O/T",d:"swamoc.com Schedule",u:"#"},
+            {n:"AirlineTechs",d:"MAX Flight Deck",u:"#"},
+            {n:"Toolbox Backup",d:"Remote Access",u:"#"},
+          ]},
+          {id:"swalife",t:"SWALife / SharePoint",bl:"SP",kc:"k-sp",l:[
+            {n:"FDR/CVR Request",d:"Flight Data Recorder",u:"#"},
+            {n:"NOC-SOD-MAP",d:"Current SOD Map",u:"#"},
+            {n:"Shadow Board",d:"Digital MX Links",u:"#"},
+            {n:"All Manuals",d:"SWALife Manuals Page",u:"#"},
+            {n:"Parts - August",d:"800 + MAX Parts",u:"#"},
+            {n:"Parts - NG",d:"Whittington NG",u:"#"},
+            {n:"Parts - 800",d:"Whittington 800",u:"#"},
+            {n:"Parts - MAX",d:"Whittington MAX",u:"#"},
+            {n:"Parts - Misc",d:"Whittington Misc",u:"#"},
+            {n:"MOC Schedule",d:"2026 Schedule",u:"#"},
+            {n:"Field Tech Cal",d:"2026 Calendar",u:"#"},
+            {n:"Turnover",d:"Short Tails Turnover",u:"#"},
+            {n:"Chris Notes",d:"Szymanek Notes",u:"#"},
+            {n:"HOZ Notes",d:"OneNote",u:"#"},
+            {n:"OneDrive",d:"Personal Drive",u:"#"},
+          ]},
+          {id:"manuals",t:"Manuals",bl:"",kc:"",l:[
+            {n:"AOM",d:"Aircraft Operating Manual",b:"AOM",kc:"k-aom",mk:"AOM"},
+            {n:"FOM",d:"Flight Operations Manual",b:"FOM",kc:"k-fom",mk:"FOM"},
+            {n:"MPM",d:"Maintenance Procedures",b:"MPM",kc:"k-mpm",mk:"MPM"},
+            {n:"DOM",d:"Dispatch Operations",b:"DOM",kc:"k-dom",mk:"DOM"},
+            {n:"GOM",d:"Ground Operations",b:"GOM",kc:"k-gom",mk:"GOM"},
+            {n:"IFOM",d:"Intl Flight Ops",b:"IFOM",kc:"k-ifom",mk:"IFOM"},
+            {n:"TOH",d:"Tech Ops Handbook",b:"TOH",kc:"k-toh",mk:"TOH"},
+            {n:"MEL - MAX",d:"B737 MAX MEL",b:"MEL",kc:"k-mel",mk:"MEL MAX"},
+            {n:"MEL - NG",d:"B737 NG MEL",b:"MEL",kc:"k-mel",mk:"MEL NG"},
+            {n:"FRM - MAX",d:"Fault Reporting MAX",b:"FRM",kc:"k-frm",mk:"FRM MAX"},
+            {n:"FRM - -7/800",d:"Fault Reporting -7/800",b:"FRM",kc:"k-frm",mk:"FRM 78"},
+            {n:"FRM - GIP",d:"General Inspection",b:"FRM",kc:"k-frm",mk:"FRM GIP"},
+          ]},
+          {id:"weather",t:"Weather / Ops",bl:"WX",kc:"k-wx",l:[
+            {n:"Windy",d:"Wind & Weather Map",u:"https://www.windy.com"},
+            {n:"Icing",d:"Aviation Weather Center",u:"https://www.aviationweather.gov/icing"},
+            {n:"Winds Aloft",d:"Aviation Weather Center",u:"https://aviationweather.gov/windtemp"},
+            {n:"GPSJAM",d:"GPS/GNSS Interference",u:"https://gpsjam.org"},
+            {n:"Defense NOTAMS",d:"GPS & Center Select",u:"#"},
+            {n:"BirdCast",d:"Live Bird Migration",u:"https://birdcast.info"},
+          ]},
+          {id:"training",t:"Training / Reference",bl:"TRN",kc:"k-trn",l:[
+            {n:"Lightning CBT",d:"Strike - MOC123",u:"#"},
+            {n:"FAA MEL Search",d:"DRS Search",u:"#"},
+            {n:"Nav Data Cycle",d:"Jeppesen Effective Dates",u:"#"},
+            {n:"NG ETOPS Auth",d:"LMS Authorization",u:"#"},
+            {n:"MAX ETOPS Auth",d:"LMS Authorization",u:"#"},
+            {n:"Tech Ops Dash",d:"LMS Dashboard",u:"#"},
+            {n:"FAR 121.374",d:"ETOPS CAMP",u:"#"},
+            {n:"AC 120-42B",d:"ETOPS & Polar Ops",u:"#"},
+            {n:"MAX YouTube",d:"Video Library",u:"#"},
+            {n:"MAX OMF",d:"Web Version",u:"#"},
+          ]}
         ];
+
+        // Flatten for backward-compatible search integration
+        const QUICK_LINKS = [];
+        QL_SECTIONS.forEach(sec => {
+            sec.l.forEach(lk => {
+                QUICK_LINKS.push({
+                    abbr: lk.b || sec.bl,
+                    name: lk.n + (lk.d ? ' - ' + lk.d : ''),
+                    key: lk.mk || null,
+                    custom: !lk.mk,
+                    url: lk.u || '#',
+                    color: '#64748b',
+                    _type: 'link'
+                });
+            });
+        });
 
         // One place to update if DocuNet URLs ever change
         const defined = "https://sso.fed.prod.aws.swalife.com/idp/startSSO.ping?PartnerSpId=SWA.usernet.vistair.com&TARGET=https://docunet-online-us.vistair.com";
@@ -2247,27 +2320,145 @@
         // ---- INIT ----
         updateBadges();
 
-        // Build Quick Links grid
-        (function() {
-            const grid = document.getElementById('quicklinksGrid');
-            if (!grid) return;
-            let html = '';
-            QUICK_LINKS.forEach(item => {
-                if (item.section) {
-                    html += `<div class="ql-section-title">${item.section}</div>`;
-                    return;
-                }
-                const onclick = item.custom
-                    ? (item.url ? `window.open('${item.url}','docunet')` : `alert('URL coming soon')`)
-                    : `openManual('${item.key}')`;
-                html += `<div class="ql-card" onclick="${onclick}">
-                    <div class="ql-icon" style="background:${item.color}20;color:${item.color}">${item.abbr}</div>
-                    <div class="ql-name">${item.abbr}</div>
-                    <div class="ql-desc">${item.name}</div>
-                </div>`;
+        // ---- QUICK LINKS v2: Masonry + Korry ----
+        var qlFavs = JSON.parse(localStorage.getItem('qlFavs') || '[]');
+        var qlCollapsed = JSON.parse(localStorage.getItem('qlCollapsed') || '[]');
+
+        function qlFk(s, n) { return s + '::' + n; }
+        function qlIsF(s, n) { return qlFavs.indexOf(qlFk(s, n)) !== -1; }
+        function qlFindL(s, n) {
+            for (var i = 0; i < QL_SECTIONS.length; i++) {
+                if (QL_SECTIONS[i].id === s)
+                    for (var j = 0; j < QL_SECTIONS[i].l.length; j++)
+                        if (QL_SECTIONS[i].l[j].n === n) return { sec: QL_SECTIONS[i], lk: QL_SECTIONS[i].l[j] };
+            }
+            return null;
+        }
+
+        function qlToggleFav(sid, nm, e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            var k = qlFk(sid, nm), i = qlFavs.indexOf(k);
+            if (i === -1) qlFavs.push(k); else qlFavs.splice(i, 1);
+            localStorage.setItem('qlFavs', JSON.stringify(qlFavs));
+            qlRenderAll();
+        }
+
+        function qlToggleSec(sid) {
+            var i = qlCollapsed.indexOf(sid);
+            if (i === -1) qlCollapsed.push(sid); else qlCollapsed.splice(i, 1);
+            localStorage.setItem('qlCollapsed', JSON.stringify(qlCollapsed));
+            qlRenderMasonry();
+        }
+
+        function qlOpenLink(lk, sec) {
+            if (lk.mk && MANUAL_LINKS[lk.mk]) {
+                openManual(lk.mk);
+            } else if (lk.u && lk.u !== '#') {
+                window.open(lk.u, '_blank');
+            }
+        }
+
+        function qlTileH(sec, lk, fv) {
+            var e = lk.n.replace(/'/g, "\\'");
+            var bl = lk.b || sec.bl;
+            var kc = lk.kc || sec.kc;
+            var sc = fv ? 'ql-star fv' : 'ql-star';
+            var ch = fv ? '&#9733;' : '&#9734;';
+            return '<a class="ql-tile" href="#" data-n="' + lk.n.toLowerCase() + '" data-d="' + (lk.d || '').toLowerCase() + '" title="' + (lk.d || '') + '" onclick="event.preventDefault();qlOpenLink(QL_SECTIONS.find(s=>s.id===\'' + sec.id + '\').l.find(x=>x.n===\'' + e + '\'),QL_SECTIONS.find(s=>s.id===\'' + sec.id + '\'))">' +
+                '<span class="korry ' + kc + '">' + bl + '</span>' +
+                '<span class="ql-name">' + lk.n + '</span>' +
+                '<button class="' + sc + '" onclick="qlToggleFav(\'' + sec.id + '\',\'' + e + '\',event)">' + ch + '</button>' +
+                '</a>';
+        }
+
+        function qlRenderFavs() {
+            var r = document.getElementById('qlFavRow');
+            if (!r) return;
+            if (qlFavs.length === 0) { r.innerHTML = '<span class="ql-fav-empty">Star any link to pin it here</span>'; return; }
+            var h = '';
+            for (var i = 0; i < qlFavs.length; i++) {
+                var p = qlFavs[i].split('::'), found = qlFindL(p[0], p[1]);
+                if (!found) continue;
+                var lk = found.lk, sec = found.sec, e = lk.n.replace(/'/g, "\\'");
+                var bl = lk.b || sec.bl, kc = lk.kc || sec.kc;
+                h += '<div class="ql-fav-chip" onclick="qlOpenLink(QL_SECTIONS.find(s=>s.id===\'' + sec.id + '\').l.find(x=>x.n===\'' + e + '\'),QL_SECTIONS.find(s=>s.id===\'' + sec.id + '\'))">';
+                h += '<span class="korry ' + kc + '" style="font-size:8px;padding:2px 4px;">' + bl + '</span>';
+                h += '<span class="qfc-n">' + lk.n + '</span>';
+                h += '<span class="qfc-x" onclick="event.stopPropagation();qlToggleFav(\'' + sec.id + '\',\'' + e + '\',event)">&#10005;</span>';
+                h += '</div>';
+            }
+            r.innerHTML = h;
+        }
+
+        function qlRenderMasonry() {
+            var m = document.getElementById('qlMasonry');
+            if (!m) return;
+            var h = '';
+            for (var s = 0; s < QL_SECTIONS.length; s++) {
+                var sec = QL_SECTIONS[s], col = qlCollapsed.indexOf(sec.id) !== -1;
+                h += '<div class="ql-sec-card" data-s="' + sec.id + '">';
+                h += '<div class="ql-sec-hdr ' + (col ? 'collapsed' : '') + '" onclick="qlToggleSec(\'' + sec.id + '\')">';
+                h += '<div style="display:flex;align-items:center"><h3>' + sec.t + '</h3><span class="ql-cnt">' + sec.l.length + '</span></div>';
+                h += '<span class="ql-arr">&#9660;</span></div>';
+                h += '<div class="ql-sec-list ' + (col ? 'hidden' : '') + '">';
+                for (var j = 0; j < sec.l.length; j++) h += qlTileH(sec, sec.l[j], qlIsF(sec.id, sec.l[j].n));
+                h += '</div></div>';
+            }
+            m.innerHTML = h;
+        }
+
+        function qlRenderAll() { qlRenderFavs(); qlRenderMasonry(); }
+
+        function qlFilter() {
+            var q = document.getElementById('qlSearchInput').value.toLowerCase().trim();
+            var cb = document.getElementById('qlClear');
+            var hint = document.getElementById('qlHint');
+            if (cb) cb.classList.toggle('show', q.length > 0);
+            if (hint) hint.classList.toggle('show', q.length > 0);
+            var tiles = document.querySelectorAll('.ql-tile');
+            var cards = document.querySelectorAll('.ql-sec-card');
+            var nr = document.getElementById('qlNoResults');
+            var fs = document.getElementById('qlFavSec');
+            if (!q) {
+                tiles.forEach(function(t) { t.classList.remove('ql-sh', 'ql-sm', 'ql-sm-first'); });
+                cards.forEach(function(c) { c.classList.remove('ql-sh'); });
+                if (nr) nr.classList.remove('show');
+                if (fs) fs.style.display = '';
+                qlRenderMasonry();
+                return;
+            }
+            if (fs) fs.style.display = 'none';
+            cards.forEach(function(c) {
+                var g = c.querySelector('.ql-sec-list'); if (g) g.classList.remove('hidden');
+                var hd = c.querySelector('.ql-sec-hdr'); if (hd) hd.classList.remove('collapsed');
             });
-            grid.innerHTML = html;
-        })();
+            var any = false, first = true;
+            tiles.forEach(function(t) {
+                t.classList.remove('ql-sm-first');
+                var n = t.getAttribute('data-n') || '', d = t.getAttribute('data-d') || '';
+                if (n.indexOf(q) !== -1 || d.indexOf(q) !== -1) {
+                    t.classList.remove('ql-sh'); t.classList.add('ql-sm'); any = true;
+                    if (first) { t.classList.add('ql-sm-first'); first = false; }
+                } else { t.classList.add('ql-sh'); t.classList.remove('ql-sm'); }
+            });
+            cards.forEach(function(c) {
+                var v = c.querySelectorAll('.ql-tile:not(.ql-sh)');
+                c.classList.toggle('ql-sh', v.length === 0);
+            });
+            if (nr) nr.classList.toggle('show', !any);
+        }
+
+        function qlLaunchFirst() {
+            var f = document.querySelector('.ql-tile.ql-sm-first');
+            if (f) f.click();
+        }
+
+        function qlClearSearch() {
+            var inp = document.getElementById('qlSearchInput');
+            if (inp) { inp.value = ''; qlFilter(); }
+        }
+
+        qlRenderAll();
     </script>
 </body>
 </html>

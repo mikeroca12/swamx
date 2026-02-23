@@ -381,13 +381,16 @@
 
         .result-tag {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
+            font-size: 9px;
             font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 4px;
+            padding: 3px 5px;
+            border-radius: 2px;
             white-space: nowrap;
             flex-shrink: 0;
             margin-top: 2px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
         }
 
         .result-title {
@@ -408,10 +411,10 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
             color: var(--text-dim);
-            background: transparent;
-            border: 1px solid transparent;
+            background: #fff;
+            border: 1px solid var(--border);
             border-radius: 4px;
-            padding: 2px 6px;
+            padding: 2px 8px;
             cursor: pointer;
             margin-left: auto;
             flex-shrink: 0;
@@ -420,9 +423,8 @@
         }
 
         .copy-btn:hover {
-            color: var(--text-secondary);
-            border-color: var(--border);
-            background: var(--surface-alt);
+            color: var(--text);
+            background: var(--surface2);
         }
 
         .copy-btn.copied {
@@ -504,22 +506,24 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             color: var(--text-secondary);
-            padding: 3px 8px;
-            border-radius: 4px;
-            background: var(--surface-alt);
+            padding: 4px 10px;
+            border-radius: 5px;
+            background: #fff;
             border: 1px solid var(--border);
+            font-weight: 500;
         }
 
         .result-ref-link {
             cursor: pointer;
-            color: var(--accent);
-            border-color: rgba(37, 99, 235, 0.2);
-            background: rgba(37, 99, 235, 0.05);
+            color: #2563eb;
+            border-color: rgba(37, 99, 235, 0.3);
+            background: #fff;
             transition: all 0.15s;
+            font-weight: 600;
         }
 
         .result-ref-link:hover {
-            background: rgba(37, 99, 235, 0.1);
+            background: #dbeafe;
             border-color: rgba(37, 99, 235, 0.4);
             color: #1d4ed8;
         }
@@ -904,25 +908,27 @@
         }
 
         .note-indicator {
-            background: rgba(217, 119, 6, 0.08);
-            color: #d97706;
-            border: 1px solid rgba(217, 119, 6, 0.2);
+            background: #1a1a1a;
+            color: #86efac;
+            border: 1px solid #444;
+            text-shadow: 0 0 6px rgba(134,239,172,0.5);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5), 0 0 4px rgba(134,239,172,0.25);
         }
 
         .note-indicator:hover {
-            background: rgba(217, 119, 6, 0.15);
-            border-color: rgba(217, 119, 6, 0.35);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5), 0 0 8px rgba(134,239,172,0.4);
         }
 
         .file-indicator {
-            background: rgba(124, 58, 237, 0.08);
-            color: #7c3aed;
-            border: 1px solid rgba(124, 58, 237, 0.2);
+            background: #1a1a1a;
+            color: #c4b5fd;
+            border: 1px solid #444;
+            text-shadow: 0 0 6px rgba(196,181,253,0.5);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5), 0 0 4px rgba(196,181,253,0.25);
         }
 
         .file-indicator:hover {
-            background: rgba(124, 58, 237, 0.15);
-            border-color: rgba(124, 58, 237, 0.35);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5), 0 0 8px rgba(196,181,253,0.4);
         }
 
         .card-note {
@@ -997,46 +1003,57 @@
 
         .ac-item-tag {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
-            padding: 1px 6px;
-            border-radius: 3px;
+            padding: 3px 5px;
+            border-radius: 2px;
             flex-shrink: 0;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
         }
 
         .ac-type-badge {
             font-family: 'JetBrains Mono', monospace;
             font-size: 9px;
             font-weight: 700;
-            padding: 2px 5px;
-            border-radius: 3px;
+            padding: 3px 5px;
+            border-radius: 2px;
             flex-shrink: 0;
             letter-spacing: 0.5px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
         }
 
         .ac-type-qrh {
-            background: rgba(37, 99, 235, 0.1);
-            color: #2563eb;
+            color: #93c5fd;
+            text-shadow: 0 0 6px rgba(147,197,253,0.5);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5), 0 0 4px rgba(147,197,253,0.25);
         }
 
         .ac-type-defect {
-            background: rgba(220, 38, 38, 0.1);
-            color: #dc2626;
+            color: #fda4af;
+            text-shadow: 0 0 6px rgba(253,164,175,0.5);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5), 0 0 4px rgba(253,164,175,0.25);
         }
 
         .ac-type-template {
-            background: rgba(22, 163, 74, 0.1);
-            color: #16a34a;
+            color: #86efac;
+            text-shadow: 0 0 6px rgba(134,239,172,0.5);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5), 0 0 4px rgba(134,239,172,0.25);
         }
 
         .ac-type-app {
-            background: rgba(234, 88, 12, 0.1);
-            color: #ea580c;
+            color: #fdba74;
+            text-shadow: 0 0 6px rgba(253,186,116,0.5);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5), 0 0 4px rgba(253,186,116,0.25);
         }
 
         .ac-type-link {
-            background: rgba(8, 145, 178, 0.1);
-            color: #0891b2;
+            color: #5eead4;
+            text-shadow: 0 0 6px rgba(94,234,212,0.5);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5), 0 0 4px rgba(94,234,212,0.25);
         }
 
         .ac-item-title {
@@ -1688,17 +1705,17 @@
 
         // ---- CATEGORY COLORS ----
         const CAT_COLORS = {
-            'ATA': {bg:'rgba(37,99,235,0.08)', color:'#2563eb', border:'rgba(37,99,235,0.2)'},
-            'AOM': {bg:'rgba(22,163,74,0.08)', color:'#16a34a', border:'rgba(22,163,74,0.2)'},
-            'MPM': {bg:'rgba(217,119,6,0.08)', color:'#d97706', border:'rgba(217,119,6,0.2)'},
-            'FOM': {bg:'rgba(124,58,237,0.08)', color:'#7c3aed', border:'rgba(124,58,237,0.2)'},
-            'MEL': {bg:'rgba(220,38,38,0.08)', color:'#dc2626', border:'rgba(220,38,38,0.2)'},
-            'MXI': {bg:'rgba(8,145,178,0.08)', color:'#0891b2', border:'rgba(8,145,178,0.2)'},
-            'IFOM': {bg:'rgba(219,39,119,0.08)', color:'#db2777', border:'rgba(219,39,119,0.2)'},
-            'FRM': {bg:'rgba(234,88,12,0.08)', color:'#ea580c', border:'rgba(234,88,12,0.2)'},
-            'GOM': {bg:'rgba(13,148,136,0.08)', color:'#0d9488', border:'rgba(13,148,136,0.2)'},
-            'FAM': {bg:'rgba(124,58,237,0.08)', color:'#7c3aed', border:'rgba(124,58,237,0.2)'},
-            'MISC': {bg:'rgba(107,114,128,0.08)', color:'#6b7280', border:'rgba(107,114,128,0.2)'},
+            'ATA': {color:'#93c5fd', glow:'147,197,253'},
+            'AOM': {color:'#86efac', glow:'134,239,172'},
+            'MPM': {color:'#fdba74', glow:'253,186,116'},
+            'FOM': {color:'#c4b5fd', glow:'196,181,253'},
+            'MEL': {color:'#fca5a5', glow:'252,165,165'},
+            'MXI': {color:'#67e8f9', glow:'103,232,249'},
+            'IFOM': {color:'#f9a8d4', glow:'249,168,212'},
+            'FRM': {color:'#fdba74', glow:'253,186,116'},
+            'GOM': {color:'#5eead4', glow:'94,234,212'},
+            'FAM': {color:'#c4b5fd', glow:'196,181,253'},
+            'MISC': {color:'#cbd5e1', glow:'203,213,225'},
         };
 
         function getCatColor(cat) {
@@ -1706,12 +1723,12 @@
             for (const key of Object.keys(CAT_COLORS)) {
                 if (c.startsWith(key)) return CAT_COLORS[key];
             }
-            return {bg:'rgba(100,116,139,0.12)', color:'#94a3b8', border:'rgba(100,116,139,0.25)'};
+            return {color:'#cbd5e1', glow:'203,213,225'};
         }
 
         function tagStyle(cat) {
             const c = getCatColor(cat);
-            return `background:${c.bg};color:${c.color};border:1px solid ${c.border}`;
+            return `color:${c.color};text-shadow:0 0 6px rgba(${c.glow},0.5);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5),0 0 4px rgba(${c.glow},0.25)`;
         }
 
         // ---- SEARCH HIGHLIGHTING ----

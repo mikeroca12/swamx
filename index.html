@@ -966,15 +966,15 @@
             left: 0;
             right: 0;
             background: var(--surface);
-            border: 1px solid var(--border);
-            border-top: none;
+            border: 2px solid var(--accent);
+            border-top: 1px solid var(--border);
             border-radius: 0 0 12px 12px;
             max-height: 260px;
             overflow-y: auto;
             z-index: 50;
             display: none;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-            margin-top: -1px;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.15), 0 12px 32px rgba(0,0,0,0.15);
+            margin-top: -2px;
         }
 
         .autocomplete-dropdown.visible {
@@ -983,15 +983,17 @@
 
         .search-container:has(.autocomplete-dropdown.visible) .search-input {
             border-radius: 12px 12px 0 0;
-            border-bottom-color: var(--border);
+            border: 2px solid var(--accent);
+            border-bottom-color: transparent;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
         }
 
         .ac-item {
             padding: 10px 16px 10px 48px;
             cursor: pointer;
             font-size: 13px;
-            color: var(--text-secondary);
-            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            border-bottom: 1px solid rgba(0,0,0,0.04);
             transition: background 0.1s;
             display: flex;
             align-items: center;
@@ -1002,9 +1004,12 @@
             border-bottom: none;
         }
 
-        .ac-item:hover, .ac-item.selected {
-            background: var(--surface-hover);
-            color: var(--text);
+        .ac-item:hover {
+            background: var(--surface2);
+        }
+
+        .ac-item.selected {
+            background: #dbeafe;
         }
 
         .ac-item-tag {

@@ -1530,8 +1530,7 @@
         function updateAutocomplete() {
             const q = searchInput.value.trim().toLowerCase();
             if (q.length < 2) {
-                acDropdown.classList.remove('visible');
-                acIndex = -1;
+                acHideDropdown();
                 return;
             }
 
@@ -1565,8 +1564,7 @@
             let allMatches = [...qrhMatches, ...defectMatches, ...appMatches, ...qlMatches];
 
             if (allMatches.length === 0) {
-                acDropdown.classList.remove('visible');
-                acIndex = -1;
+                acHideDropdown();
                 return;
             }
 
@@ -1604,6 +1602,15 @@
             acDropdown.innerHTML = html;
             acDropdown.classList.add('visible');
             acDropdown._matches = allMatches;
+            resultsArea.style.opacity = '0.15';
+            resultsArea.style.pointerEvents = 'none';
+        }
+
+        function acHideDropdown() {
+            acDropdown.classList.remove('visible');
+            acIndex = -1;
+            resultsArea.style.opacity = '';
+            resultsArea.style.pointerEvents = '';
         }
 
         function acSelect(i) {
@@ -1611,8 +1618,7 @@
             if (!allMatches[i]) return;
 
             const match = allMatches[i];
-            acDropdown.classList.remove('visible');
-            acIndex = -1;
+            acHideDropdown();
 
             if (match._type === 'app') {
                 window.location.href = match.url;
@@ -1691,15 +1697,13 @@
                 e.preventDefault();
                 acSelect(acIndex);
             } else if (e.key === 'Escape') {
-                acDropdown.classList.remove('visible');
-                acIndex = -1;
+                acHideDropdown();
             }
         });
 
         searchInput.addEventListener('blur', () => {
             setTimeout(() => {
-                acDropdown.classList.remove('visible');
-                acIndex = -1;
+                acHideDropdown();
                 if (!searchInput.value) document.getElementById('searchHint').style.display = '';
             }, 150);
         });

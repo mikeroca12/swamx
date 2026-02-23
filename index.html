@@ -846,8 +846,8 @@
         .ql-fav-chip .qfc-x{font-size:9px;color:var(--text-on-dark);opacity:0.3;cursor:pointer;}
         .ql-fav-chip .qfc-x:hover{opacity:1;}
 
-        .ql-masonry{column-width:175px;column-gap:10px;}
-        .ql-sec-card{break-inside:avoid;background:rgba(0,0,0,0.15);border:1px solid var(--frame-border);border-radius:7px;overflow:hidden;margin-bottom:10px;}
+        .ql-masonry{display:flex;flex-wrap:wrap;gap:10px;}
+        .ql-sec-card{break-inside:avoid;background:rgba(0,0,0,0.15);border:1px solid var(--frame-border);border-radius:7px;overflow:hidden;flex:1 1 175px;max-width:100%;min-width:160px;}
         .ql-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:pointer;user-select:none;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--frame-border);}
         .ql-sec-hdr h3{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#ffffff;margin:0;}
         .ql-sec-hdr .ql-cnt{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--text-on-dark);background:rgba(255,255,255,0.1);padding:1px 5px;border-radius:3px;margin-left:5px;}
@@ -1894,7 +1894,7 @@
         // ---- QUICK LINKS ----
         const QL_SECTIONS = [
           {id:"programs",t:"Work Tools",bl:"PRG",kc:"k-prg",l:[
-            {n:"Swamoc",d:"Overtime Login",u:"https://swamoc.com/Login/notlogin.php"},
+            {n:"SWAMOC",d:"Overtime Login",u:"https://swamoc.com/Login/notlogin.php"},
             {n:"MXI",d:"Maintenix",u:"https://maintenix.acmx.prod.swacorp.com/maintenix/common/security/login.jsp"},
             {n:"WOLF Flowsheet",d:"Ops Suite Schedule",u:"https://opssuitemain.swacorp.com/schedule"},
             {n:"EVA",d:"Fleet Summary",u:"https://eva.acmx.prod.swacorp.com/v3/mx_eva_webapp/#/summary/lists/fleet"},
@@ -1947,7 +1947,7 @@
             {n:"Parts - MISC",d:"Whittington Misc",u:"https://wnco-my.sharepoint.com/:x:/r/personal/michael_whittington_wnco_com/_layouts/15/Doc.aspx?sourcedoc=%7B25DEE148-0B92-4C0B-83D0-903E128D1E31%7D&file=Misc%20Spreadsheet.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1&ct=1649979571309&wdOrigin=OFFICECOM-WEB.MAIN.EDGEWORTH&cid=fe0faa20-d85c-430d-9254-fcf3838d2907"},
             {n:"Shadow Board",d:"Digital MX Links",u:"https://wnco.sharepoint.com/sites/SWALife-MXLinks/Lists/Digital%20Shadow%20Board/AllItems.aspx?env=WebViewList"},
             {n:"Specialty Aircraft",d:"Stock Images",u:"https://wnco.sharepoint.com/sites/SouthwestStockImages/SitePages/Aircraft.aspx"},
-            {n:"ACFT Interior/SATCOM",d:"Aircraft Info",u:"https://wnco.sharepoint.com/sites/SWALife-NOC-Secure/SitePages/Aircraft.aspx?csf=1&web=1&e=POhazZ"},
+            {n:"A/C Interior",d:"Aircraft Interior/SATCOM",u:"https://wnco.sharepoint.com/sites/SWALife-NOC-Secure/SitePages/Aircraft.aspx?csf=1&web=1&e=POhazZ"},
             {n:"Campus Resources",d:"Getting to TOPS",u:"https://wnco.sharepoint.com/sites/SWALife-Training/SitePages/Resources.aspx#getting-to-tops"},
           ]},
           {id:"boeing",t:"Boeing Toolbox",bl:"MBF",kc:"k-mbf",edge:true,l:[

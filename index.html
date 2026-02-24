@@ -1621,7 +1621,7 @@
                 } else if (d._type === 'link') {
                     html += `<div class="ac-item${i === acIndex ? ' selected' : ''}" data-index="${i}" data-type="link" onmousedown="acSelect(${i})">
                         <span class="ac-type-badge ac-type-link">LINK</span>
-                        <span class="ac-item-tag" style="background:${d.color}20;color:${d.color};border-color:${d.color}40">${esc(d.abbr)}</span>
+                        <span class="ac-item-tag korry ${d.kc || ''}">${esc(d.abbr)}</span>
                         <span class="ac-item-title">${titleHl}</span>
                     </div>`;
                 }
@@ -2104,7 +2104,7 @@
                     key: lk.mk || null,
                     custom: !lk.mk,
                     url: lk.u || '#',
-                    color: '#64748b',
+                    kc: lk.kc || sec.kc || '',
                     _type: 'link'
                 });
             });

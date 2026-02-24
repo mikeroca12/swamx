@@ -850,8 +850,8 @@
         .ql-fav-chip .qfc-x{font-size:9px;color:var(--text-on-dark);opacity:0.3;cursor:pointer;}
         .ql-fav-chip .qfc-x:hover{opacity:1;}
 
-        .ql-masonry{display:flex;gap:10px;align-items:flex-start;}
-        .ql-masonry .ql-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;}
+        .ql-masonry{display:flex;gap:10px;align-items:flex-start;overflow:hidden;}
+        .ql-masonry .ql-col{flex:1;min-width:215px;display:flex;flex-direction:column;gap:10px;}
         .ql-sec-card{background:rgba(0,0,0,0.15);border:1px solid var(--frame-border);border-radius:7px;overflow:hidden;}
         .ql-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:pointer;user-select:none;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--frame-border);}
         .ql-sec-hdr h3{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#ffffff;margin:0;}
@@ -2543,7 +2543,7 @@
             }
             // Determine column count based on container width
             var cw = m.clientWidth || 800;
-            var numCols = Math.max(2, Math.min(sections.length, Math.floor(cw / 190)));
+            var numCols = Math.max(2, Math.min(sections.length, Math.floor(cw / 225)));
             // Create columns
             var colHtml = [];
             var colHeights = [];
@@ -2647,7 +2647,7 @@
         var qlResizeTimer;
         window.addEventListener('resize', function() {
             clearTimeout(qlResizeTimer);
-            qlResizeTimer = setTimeout(qlRenderMasonry, 150);
+            qlResizeTimer = setTimeout(qlRenderMasonry, 50);
         });
     </script>
 </body>

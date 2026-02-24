@@ -616,188 +616,189 @@
             letter-spacing: 0.5px;
         }
 
-        /* ---- DEFECT HISTORY ---- */
-        .defect-controls {
+        /* ---- TSI FIX RATE ---- */
+        .fix-search-box {
+            background: #fff;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.1);
         }
+        .fix-search-box input {
+            border: none;
+            outline: none;
+            font-size: 15px;
+            font-family: 'Outfit', sans-serif;
+            flex: 1;
+            color: var(--text);
+        }
+        .fix-search-box input::placeholder { color: #94a3b8; }
+        .fix-search-icon { color: #94a3b8; font-size: 18px; }
 
-        .defect-filter-row {
+        .fix-filter-row {
             display: flex;
             gap: 6px;
             flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .fix-chip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--frame-border);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .fix-chip:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .fix-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+        .fix-results-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
             margin-bottom: 12px;
         }
 
-        .defect-search-container {
-            position: relative;
-        }
-
-        .defect-search {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 14px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text);
-            font-family: 'Outfit', sans-serif;
-            outline: none;
-            transition: border-color 0.2s;
-            box-shadow: var(--card-shadow);
-        }
-
-        .defect-search:focus {
-            border-color: var(--accent);
-        }
-
-        .defect-results {
-            min-height: 200px;
-        }
-
-        .defect-card {
+        .fix-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 16px 20px;
-            margin-bottom: 10px;
-            transition: all 0.15s ease;
-            border-left: 3px solid transparent;
+            margin-bottom: 12px;
+            overflow: hidden;
             box-shadow: var(--card-shadow);
         }
-
-        .defect-card:hover {
-            background: var(--surface);
-            box-shadow: var(--card-shadow-hover);
-        }
-
-        .defect-card.subtype-defect { border-left-color: #f87171; }
-        .defect-card.subtype-damage { border-left-color: #fbbf24; }
-        .defect-card.subtype-tsi { border-left-color: #60a5fa; }
-
-        .defect-card-top {
+        .fix-card-header {
+            padding: 14px 16px;
             display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 8px;
+            align-items: flex-start;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
         }
+        .fix-card-meta { flex: 1; }
+        .fix-fault-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+        .fix-effect {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+        .fix-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+        .fix-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 3px 6px;
+            border-radius: 3px;
+            letter-spacing: 0.5px;
+        }
+        .fix-tag-ata { background: rgba(37,99,235,0.1); color: #1d4ed8; border: 1px solid #93c5fd; }
+        .fix-tag-fleet { background: rgba(22,163,74,0.1); color: #15803d; border: 1px solid #86efac; }
 
-        .defect-subtype {
+        .fix-card-body { padding: 14px 16px; }
+        .fix-section { margin-bottom: 12px; }
+        .fix-section:last-child { margin-bottom: 0; }
+        .fix-section-label {
             font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
             font-weight: 700;
-            padding: 2px 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .fix-description {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .fix-actions { display: flex; flex-direction: column; gap: 6px; }
+        .fix-action {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+        .fix-action-name { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+        .fix-action-bar-wrap {
+            width: 120px;
+            height: 8px;
+            background: #e2e7ef;
             border-radius: 4px;
-            letter-spacing: 0.5px;
+            overflow: hidden;
         }
-
-        .defect-subtype-defect {
-            background: rgba(220,38,38,0.1);
-            color: #dc2626;
-        }
-
-        .defect-subtype-damage {
-            background: rgba(217,119,6,0.1);
-            color: #d97706;
-        }
-
-        .defect-subtype-tsi {
-            background: rgba(37,99,235,0.1);
-            color: #2563eb;
-        }
-
-        .defect-ata {
+        .fix-action-bar { height: 100%; border-radius: 4px; }
+        .bar-high { background: #16a34a; }
+        .bar-med { background: #d97706; }
+        .bar-low { background: #dc2626; }
+        .fix-action-pct {
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 4px;
-            background: var(--surface-alt);
-            color: var(--text-secondary);
+            width: 40px;
+            text-align: right;
+        }
+        .pct-high { color: #15803d; }
+        .pct-med { color: #b45309; }
+        .pct-low { color: #b91c1c; }
+
+        .fix-tsi {
+            padding: 8px 12px;
+            background: #fff;
             border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 4px;
         }
-
-        .defect-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text);
-            flex: 1;
-        }
-
-        .defect-meta {
+        .fix-tsi-header {
             display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
         }
-
-        .defect-meta-item {
-            font-size: 12px;
+        .fix-tsi-tail {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .fix-tsi-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
             color: var(--text-muted);
         }
-
-        .defect-meta-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 9px;
-            font-weight: 700;
-            color: var(--text-dim);
-            letter-spacing: 0.5px;
-            display: block;
-            margin-bottom: 2px;
+        .fix-tsi-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+        .fix-tsi-result {
+            font-size: 11px;
+            color: #15803d;
+            font-weight: 600;
+            margin-top: 4px;
         }
+        .fix-tsi-result.ineffective { color: #b91c1c; }
 
-        .defect-meta-value {
-            font-weight: 500;
-            color: var(--text);
+        .fix-empty-state {
+            text-align: center;
+            padding: 60px 24px;
+            color: rgba(255,255,255,0.3);
         }
-
-        .defect-section {
-            margin-top: 10px;
-            padding: 10px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .defect-section-discrepancy {
-            background: rgba(220,38,38,0.04);
-            border: 1px solid rgba(220,38,38,0.12);
-        }
-
-        .defect-section-resolution {
-            background: rgba(22,163,74,0.04);
-            border: 1px solid rgba(22,163,74,0.12);
-        }
-
-        .defect-section-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-        }
-
-        .defect-section-discrepancy .defect-section-label { color: #dc2626; }
-        .defect-section-resolution .defect-section-label { color: #16a34a; }
-
-        .defect-section-text {
-            font-size: 13px;
-            color: var(--text);
-            line-height: 1.5;
-            display: none;
-        }
-
-        .defect-section.expanded .defect-section-text {
-            display: block;
-        }
-
-        .defect-section-label::after {
-            content: ' +';
-            opacity: 0.5;
-        }
-
-        .defect-section.expanded .defect-section-label::after {
-            content: ' -';
-        }
+        .fix-empty-state p { font-size: 15px; margin-bottom: 4px; }
+        .fix-empty-state .hint { font-size: 12px; }
 
         /* ---- QUICK LINKS ---- */
         /* ---- QUICK LINKS v2: Masonry + Korry ---- */
@@ -1115,7 +1116,7 @@
             <div class="nav-tabs">
                 <button class="nav-tab active" data-tab="quickref">Quick Reference</button>
                 <button class="nav-tab" data-tab="quicklinks">Quick Links</button>
-                <button class="nav-tab" data-tab="defects">Defect History</button>
+                <button class="nav-tab" data-tab="fixrate">TSI Fix Rate</button>
                 <button class="nav-tab" data-tab="apps">Apps</button>
             </div>
         </header>
@@ -1166,23 +1167,21 @@
             <div class="ql-no-results" id="qlNoResults">No links match your search.</div>
         </section>
 
-        <!-- DEFECT HISTORY -->
-        <section id="defects" class="section">
-            <div class="defect-controls">
-                <div class="defect-filter-row">
-                    <button class="filter-chip active" data-defect-filter="ALL">ALL</button>
-                    <button class="filter-chip" data-defect-filter="DEFECT">DEFECT</button>
-                    <button class="filter-chip" data-defect-filter="DAMAGE">DAMAGE</button>
-                    <button class="filter-chip" data-defect-filter="TSI">TSI</button>
-                </div>
-                <div class="defect-search-container">
-                    <input type="text" class="search-input defect-search" id="defectSearchInput" placeholder="Search defects by ATA, tail, fault code, keyword..." autocomplete="off">
-                </div>
+        <!-- TSI FIX RATE -->
+        <section id="fixrate" class="section">
+            <div class="fix-search-box">
+                <span class="fix-search-icon">&#128269;</span>
+                <input type="text" id="fixSearchInput" placeholder="Search by fault code, flight deck effect, or keyword..." autocomplete="off">
             </div>
-            <div class="defect-results" id="defectResults">
-                <div class="results-empty">
-                    <p>Search aircraft defect history, damage reports, and TSIs</p>
-                    <p class="hint">Type to search or select a category</p>
+            <div class="fix-filter-row" id="fixFilterRow">
+                <button class="fix-chip active" data-fix-filter="ALL">ALL</button>
+                <button class="fix-chip" data-fix-filter="MAX">MAX</button>
+                <button class="fix-chip" data-fix-filter="NG">NG</button>
+            </div>
+            <div id="fixResults">
+                <div class="fix-empty-state">
+                    <p>Search fault codes and flight deck effects</p>
+                    <p class="hint">Type a fault code (36-12020), effect (BLEED FAMV L), or keyword to find probable causes and past fixes</p>
                 </div>
             </div>
         </section>
@@ -1210,7 +1209,7 @@
                 <button class="filter-chip" data-filter="FRM">FRM</button>
                 <button class="filter-chip" data-filter="GOM">GOM</button>
                 <button class="filter-chip" data-filter="MISC">MISC</button>
-                <button class="filter-chip" data-filter="DEFECT">DEFECT</button>
+                <button class="filter-chip" data-filter="FIX">FIX</button>
                 <button class="filter-chip" data-filter="APP">APP</button>
             </div>
 
@@ -1542,11 +1541,11 @@
                 return words.every(w => hay.includes(w));
             }).slice(0, 5).map(d => ({...d, _type:'qrh'}));
 
-            // Search defects
-            let defectMatches = DEFECTS.filter(d => {
-                const hay = [d.cat, d.title, d.tail, d.fleet, d.fault, d.discrepancy, d.resolution].join(' ').toLowerCase();
+            // Search TSI Fix Rate
+            let fixMatches = TSI_DATA.filter(d => {
+                const hay = [d.faultCode, d.effect, d.description, d.ata, d.fleet].join(' ').toLowerCase();
                 return words.every(w => hay.includes(w));
-            }).slice(0, 3).map(d => ({...d, _type:'defect'}));
+            }).slice(0, 3).map(d => ({...d, _type:'fix'}));
 
             // Search apps
             let appMatches = APPS.filter(a => {
@@ -1561,7 +1560,7 @@
                 return words.every(w => hay.includes(w));
             }).slice(0, 4).map(ql => ({...ql, title: ql.name, _type:'link'}));
 
-            let allMatches = [...qrhMatches, ...defectMatches, ...appMatches, ...qlMatches];
+            let allMatches = [...qrhMatches, ...fixMatches, ...appMatches, ...qlMatches];
 
             if (allMatches.length === 0) {
                 acHideDropdown();
@@ -1578,12 +1577,11 @@
                         <span class="ac-item-tag" style="${style}">${esc(d.cat)}</span>
                         <span class="ac-item-title">${titleHl}</span>
                     </div>`;
-                } else if (d._type === 'defect') {
-                    const stClass = 'defect-subtype-' + d.subtype;
-                    html += `<div class="ac-item${i === acIndex ? ' selected' : ''}" data-index="${i}" data-type="defect" onmousedown="acSelect(${i})">
-                        <span class="ac-type-badge ac-type-defect">DEFECT</span>
-                        <span class="defect-subtype ${stClass}" style="font-size:9px">${d.subtype.toUpperCase()}</span>
-                        <span class="ac-item-title">${titleHl}</span>
+                } else if (d._type === 'fix') {
+                    html += `<div class="ac-item${i === acIndex ? ' selected' : ''}" data-index="${i}" data-type="fix" onmousedown="acSelect(${i})">
+                        <span class="ac-type-badge ac-type-defect">FIX</span>
+                        <span class="fix-tag fix-tag-ata" style="font-size:9px">ATA ${esc(d.ata)}</span>
+                        <span class="ac-item-title">${highlight(d.faultCode + ' - ' + d.effect, words)}</span>
                     </div>`;
                 } else if (d._type === 'app') {
                     html += `<div class="ac-item${i === acIndex ? ' selected' : ''}" data-index="${i}" data-type="app" onmousedown="acSelect(${i})">
@@ -1628,13 +1626,13 @@
                 } else if (match.key && MANUAL_LINKS[match.key]) {
                     openManual(match.key);
                 }
-            } else if (match._type === 'defect') {
+            } else if (match._type === 'fix') {
                 document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                document.querySelector('[data-tab="defects"]').classList.add('active');
+                document.querySelector('[data-tab="fixrate"]').classList.add('active');
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                document.getElementById('defects').classList.add('active');
-                defectSearchInput.value = match.title;
-                renderDefects();
+                document.getElementById('fixrate').classList.add('active');
+                fixSearchInput.value = match.faultCode;
+                renderFixRate();
             } else {
                 searchInput.value = match.title;
                 renderSingleResult(match);
@@ -1785,8 +1783,8 @@
             filterChips.forEach(chip => {
                 const f = chip.dataset.filter;
                 let count;
-                if (f === 'ALL') count = DATA.length + DEFECTS.length + APPS.length;
-                else if (f === 'DEFECT') count = DEFECTS.length;
+                if (f === 'ALL') count = DATA.length + TSI_DATA.length + APPS.length;
+                else if (f === 'FIX') count = TSI_DATA.length;
                 else if (f === 'APP') count = APPS.length;
                 else count = DATA.filter(d => d.cat.toUpperCase().startsWith(f)).length;
                 const existing = chip.querySelector('.badge');
@@ -1816,143 +1814,211 @@
             }
         ];
 
-        // ---- DEFECT HISTORY ----
-        const DEFECTS = [
+        // ---- TSI FIX RATE ----
+        const TSI_DATA = [
             {
-                subtype:"defect", cat:"ATA 31", title:"Radio Altimeter Pitch Limit Cue & Bank Warning in HUD",
-                tail:"N7736A", fleet:"700", date:"2026-02-06", fault:"31-30",
-                discrepancy:"On T/O out of RDU after lift off, received tail strike pitch limit cue and bank warning symbols in HUD. Symbols present all the way to 6000 ft where leveled off. Throttles came back as airspeed approached 250 kts, steady horn came on. Horn went off if throttles pushed up but came back on when throttles retarded to maintain 250 kts. About two minutes after, HUD display cleared up and horn went away.",
-                resolution:"Replaced #1 & #2 Radio Altimeters. Ref AMM 34-33-21. Replaced #2 Rad Alt Receive and Transmit Antennas. Ref AMM 34-33-11. One other hit in history showing RA -4 feet at altitude.",
-                note:""
+                faultCode: "36-12020",
+                effect: "BLEED FAMV L - Status Message",
+                description: "ENGINE-1 FAMV IS NOT IN COMMANDED POSITION. DETECTED BY: INTEGRATED AIR SYSTEMS CONTROLLER (IASC)-LEFT",
+                ata: "36",
+                fleet: "MAX",
+                actions: [
+                    {name: "C/W IFIM Task 36-12-00-810-801", confidence: 85},
+                    {name: "Replace Fan Air Modulating Valve (FAMV)", confidence: 45},
+                    {name: "Replace IASC (Left)", confidence: 12}
+                ],
+                history: [
+                    {tail: "N8860S", date: "2026-01-05", action: "C/W IFIM TASK 36-12-00-810-801. MAINT LIGHT EXTINGUISHED. STATUS MESSAGE CLEARED. NO DEFECTS NOTED. ACFT OK FOR SERVICE.", result: "Cleared - IFIM task only", effective: true},
+                    {tail: "N8714Q", date: "2025-12-11", action: "REF TG8Q019A1ZL TSI TO CHANGE #1 FAMV. REPLACED FAMV AS REQUIRED IAW REF # 36-12-03.", result: "FAMV replaced - Engine 1", effective: true},
+                    {tail: "N8798Q", date: "2025-11-02", action: "LEFT BLEED FAMV STATUS MESSAGE. R/R FAN AIR MODULATING VALVE REF AMM 36-12-03.", result: "FAMV replaced - Engine 1", effective: true},
+                    {tail: "N8835Q", date: "2025-10-18", action: "C/W IFIM TASK 36-12-00-810-801. FAULT RETURNED NEXT FLIGHT. SUBSEQUENTLY R/R FAMV.", result: "IFIM ineffective - FAMV replaced", effective: false}
+                ]
             },
             {
-                subtype:"defect", cat:"ATA 27", title:"MX Light - Spoiler CNTRL SYS Status Message",
-                tail:"N8871Q", fleet:"MAX", date:"2026-02-01", fault:"27-01330, 27-01010, 31-52013",
-                discrepancy:"MX light illuminated. Spoiler CNTRL SYS status message.",
-                resolution:"Fault codes indicate spoiler control module communication issue. Reset via BITE, tested spoiler system full cycle. Ops check good. Monitored next 3 flights, no recurrence.",
-                note:""
+                faultCode: "36-12020",
+                effect: "BLEED FAMV L - Overhead Panel Light",
+                description: "LEFT ENGINE BLEED FAMV LIGHT ILLUMINATED ON OVERHEAD PANEL. INTERMITTENT DURING CLIMB.",
+                ata: "36",
+                fleet: "NG",
+                actions: [
+                    {name: "Perform pneumatic engine on test per AMM 36-00-00", confidence: 92},
+                    {name: "Replace Fan Air Modulating Valve (FAMV)", confidence: 38}
+                ],
+                history: [
+                    {tail: "N475WN", date: "2026-01-22", action: "PERFORMED PNEUMATIC ENGINE ON TEST PER AMM 36-00-00. NO FAULTS FOUND. LIGHT DID NOT ILLUMINATE DURING TEST.", result: "Cleared - engine run test", effective: true},
+                    {tail: "N711HK", date: "2026-01-08", action: "BLEED FAMV L LIGHT INTERMITTENT. RAN ENGINE ON TEST - NO FAULTS. MONITORED 3 FLIGHTS, NO RECURRENCE.", result: "Cleared - intermittent", effective: true},
+                    {tail: "N7718AN", date: "2025-12-30", action: "FAMV LIGHT ON DURING CLIMB. R/R FAMV LH ENG REF AMM 36-12-03. OPS CK GOOD.", result: "FAMV replaced - Engine 1", effective: true},
+                    {tail: "N281WN", date: "2025-12-14", action: "PNEUMATIC TEST GOOD. LIGHT RETURNED NEXT DAY. R/R FAMV RESOLVED.", result: "Engine test ineffective - FAMV replaced", effective: false},
+                    {tail: "N409WN", date: "2025-11-29", action: "RAN PNEUMATIC TEST PER AMM 36-00-00. ALL PARAMETERS NORMAL. NO RECURRENCE IN 5 SUBSEQUENT FLIGHTS.", result: "Cleared - engine run test", effective: true},
+                    {tail: "N236WN", date: "2025-11-15", action: "INTERMITTENT FAMV LIGHT. PERFORMED ENGINE RUN, CYCLED BLEED VALVES. NO FAULTS.", result: "Cleared - engine run test", effective: true},
+                    {tail: "N752SW", date: "2025-10-28", action: "R/R FAN AIR MODULATING VALVE LH ENGINE. AMM 36-12-03. OPS CHECK SAT.", result: "FAMV replaced - Engine 1", effective: true},
+                    {tail: "N8301J", date: "2025-10-12", action: "PNEUMATIC ON TEST GOOD. CLEARED AFTER ENGINE RUN.", result: "Cleared - engine run test", effective: true}
+                ]
             },
             {
-                subtype:"damage", cat:"ATA 53", title:"Fuselage Dent - Aft Cargo Door Frame",
-                tail:"N8523W", fleet:"800", date:"2026-01-28", fault:"N/A",
-                discrepancy:"Ground crew reported dent on fuselage skin adjacent to aft cargo door frame, lower right side. Approximately 2 inches diameter, shallow depth.",
-                resolution:"SRM 51-70-11 inspection. Dent within allowable limits per SRM. Blended smooth, no repair required. Documented in damage log.",
-                note:"Common area for belt loader contact. Check for paint transfer."
+                faultCode: "27-01330",
+                effect: "SPOILER CNTRL SYS - Status Message",
+                description: "SPOILER CONTROL MODULE COMMUNICATION FAULT. MX LIGHT ILLUMINATED.",
+                ata: "27",
+                fleet: "MAX",
+                actions: [
+                    {name: "Reset via BITE, test spoiler system full cycle", confidence: 78},
+                    {name: "Replace Spoiler Control Module", confidence: 35},
+                    {name: "Check wiring harness connectors", confidence: 15}
+                ],
+                history: [
+                    {tail: "N8871Q", date: "2026-02-01", action: "FAULT CODES 27-01330, 27-01010, 31-52013. RESET VIA BITE, TESTED SPOILER SYSTEM FULL CYCLE. OPS CHECK GOOD. MONITORED 3 FLIGHTS, NO RECURRENCE.", result: "Cleared - BITE reset", effective: true},
+                    {tail: "N8843Q", date: "2025-12-20", action: "SPOILER CNTRL SYS MSG. BITE RESET, FULL CYCLE TEST. NO FAULTS FOUND ON RETEST.", result: "Cleared - BITE reset", effective: true}
+                ]
             },
             {
-                subtype:"defect", cat:"ATA 22", title:"Speed Trim Fail - 8MAX",
-                tail:"N8706M", fleet:"MAX", date:"2026-01-15", fault:"22-AUTOFLIGHT",
-                discrepancy:"Speed trim fail indication on takeoff. Crew followed QRH procedure and continued flight without incident.",
-                resolution:"Replaced stab trim motor (M1659). Replaced elevator position sensor (M929). Tested per AMM. Ops check satisfactory.",
-                note:"Check fault history - this tail has had repeat speed trim issues."
+                faultCode: "22-AUTOFLIGHT",
+                effect: "SPEED TRIM FAIL",
+                description: "SPEED TRIM FAIL INDICATION ON TAKEOFF. CREW FOLLOWED QRH PROCEDURE.",
+                ata: "22",
+                fleet: "MAX",
+                actions: [
+                    {name: "Replace stab trim motor (M1659) + elevator position sensor (M929)", confidence: 72},
+                    {name: "C/W IFIM 22-11186, monitor for recurrence", confidence: 40},
+                    {name: "Replace DFCS flight control computer", confidence: 18}
+                ],
+                history: [
+                    {tail: "N8706M", date: "2026-01-15", action: "REPLACED STAB TRIM MOTOR (M1659). REPLACED ELEVATOR POSITION SENSOR (M929). TESTED PER AMM. OPS CHECK SATISFACTORY.", result: "Motor + sensor replaced", effective: true},
+                    {tail: "N8706M", date: "2025-11-30", action: "SPEED TRIM FAIL ON DEPARTURE. C/W IFIM 22-11186. FAULT RETURNED 2 FLIGHTS LATER.", result: "IFIM ineffective - repeat fault", effective: false}
+                ]
             },
             {
-                subtype:"tsi", cat:"ATA 29", title:"TSI 2025-0142 - Hydraulic System B Pump Inspection",
-                tail:"FLEET", fleet:"ALL", date:"2025-12-10", fault:"N/A",
-                discrepancy:"TSI requires one-time inspection of hydraulic system B engine-driven pump mounting bolts for proper torque on all 737-800 aircraft.",
-                resolution:"Inspect per TSI. Torque check mounting bolts per AMM 29-11-01. Report findings to engineering.",
-                note:"Compliance required within 500 flight hours of TSI date."
-            },
+                faultCode: "31-30",
+                effect: "RADIO ALTIMETER - HUD Pitch Limit / Bank Warning",
+                description: "RECEIVED TAIL STRIKE PITCH LIMIT CUE AND BANK WARNING SYMBOLS IN HUD AFTER LIFTOFF. STEADY HORN WITH THROTTLE RETARD.",
+                ata: "31",
+                fleet: "700",
+                actions: [
+                    {name: "Replace #1 and #2 Radio Altimeters per AMM 34-33-21", confidence: 80},
+                    {name: "Replace Rad Alt Receive/Transmit Antennas per AMM 34-33-11", confidence: 45},
+                    {name: "Check fault history for RA negative readings at altitude", confidence: 60}
+                ],
+                history: [
+                    {tail: "N7736A", date: "2026-02-06", action: "REPLACED #1 & #2 RADIO ALTIMETERS REF AMM 34-33-21. REPLACED #2 RAD ALT RECEIVE AND TRANSMIT ANTENNAS REF AMM 34-33-11. ONE OTHER HIT IN HISTORY SHOWING RA -4 FEET AT ALTITUDE.", result: "Both RA units + antennas replaced", effective: true}
+                ]
+            }
         ];
 
-        const defectSearchInput = document.getElementById('defectSearchInput');
-        const defectResults = document.getElementById('defectResults');
-        const defectFilterChips = document.querySelectorAll('[data-defect-filter]');
-        let activeDefectFilter = 'ALL';
+        const fixSearchInput = document.getElementById('fixSearchInput');
+        const fixResults = document.getElementById('fixResults');
+        const fixFilterChips = document.querySelectorAll('[data-fix-filter]');
+        let activeFixFilter = 'ALL';
 
-        defectFilterChips.forEach(chip => {
-            chip.addEventListener('click', () => {
-                defectFilterChips.forEach(c => c.classList.remove('active'));
+        fixFilterChips.forEach(function(chip) {
+            chip.addEventListener('click', function() {
+                fixFilterChips.forEach(function(c) { c.classList.remove('active'); });
                 chip.classList.add('active');
-                activeDefectFilter = chip.dataset.defectFilter;
-                renderDefects();
+                activeFixFilter = chip.dataset.fixFilter;
+                renderFixRate();
             });
         });
 
-        defectSearchInput.addEventListener('input', renderDefects);
+        fixSearchInput.addEventListener('input', renderFixRate);
 
-        function toggleDefectSection(id) {
-            document.getElementById(id).classList.toggle('expanded');
+        function confClass(c) {
+            if (c >= 70) return 'high';
+            if (c >= 30) return 'med';
+            return 'low';
         }
 
-        function renderDefects() {
-            const q = defectSearchInput.value.trim().toLowerCase();
-            const words = q ? q.split(/\s+/) : [];
+        function renderFixRate() {
+            var q = fixSearchInput.value.trim().toLowerCase();
+            var words = q ? q.split(/\s+/) : [];
 
-            let results = DEFECTS;
+            var results = TSI_DATA;
 
-            if (activeDefectFilter !== 'ALL') {
-                results = results.filter(d => d.subtype.toUpperCase() === activeDefectFilter);
-            }
-
-            if (q) {
-                results = results.filter(d => {
-                    const hay = [d.cat, d.title, d.tail, d.fleet, d.fault, d.discrepancy, d.resolution, d.note || ''].join(' ').toLowerCase();
-                    return words.every(w => hay.includes(w));
+            if (activeFixFilter !== 'ALL') {
+                results = results.filter(function(d) {
+                    return d.fleet.toUpperCase() === activeFixFilter;
                 });
             }
 
-            if (!q && activeDefectFilter === 'ALL') {
-                // Show all by default since we have few entries
-                if (results.length === 0) {
-                    defectResults.innerHTML = '<div class="results-empty"><p>No defect history yet</p></div>';
-                    return;
-                }
+            if (q) {
+                results = results.filter(function(d) {
+                    var hay = [d.faultCode, d.effect, d.description, d.ata, d.fleet].join(' ').toLowerCase();
+                    d.actions.forEach(function(a) { hay += ' ' + a.name.toLowerCase(); });
+                    d.history.forEach(function(h) { hay += ' ' + h.tail.toLowerCase() + ' ' + h.action.toLowerCase() + ' ' + h.result.toLowerCase(); });
+                    return words.every(function(w) { return hay.indexOf(w) !== -1; });
+                });
             }
 
-            if (results.length === 0) {
-                defectResults.innerHTML = '<div class="results-empty"><p>No matching defects found</p></div>';
+            if (!q && activeFixFilter === 'ALL') {
+                fixResults.innerHTML = '<div class="fix-empty-state"><p>Search fault codes and flight deck effects</p><p class="hint">Type a fault code (36-12020), effect (BLEED FAMV L), or keyword to find probable causes and past fixes</p></div>';
                 return;
             }
 
-            let html = `<div class="result-count">${results.length} record${results.length !== 1 ? 's' : ''}</div>`;
+            if (results.length === 0) {
+                fixResults.innerHTML = '<div class="fix-empty-state"><p>No matching fault codes found</p><p class="hint">Try a different fault code, effect, or keyword</p></div>';
+                return;
+            }
 
-            results.forEach((d, idx) => {
-                const subtypeClass = 'subtype-' + d.subtype;
-                const subtypeBadgeClass = 'defect-subtype-' + d.subtype;
-                const subtypeLabel = d.subtype.toUpperCase();
-                const titleHl = highlight(d.title, words);
+            var html = '<div class="fix-results-count">' + results.length + ' result' + (results.length !== 1 ? 's' : '') + (q ? ' for "' + esc(q) + '"' : '') + '</div>';
 
-                html += `<div class="defect-card ${subtypeClass}">
-                    <div class="defect-card-top">
-                        <span class="defect-subtype ${subtypeBadgeClass}">${subtypeLabel}</span>
-                        <span class="defect-ata">${highlight(d.cat, words)}</span>
-                        <span class="defect-title">${titleHl}</span>
-                    </div>
-                    <div class="defect-meta">
-                        <div class="defect-meta-item">
-                            <span class="defect-meta-label">TAIL</span>
-                            <span class="defect-meta-value">${highlight(d.tail, words)}</span>
-                        </div>
-                        <div class="defect-meta-item">
-                            <span class="defect-meta-label">FLEET</span>
-                            <span class="defect-meta-value">${highlight(d.fleet, words)}</span>
-                        </div>
-                        <div class="defect-meta-item">
-                            <span class="defect-meta-label">DATE</span>
-                            <span class="defect-meta-value">${d.date}</span>
-                        </div>
-                        <div class="defect-meta-item">
-                            <span class="defect-meta-label">FAULT</span>
-                            <span class="defect-meta-value">${highlight(d.fault, words)}</span>
-                        </div>
-                    </div>
-                    <div class="defect-section defect-section-discrepancy expanded" id="disc-${idx}" onclick="toggleDefectSection('disc-${idx}')">
-                        <div class="defect-section-label">DISCREPANCY</div>
-                        <div class="defect-section-text">${highlight(d.discrepancy, words)}</div>
-                    </div>
-                    <div class="defect-section defect-section-resolution expanded" id="res-${idx}" onclick="toggleDefectSection('res-${idx}')">
-                        <div class="defect-section-label">RESOLUTION</div>
-                        <div class="defect-section-text">${highlight(d.resolution, words)}</div>
-                    </div>
-                </div>`;
+            results.forEach(function(d) {
+                html += '<div class="fix-card">';
+                html += '<div class="fix-card-header"><div class="fix-card-meta">';
+                html += '<div class="fix-fault-code">' + esc(d.faultCode) + '</div>';
+                html += '<div class="fix-effect">' + esc(d.effect) + '</div>';
+                html += '<div class="fix-tags">';
+                html += '<span class="fix-tag fix-tag-ata">ATA ' + esc(d.ata) + '</span>';
+                html += '<span class="fix-tag fix-tag-fleet">' + esc(d.fleet) + '</span>';
+                html += '</div></div></div>';
+
+                html += '<div class="fix-card-body">';
+
+                // Flight Deck Effect
+                html += '<div class="fix-section"><div class="fix-section-label">Flight Deck Effect</div>';
+                html += '<div class="fix-description">' + esc(d.description) + '</div></div>';
+
+                // Recommended Actions
+                html += '<div class="fix-section"><div class="fix-section-label">Recommended Actions</div>';
+                html += '<div class="fix-actions">';
+                d.actions.forEach(function(a) {
+                    var cl = confClass(a.confidence);
+                    html += '<div class="fix-action">';
+                    html += '<span class="fix-action-name">' + esc(a.name) + '</span>';
+                    html += '<div class="fix-action-bar-wrap"><div class="fix-action-bar bar-' + cl + '" style="width:' + a.confidence + '%"></div></div>';
+                    html += '<span class="fix-action-pct pct-' + cl + '">' + a.confidence + '%</span>';
+                    html += '</div>';
+                });
+                html += '</div></div>';
+
+                // TSI History
+                if (d.history.length > 0) {
+                    html += '<div class="fix-section"><div class="fix-section-label">TSI History (' + d.history.length + ' entr' + (d.history.length !== 1 ? 'ies' : 'y') + ')</div>';
+                    d.history.forEach(function(h) {
+                        var dateStr = formatFixDate(h.date);
+                        html += '<div class="fix-tsi">';
+                        html += '<div class="fix-tsi-header">';
+                        html += '<span class="fix-tsi-tail">' + esc(h.tail) + '</span>';
+                        html += '<span class="fix-tsi-date">' + dateStr + '</span>';
+                        html += '</div>';
+                        html += '<div class="fix-tsi-text">' + esc(h.action) + '</div>';
+                        html += '<div class="fix-tsi-result' + (h.effective ? '' : ' ineffective') + '">Result: ' + esc(h.result) + '</div>';
+                        html += '</div>';
+                    });
+                    html += '</div>';
+                }
+
+                html += '</div></div>';
             });
 
-            defectResults.innerHTML = html;
+            fixResults.innerHTML = html;
         }
 
-        // Show all defects on load
-        renderDefects();
+        function formatFixDate(dateStr) {
+            var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            var parts = dateStr.split('-');
+            var d = parseInt(parts[2], 10);
+            var m = months[parseInt(parts[1], 10) - 1];
+            var y = parts[0];
+            return (d < 10 ? '0' : '') + d + '-' + m + '-' + y;
+        }
 
         // ---- QUICK LINKS ----
         const QL_SECTIONS = [
@@ -2237,14 +2303,14 @@
                     <div class="results-empty">
                         <p><strong>All references. All manuals. All apps. One search.</strong></p>
                         <p class="hint">Type to search or select a category filter</p>
-                        <div class="stats-line"><span>${DATA.length}</span> entries &middot; <span>${DEFECTS.length}</span> defects &middot; <span>${Object.keys(MANUAL_LINKS).length}</span> manuals linked &middot; <span>${APPS.length}</span> app${APPS.length !== 1 ? 's' : ''}</div>
+                        <div class="stats-line"><span>${DATA.length}</span> entries &middot; <span>${TSI_DATA.length}</span> fix records &middot; <span>${Object.keys(MANUAL_LINKS).length}</span> manuals linked &middot; <span>${APPS.length}</span> app${APPS.length !== 1 ? 's' : ''}</div>
                     </div>`;
                 return;
             }
 
             // Determine what to show based on filter
-            const showQRH = activeFilter !== 'DEFECT' && activeFilter !== 'APP';
-            const showDefects = activeFilter === 'ALL' || activeFilter === 'DEFECT';
+            const showQRH = activeFilter !== 'FIX' && activeFilter !== 'APP';
+            const showFixes = activeFilter === 'ALL' || activeFilter === 'FIX';
             const showApps = activeFilter === 'ALL' || activeFilter === 'APP';
 
             // QRH results
@@ -2262,13 +2328,13 @@
                 }
             }
 
-            // Defect results
-            let defectResultsList = [];
-            if (showDefects) {
-                defectResultsList = DEFECTS;
+            // Fix Rate results
+            let fixResultsList = [];
+            if (showFixes) {
+                fixResultsList = TSI_DATA;
                 if (q) {
-                    defectResultsList = defectResultsList.filter(d => {
-                        const hay = [d.cat, d.title, d.tail, d.fleet, d.fault, d.discrepancy, d.resolution, d.note || ''].join(' ').toLowerCase();
+                    fixResultsList = fixResultsList.filter(d => {
+                        const hay = [d.faultCode, d.effect, d.description, d.ata, d.fleet].join(' ').toLowerCase();
                         return words.every(w => hay.includes(w));
                     });
                 }
@@ -2296,7 +2362,7 @@
                 });
             }
 
-            const totalResults = qrhResults.length + defectResultsList.length + appResults.length + qlResults.length;
+            const totalResults = qrhResults.length + fixResultsList.length + appResults.length + qlResults.length;
 
             if (totalResults === 0) {
                 resultsArea.innerHTML = '<div class="results-empty"><p>No results found</p></div>';
@@ -2343,44 +2409,25 @@
                 html += '</div>';
             });
 
-            // Render defect cards inline
-            defectResultsList.forEach((d, idx) => {
-                const subtypeClass = 'subtype-' + d.subtype;
-                const subtypeBadgeClass = 'defect-subtype-' + d.subtype;
-                const dIdx = 'main-' + idx;
-
-                html += `<div class="defect-card ${subtypeClass}">
-                    <div class="defect-card-top">
-                        <span class="ac-type-badge ac-type-defect">DEFECT</span>
-                        <span class="defect-subtype ${subtypeBadgeClass}">${d.subtype.toUpperCase()}</span>
-                        <span class="defect-ata">${highlight(d.cat, words)}</span>
-                        <span class="defect-title">${highlight(d.title, words)}</span>
-                    </div>
-                    <div class="defect-meta">
-                        <div class="defect-meta-item">
-                            <span class="defect-meta-label">TAIL</span>
-                            <span class="defect-meta-value">${highlight(d.tail, words)}</span>
-                        </div>
-                        <div class="defect-meta-item">
-                            <span class="defect-meta-label">FLEET</span>
-                            <span class="defect-meta-value">${highlight(d.fleet, words)}</span>
-                        </div>
-                        <div class="defect-meta-item">
-                            <span class="defect-meta-label">DATE</span>
-                            <span class="defect-meta-value">${d.date}</span>
-                        </div>
-                        <div class="defect-meta-item">
-                            <span class="defect-meta-label">FAULT</span>
-                            <span class="defect-meta-value">${highlight(d.fault, words)}</span>
+            // Render fix rate cards inline
+            fixResultsList.forEach(function(d) {
+                var topAction = d.actions[0];
+                var cl = topAction ? (topAction.confidence >= 70 ? 'high' : topAction.confidence >= 30 ? 'med' : 'low') : 'med';
+                html += `<div class="fix-card" style="cursor:pointer" onclick="document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.querySelector('[data-tab=fixrate]').classList.add('active');document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById('fixrate').classList.add('active');fixSearchInput.value='${d.faultCode}';renderFixRate();">
+                    <div class="fix-card-header">
+                        <div class="fix-card-meta">
+                            <div class="fix-fault-code">${esc(d.faultCode)}</div>
+                            <div class="fix-effect">${highlight(d.effect, words)}</div>
+                            <div class="fix-tags">
+                                <span class="fix-tag fix-tag-ata">ATA ${esc(d.ata)}</span>
+                                <span class="fix-tag fix-tag-fleet">${esc(d.fleet)}</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="defect-section defect-section-discrepancy" id="mdisc-${dIdx}" onclick="toggleDefectSection('mdisc-${dIdx}')">
-                        <div class="defect-section-label">DISCREPANCY</div>
-                        <div class="defect-section-text">${highlight(d.discrepancy, words)}</div>
-                    </div>
-                    <div class="defect-section defect-section-resolution" id="mres-${dIdx}" onclick="toggleDefectSection('mres-${dIdx}')">
-                        <div class="defect-section-label">RESOLUTION</div>
-                        <div class="defect-section-text">${highlight(d.resolution, words)}</div>
+                    <div style="padding:10px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;">TOP FIX</span>
+                        <span style="font-size:12px;font-weight:600;color:var(--text);flex:1;">${topAction ? esc(topAction.name) : 'N/A'}</span>
+                        <span class="fix-action-pct pct-${cl}">${topAction ? topAction.confidence + '%' : ''}</span>
                     </div>
                 </div>`;
             });

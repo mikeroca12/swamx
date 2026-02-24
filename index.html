@@ -851,7 +851,7 @@
         .ql-fav-chip .qfc-x:hover{opacity:1;}
 
         .ql-masonry{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;overflow:hidden;}
-        .ql-masonry .ql-col{width:215px;flex-shrink:0;flex-grow:0;display:flex;flex-direction:column;gap:10px;}
+        .ql-masonry .ql-col{width:190px;flex-shrink:0;flex-grow:0;display:flex;flex-direction:column;gap:10px;}
         .ql-sec-card{background:rgba(0,0,0,0.15);border:1px solid var(--frame-border);border-radius:7px;overflow:hidden;}
         .ql-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:pointer;user-select:none;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--frame-border);}
         .ql-sec-hdr h3{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#ffffff;margin:0;}
@@ -863,7 +863,7 @@
 
         .ql-tile{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:5px 8px;display:flex;align-items:center;gap:7px;margin-bottom:2px;cursor:pointer;transition:all 0.12s;text-decoration:none;box-shadow:var(--card-shadow);position:relative;}
         .ql-tile:hover{border-color:var(--accent-light,#2563eb);box-shadow:var(--card-shadow-hover);transform:translateY(-1px);background:#fff;}
-        .ql-tile .ql-name{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;}
+        .ql-tile .ql-name{font-size:12px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;}
         .ql-tile .ql-star{background:none;border:none;cursor:pointer;font-size:12px;color:#8896a8;opacity:1;transition:all 0.1s;flex-shrink:0;padding:2px 4px;}
         .ql-tile:hover .ql-star{color:#6b7a8d;}
         .ql-tile .ql-star.fv{color:#facc15;opacity:1;}
@@ -2044,7 +2044,7 @@
             {n:"Campus Resources",d:"Getting to TOPS",u:"https://wnco.sharepoint.com/sites/SWALife-Training/SitePages/Resources.aspx#getting-to-tops"},
           ]},
           {id:"boeing",t:"Boeing Toolbox",bl:"MBF",kc:"k-mbf",edge:true,l:[
-            {n:"MBF (Login First)",d:"My Boeing Fleet Home",u:"https://sso.fed.prod.aws.swalife.com/idp/startSSO.ping?PartnerSpId=urn%3Aexostar%3Adaf&TargetResource=https://sso.aviationid.com/idprov/pages/home/dispatch.jsp%3FSpName=MBF"},
+            {n:"MBF Login 1st",d:"My Boeing Fleet Home",u:"https://sso.fed.prod.aws.swalife.com/idp/startSSO.ping?PartnerSpId=urn%3Aexostar%3Adaf&TargetResource=https://sso.aviationid.com/idprov/pages/home/dispatch.jsp%3FSpName=MBF"},
             {n:"MAX Req Placards",d:"Task Cards",u:"https://myboeingfleet.boeing.com/toolbox/library/ViewAirlineDoc/linked_doc/89893F70D27DDB73/MAX_taskcards.html?mimeType=text/html"},
             {n:"Emergency Equip",d:"Equipment Drawing",u:"https://myboeingfleet.boeing.com/toolbox/library/ViewAirlineDoc/linked_doc/89893F70A50AD549/emergency_equip_install.html?mimeType=text/html"},
             {n:"Ext Markings",d:"Placards Drawing",u:"https://myboeingfleet.boeing.com/toolbox/library/ViewAirlineDoc/linked_doc/89893F6B2564D285/exterior_markings.html?mimeType=text/html"},
@@ -2059,7 +2059,7 @@
             {n:"Door Codes",d:"Station Door Codes",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=47"},
             {n:"Ops Binder",d:"Flight Ops Publications",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=1004"},
             {n:"Wiring Practices",d:"Wiring Standard Practices",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=981"},
-            {n:"Wiring Connectors",d:"Electrical Connectors Guide",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=981"},
+            {n:"Wire Connector",d:"Electrical Connectors Guide",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=981"},
             {n:"Circuit Breakers",d:"CircuitBreakers-ALL",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=981"},
             {n:"Station Charts",d:"Station Reference Charts",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=981"},
             {n:"CAT III Ref",d:"CAT III Systems & Equip Card",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=981"},
@@ -2071,7 +2071,7 @@
             {n:"FD Panels",d:"Flight Deck Panel Layouts",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=978"},
             {n:"RBFs",d:"Required Bulletins",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=1517"},
             {n:"LOTO Video",d:"Lockout/Tagout AMM 27-51",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=987"},
-            {n:"Inflatable Shelters",d:"Engine/Fuselage/Nose",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=987"},
+            {n:"Inflate Shelter",d:"Engine/Fuselage/Nose",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=987"},
           ]},
           {id:"weather",t:"Weather / Ops",bl:"WX",kc:"k-wx",l:[
             {n:"Windy",d:"Wind & Weather Map",u:"https://www.windy.com/-Menu/menu?31.579,-98.361,6"},
@@ -2543,7 +2543,7 @@
             }
             // Determine column count based on container width
             var cw = m.clientWidth || 800;
-            var numCols = Math.max(2, Math.min(sections.length, Math.floor(cw / 225)));
+            var numCols = Math.max(2, Math.min(sections.length, Math.floor(cw / 200)));
             // Create columns
             var colHtml = [];
             var colHeights = [];

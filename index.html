@@ -850,8 +850,8 @@
         .ql-fav-chip .qfc-x{font-size:9px;color:var(--text-on-dark);opacity:0.3;cursor:pointer;}
         .ql-fav-chip .qfc-x:hover{opacity:1;}
 
-        .ql-masonry{column-width:175px;column-gap:10px;}
-        .ql-sec-card{break-inside:avoid;background:rgba(0,0,0,0.15);border:1px solid var(--frame-border);border-radius:7px;overflow:hidden;margin-bottom:10px;}
+        .ql-masonry{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));grid-auto-rows:min-content;gap:10px;align-items:start;}
+        .ql-sec-card{background:rgba(0,0,0,0.15);border:1px solid var(--frame-border);border-radius:7px;overflow:hidden;}
         .ql-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:pointer;user-select:none;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--frame-border);}
         .ql-sec-hdr h3{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#ffffff;margin:0;}
         .ql-sec-hdr .ql-cnt{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--text-on-dark);background:rgba(255,255,255,0.1);padding:1px 5px;border-radius:3px;margin-left:5px;}
@@ -2054,7 +2054,6 @@
             {n:"HAZMAT Search",d:"MAXCOM SDS",u:"https://app.maxcomsc.com/maxcomsc/index.jsp?ju=Southwest&jp=msds"},
           ]},
           {id:"comply365",t:"Comply365",bl:"C365",kc:"k-c365",l:[
-            {n:"C365 (Login First)",d:"Comply365 Home",u:"https://swa.comply365.net/"},
             {n:"Station SIPs",d:"Station Info Pages",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=47"},
             {n:"Door Codes",d:"Station Door Codes",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=47"},
             {n:"Ops Binder",d:"Flight Ops Publications",u:"https://swa.comply365.net/DCM/Libraries.aspx?Id=1004"},

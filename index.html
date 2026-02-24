@@ -850,7 +850,8 @@
         .ql-fav-chip .qfc-x{font-size:9px;color:var(--text-on-dark);opacity:0.3;cursor:pointer;}
         .ql-fav-chip .qfc-x:hover{opacity:1;}
 
-        .ql-masonry{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));grid-auto-rows:min-content;gap:10px;align-items:start;}
+        .ql-masonry{display:flex;gap:10px;align-items:flex-start;}
+        .ql-masonry .ql-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;}
         .ql-sec-card{background:rgba(0,0,0,0.15);border:1px solid var(--frame-border);border-radius:7px;overflow:hidden;}
         .ql-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:pointer;user-select:none;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--frame-border);}
         .ql-sec-hdr h3{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#ffffff;margin:0;}
@@ -2526,16 +2527,40 @@
         function qlRenderMasonry() {
             var m = document.getElementById('qlMasonry');
             if (!m) return;
-            var h = '';
+            // Build section HTML strings and estimate heights
+            var sections = [];
             for (var s = 0; s < QL_SECTIONS.length; s++) {
                 var sec = QL_SECTIONS[s], col = qlCollapsed.indexOf(sec.id) !== -1;
-                h += '<div class="ql-sec-card" data-s="' + sec.id + '">';
-                h += '<div class="ql-sec-hdr ' + (col ? 'collapsed' : '') + '" onclick="qlToggleSec(\'' + sec.id + '\')">';
-                h += '<div style="display:flex;align-items:center"><h3>' + sec.t + '</h3>' + (sec.edge && !isEdge ? '<span style="font-size:9px;color:#ffffff;margin-left:8px;font-family:JetBrains Mono,monospace;">EDGE ONLY</span>' : '') + '<span class="ql-cnt">' + sec.l.length + '</span></div>';
-                h += '<span class="ql-arr">&#9660;</span></div>';
-                h += '<div class="ql-sec-list ' + (col ? 'hidden' : '') + '">';
-                for (var j = 0; j < sec.l.length; j++) h += qlTileH(sec, sec.l[j], qlIsF(sec.id, sec.l[j].n));
-                h += '</div></div>';
+                var sh = '<div class="ql-sec-card" data-s="' + sec.id + '">';
+                sh += '<div class="ql-sec-hdr ' + (col ? 'collapsed' : '') + '" onclick="qlToggleSec(\'' + sec.id + '\')">';
+                sh += '<div style="display:flex;align-items:center"><h3>' + sec.t + '</h3>' + (sec.edge && !isEdge ? '<span style="font-size:9px;color:#ffffff;margin-left:8px;font-family:JetBrains Mono,monospace;">EDGE ONLY</span>' : '') + '<span class="ql-cnt">' + sec.l.length + '</span></div>';
+                sh += '<span class="ql-arr">&#9660;</span></div>';
+                sh += '<div class="ql-sec-list ' + (col ? 'hidden' : '') + '">';
+                for (var j = 0; j < sec.l.length; j++) sh += qlTileH(sec, sec.l[j], qlIsF(sec.id, sec.l[j].n));
+                sh += '</div></div>';
+                var estH = col ? 36 : 36 + sec.l.length * 37;
+                sections.push({html: sh, height: estH});
+            }
+            // Determine column count based on container width
+            var cw = m.clientWidth || 800;
+            var numCols = Math.max(2, Math.min(sections.length, Math.floor(cw / 190)));
+            // Create columns
+            var colHtml = [];
+            var colHeights = [];
+            for (var c = 0; c < numCols; c++) { colHtml.push(''); colHeights.push(0); }
+            // Pack sections into shortest column
+            sections.forEach(function(sec) {
+                var minIdx = 0, minH = colHeights[0];
+                for (var c = 1; c < numCols; c++) {
+                    if (colHeights[c] < minH) { minH = colHeights[c]; minIdx = c; }
+                }
+                colHtml[minIdx] += sec.html;
+                colHeights[minIdx] += sec.height;
+            });
+            // Build final HTML
+            var h = '';
+            for (var c = 0; c < numCols; c++) {
+                h += '<div class="ql-col">' + colHtml[c] + '</div>';
             }
             m.innerHTML = h;
         }
@@ -2619,6 +2644,11 @@
         }
 
         qlRenderAll();
+        var qlResizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(qlResizeTimer);
+            qlResizeTimer = setTimeout(qlRenderMasonry, 150);
+        });
     </script>
 </body>
 </html>

@@ -224,7 +224,7 @@
             left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-dim);
+            color: var(--text);
             pointer-events: none;
         }
 
@@ -253,7 +253,7 @@
             box-shadow: var(--card-shadow);
         }
 
-        .search-input::placeholder { color: var(--text-dim); }
+        .search-input::placeholder { color: var(--text); }
 
         .search-input:focus {
             border-color: var(--accent);
@@ -275,7 +275,7 @@
             border-radius: 6px;
             border: 1px solid var(--border);
             background: var(--surface);
-            color: var(--text-secondary);
+            color: var(--text);
             cursor: pointer;
             transition: all 0.15s ease;
             user-select: none;
@@ -803,7 +803,7 @@
         /* ---- QUICK LINKS v2: Masonry + Korry ---- */
         .ql-search{background:#fff;border:2px solid var(--accent-light,#2563eb);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:12px;box-shadow:0 2px 8px rgba(37,99,235,0.1);}
         .ql-search input{flex:1;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--text);outline:none;}
-        .ql-search input::placeholder{color:var(--text-dim);}
+        .ql-search input::placeholder{color:var(--text);}
         .ql-search .qs-icon{color:var(--accent-light,#2563eb);font-size:14px;}
         .ql-search .qs-clear{background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:14px;display:none;padding:0 2px;}
         .ql-search .qs-clear.show{display:block;}
@@ -813,7 +813,7 @@
         .ql-fav-sec{margin-bottom:12px;background:rgba(250,204,21,0.04);border:1px solid rgba(250,204,21,0.15);border-radius:8px;padding:8px 10px;}
         .ql-fav-hdr{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#facc15;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
         .ql-fav-row{display:flex;flex-wrap:wrap;gap:5px;min-height:24px;align-items:center;}
-        .ql-fav-empty{font-size:10px;color:var(--text-on-dark);opacity:0.3;padding:2px 0;}
+        .ql-fav-empty{font-size:10px;color:var(--text-on-dark);opacity:0.5;padding:2px 0;}
         .ql-fav-chip{background:rgba(255,255,255,0.1);border:1px solid rgba(250,204,21,0.2);border-radius:5px;padding:4px 9px;display:inline-flex;align-items:center;gap:5px;text-decoration:none;cursor:pointer;transition:all 0.1s;}
         .ql-fav-chip:hover{background:rgba(255,255,255,0.16);border-color:rgba(250,204,21,0.4);}
         .ql-fav-chip .qfc-n{font-size:11px;font-weight:700;color:var(--text-on-dark-dim);white-space:nowrap;}

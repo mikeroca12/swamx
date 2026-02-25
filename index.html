@@ -888,6 +888,7 @@
         .tsi-action-chip{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;}
         .tsi-action-chip:hover{border-color:var(--accent);color:var(--accent);}
         .tsi-action-chip.selected{background:var(--accent);color:#fff;border-color:var(--accent);}
+        .tsi-form-display{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--text);padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;min-height:42px;display:flex;align-items:center;}
         .tsi-save-btn{padding:8px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text);}
         .tsi-save-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
         .tsi-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:opacity 0.3s;}
@@ -2344,8 +2345,8 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             {n:"AirlineTechs",d:"MAX Flight Deck",u:"http://www.airlinetechs.com/flightdeckzoom/MAXflightdeck.php"},
             {n:"Hermes",d:"Maintenance Login",u:"https://hwm.swacorp.com/MaintUser/Account/LogOn?ReturnUrl=%2fMaintUser%2f"},
             {n:"DocuNet",d:"Manuals SSO",u:"https://docunet-online-us.vistair.com/"},
-            {n:"TSR",d:"Salesforce Lightning",u:"https://techopsappportal.lightning.force.com/lightning/page/home"},
-            {n:"PARAPP",d:"Salesforce Tech Ops",u:"https://techopsappportal.my.salesforce.com/"},
+            {n:"TSR",d:"Salesforce Lightning",u:"https://techopsappportal.lightning.force.com/lightning/app/06mKZ000000gkicYAA"},
+            {n:"PARAPP",d:"Salesforce Tech Ops",u:"https://techopsappportal.lightning.force.com/lightning/app/06m410000002ZCIAA2"},
             {n:"Comply365",d:"Document Access",u:"https://swa.comply365.net/"},
             {n:"Toolbox Backup",d:"Remote Access",u:"http://w11pcwtbr1ap001:8080/ToolboxRemote.html"},
             {n:"Wheel & Brake",d:"Search Q & S/N",u:"https://prod.wb-acmx.swalife.com/#/tag-list"},
@@ -2367,6 +2368,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             {n:"FRM - GIP",d:"General Inspection",b:"FRM",kc:"k-frm",mk:"FRM GIP"},
           ]},
           {id:"quickbase",t:"QuickBase",bl:"QB",kc:"k-qb",l:[
+            {n:"CESE",d:"CESE Database",u:"https://southwest.quickbase.com/db/bqmgu82c8"},
             {n:"W/O",d:"Work Orders",u:"https://southwest.quickbase.com/db/bmxb4hwm5?a=nwr"},
             {n:"HRON Request",d:"HRON Parts",u:"https://southwest.quickbase.com/db/bp2ra8s7e?a=nwr"},
             {n:"CATIII",d:"Category III",u:"https://southwest.quickbase.com/db/bmxb4mp6b?a=nwr"},
@@ -2376,15 +2378,16 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             {n:"INTL Checklist",d:"MOC Downline",u:"https://southwest.quickbase.com/db/bmc2jq3ms"},
             {n:"INTL STA Mgr",d:"Must Email List",u:"https://southwest.quickbase.com/db/bn77k9b4c/tablereport?a=td"},
             {n:"INTL Badge/Travel",d:"Dress Code",u:"https://southwest.quickbase.com/db/bn9xycn7x?a=td"},
-            {n:"CESE",d:"CESE Database",u:"https://southwest.quickbase.com/db/bqmgu82c8"},
           ]},
           {id:"swalife",t:"SWALife / SharePoint",bl:"SP",kc:"k-sp",l:[
             {n:"MOC Schedule",d:"2026 Schedule",u:"https://wnco-my.sharepoint.com/:x:/r/personal/kevin_gales_wnco_com/_layouts/15/Doc.aspx?sourcedoc=%7B1ABE7E53-D9D6-4A3F-A7A4-D5233C0BF1D6%7D&file=2026%20MOC%20Schedule.xlsx&action=default&mobileredirect=true"},
+            {n:"VAC/SICK Track",d:"TechOps Workforce",u:"https://techopsworkforce.swalife.com/"},
             {n:"F/T Schedule",d:"2026 Calendar",u:"https://wnco.sharepoint.com/:x:/r/sites/FieldTechs/_layouts/15/Doc.aspx?sourcedoc=%7B45BB5508-CB41-4CFE-A775-A9CD98EB6E90%7D&file=2026%20Field%20Tech%20Calendar.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"},
             {n:"Turnover",d:"Short Tails Turnover",u:"https://wnco-my.sharepoint.com/:x:/r/personal/elvy_tavarez_wnco_com/_layouts/15/Doc.aspx?sourcedoc=%7B2AAE5886-2744-4475-A3E5-192329269704%7D&file=SHORT%20TAILS%20TURNOVER.xlsx&action=default&mobileredirect=true"},
             {n:"All Manuals",d:"SWALife Manuals Page",u:"https://wnco.sharepoint.com/sites/SWALife-Manuals"},
             {n:"NOC Manuals",d:"Manuals & Regs",u:"https://wnco.sharepoint.com/sites/SWALife-NOC-Secure/SitePages/Manuals-Regs.aspx"},
             {n:"SA-M Forms",d:"DocuNet TOF Forms",u:"https://sso.fed.prod.aws.swalife.com/idp/startSSO.ping?PartnerSpId=SWA.usernet.vistair.com&TARGET=https://docunet-online-us.vistair.com/?manualCode=SWA-CPUBS-TOF-HTML"},
+            {n:"M-EA Library",d:"M-EA Library OCT2025",u:"https://wnco.sharepoint.com/sites/ServiceEngineering-AOG/MEA%20Library/Forms/AllItems.aspx?viewid=8868442c%2Ddb52%2D42bc%2Dafb4%2Da5bb36f0579a&id=%2Fsites%2FServiceEngineering%2DAOG%2FMEA%20Library%2FM%2DEA%20Library%2FM%2DEA%20Library%20OCT2025%2Epdf&parent=%2Fsites%2FServiceEngineering%2DAOG%2FMEA%20Library%2FM%2DEA%20Library&CT=1771957645134&OR=OWA%2DNT%2DMail&CID=d5480132%2Dd843%2D8531%2D42d2%2Ddb7edf24be1d"},
             {n:"Know Before Fix",d:"Tech Ops News",u:"https://wnco.sharepoint.com/sites/SWALife-TechOps-Secure/_layouts/15/news.aspx?title=Know%20Before%20Fix&newsSource=1&instanceId=661b4ac4-5eba-48f9-bb71-c88329fe9303&webPartId=8c88f208-6c77-4bdb-86a0-0c47b4316588&serverRelativeUrl=%2Fsites%2FSWALife-TechOps-Secure%2FSitePages%2FKnow-Before-Fix.aspx&pagesListId=17ba2016-b85b-4d0a-b2b3-4fb4340e0ff9"},
             {n:"FDR/CVR Request",d:"Flight Data Recorder",u:"https://wnco.sharepoint.com/sites/SWALife-Departments/SitePages/FDR-CVR-Request-Form.aspx"},
             {n:"Parts - August",d:"800 + MAX Parts",u:"https://wnco-my.sharepoint.com/:x:/r/personal/august_stefkovich_wnco_com/_layouts/15/Doc.aspx?sourcedoc=%7B85042E4A-67F8-4806-9B5B-94413A8CD9D4%7D&file=New%20800%20%2B%20MAX%20Parts%20List.xlsx&action=default&mobileredirect=true"},
@@ -2394,15 +2397,11 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             {n:"Parts - MISC",d:"Whittington Misc",u:"https://wnco-my.sharepoint.com/:x:/r/personal/michael_whittington_wnco_com/_layouts/15/Doc.aspx?sourcedoc=%7B25DEE148-0B92-4C0B-83D0-903E128D1E31%7D&file=Misc%20Spreadsheet.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1&ct=1649979571309&wdOrigin=OFFICECOM-WEB.MAIN.EDGEWORTH&cid=fe0faa20-d85c-430d-9254-fcf3838d2907"},
             {n:"Shadow Board",d:"Digital MX Links",u:"https://wnco.sharepoint.com/sites/SWALife-MXLinks/Lists/Digital%20Shadow%20Board/AllItems.aspx?env=WebViewList"},
             {n:"Specialty Aircraft",d:"Stock Images",u:"https://wnco.sharepoint.com/sites/SouthwestStockImages/SitePages/Aircraft.aspx"},
-            {n:"A/C Interior",d:"Aircraft Interior/SATCOM",u:"https://wnco.sharepoint.com/sites/SWALife-NOC-Secure/SitePages/Aircraft.aspx?csf=1&web=1&e=POhazZ"},
             {n:"Campus Resources",d:"Getting to TOPS",u:"https://wnco.sharepoint.com/sites/SWALife-Training/SitePages/Resources.aspx#getting-to-tops"},
             {n:"ALL CBA's",d:"Collective Bargaining",u:"https://wnco.sharepoint.com/sites/SWALife-Labor-Negotiations/SitePages/Collective-Bargaining-Agreements.aspx"},
             {n:"DASH Chat",d:"ServiceNow Virtual Agent",u:"https://southwest.service-now.com/swa?id=swa_virtual_agent"},
             {n:"SWA Password",d:"Password Manager",u:"https://passwordmgr.swalife.com/"},
-            {n:"RON Report",d:"Network Planning",u:"https://wnco.sharepoint.com/sites/SWALife-Flight-Schedules/SiteAssets/Forms/AllItems.aspx?id=%2Fsites%2FSWALife%2DFlight%2DSchedules%2FSiteAssets%2FSitePages%2FNetwork%2DPlanning%2DReports%2F2026%5F0219%2DRON%2DReport%2Epdf&parent=%2Fsites%2FSWALife%2DFlight%2DSchedules%2FSiteAssets%2FSitePages%2FNetwork%2DPlanning%2DReports"},
             {n:"Flight Schedules",d:"Network Planning Reports",u:"https://wnco.sharepoint.com/sites/SWALife-Flight-Schedules/SitePages/Network-Planning-Reports.aspx"},
-            {n:"Tips/Parts",d:"MX Links Home",u:"https://wnco.sharepoint.com/sites/SWALife-MXLinks"},
-            {n:"M-EA Library",d:"M-EA Library OCT2025",u:"https://wnco.sharepoint.com/sites/ServiceEngineering-AOG/MEA%20Library/Forms/AllItems.aspx?viewid=8868442c%2Ddb52%2D42bc%2Dafb4%2Da5bb36f0579a&id=%2Fsites%2FServiceEngineering%2DAOG%2FMEA%20Library%2FM%2DEA%20Library%2FM%2DEA%20Library%20OCT2025%2Epdf&parent=%2Fsites%2FServiceEngineering%2DAOG%2FMEA%20Library%2FM%2DEA%20Library&CT=1771957645134&OR=OWA%2DNT%2DMail&CID=d5480132%2Dd843%2D8531%2D42d2%2Ddb7edf24be1d"},
           ]},
           {id:"boeing",t:"Boeing Toolbox",bl:"MBF",kc:"k-mbf",edge:true,l:[
             {n:"MBF Login 1st",d:"My Boeing Fleet Home",u:"https://sso.fed.prod.aws.swalife.com/idp/startSSO.ping?PartnerSpId=urn%3Aexostar%3Adaf&TargetResource=https://sso.aviationid.com/idprov/pages/home/dispatch.jsp%3FSpName=MBF"},
@@ -2459,7 +2458,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             {n:"BirdCast",d:"Live Bird Migration",u:"https://birdcast.info/migration-tools/live-migration-maps/"},
           ]},
           {id:"training",t:"Training / Reference",bl:"TRN",kc:"k-trn",l:[
-            {n:"Lightning CBT",d:"Strike - MOC123",u:"https://www.swamaintenancetraining.com/secure/CMP/LightningStrike/story.html"},
+            {n:"Lightning CBT",d:"TechOps Training",u:"https://techopstraining.swalife.com/"},
             {n:"LMS",d:"SumTotal Training",u:"https://southwest.sumtotal.host/rcore/c/pillarRedirect?relyingParty=AdvancedReport&url=https%3A%2F%2Fsouthwest.sumtotal.host%2Fjasperserver-pro%2F&nodeKey=Advanced_Reporting&nodeUrl=https%3A%2F%2Fsouthwest.sumtotal.host%2Fjasperserver-pro"},
             {n:"NG ETOPS Auth",d:"LMS Authorization",u:"https://southwest.sumtotal.host/jasperserver-pro/flow.html?_flowId=viewReportFlow&reportUnit=%2FCustom%2FReports%2FSub_Reports%2FTOD_Authorization_Reports%2FTech_Ops_Authorization_Report_06&Activity=236571&reportLocale=en"},
             {n:"MAX ETOPS Auth",d:"LMS Authorization",u:"https://southwest.sumtotal.host/jasperserver-pro/flow.html?_flowId=viewReportFlow&reportUnit=%2FCustom%2FReports%2FSub_Reports%2FTOD_Authorization_Reports%2FTech_Ops_Authorization_Report_06&Activity=237216&reportLocale=en"},
@@ -3020,60 +3019,56 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
       <button class="tsi-modal-close" onclick="closeTsiModal()">&times;</button>
     </div>
     <div class="tsi-modal-body">
-      <div class="tsi-form-group tsi-tail-wrap">
-        <label class="tsi-form-label">TAIL NUMBER <span class="req">*</span></label>
-        <input type="text" class="tsi-form-input" id="tFail" placeholder="Start typing tail..." autocomplete="off" oninput="tsiFilterTails()" onfocus="tsiFilterTails()" onkeydown="tsiTailKeyNav(event)">
-        <div class="tsi-tail-dd" id="tsiTailDD"></div>
-      </div>
       <div class="tsi-form-row">
+        <div class="tsi-form-group tsi-tail-wrap" style="flex:0 0 55%;">
+          <label class="tsi-form-label">TAIL NUMBER <span class="req">*</span></label>
+          <input type="text" class="tsi-form-input" id="tFail" placeholder="Start typing tail..." autocomplete="off" oninput="tsiFilterTails()" onfocus="tsiFilterTails()" onkeydown="tsiTailKeyNav(event)">
+          <div class="tsi-tail-dd" id="tsiTailDD"></div>
+        </div>
         <div class="tsi-form-group">
           <label class="tsi-form-label">FLEET</label>
-          <input type="text" class="tsi-form-input" id="tFleet" readonly tabindex="-1" style="background:var(--surface);color:var(--text-dim);">
+          <div class="tsi-form-display" id="tFleet">-</div>
+          <input type="hidden" id="tFleetVal">
+        </div>
+      </div>
+
+      <div class="tsi-form-row">
+        <div class="tsi-form-group tsi-fc-wrap" style="flex:0 0 55%;">
+          <label class="tsi-form-label">FAULT CODE <span class="req">*</span></label>
+          <input type="text" class="tsi-form-input" id="tFaultCode" placeholder="e.g. 36-12020 or FAMV" autocomplete="off" oninput="tsiFilterFC()" onfocus="tsiFilterFC()" onkeydown="tsiFcKeyNav(event)">
+          <div class="tsi-fc-dd" id="tsiFcDD"></div>
         </div>
         <div class="tsi-form-group">
           <label class="tsi-form-label">ATA</label>
-          <input type="text" class="tsi-form-input" id="tAta" placeholder="e.g. 36" maxlength="5">
+          <div class="tsi-form-display" id="tAta">-</div>
         </div>
       </div>
-      <div class="tsi-form-group tsi-fc-wrap">
-        <label class="tsi-form-label">FAULT CODE <span class="req">*</span></label>
-        <input type="text" class="tsi-form-input" id="tFaultCode" placeholder="e.g. 36-12020 or FAMV" autocomplete="off" oninput="tsiFilterFC()" onfocus="tsiFilterFC()" onkeydown="tsiFcKeyNav(event)">
-        <div class="tsi-fc-dd" id="tsiFcDD"></div>
-      </div>
+
       <div class="tsi-form-group">
         <label class="tsi-form-label">FLIGHT DECK EFFECT / DESCRIPTION <span class="req">*</span></label>
         <input type="text" class="tsi-form-input" id="tEffect" placeholder="e.g. BLEED FAMV L - Status Message">
       </div>
+
       <div class="tsi-form-group">
-        <label class="tsi-form-label">WORK ORDER</label>
+        <label class="tsi-form-label">WORK ORDER / TSI BARCODE</label>
         <input type="text" class="tsi-form-input" id="tWorkOrder" placeholder="e.g. TTG8Q01AL9VS">
       </div>
+
       <div class="tsi-form-group">
-        <label class="tsi-form-label">ACTION TAKEN</label>
-        <div class="tsi-action-chips" id="tsiActionChips">
-          <span class="tsi-action-chip" onclick="tsiPickAction(this)">IFIM/FIM TASK</span>
-          <span class="tsi-action-chip" onclick="tsiPickAction(this)">REMOVE/REPLACE</span>
-          <span class="tsi-action-chip" onclick="tsiPickAction(this)">RESET</span>
-          <span class="tsi-action-chip" onclick="tsiPickAction(this)">SWAP</span>
-          <span class="tsi-action-chip" onclick="tsiPickAction(this)">CB RESET</span>
-          <span class="tsi-action-chip" onclick="tsiPickAction(this)">TEST/OPS CK</span>
-          <span class="tsi-action-chip" onclick="tsiPickAction(this)">DEFERRED</span>
-        </div>
+        <label class="tsi-form-label">AMM/FIM REFERENCE</label>
+        <input type="text" class="tsi-form-input" id="tRef" placeholder="e.g. AMM 36-12-03">
       </div>
+
       <div class="tsi-form-group">
         <label class="tsi-form-label">TSI DETAILS / NOTES</label>
         <textarea class="tsi-form-textarea" id="tNotes" placeholder="Paste TSI verbiage or describe what was done..."></textarea>
       </div>
-      <div class="tsi-form-row">
-        <div class="tsi-form-group">
-          <label class="tsi-form-label">DUE DATE</label>
-          <input type="date" class="tsi-form-input" id="tDueDate">
-        </div>
-        <div class="tsi-form-group">
-          <label class="tsi-form-label">AMM/FIM REFERENCE</label>
-          <input type="text" class="tsi-form-input" id="tRef" placeholder="e.g. AMM 36-12-03">
-        </div>
+
+      <div class="tsi-form-group">
+        <label class="tsi-form-label">DUE DATE</label>
+        <input type="date" class="tsi-form-input" id="tDueDate">
       </div>
+
     </div>
     <div class="tsi-modal-footer">
       <button class="tsi-save-btn" onclick="closeTsiModal()">CANCEL</button>
@@ -3141,10 +3136,14 @@ function closeTsiModal() {
 }
 
 function tsiClearForm() {
-  ['tFail','tFleet','tAta','tFaultCode','tEffect','tWorkOrder','tNotes','tDueDate','tRef'].forEach(function(id) {
+  ['tFail','tFaultCode','tEffect','tWorkOrder','tNotes','tDueDate','tRef'].forEach(function(id) {
     document.getElementById(id).value = '';
   });
-  document.querySelectorAll('.tsi-action-chip').forEach(function(c) { c.classList.remove('selected'); });
+  document.getElementById('tFleet').textContent = '-';
+  document.getElementById('tFleetVal').value = '';
+  document.getElementById('tAta').textContent = '-';
+  document.getElementById('tsiTailDD').classList.remove('open');
+  document.getElementById('tsiFcDD').classList.remove('open');
 }
 
 // ---- TSI MODAL: TAIL AUTOCOMPLETE ----
@@ -3166,7 +3165,8 @@ function tsiFilterTails() {
 
 function tsiSelectTail(tail, fleet) {
   document.getElementById('tFail').value = tail;
-  document.getElementById('tFleet').value = fleet;
+  document.getElementById('tFleet').textContent = fleet;
+  document.getElementById('tFleetVal').value = fleet;
   document.getElementById('tsiTailDD').classList.remove('open');
   document.getElementById('tFaultCode').focus();
 }
@@ -3191,8 +3191,10 @@ function tsiFilterFC() {
   var dd = document.getElementById('tsiFcDD');
   if (!q || q.length < 2 || TSI_FAULT_CODES.length === 0) { dd.classList.remove('open'); return; }
   var matches = TSI_FAULT_CODES.filter(function(f) {
-    return f.code.indexOf(q) !== -1 || f.message.toUpperCase().indexOf(q) !== -1 || f.title.toUpperCase().indexOf(q) !== -1;
-  }).slice(0, 10);
+    if (f.code.indexOf(q) === 0) return true;
+    if (q.length >= 3 && (f.message.toUpperCase().indexOf(q) !== -1 || f.title.toUpperCase().indexOf(q) !== -1)) return true;
+    return false;
+  }).slice(0, 12);
   if (matches.length === 0) { dd.classList.remove('open'); return; }
   tsiFcHL = 0;
   var html = '';
@@ -3206,6 +3208,7 @@ function tsiFilterFC() {
   dd.innerHTML = html;
   dd._matches = matches;
   dd.classList.add('open');
+  tsiAutoFillATA();
 }
 
 function tsiSelectFC(idx) {
@@ -3213,10 +3216,17 @@ function tsiSelectFC(idx) {
   var f = dd._matches[idx];
   document.getElementById('tFaultCode').value = f.code;
   if (f.message || f.title) document.getElementById('tEffect').value = f.message || f.title;
-  if (f.ata) document.getElementById('tAta').value = f.ata;
   if (f.fimTask) document.getElementById('tRef').value = f.fimTask;
+  tsiAutoFillATA();
   dd.classList.remove('open');
   document.getElementById('tEffect').focus();
+}
+
+function tsiAutoFillATA() {
+  var code = document.getElementById('tFaultCode').value.trim();
+  var ataDiv = document.getElementById('tAta');
+  var match = code.match(/^(\d{2})-/);
+  ataDiv.textContent = match ? match[1] : '-';
 }
 
 function tsiFcKeyNav(e) {
@@ -3233,16 +3243,10 @@ function tsiFcKeyNav(e) {
   opts[tsiFcHL].scrollIntoView({block:'nearest'});
 }
 
-// ---- TSI MODAL: ACTION CHIPS ----
-function tsiPickAction(el) {
-  document.querySelectorAll('.tsi-action-chip').forEach(function(c) { c.classList.remove('selected'); });
-  el.classList.add('selected');
-}
-
 // ---- TSI MODAL: SAVE ----
 function saveTsiEntry() {
   var tail = document.getElementById('tFail').value.trim().toUpperCase();
-  var fleet = document.getElementById('tFleet').value.trim();
+  var fleet = document.getElementById('tFleetVal').value.trim();
   var faultCode = document.getElementById('tFaultCode').value.trim().toUpperCase();
   var effect = document.getElementById('tEffect').value.trim().toUpperCase();
 
@@ -3257,17 +3261,17 @@ function saveTsiEntry() {
   }
   if (!fleet) { tsiToast('Fleet could not be determined - select a valid tail'); return; }
 
-  var selectedAction = document.querySelector('.tsi-action-chip.selected');
-  var actionType = selectedAction ? selectedAction.textContent : '';
+  var ataMatch = faultCode.match(/^(\d{2})-/);
+  var ata = ataMatch ? ataMatch[1] : '';
 
   var entry = {
     tail: tail,
     fleet: fleet,
-    ata: document.getElementById('tAta').value.trim(),
+    ata: ata,
     faultCode: faultCode,
     effect: effect,
     workOrder: document.getElementById('tWorkOrder').value.trim().toUpperCase(),
-    actionType: actionType,
+    actionType: '',
     notes: document.getElementById('tNotes').value.trim(),
     dueDate: document.getElementById('tDueDate').value,
     ref: document.getElementById('tRef').value.trim(),

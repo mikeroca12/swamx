@@ -148,16 +148,19 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 .tail-opt .to-tail{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--text);}
 .tail-opt .to-fleet{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
 
-/* Fault code search dropdown */
+/* Fault code autocomplete */
 .fc-wrap{position:relative;}
 .fc-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:240px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
 .fc-dropdown.open{display:block;}
-.fc-opt{padding:8px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px;font-size:13px;transition:background 0.1s;border-bottom:1px solid #f1f5f9;}
+.fc-opt{padding:8px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:background 0.1s;border-bottom:1px solid var(--surface2);}
 .fc-opt:last-child{border-bottom:none;}
 .fc-opt:hover,.fc-opt.highlighted{background:var(--blue-bg);}
-.fc-opt .fco-code{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--text);font-size:12px;}
-.fc-opt .fco-msg{font-size:11px;color:var(--text);line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.fc-opt .fco-task{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:1px;}
+.fc-opt .fco-code{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:var(--text);}
+.fc-opt .fco-msg{font-size:11px;color:var(--text-secondary);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fc-opt .fco-task{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);}
+
+/* Read-only display field (Fleet, ATA) */
+.form-display{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--text);padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;min-height:42px;display:flex;align-items:center;}
 
 /* Action taken dropdown */
 .action-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
@@ -226,27 +229,29 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
     </div>
     <div class="modal-body">
 
-      <div class="form-group tail-wrap">
-        <label class="form-label">TAIL NUMBER <span class="req">*</span></label>
-        <input type="text" class="form-input" id="fTail" placeholder="Start typing tail..." autocomplete="off" oninput="filterTails()" onfocus="filterTails()" onkeydown="tailKeyNav(event)">
-        <div class="tail-dropdown" id="tailDropdown"></div>
+      <div class="form-row">
+        <div class="form-group tail-wrap" style="flex:0 0 55%;">
+          <label class="form-label">TAIL NUMBER <span class="req">*</span></label>
+          <input type="text" class="form-input" id="fTail" placeholder="Start typing tail..." autocomplete="off" oninput="filterTails()" onfocus="filterTails()" onkeydown="tailKeyNav(event)">
+          <div class="tail-dropdown" id="tailDropdown"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">FLEET</label>
+          <div class="form-display" id="fFleet">-</div>
+          <input type="hidden" id="fFleetVal">
+        </div>
       </div>
 
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">FLEET</label>
-          <input type="text" class="form-input" id="fFleet" readonly tabindex="-1" style="background:var(--surface);color:var(--text-dim);">
+        <div class="form-group fc-wrap" style="flex:0 0 55%;">
+          <label class="form-label">FAULT CODE <span class="req">*</span></label>
+          <input type="text" class="form-input" id="fFaultCode" placeholder="e.g. 36-12020 or FAMV" autocomplete="off" oninput="filterFC()" onfocus="filterFC()" onkeydown="fcKeyNav(event)">
+          <div class="fc-dropdown" id="fcDropdown"></div>
         </div>
         <div class="form-group">
           <label class="form-label">ATA</label>
-          <input type="text" class="form-input" id="fAta" placeholder="e.g. 36" maxlength="5">
+          <div class="form-display" id="fAta">-</div>
         </div>
-      </div>
-
-      <div class="form-group fc-wrap">
-        <label class="form-label">FAULT CODE <span class="req">*</span></label>
-        <input type="text" class="form-input" id="fFaultCode" placeholder="e.g. 36-12020 or FAMV" autocomplete="off" oninput="filterFC()" onfocus="filterFC()" onkeydown="fcKeyNav(event)">
-        <div class="fc-dropdown" id="fcDropdown"></div>
       </div>
 
       <div class="form-group">
@@ -255,31 +260,13 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
       </div>
 
       <div class="form-group">
-        <label class="form-label">WORK ORDER</label>
+        <label class="form-label">WORK ORDER / TSI BARCODE</label>
         <input type="text" class="form-input" id="fWorkOrder" placeholder="e.g. TTG8Q01AL9VS">
       </div>
 
       <div class="form-group">
-        <label class="form-label">ACTION TAKEN</label>
-        <div class="action-chips" id="actionChips">
-          <span class="action-chip" onclick="pickAction(this)">IFIM/FIM TASK</span>
-          <span class="action-chip" onclick="pickAction(this)">REMOVE/REPLACE</span>
-          <span class="action-chip" onclick="pickAction(this)">RESET</span>
-          <span class="action-chip" onclick="pickAction(this)">SWAP</span>
-          <span class="action-chip" onclick="pickAction(this)">CB RESET</span>
-          <span class="action-chip" onclick="pickAction(this)">TEST/OPS CK</span>
-          <span class="action-chip" onclick="pickAction(this)">DEFERRED</span>
-        </div>
-        <select class="form-select" id="fActionType" style="display:none;">
-          <option value="">Select action type...</option>
-          <option value="IFIM/FIM TASK">IFIM/FIM TASK</option>
-          <option value="REMOVE/REPLACE">REMOVE/REPLACE</option>
-          <option value="RESET">RESET</option>
-          <option value="SWAP">SWAP</option>
-          <option value="CB RESET">CB RESET</option>
-          <option value="TEST/OPS CK">TEST/OPS CK</option>
-          <option value="DEFERRED">DEFERRED</option>
-        </select>
+        <label class="form-label">AMM/FIM REFERENCE</label>
+        <input type="text" class="form-input" id="fRef" placeholder="e.g. AMM 36-12-03">
       </div>
 
       <div class="form-group">
@@ -287,21 +274,40 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
         <textarea class="form-textarea" id="fNotes" placeholder="Paste TSI verbiage or describe what was done..."></textarea>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">DUE DATE</label>
-          <input type="date" class="form-input" id="fDueDate">
-        </div>
-        <div class="form-group">
-          <label class="form-label">AMM/FIM REFERENCE</label>
-          <input type="text" class="form-input" id="fRef" placeholder="e.g. AMM 36-12-03">
-        </div>
+      <div class="form-group">
+        <label class="form-label">DUE DATE</label>
+        <input type="date" class="form-input" id="fDueDate">
       </div>
 
     </div>
     <div class="modal-footer">
       <button class="tsi-btn" onclick="closeModal()">CANCEL</button>
       <button class="tsi-btn" style="background:var(--accent);color:#fff;border-color:var(--accent);" onclick="saveEntry()">SAVE</button>
+    </div>
+  </div>
+</div>
+
+<!-- Closeout Modal -->
+<div class="modal-overlay" id="closeoutOverlay">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <h2 id="closeoutTitle">Close - Effective</h2>
+      <button class="modal-close" onclick="closeCloseout()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">ACTION TAKEN <span class="req">*</span></label>
+        <div class="action-chips">
+          <span class="co-action-chip action-chip" onclick="coPickAction(this)">REMOVE/REPLACE</span>
+          <span class="co-action-chip action-chip" onclick="coPickAction(this)">REPAIR</span>
+          <span class="co-action-chip action-chip" onclick="coPickAction(this)">RESET/OPS CK</span>
+          <span class="co-action-chip action-chip" onclick="coPickAction(this)">NFF</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="tsi-btn" onclick="closeCloseout()">CANCEL</button>
+      <button class="tsi-btn" style="background:var(--accent);color:#fff;border-color:var(--accent);" onclick="confirmCloseout()">CONFIRM</button>
     </div>
   </div>
 </div>
@@ -350,21 +356,6 @@ fetch('AircraftData.csv').then(function(r) { return r.ok ? r.text() : ''; }).the
     if (row.length >= 2 && row[0].trim()) {
       AIRCRAFT.push([row[0].trim(), row[1].trim()]);
       TAIL_MAP[row[0].trim()] = row[1].trim();
-    }
-  }
-}).catch(function(){});
-
-// ---- FAULT CODE DATA (from CSV, same as index.html) ----
-var FAULT_CODES = [];
-var fcHL = -1;
-
-fetch('FaultCodes.csv').then(function(r) { return r.ok ? r.text() : ''; }).then(function(text) {
-  if (!text) return;
-  var lines = text.split('\n');
-  for (var i = 1; i < lines.length; i++) {
-    var row = tsiParseCSVRow(lines[i]);
-    if (row.length >= 5 && row[0]) {
-      FAULT_CODES.push({ code: row[0].trim(), fimTask: row[1].trim(), title: row[2].trim(), message: row[3].trim(), ata: row[4].trim() });
     }
   }
 }).catch(function(){});
@@ -470,8 +461,8 @@ function renderList() {
     html += '<div class="tsi-card-actions">';
     if (canEdit()) {
       if (e.status === 'in_work') {
-        html += '<button class="tsi-btn btn-close-eff" onclick="closeEntry(\'' + e.id + '\',true)">CLOSE - EFFECTIVE</button>';
-        html += '<button class="tsi-btn btn-close-ineff" onclick="closeEntry(\'' + e.id + '\',false)">CLOSE - INEFFECTIVE</button>';
+        html += '<button class="tsi-btn btn-close-eff" onclick="openCloseout(\'' + e.id + '\',true)">CLOSE - EFFECTIVE</button>';
+        html += '<button class="tsi-btn btn-close-ineff" onclick="openCloseout(\'' + e.id + '\',false)">CLOSE - INEFFECTIVE</button>';
       } else {
         html += '<button class="tsi-btn btn-reopen" onclick="reopenEntry(\'' + e.id + '\')">REOPEN</button>';
       }
@@ -500,10 +491,12 @@ function closeModal() {
 }
 
 function clearForm() {
-  ['fTail','fFleet','fAta','fFaultCode','fEffect','fWorkOrder','fNotes','fDueDate','fRef'].forEach(function(id) {
+  ['fTail','fFaultCode','fEffect','fWorkOrder','fNotes','fDueDate','fRef'].forEach(function(id) {
     document.getElementById(id).value = '';
   });
-  document.querySelectorAll('.action-chip').forEach(function(c) { c.classList.remove('selected'); });
+  document.getElementById('fFleet').textContent = '-';
+  document.getElementById('fFleetVal').value = '';
+  document.getElementById('fAta').textContent = '-';
   document.getElementById('tailDropdown').classList.remove('open');
   document.getElementById('fcDropdown').classList.remove('open');
 }
@@ -529,7 +522,8 @@ function filterTails() {
 
 function selectTail(tail, fleet) {
   document.getElementById('fTail').value = tail;
-  document.getElementById('fFleet').value = fleet;
+  document.getElementById('fFleet').textContent = fleet;
+  document.getElementById('fFleetVal').value = fleet;
   document.getElementById('tailDropdown').classList.remove('open');
   document.getElementById('fFaultCode').focus();
 }
@@ -558,19 +552,41 @@ function tailKeyNav(e) {
   }
 }
 
+// Close dropdown on outside click
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.tail-wrap')) document.getElementById('tailDropdown').classList.remove('open');
+  if (!e.target.closest('.fc-wrap')) document.getElementById('fcDropdown').classList.remove('open');
+});
+
 // ---- FAULT CODE AUTOCOMPLETE ----
+var FAULT_CODES = [];
+var fcHL = -1;
+
+fetch('FaultCodes.csv').then(function(r) { return r.ok ? r.text() : ''; }).then(function(text) {
+  if (!text) return;
+  var lines = text.split('\n');
+  for (var i = 1; i < lines.length; i++) {
+    var row = tsiParseCSVRow(lines[i]);
+    if (row.length >= 5 && row[0]) {
+      FAULT_CODES.push({ code: row[0].trim(), fimTask: row[1].trim(), title: row[2].trim(), message: row[3].trim(), ata: row[4].trim() });
+    }
+  }
+}).catch(function(){});
+
 function filterFC() {
   var q = document.getElementById('fFaultCode').value.trim().toUpperCase();
   var dd = document.getElementById('fcDropdown');
   if (!q || q.length < 2 || FAULT_CODES.length === 0) { dd.classList.remove('open'); return; }
   var matches = FAULT_CODES.filter(function(f) {
-    return f.code.indexOf(q) !== -1 || f.message.toUpperCase().indexOf(q) !== -1 || f.title.toUpperCase().indexOf(q) !== -1;
-  }).slice(0, 10);
+    if (f.code.indexOf(q) === 0) return true;
+    if (q.length >= 3 && (f.message.toUpperCase().indexOf(q) !== -1 || f.title.toUpperCase().indexOf(q) !== -1)) return true;
+    return false;
+  }).slice(0, 12);
   if (matches.length === 0) { dd.classList.remove('open'); return; }
   fcHL = 0;
   var html = '';
   matches.forEach(function(f, i) {
-    html += '<div class="fc-opt' + (i === 0 ? ' highlighted' : '') + '" data-idx="' + i + '" onclick="selectFC(' + i + ')">';
+    html += '<div class="fc-opt' + (i === 0 ? ' highlighted' : '') + '" onclick="selectFC(' + i + ')">';
     html += '<span class="fco-code">' + f.code + '</span>';
     if (f.message) html += '<span class="fco-msg">' + f.message + '</span>';
     if (f.fimTask) html += '<span class="fco-task">FIM: ' + f.fimTask + '</span>';
@@ -579,6 +595,7 @@ function filterFC() {
   dd.innerHTML = html;
   dd._matches = matches;
   dd.classList.add('open');
+  autoFillATA();
 }
 
 function selectFC(idx) {
@@ -586,8 +603,8 @@ function selectFC(idx) {
   var f = dd._matches[idx];
   document.getElementById('fFaultCode').value = f.code;
   if (f.message || f.title) document.getElementById('fEffect').value = f.message || f.title;
-  if (f.ata) document.getElementById('fAta').value = f.ata;
   if (f.fimTask) document.getElementById('fRef').value = f.fimTask;
+  autoFillATA();
   dd.classList.remove('open');
   document.getElementById('fEffect').focus();
 }
@@ -606,26 +623,17 @@ function fcKeyNav(e) {
   opts[fcHL].scrollIntoView({block:'nearest'});
 }
 
-// Close dropdowns on outside click
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.tail-wrap')) {
-    document.getElementById('tailDropdown').classList.remove('open');
-  }
-  if (!e.target.closest('.fc-wrap')) {
-    document.getElementById('fcDropdown').classList.remove('open');
-  }
-});
-
-// ---- ACTION CHIPS ----
-function pickAction(el) {
-  document.querySelectorAll('.action-chip').forEach(function(c) { c.classList.remove('selected'); });
-  el.classList.add('selected');
+function autoFillATA() {
+  var code = document.getElementById('fFaultCode').value.trim();
+  var ataDiv = document.getElementById('fAta');
+  var match = code.match(/^(\d{2})-/);
+  ataDiv.textContent = match ? match[1] : '-';
 }
 
 // ---- SAVE ----
 function saveEntry() {
   var tail = document.getElementById('fTail').value.trim().toUpperCase();
-  var fleet = document.getElementById('fFleet').value.trim();
+  var fleet = document.getElementById('fFleetVal').value.trim();
   var faultCode = document.getElementById('fFaultCode').value.trim().toUpperCase();
   var effect = document.getElementById('fEffect').value.trim().toUpperCase();
 
@@ -636,17 +644,17 @@ function saveEntry() {
   if (!fleet && TAIL_MAP[tail]) fleet = TAIL_MAP[tail];
   if (!fleet) { toast('Fleet type could not be determined - select a valid tail'); return; }
 
-  var selectedAction = document.querySelector('.action-chip.selected');
-  var actionType = selectedAction ? selectedAction.textContent : '';
+  var ataMatch = faultCode.match(/^(\d{2})-/);
+  var ata = ataMatch ? ataMatch[1] : '';
 
   var entry = {
     tail: tail,
     fleet: fleet,
-    ata: document.getElementById('fAta').value.trim(),
+    ata: ata,
     faultCode: faultCode,
     effect: effect,
     workOrder: document.getElementById('fWorkOrder').value.trim().toUpperCase(),
-    actionType: actionType,
+    actionType: '',
     notes: document.getElementById('fNotes').value.trim(),
     dueDate: document.getElementById('fDueDate').value,
     ref: document.getElementById('fRef').value.trim(),
@@ -665,6 +673,7 @@ function saveEntry() {
       entry.closedDate = existing.closedDate;
       entry.createdBy = existing.createdBy || entry.createdBy;
       entry.createdByName = existing.createdByName || entry.createdByName;
+      entry.actionType = existing.actionType || '';
     }
     db.collection('tsi_entries').doc(editingId).set(entry).then(function() {
       closeModal();
@@ -680,14 +689,41 @@ function saveEntry() {
   }
 }
 
-// ---- STATUS ACTIONS ----
-function closeEntry(id, effective) {
-  db.collection('tsi_entries').doc(id).update({
-    status: effective ? 'closed_eff' : 'closed_ineff',
-    closedDate: new Date().toISOString()
+// ---- CLOSEOUT MODAL ----
+var closeoutId = null;
+var closeoutEffective = true;
+
+function openCloseout(id, effective) {
+  closeoutId = id;
+  closeoutEffective = effective;
+  document.getElementById('closeoutTitle').textContent = effective ? 'Close - Effective' : 'Close - Ineffective';
+  document.querySelectorAll('.co-action-chip').forEach(function(c) { c.classList.remove('selected'); });
+  document.getElementById('closeoutOverlay').classList.add('open');
+}
+
+function closeCloseout() {
+  document.getElementById('closeoutOverlay').classList.remove('open');
+  closeoutId = null;
+}
+
+function coPickAction(el) {
+  document.querySelectorAll('.co-action-chip').forEach(function(c) { c.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function confirmCloseout() {
+  if (!closeoutId) return;
+  var selectedChip = document.querySelector('.co-action-chip.selected');
+  if (!selectedChip) { toast('Select an action taken'); return; }
+  var actionType = selectedChip.textContent;
+  db.collection('tsi_entries').doc(closeoutId).update({
+    status: closeoutEffective ? 'closed_eff' : 'closed_ineff',
+    closedDate: new Date().toISOString(),
+    actionType: actionType
   }).then(function() {
+    closeCloseout();
     loadEntries();
-    toast(effective ? 'Closed as effective' : 'Closed as ineffective');
+    toast(closeoutEffective ? 'Closed as effective' : 'Closed as ineffective');
   }).catch(function(err) { toast('Error: ' + err.message); });
 }
 

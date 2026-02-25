@@ -847,8 +847,89 @@
         .fsp-work, .fsp-closed, .fsp-total { background: rgba(255,255,255,0.06); color: #ffffff; border: 1px solid var(--frame-border); }
         .fsp-work.has-data { background: var(--yellow-bg); color: var(--yellow-text); border-color: var(--yellow-border); }
         .fsp-closed.has-data { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); }
+        .fsp-total.has-data { background: rgba(255,255,255,0.12); color: #ffffff; border-color: rgba(255,255,255,0.2); }
         .fsp-rate { background: rgba(255,255,255,0.06); color: #ffffff; border: 1px solid var(--frame-border); }
         .fsp-rate.has-data { background: rgba(37,99,235,0.15); color: #93c5fd; border-color: rgba(37,99,235,0.3); }
+
+        /* Entry cards */
+        .fix-entry-card {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+            margin-bottom: 10px; box-shadow: var(--card-shadow); overflow: hidden;
+        }
+        .fec-header {
+            padding: 12px 16px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+            border-bottom: 1px solid var(--border);
+        }
+        .fec-status {
+            font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+            padding: 3px 7px; border-radius: 3px; letter-spacing: 0.5px;
+        }
+        .fts-work { background: var(--yellow-bg); color: var(--yellow-text); border: 1px solid var(--yellow-border); }
+        .fts-eff { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
+        .fts-ineff { background: var(--red-bg); color: var(--red-text); border: 1px solid var(--red-border); }
+        .fec-tail {
+            font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: var(--text);
+        }
+        .fec-fleet {
+            font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+            padding: 3px 6px; border-radius: 3px; background: rgba(22,163,74,0.1);
+            color: var(--green-text); border: 1px solid var(--green-border);
+        }
+        .fec-fc {
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text);
+        }
+        .fec-effect {
+            font-size: 12px; color: var(--text-secondary); flex: 1; min-width: 120px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .fec-date {
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-dim);
+            margin-left: auto; white-space: nowrap;
+        }
+        .fec-details {
+            padding: 10px 16px; display: flex; gap: 20px; flex-wrap: wrap;
+            border-bottom: 1px solid var(--border);
+        }
+        .fec-field { display: flex; flex-direction: column; gap: 1px; }
+        .fec-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+            letter-spacing: 0.5px; color: var(--text-dim); text-transform: uppercase;
+        }
+        .fec-val {
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--text);
+        }
+        .fec-notes {
+            padding: 10px 16px; font-size: 12px; color: var(--text); line-height: 1.5;
+            border-bottom: 1px solid var(--border); background: #fff;
+        }
+        .fec-actions {
+            padding: 10px 16px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+        }
+        .fec-btn {
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+            padding: 6px 12px; border-radius: 5px; border: 1px solid; cursor: pointer;
+            letter-spacing: 0.3px; transition: all 0.15s;
+        }
+        .fec-btn-eff { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); }
+        .fec-btn-eff:hover { background: var(--green-border); color: #fff; }
+        .fec-btn-ineff { background: var(--yellow-bg); color: var(--yellow-text); border-color: var(--yellow-border); }
+        .fec-btn-ineff:hover { background: var(--yellow-border); color: #fff; }
+        .fec-btn-reopen { background: var(--blue-bg); color: var(--blue-text); border-color: var(--blue-border); }
+        .fec-btn-reopen:hover { background: var(--blue-border); color: #fff; }
+        .fec-btn-del { background: none; color: var(--red-text); border-color: var(--red-border); margin-left: auto; }
+        .fec-btn-del:hover { background: var(--red-bg); }
+
+        /* Status filter chips */
+        .fix-status-chip.active { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.3); }
+
+        /* Closeout action chips */
+        .fco-chip {
+            font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+            padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border);
+            background: var(--surface); color: var(--text); cursor: pointer; transition: all 0.15s;
+        }
+        .fco-chip:hover { border-color: var(--accent); background: var(--blue-bg); }
+        .fco-chip.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
 
         /* TSI Modal */
         .tsi-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;}
@@ -1295,7 +1376,7 @@ window.addEventListener('moc-auth-ready', function() {
   if (syncBtn) syncBtn.style.display = window.mocIsAdmin() ? '' : 'none';
 
   applyRolePermissions();
-  if (typeof updateFixStatusBar === 'function') updateFixStatusBar();
+  if (typeof loadTsiEntries === 'function') loadTsiEntries();
 });
 
 function applyRolePermissions() {
@@ -1416,9 +1497,8 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         <!-- TSI FIX RATE -->
         <section id="fixrate" class="section">
             <div class="fix-action-row">
-                <button class="fix-action-btn primary" onclick="openTsiModal()">+ ADD NEW TSI</button>
-                <a href="tsi-entry.html" class="fix-action-btn secondary">MANAGE ENTRIES</a>
-                <a href="#" class="fix-action-btn secondary" onclick="exportFixReport();return false;">EXPORT REPORT</a>
+                <button class="fix-action-btn primary" onclick="openTsiModal()">+ ADD TSI</button>
+                <a href="tsi-entry.html" class="fix-action-btn secondary">REPORTS</a>
             </div>
             <div class="fix-status-bar" id="fixStatusBar">
                 <span class="fix-status-pill fsp-work" id="fixInWork">0 IN WORK</span>
@@ -1429,7 +1509,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             </div>
             <div class="fix-search-box">
                 <span class="fix-search-icon">&#128269;</span>
-                <input type="text" id="fixSearchInput" placeholder="Search by fault code, flight deck effect, or keyword..." autocomplete="off">
+                <input type="text" id="fixSearchInput" placeholder="Search by tail, fault code, effect, or keyword..." autocomplete="off">
             </div>
             <div class="fix-filter-row" id="fixFilterRow">
                 <button class="fix-chip active" data-fix-filter="ALL">ALL</button>
@@ -1437,14 +1517,35 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 <button class="fix-chip" data-fix-filter="MAX 7">MAX 7</button>
                 <button class="fix-chip" data-fix-filter="NG 800">NG 800</button>
                 <button class="fix-chip" data-fix-filter="NG 700">NG 700</button>
+                <span style="width:1px;height:20px;background:var(--frame-border);margin:0 4px;"></span>
+                <button class="fix-chip fix-status-chip active" data-status-filter="ALL">ALL</button>
+                <button class="fix-chip fix-status-chip" data-status-filter="IN WORK">IN WORK</button>
+                <button class="fix-chip fix-status-chip" data-status-filter="CLOSED">CLOSED</button>
             </div>
             <div id="fixResults">
                 <div class="fix-empty-state">
-                    <p>Search fault codes and flight deck effects</p>
-                    <p class="hint">Type a fault code (36-12020), effect (BLEED FAMV L), or keyword to find probable causes and past fixes</p>
+                    <p>No TSI entries yet</p>
+                    <p class="hint">Click + ADD TSI to create your first entry</p>
                 </div>
             </div>
         </section>
+
+        <!-- Closeout modal -->
+        <div class="tsi-modal-overlay" id="fixCoOverlay">
+            <div class="tsi-modal" style="max-width:420px;">
+                <div class="modal-header"><h2 id="fixCoTitle">Close - Effective</h2><button class="modal-close" onclick="fixCoCancel()">&times;</button></div>
+                <div class="modal-body" style="padding:16px 20px;">
+                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">Select the action taken:</div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                        <span class="fco-chip" onclick="fcoPickAction(this)">REMOVE/REPLACE</span>
+                        <span class="fco-chip" onclick="fcoPickAction(this)">REPAIR</span>
+                        <span class="fco-chip" onclick="fcoPickAction(this)">RESET/OPS CK</span>
+                        <span class="fco-chip" onclick="fcoPickAction(this)">NFF</span>
+                    </div>
+                </div>
+                <div class="modal-footer"><button class="modal-save" onclick="fixCoConfirm()">CONFIRM</button><button class="modal-cancel" onclick="fixCoCancel()">CANCEL</button></div>
+            </div>
+        </div>
 
         <!-- QUICK REFERENCE -->
         <section id="quickref" class="section active">
@@ -1802,8 +1903,8 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             }).slice(0, 5).map(d => ({...d, _type:'qrh'}));
 
             // Search TSI Fix Rate
-            let fixMatches = TSI_DATA.filter(d => {
-                const hay = [d.faultCode, d.effect, d.description, d.ata, d.fleet].join(' ').toLowerCase();
+            let fixMatches = TSI_ENTRIES.filter(d => {
+                const hay = [d.faultCode||'', d.effect||'', d.tail||'', d.ata||'', d.fleet||'', d.notes||''].join(' ').toLowerCase();
                 return words.every(w => hay.includes(w));
             }).slice(0, 3).map(d => ({...d, _type:'fix'}));
 
@@ -1839,9 +1940,9 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                     </div>`;
                 } else if (d._type === 'fix') {
                     html += `<div class="ac-item${i === acIndex ? ' selected' : ''}" data-index="${i}" data-type="fix" onmousedown="acSelect(${i})">
-                        <span class="ac-type-badge ac-type-defect">FIX</span>
-                        <span class="fix-tag fix-tag-ata" style="font-size:9px">ATA ${esc(d.ata)}</span>
-                        <span class="ac-item-title">${highlight(d.faultCode + ' - ' + d.effect, words)}</span>
+                        <span class="ac-type-badge ac-type-defect">TSI</span>
+                        <span class="fix-tag fix-tag-ata" style="font-size:9px">ATA ${esc(d.ata||'')}</span>
+                        <span class="ac-item-title">${highlight((d.tail||'') + ' ' + (d.faultCode||'') + ' - ' + (d.effect||''), words)}</span>
                     </div>`;
                 } else if (d._type === 'app') {
                     html += `<div class="ac-item${i === acIndex ? ' selected' : ''}" data-index="${i}" data-type="app" onmousedown="acSelect(${i})">
@@ -2043,8 +2144,8 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             filterChips.forEach(chip => {
                 const f = chip.dataset.filter;
                 let count;
-                if (f === 'ALL') count = DATA.length + TSI_DATA.length + APPS.length;
-                else if (f === 'FIX') count = TSI_DATA.length;
+                if (f === 'ALL') count = DATA.length + TSI_ENTRIES.length + APPS.length;
+                else if (f === 'FIX') count = TSI_ENTRIES.length;
                 else if (f === 'APP') count = APPS.length;
                 else count = DATA.filter(d => d.cat.toUpperCase().startsWith(f)).length;
                 const existing = chip.querySelector('.badge');
@@ -2074,95 +2175,9 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             }
         ];
 
-        // ---- TSI FIX RATE ----
-        const TSI_DATA = [
-            {
-                faultCode: "36-12020",
-                effect: "BLEED FAMV L - Status Message",
-                description: "ENGINE-1 FAMV IS NOT IN COMMANDED POSITION. DETECTED BY: INTEGRATED AIR SYSTEMS CONTROLLER (IASC)-LEFT",
-                ata: "36",
-                fleet: "MAX 8",
-                actions: [
-                    {name: "C/W IFIM Task 36-12-00-810-801", confidence: 85},
-                    {name: "Replace Fan Air Modulating Valve (FAMV)", confidence: 45},
-                    {name: "Replace IASC (Left)", confidence: 12}
-                ],
-                history: [
-                    {tail: "N8860S", date: "2026-01-05", action: "C/W IFIM TASK 36-12-00-810-801. MAINT LIGHT EXTINGUISHED. STATUS MESSAGE CLEARED. NO DEFECTS NOTED. ACFT OK FOR SERVICE.", result: "Cleared - IFIM task only", effective: true},
-                    {tail: "N8714Q", date: "2025-12-11", action: "REF TG8Q019A1ZL TSI TO CHANGE #1 FAMV. REPLACED FAMV AS REQUIRED IAW REF # 36-12-03.", result: "FAMV replaced - Engine 1", effective: true},
-                    {tail: "N8798Q", date: "2025-11-02", action: "LEFT BLEED FAMV STATUS MESSAGE. R/R FAN AIR MODULATING VALVE REF AMM 36-12-03.", result: "FAMV replaced - Engine 1", effective: true},
-                    {tail: "N8835Q", date: "2025-10-18", action: "C/W IFIM TASK 36-12-00-810-801. FAULT RETURNED NEXT FLIGHT. SUBSEQUENTLY R/R FAMV.", result: "IFIM ineffective - FAMV replaced", effective: false}
-                ]
-            },
-            {
-                faultCode: "36-12020",
-                effect: "BLEED FAMV L - Overhead Panel Light",
-                description: "LEFT ENGINE BLEED FAMV LIGHT ILLUMINATED ON OVERHEAD PANEL. INTERMITTENT DURING CLIMB.",
-                ata: "36",
-                fleet: "NG 800",
-                actions: [
-                    {name: "Perform pneumatic engine on test per AMM 36-00-00", confidence: 92},
-                    {name: "Replace Fan Air Modulating Valve (FAMV)", confidence: 38}
-                ],
-                history: [
-                    {tail: "N475WN", date: "2026-01-22", action: "PERFORMED PNEUMATIC ENGINE ON TEST PER AMM 36-00-00. NO FAULTS FOUND. LIGHT DID NOT ILLUMINATE DURING TEST.", result: "Cleared - engine run test", effective: true},
-                    {tail: "N711HK", date: "2026-01-08", action: "BLEED FAMV L LIGHT INTERMITTENT. RAN ENGINE ON TEST - NO FAULTS. MONITORED 3 FLIGHTS, NO RECURRENCE.", result: "Cleared - intermittent", effective: true},
-                    {tail: "N7718AN", date: "2025-12-30", action: "FAMV LIGHT ON DURING CLIMB. R/R FAMV LH ENG REF AMM 36-12-03. OPS CK GOOD.", result: "FAMV replaced - Engine 1", effective: true},
-                    {tail: "N281WN", date: "2025-12-14", action: "PNEUMATIC TEST GOOD. LIGHT RETURNED NEXT DAY. R/R FAMV RESOLVED.", result: "Engine test ineffective - FAMV replaced", effective: false},
-                    {tail: "N409WN", date: "2025-11-29", action: "RAN PNEUMATIC TEST PER AMM 36-00-00. ALL PARAMETERS NORMAL. NO RECURRENCE IN 5 SUBSEQUENT FLIGHTS.", result: "Cleared - engine run test", effective: true},
-                    {tail: "N236WN", date: "2025-11-15", action: "INTERMITTENT FAMV LIGHT. PERFORMED ENGINE RUN, CYCLED BLEED VALVES. NO FAULTS.", result: "Cleared - engine run test", effective: true},
-                    {tail: "N752SW", date: "2025-10-28", action: "R/R FAN AIR MODULATING VALVE LH ENGINE. AMM 36-12-03. OPS CHECK SAT.", result: "FAMV replaced - Engine 1", effective: true},
-                    {tail: "N8301J", date: "2025-10-12", action: "PNEUMATIC ON TEST GOOD. CLEARED AFTER ENGINE RUN.", result: "Cleared - engine run test", effective: true}
-                ]
-            },
-            {
-                faultCode: "27-01330",
-                effect: "SPOILER CNTRL SYS - Status Message",
-                description: "SPOILER CONTROL MODULE COMMUNICATION FAULT. MX LIGHT ILLUMINATED.",
-                ata: "27",
-                fleet: "MAX 8",
-                actions: [
-                    {name: "Reset via BITE, test spoiler system full cycle", confidence: 78},
-                    {name: "Replace Spoiler Control Module", confidence: 35},
-                    {name: "Check wiring harness connectors", confidence: 15}
-                ],
-                history: [
-                    {tail: "N8871Q", date: "2026-02-01", action: "FAULT CODES 27-01330, 27-01010, 31-52013. RESET VIA BITE, TESTED SPOILER SYSTEM FULL CYCLE. OPS CHECK GOOD. MONITORED 3 FLIGHTS, NO RECURRENCE.", result: "Cleared - BITE reset", effective: true},
-                    {tail: "N8843Q", date: "2025-12-20", action: "SPOILER CNTRL SYS MSG. BITE RESET, FULL CYCLE TEST. NO FAULTS FOUND ON RETEST.", result: "Cleared - BITE reset", effective: true}
-                ]
-            },
-            {
-                faultCode: "22-AUTOFLIGHT",
-                effect: "SPEED TRIM FAIL",
-                description: "SPEED TRIM FAIL INDICATION ON TAKEOFF. CREW FOLLOWED QRH PROCEDURE.",
-                ata: "22",
-                fleet: "MAX 8",
-                actions: [
-                    {name: "Replace stab trim motor (M1659) + elevator position sensor (M929)", confidence: 72},
-                    {name: "C/W IFIM 22-11186, monitor for recurrence", confidence: 40},
-                    {name: "Replace DFCS flight control computer", confidence: 18}
-                ],
-                history: [
-                    {tail: "N8706M", date: "2026-01-15", action: "REPLACED STAB TRIM MOTOR (M1659). REPLACED ELEVATOR POSITION SENSOR (M929). TESTED PER AMM. OPS CHECK SATISFACTORY.", result: "Motor + sensor replaced", effective: true},
-                    {tail: "N8706M", date: "2025-11-30", action: "SPEED TRIM FAIL ON DEPARTURE. C/W IFIM 22-11186. FAULT RETURNED 2 FLIGHTS LATER.", result: "IFIM ineffective - repeat fault", effective: false}
-                ]
-            },
-            {
-                faultCode: "31-30",
-                effect: "RADIO ALTIMETER - HUD Pitch Limit / Bank Warning",
-                description: "RECEIVED TAIL STRIKE PITCH LIMIT CUE AND BANK WARNING SYMBOLS IN HUD AFTER LIFTOFF. STEADY HORN WITH THROTTLE RETARD.",
-                ata: "31",
-                fleet: "NG 700",
-                actions: [
-                    {name: "Replace #1 and #2 Radio Altimeters per AMM 34-33-21", confidence: 80},
-                    {name: "Replace Rad Alt Receive/Transmit Antennas per AMM 34-33-11", confidence: 45},
-                    {name: "Check fault history for RA negative readings at altitude", confidence: 60}
-                ],
-                history: [
-                    {tail: "N7736A", date: "2026-02-06", action: "REPLACED #1 & #2 RADIO ALTIMETERS REF AMM 34-33-21. REPLACED #2 RAD ALT RECEIVE AND TRANSMIT ANTENNAS REF AMM 34-33-11. ONE OTHER HIT IN HISTORY SHOWING RA -4 FEET AT ALTITUDE.", result: "Both RA units + antennas replaced", effective: true}
-                ]
-            }
-        ];
+        // ---- TSI FIX RATE (Firestore-backed) ----
+        var TSI_ENTRIES = [];
+        var fixStatusFilter = 'ALL';
 
         const fixSearchInput = document.getElementById('fixSearchInput');
         const fixResults = document.getElementById('fixResults');
@@ -2180,158 +2195,212 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         fixSearchInput.addEventListener('input', renderFixRate);
 
-        // ---- LIVE CASE DATA FROM FIRESTORE ----
-        function updateFixStatusBar() {
-            if (typeof db === 'undefined') return;
-            db.collection('tsi_entries').get().then(function(snap) {
-                var entries = [];
-                snap.forEach(function(doc) { entries.push(doc.data()); });
-                var inWork = entries.filter(function(e) { return e.status === 'in_work'; }).length;
-                var closed = entries.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; }).length;
-                var eff = entries.filter(function(e) { return e.status === 'closed_eff'; }).length;
-                var fr = closed > 0 ? Math.round((eff / closed) * 100) : null;
-                var elIW = document.getElementById('fixInWork');
-                var elCL = document.getElementById('fixClosed');
-                var elTT = document.getElementById('fixTotal');
-                var elFR = document.getElementById('fixRate');
-                if (!elIW) return;
-                elIW.textContent = inWork + ' IN WORK';
-                elCL.textContent = closed + ' CLOSED';
-                elTT.textContent = entries.length + ' TOTAL';
-                elFR.textContent = (fr !== null ? fr + '%' : '--') + ' 1ST ATTEMPT FIX RATE';
-                elIW.classList.toggle('has-data', inWork > 0);
-                elCL.classList.toggle('has-data', closed > 0);
-                elTT.classList.toggle('has-data', entries.length > 0);
-                elFR.classList.toggle('has-data', fr !== null);
-            }).catch(function() {});
-        }
-
-        function exportFixReport() {
-            if (typeof db === 'undefined') return;
-            db.collection('tsi_entries').get().then(function(snap) {
-                var entries = [];
-                snap.forEach(function(doc) { var d = doc.data(); d.id = doc.id; entries.push(d); });
-                var iw = entries.filter(function(e) { return e.status === 'in_work'; }).length;
-                var cl = entries.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; }).length;
-                var eff = entries.filter(function(e) { return e.status === 'closed_eff'; }).length;
-                var fr = cl > 0 ? Math.round((eff/cl)*100) + '%' : 'N/A';
-                var fcMap = {};
-                entries.forEach(function(e) { fcMap[e.faultCode] = (fcMap[e.faultCode]||0)+1; });
-                var topFC = Object.keys(fcMap).sort(function(a,b) { return fcMap[b]-fcMap[a]; }).slice(0,10);
-                var report = {
-                    generated: new Date().toISOString(),
-                    summary: { totalEntries: entries.length, inWork: iw, closed: cl, effective: eff, fixRate: fr },
-                    topFaultCodes: topFC.map(function(f) { return {faultCode:f,count:fcMap[f]}; }),
-                    entries: entries
-                };
-                var blob = new Blob([JSON.stringify(report,null,2)], {type:'application/json'});
-                var url = URL.createObjectURL(blob);
-                var a = document.createElement('a');
-                a.href = url;
-                a.download = 'tsi-report-' + new Date().toISOString().slice(0,10) + '.json';
-                a.click();
-                URL.revokeObjectURL(url);
+        document.querySelectorAll('[data-status-filter]').forEach(function(chip) {
+            chip.addEventListener('click', function() {
+                document.querySelectorAll('[data-status-filter]').forEach(function(c) { c.classList.remove('active'); });
+                chip.classList.add('active');
+                fixStatusFilter = chip.dataset.statusFilter;
+                renderFixRate();
             });
+        });
+
+        function loadTsiEntries() {
+            if (typeof db === 'undefined') return;
+            db.collection('tsi_entries').orderBy('created', 'desc').get().then(function(snap) {
+                TSI_ENTRIES = [];
+                snap.forEach(function(doc) { var d = doc.data(); d.id = doc.id; TSI_ENTRIES.push(d); });
+                updateFixStatusBar();
+                renderFixRate();
+            }).catch(function(err) { console.error('TSI load error:', err); });
         }
 
-        function confClass(c) {
-            if (c >= 70) return 'high';
-            if (c >= 30) return 'med';
-            return 'low';
+        function updateFixStatusBar() {
+            var inWork = TSI_ENTRIES.filter(function(e) { return e.status === 'in_work'; }).length;
+            var closed = TSI_ENTRIES.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; }).length;
+            var eff = TSI_ENTRIES.filter(function(e) { return e.status === 'closed_eff'; }).length;
+            var fr = closed > 0 ? Math.round((eff / closed) * 100) : null;
+            var elIW = document.getElementById('fixInWork');
+            var elCL = document.getElementById('fixClosed');
+            var elTT = document.getElementById('fixTotal');
+            var elFR = document.getElementById('fixRate');
+            if (!elIW) return;
+            elIW.textContent = inWork + ' IN WORK';
+            elCL.textContent = closed + ' CLOSED';
+            elTT.textContent = TSI_ENTRIES.length + ' TOTAL';
+            elFR.textContent = (fr !== null ? fr + '%' : '--') + ' 1ST ATTEMPT FIX RATE';
+            elIW.classList.toggle('has-data', inWork > 0);
+            elCL.classList.toggle('has-data', closed > 0);
+            elTT.classList.toggle('has-data', TSI_ENTRIES.length > 0);
+            elFR.classList.toggle('has-data', fr !== null);
         }
 
         function renderFixRate() {
             var q = fixSearchInput.value.trim().toLowerCase();
             var words = q ? q.split(/\s+/) : [];
 
-            var results = TSI_DATA;
+            var results = TSI_ENTRIES;
 
+            // Fleet filter
             if (activeFixFilter !== 'ALL') {
-                results = results.filter(function(d) {
-                    return d.fleet.toUpperCase() === activeFixFilter;
+                results = results.filter(function(e) {
+                    return e.fleet && e.fleet.toUpperCase() === activeFixFilter;
                 });
             }
 
+            // Status filter
+            if (fixStatusFilter === 'IN WORK') {
+                results = results.filter(function(e) { return e.status === 'in_work'; });
+            } else if (fixStatusFilter === 'CLOSED') {
+                results = results.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; });
+            }
+
+            // Text search
             if (q) {
-                results = results.filter(function(d) {
-                    var hay = [d.faultCode, d.effect, d.description, d.ata, d.fleet].join(' ').toLowerCase();
-                    d.actions.forEach(function(a) { hay += ' ' + a.name.toLowerCase(); });
-                    d.history.forEach(function(h) { hay += ' ' + h.tail.toLowerCase() + ' ' + h.action.toLowerCase() + ' ' + h.result.toLowerCase(); });
+                results = results.filter(function(e) {
+                    var hay = [e.faultCode||'', e.effect||'', e.ata||'', e.fleet||'', e.tail||'', e.notes||'', e.workOrder||'', e.ref||'', e.actionType||''].join(' ').toLowerCase();
                     return words.every(function(w) { return hay.indexOf(w) !== -1; });
                 });
             }
 
-            if (!q && activeFixFilter === 'ALL') {
-                fixResults.innerHTML = '<div class="fix-empty-state"><p>Search fault codes and flight deck effects</p><p class="hint">Type a fault code (36-12020), effect (BLEED FAMV L), or keyword to find probable causes and past fixes</p></div>';
+            if (results.length === 0 && !q && activeFixFilter === 'ALL' && fixStatusFilter === 'ALL') {
+                fixResults.innerHTML = '<div class="fix-empty-state"><p>No TSI entries yet</p><p class="hint">Click + ADD TSI to create your first entry</p></div>';
                 return;
             }
 
             if (results.length === 0) {
-                fixResults.innerHTML = '<div class="fix-empty-state"><p>No matching fault codes found</p><p class="hint">Try a different fault code, effect, or keyword</p></div>';
+                fixResults.innerHTML = '<div class="fix-empty-state"><p>No matching entries</p><p class="hint">Try a different search, fleet, or status filter</p></div>';
                 return;
             }
 
-            var html = '<div class="fix-results-count">' + results.length + ' result' + (results.length !== 1 ? 's' : '') + (q ? ' for "' + esc(q) + '"' : '') + '</div>';
+            var canEdit = window.mocCanEdit && window.mocCanEdit();
+            var html = '<div class="fix-results-count">' + results.length + ' entr' + (results.length !== 1 ? 'ies' : 'y') + (q ? ' matching "' + esc(q) + '"' : '') + '</div>';
 
-            results.forEach(function(d) {
-                html += '<div class="fix-card">';
-                html += '<div class="fix-card-header"><div class="fix-card-meta">';
-                html += '<div class="fix-fault-code">' + esc(d.faultCode) + '</div>';
-                html += '<div class="fix-effect">' + esc(d.effect) + '</div>';
-                html += '<div class="fix-tags">';
-                html += '<span class="fix-tag fix-tag-ata">ATA ' + esc(d.ata) + '</span>';
-                html += '<span class="fix-tag fix-tag-fleet">' + esc(d.fleet) + '</span>';
-                html += '</div></div></div>';
+            results.forEach(function(e) {
+                var statusLabel, statusClass;
+                if (e.status === 'in_work') { statusLabel = 'IN WORK'; statusClass = 'fts-work'; }
+                else if (e.status === 'closed_eff') { statusLabel = 'EFFECTIVE'; statusClass = 'fts-eff'; }
+                else { statusLabel = 'INEFFECTIVE'; statusClass = 'fts-ineff'; }
 
-                html += '<div class="fix-card-body">';
+                var dateStr = formatTsiDate(e.created);
 
-                // Flight Deck Effect
-                html += '<div class="fix-section"><div class="fix-section-label">Flight Deck Effect</div>';
-                html += '<div class="fix-description">' + esc(d.description) + '</div></div>';
+                html += '<div class="fix-entry-card">';
 
-                // Recommended Actions
-                html += '<div class="fix-section"><div class="fix-section-label">Recommended Actions</div>';
-                html += '<div class="fix-actions">';
-                d.actions.forEach(function(a) {
-                    var cl = confClass(a.confidence);
-                    html += '<div class="fix-action">';
-                    html += '<span class="fix-action-name">' + esc(a.name) + '</span>';
-                    html += '<div class="fix-action-bar-wrap"><div class="fix-action-bar bar-' + cl + '" style="width:' + a.confidence + '%"></div></div>';
-                    html += '<span class="fix-action-pct pct-' + cl + '">' + a.confidence + '%</span>';
-                    html += '</div>';
-                });
-                html += '</div></div>';
+                // Header row
+                html += '<div class="fec-header">';
+                html += '<span class="fec-status ' + statusClass + '">' + statusLabel + '</span>';
+                html += '<span class="fec-tail">' + esc(e.tail||'') + '</span>';
+                html += '<span class="fec-fleet">' + esc(e.fleet||'') + '</span>';
+                html += '<span class="fec-fc">' + esc(e.faultCode||'') + '</span>';
+                if (e.effect) html += '<span class="fec-effect">' + esc(e.effect) + '</span>';
+                html += '<span class="fec-date">' + dateStr + '</span>';
+                html += '</div>';
 
-                // TSI History
-                if (d.history.length > 0) {
-                    html += '<div class="fix-section"><div class="fix-section-label">TSI History (' + d.history.length + ' entr' + (d.history.length !== 1 ? 'ies' : 'y') + ')</div>';
-                    d.history.forEach(function(h) {
-                        var dateStr = formatFixDate(h.date);
-                        html += '<div class="fix-tsi">';
-                        html += '<div class="fix-tsi-header">';
-                        html += '<span class="fix-tsi-tail">' + esc(h.tail) + '</span>';
-                        html += '<span class="fix-tsi-date">' + dateStr + '</span>';
-                        html += '</div>';
-                        html += '<div class="fix-tsi-text">' + esc(h.action) + '</div>';
-                        html += '<div class="fix-tsi-result' + (h.effective ? '' : ' ineffective') + '">Result: ' + esc(h.result) + '</div>';
-                        html += '</div>';
-                    });
+                // Details row
+                html += '<div class="fec-details">';
+                if (e.workOrder) html += '<div class="fec-field"><span class="fec-label">WORK ORDER</span><span class="fec-val">' + esc(e.workOrder) + '</span></div>';
+                if (e.actionType) html += '<div class="fec-field"><span class="fec-label">ACTION</span><span class="fec-val">' + esc(e.actionType) + '</span></div>';
+                html += '<div class="fec-field"><span class="fec-label">ATA</span><span class="fec-val">' + esc(e.ata||'') + '</span></div>';
+                if (e.dueDate) html += '<div class="fec-field"><span class="fec-label">DUE</span><span class="fec-val">' + formatTsiDateShort(e.dueDate) + '</span></div>';
+                if (e.ref) html += '<div class="fec-field"><span class="fec-label">AMM/FIM</span><span class="fec-val">' + esc(e.ref) + '</span></div>';
+                html += '</div>';
+
+                // Notes
+                if (e.notes) {
+                    html += '<div class="fec-notes">' + esc(e.notes) + '</div>';
+                }
+
+                // Action buttons
+                if (canEdit) {
+                    html += '<div class="fec-actions">';
+                    if (e.status === 'in_work') {
+                        html += '<button class="fec-btn fec-btn-eff" onclick="fixCloseout(\'' + e.id + '\',true)">CLOSE - EFFECTIVE</button>';
+                        html += '<button class="fec-btn fec-btn-ineff" onclick="fixCloseout(\'' + e.id + '\',false)">CLOSE - INEFFECTIVE</button>';
+                    } else {
+                        html += '<button class="fec-btn fec-btn-reopen" onclick="fixReopen(\'' + e.id + '\')">REOPEN</button>';
+                    }
+                    html += '<button class="fec-btn fec-btn-del" onclick="fixDelete(\'' + e.id + '\')">DELETE</button>';
                     html += '</div>';
                 }
 
-                html += '</div></div>';
+                html += '</div>';
             });
 
             fixResults.innerHTML = html;
         }
 
-        function formatFixDate(dateStr) {
+        // Closeout from Fix Rate tab
+        var fixCloseoutId = null;
+        var fixCloseoutEff = true;
+
+        function fixCloseout(id, effective) {
+            fixCloseoutId = id;
+            fixCloseoutEff = effective;
+            document.getElementById('fixCoTitle').textContent = effective ? 'Close - Effective' : 'Close - Ineffective';
+            document.querySelectorAll('.fco-chip').forEach(function(c) { c.classList.remove('selected'); });
+            document.getElementById('fixCoOverlay').classList.add('open');
+        }
+
+        function fixCoCancel() {
+            document.getElementById('fixCoOverlay').classList.remove('open');
+            fixCloseoutId = null;
+        }
+
+        function fcoPickAction(el) {
+            document.querySelectorAll('.fco-chip').forEach(function(c) { c.classList.remove('selected'); });
+            el.classList.add('selected');
+        }
+
+        function fixCoConfirm() {
+            if (!fixCloseoutId) return;
+            var chip = document.querySelector('.fco-chip.selected');
+            if (!chip) { tsiToast('Select an action taken'); return; }
+            db.collection('tsi_entries').doc(fixCloseoutId).update({
+                status: fixCloseoutEff ? 'closed_eff' : 'closed_ineff',
+                closedDate: new Date().toISOString(),
+                actionType: chip.textContent.trim()
+            }).then(function() {
+                fixCoCancel();
+                loadTsiEntries();
+                tsiToast(fixCloseoutEff ? 'Closed as effective' : 'Closed as ineffective');
+            }).catch(function(err) { tsiToast('Error: ' + err.message); });
+        }
+
+        function fixReopen(id) {
+            if (!confirm('Reopen this entry?')) return;
+            db.collection('tsi_entries').doc(id).update({
+                status: 'in_work',
+                closedDate: null,
+                actionType: ''
+            }).then(function() {
+                loadTsiEntries();
+                tsiToast('Reopened');
+            }).catch(function(err) { tsiToast('Error: ' + err.message); });
+        }
+
+        function fixDelete(id) {
+            if (!confirm('Delete this TSI entry? Cannot be undone.')) return;
+            db.collection('tsi_entries').doc(id).delete().then(function() {
+                loadTsiEntries();
+                tsiToast('Deleted');
+            }).catch(function(err) { tsiToast('Error: ' + err.message); });
+        }
+
+        function formatTsiDate(iso) {
+            if (!iso) return '';
+            var d = new Date(iso);
             var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            var day = d.getDate();
+            var h = d.getHours();
+            var m = d.getMinutes();
+            return (day < 10 ? '0' : '') + day + '-' + months[d.getMonth()] + '-' + d.getFullYear() + ' ' + (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+        }
+
+        function formatTsiDateShort(dateStr) {
+            if (!dateStr) return '';
             var parts = dateStr.split('-');
-            var d = parseInt(parts[2], 10);
-            var m = months[parseInt(parts[1], 10) - 1];
-            var y = parts[0];
-            return (d < 10 ? '0' : '') + d + '-' + m + '-' + y;
+            if (parts.length < 3) return dateStr;
+            var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            return parseInt(parts[2]) + '-' + months[parseInt(parts[1]) - 1] + '-' + parts[0];
         }
 
         // ---- QUICK LINKS ----
@@ -2615,7 +2684,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                     <div class="results-empty">
                         <p><strong>All references. All manuals. All apps. One search.</strong></p>
                         <p class="hint">Type to search or select a category filter</p>
-                        <div class="stats-line"><span>${DATA.length}</span> entries &middot; <span>${TSI_DATA.length}</span> fix records &middot; <span>${Object.keys(MANUAL_LINKS).length}</span> manuals linked &middot; <span>${APPS.length}</span> app${APPS.length !== 1 ? 's' : ''}</div>
+                        <div class="stats-line"><span>${DATA.length}</span> entries &middot; <span>${TSI_ENTRIES.length}</span> TSI records &middot; <span>${Object.keys(MANUAL_LINKS).length}</span> manuals linked &middot; <span>${APPS.length}</span> app${APPS.length !== 1 ? 's' : ''}</div>
                     </div>`;
                 return;
             }
@@ -2643,10 +2712,10 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             // Fix Rate results
             let fixResultsList = [];
             if (showFixes) {
-                fixResultsList = TSI_DATA;
+                fixResultsList = TSI_ENTRIES;
                 if (q) {
                     fixResultsList = fixResultsList.filter(d => {
-                        const hay = [d.faultCode, d.effect, d.description, d.ata, d.fleet].join(' ').toLowerCase();
+                        const hay = [d.faultCode||'', d.effect||'', d.tail||'', d.ata||'', d.fleet||'', d.notes||''].join(' ').toLowerCase();
                         return words.every(w => hay.includes(w));
                     });
                 }
@@ -2723,23 +2792,15 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
             // Render fix rate cards inline
             fixResultsList.forEach(function(d) {
-                var topAction = d.actions[0];
-                var cl = topAction ? (topAction.confidence >= 70 ? 'high' : topAction.confidence >= 30 ? 'med' : 'low') : 'med';
-                html += `<div class="fix-card" style="cursor:pointer" onclick="document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.querySelector('[data-tab=fixrate]').classList.add('active');document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById('fixrate').classList.add('active');fixSearchInput.value='${d.faultCode}';renderFixRate();">
-                    <div class="fix-card-header">
-                        <div class="fix-card-meta">
-                            <div class="fix-fault-code">${esc(d.faultCode)}</div>
-                            <div class="fix-effect">${highlight(d.effect, words)}</div>
-                            <div class="fix-tags">
-                                <span class="fix-tag fix-tag-ata">ATA ${esc(d.ata)}</span>
-                                <span class="fix-tag fix-tag-fleet">${esc(d.fleet)}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="padding:10px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;">
-                        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;">TOP FIX</span>
-                        <span style="font-size:12px;font-weight:600;color:var(--text);flex:1;">${topAction ? esc(topAction.name) : 'N/A'}</span>
-                        <span class="fix-action-pct pct-${cl}">${topAction ? topAction.confidence + '%' : ''}</span>
+                var statusLabel = d.status === 'in_work' ? 'IN WORK' : d.status === 'closed_eff' ? 'EFFECTIVE' : 'INEFFECTIVE';
+                var statusClass = d.status === 'in_work' ? 'fts-work' : d.status === 'closed_eff' ? 'fts-eff' : 'fts-ineff';
+                html += `<div class="fix-entry-card" style="cursor:pointer" onclick="document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.querySelector('[data-tab=fixrate]').classList.add('active');document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById('fixrate').classList.add('active');fixSearchInput.value='${esc(d.faultCode||'')}';renderFixRate();">
+                    <div class="fec-header">
+                        <span class="fec-status ${statusClass}">${statusLabel}</span>
+                        <span class="fec-tail">${esc(d.tail||'')}</span>
+                        <span class="fec-fleet">${esc(d.fleet||'')}</span>
+                        <span class="fec-fc">${esc(d.faultCode||'')}</span>
+                        <span class="fec-effect">${highlight(d.effect||'', words)}</span>
                     </div>
                 </div>`;
             });
@@ -3291,7 +3352,7 @@ function saveTsiEntry() {
   // Save to Firestore
   db.collection('tsi_entries').add(entry).then(function() {
     closeTsiModal();
-    updateFixStatusBar();
+    loadTsiEntries();
     tsiToast('TSI entry added - IN WORK');
   }).catch(function(err) {
     tsiToast('Error saving entry. Try again.');

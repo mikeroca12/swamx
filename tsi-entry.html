@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TSI Fix Rate - Entry | MOC Toolbox</title>
+<title>TSI Fix Rate - Reports | MOC Toolbox</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -11,183 +11,61 @@
   --frame: #223352;
   --frame-border: #2e4368;
   --surface: #e2e7ef;
-  --surface2: #d9dee8;
-  --surface3: #cdd3df;
   --border: #c8ceda;
-  --border-strong: #b4bcc9;
   --text: #1e293b;
   --text-secondary: #475569;
   --text-dim: #64748b;
   --text-on-dark: #e2e8f0;
   --text-on-dark-dim: #ffffff;
-  --green: #16a34a;
-  --green-bg: #dcfce7;
-  --green-border: #86efac;
-  --green-text: #15803d;
-  --yellow: #d97706;
-  --yellow-bg: #fef3c7;
-  --yellow-border: #fcd34d;
-  --yellow-text: #b45309;
-  --red: #dc2626;
-  --red-bg: #fee2e2;
-  --red-border: #fca5a5;
-  --red-text: #b91c1c;
-  --blue: #2563eb;
-  --blue-bg: #dbeafe;
-  --blue-border: #93c5fd;
-  --blue-text: #1d4ed8;
   --accent: #2563eb;
   --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min-height:100vh;opacity:0;transition:opacity 0.08s;}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); opacity:0; transition: opacity 0.08s; }
 
-/* Nav */
-.nav-bar{background:var(--frame);border-bottom:1px solid var(--frame-border);padding:10px 24px;display:flex;align-items:center;gap:14px;font-size:14px;}
-.nav-bar a{color:#ffffff;text-decoration:none;}
-.nav-bar .nav-title{font-weight:700;color:var(--text-on-dark);}
-.nav-bar .nav-title span{color:#3b82f6;}
-.nav-bar .nav-sep{color:var(--frame-border);}
-.nav-bar img{height:28px;}
-.nav-logo{display:flex;align-items:center;gap:8px;}
+.nav-bar {
+  background: var(--frame); border-bottom: 1px solid var(--frame-border);
+  padding: 10px 24px; display: flex; align-items: center; gap: 14px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px;
+}
+.nav-bar a { color: #ffffff; text-decoration: none; }
+.nav-bar .nav-title { font-weight: 700; color: var(--text-on-dark); }
+.nav-bar .nav-title span { color: #3b82f6; }
+.nav-bar .nav-sep { color: var(--frame-border); }
+.nav-bar img { height: 28px; }
 
-/* Header */
-.header{background:var(--frame);border-bottom:1px solid var(--frame-border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.header h1{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;letter-spacing:-0.5px;color:#ffffff;}
-.header-actions{display:flex;gap:8px;}
-.header-btn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:6px 14px;border-radius:6px;border:1px solid var(--frame-border);background:rgba(255,255,255,0.08);color:#ffffff;cursor:pointer;transition:all 0.15s;letter-spacing:0.5px;}
-.header-btn:hover{background:rgba(255,255,255,0.15);}
-.header-btn.primary{background:var(--accent);border-color:var(--accent);}
-.header-btn.primary:hover{background:#1d4ed8;}
+.container { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
 
-.container{max-width:900px;margin:0 auto;padding:24px 24px 80px;}
+h1 {
+  font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700;
+  color: #ffffff; margin-bottom: 40px;
+}
 
-/* Filter bar */
-.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
-.f-chip{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:6px 12px;border-radius:6px;border:1px solid var(--frame-border);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.15s;}
-.f-chip:hover{background:rgba(255,255,255,0.1);color:#fff;}
-.f-chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
-.f-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.4);margin-left:auto;}
-
-/* Status filter */
-.s-chip{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:4px 10px;border-radius:4px;cursor:pointer;transition:all 0.15s;letter-spacing:0.5px;}
-.s-chip.s-all{border:1px solid var(--frame-border);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);}
-.s-chip.s-all.active{background:rgba(255,255,255,0.15);color:#fff;}
-.s-chip.s-work{border:1px solid var(--yellow-border);background:rgba(217,119,6,0.1);color:var(--yellow);}
-.s-chip.s-work.active{background:var(--yellow);color:#fff;}
-.s-chip.s-closed{border:1px solid var(--green-border);background:rgba(22,163,74,0.1);color:var(--green);}
-.s-chip.s-closed.active{background:var(--green);color:#fff;}
-
-/* TSI Cards */
-.tsi-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;box-shadow:var(--card-shadow);}
-.tsi-card-top{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
-.tsi-status{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:0.5px;flex-shrink:0;}
-.tsi-status.in-work{background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow-border);}
-.tsi-status.closed-eff{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);}
-.tsi-status.closed-ineff{background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border);}
-.tsi-tail{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--accent);}
-.tsi-fleet{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(22,163,74,0.1);color:#15803d;border:1px solid #86efac;}
-.tsi-fc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--text);}
-.tsi-effect{font-size:12px;color:var(--text-secondary);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tsi-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);flex-shrink:0;}
-
-.tsi-card-body{padding:12px 16px;}
-.tsi-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:8px;}
-.tsi-field{flex:1;min-width:120px;}
-.tsi-field-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--text-dim);letter-spacing:0.5px;margin-bottom:2px;}
-.tsi-field-value{font-size:12px;color:var(--text);font-weight:500;}
-.tsi-action-text{font-size:12px;color:var(--text);line-height:1.5;margin-top:4px;padding:8px 10px;background:#fff;border:1px solid var(--border);border-radius:6px;}
-
-.tsi-card-actions{padding:8px 16px;border-top:1px solid var(--border);display:flex;gap:6px;background:var(--surface2);}
-.tsi-btn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:5px 12px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;letter-spacing:0.3px;}
-.tsi-btn:hover{border-color:var(--accent);color:var(--accent);}
-.tsi-btn.btn-close-eff{color:var(--green-text);border-color:var(--green-border);}
-.tsi-btn.btn-close-eff:hover{background:var(--green-bg);}
-.tsi-btn.btn-close-ineff{color:var(--red-text);border-color:var(--red-border);}
-.tsi-btn.btn-close-ineff:hover{background:var(--red-bg);}
-.tsi-btn.btn-reopen{color:var(--yellow-text);border-color:var(--yellow-border);}
-.tsi-btn.btn-reopen:hover{background:var(--yellow-bg);}
-.tsi-btn.btn-delete{color:var(--red-text);border-color:var(--red-border);margin-left:auto;}
-.tsi-btn.btn-delete:hover{background:var(--red-bg);}
-
-/* Empty */
-.empty{text-align:center;padding:60px 24px;color:rgba(255,255,255,0.3);}
-.empty p{font-size:15px;margin-bottom:4px;}
-.empty .hint{font-size:12px;}
-
-/* Modal */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;}
-.modal-overlay.open{display:flex;}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
-.modal-header{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.modal-header h2{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--text);}
-.modal-close{background:none;border:none;font-size:20px;color:var(--text-dim);cursor:pointer;padding:4px;}
-.modal-close:hover{color:var(--text);}
-.modal-body{padding:14px 20px 8px;}
-.modal-footer{padding:10px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
-
-/* Form */
-.form-group{margin-bottom:12px;}
-.form-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;display:block;}
-.form-label .req{color:var(--red);}
-.form-input,.form-select,.form-textarea{width:100%;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:#fff;border:1px solid var(--border);border-radius:8px;outline:none;transition:border-color 0.15s;}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.1);}
-.form-textarea{min-height:80px;resize:vertical;line-height:1.5;}
-.form-select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
-.form-row{display:flex;gap:12px;}
-.form-row .form-group{flex:1;}
-.form-hint{font-size:11px;color:var(--text-dim);margin-top:4px;}
-
-/* Tail search dropdown */
-.tail-wrap{position:relative;}
-.tail-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:200px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
-.tail-dropdown.open{display:block;}
-.tail-opt{padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;transition:background 0.1s;}
-.tail-opt:hover,.tail-opt.highlighted{background:var(--blue-bg);}
-.tail-opt .to-tail{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--text);}
-.tail-opt .to-fleet{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
-
-/* Fault code autocomplete */
-.fc-wrap{position:relative;}
-.fc-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:340px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
-.fc-dropdown.open{display:block;}
-.fc-opt{padding:8px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:background 0.1s;border-bottom:1px solid var(--surface2);}
-.fc-opt:last-child{border-bottom:none;}
-.fc-opt:hover,.fc-opt.highlighted{background:var(--blue-bg);}
-.fc-opt .fco-code{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:var(--text);}
-.fc-opt .fco-msg{font-size:11px;color:var(--text-secondary);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.fc-opt .fco-task{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);}
-
-/* Read-only display field (Fleet, ATA) */
-.form-display{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--text);padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;min-height:42px;display:flex;align-items:center;}
-
-/* Action taken dropdown */
-.action-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
-.action-chip{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;}
-.action-chip:hover{border-color:var(--accent);color:var(--accent);}
-.action-chip.selected{background:var(--accent);color:#fff;border-color:var(--accent);}
-
-/* Toast */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:opacity 0.3s;}
-
-/* Responsive */
-@media(max-width:640px){
-  .container{padding:16px 14px 60px;}
-  .tsi-card-top{flex-wrap:wrap;}
-  .form-row{flex-direction:column;gap:0;}
-  .tsi-effect{display:none;}
+.coming-soon {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 60px 40px; text-align: center; box-shadow: var(--card-shadow);
+}
+.coming-soon h2 {
+  font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700;
+  letter-spacing: 1px; color: var(--text); margin-bottom: 12px; text-transform: uppercase;
+}
+.coming-soon p {
+  font-size: 14px; color: var(--text-secondary); line-height: 1.7; max-width: 480px; margin: 0 auto;
+}
+.coming-soon .features {
+  margin-top: 24px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+}
+.coming-soon .feat {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+  padding: 5px 10px; border-radius: 5px; border: 1px solid var(--border);
+  background: #fff; color: var(--text-dim); letter-spacing: 0.3px;
 }
 </style>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="auth.js"></script>
 </head>
 <body>
 
 <div class="nav-bar">
-  <a href="index.html" class="nav-logo">
+  <a href="index.html" style="display:flex;align-items:center;gap:8px;">
     <img src="logo.webp" alt="Logo">
     <span class="nav-title">MOC <span>Toolbox</span></span>
   </a>
@@ -195,612 +73,32 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
   <a href="index.html">Back to Toolbox</a>
 </div>
 
-<div class="header">
-  <h1>TSI Fix Rate - Manage Entries</h1>
-  <div class="header-actions">
-    <button class="header-btn" onclick="exportData()">EXPORT JSON</button>
-    <button class="header-btn primary" id="newTsiBtn" onclick="openNewModal()">+ NEW TSI</button>
-  </div>
-</div>
-
 <div class="container">
-  <div class="filter-bar">
-    <button class="f-chip active" data-fleet="ALL" onclick="setFleet(this)">ALL</button>
-    <button class="f-chip" data-fleet="MAX 8" onclick="setFleet(this)">MAX 8</button>
-    <button class="f-chip" data-fleet="MAX 7" onclick="setFleet(this)">MAX 7</button>
-    <button class="f-chip" data-fleet="NG 800" onclick="setFleet(this)">NG 800</button>
-    <button class="f-chip" data-fleet="NG 700" onclick="setFleet(this)">NG 700</button>
-    <span style="color:var(--frame-border);margin:0 4px;">|</span>
-    <button class="s-chip s-all active" data-status="ALL" onclick="setStatus(this)">ALL</button>
-    <button class="s-chip s-work" data-status="IN_WORK" onclick="setStatus(this)">IN WORK</button>
-    <button class="s-chip s-closed" data-status="CLOSED" onclick="setStatus(this)">CLOSED</button>
-    <span class="f-count" id="entryCount"></span>
-  </div>
+  <h1>TSI Fix Rate - Reports</h1>
 
-  <div id="tsiList"></div>
-</div>
-
-<!-- New/Edit TSI Modal -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 id="modalTitle">New TSI Entry</h2>
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-    </div>
-    <div class="modal-body">
-
-      <div class="form-row">
-        <div class="form-group tail-wrap" style="flex:0 0 55%;">
-          <label class="form-label">TAIL NUMBER <span class="req">*</span></label>
-          <input type="text" class="form-input" id="fTail" placeholder="Start typing tail..." autocomplete="off" oninput="filterTails()" onfocus="filterTails()" onkeydown="tailKeyNav(event)">
-          <div class="tail-dropdown" id="tailDropdown"></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">FLEET</label>
-          <div class="form-display" id="fFleet">-</div>
-          <input type="hidden" id="fFleetVal">
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group fc-wrap" style="flex:0 0 55%;">
-          <label class="form-label">FAULT CODE <span class="req">*</span></label>
-          <input type="text" class="form-input" id="fFaultCode" placeholder="e.g. 36-12020 or FAMV" autocomplete="off" oninput="filterFC()" onfocus="filterFC()" onkeydown="fcKeyNav(event)">
-          <div class="fc-dropdown" id="fcDropdown"></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">ATA</label>
-          <div class="form-display" id="fAta">-</div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">FLIGHT DECK EFFECT / DESCRIPTION <span class="req">*</span></label>
-        <input type="text" class="form-input" id="fEffect" placeholder="e.g. BLEED FAMV L - Status Message">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">WORK ORDER / TSI BARCODE</label>
-        <input type="text" class="form-input" id="fWorkOrder" placeholder="e.g. TTG8Q01AL9VS">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">AMM/FIM REFERENCE</label>
-        <input type="text" class="form-input" id="fRef" placeholder="e.g. AMM 36-12-03">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">TSI DETAILS / NOTES</label>
-        <textarea class="form-textarea" id="fNotes" placeholder="Paste TSI verbiage or describe what was done..."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">DUE DATE</label>
-        <input type="date" class="form-input" id="fDueDate">
-      </div>
-
-    </div>
-    <div class="modal-footer">
-      <button class="tsi-btn" onclick="closeModal()">CANCEL</button>
-      <button class="tsi-btn" style="background:var(--accent);color:#fff;border-color:var(--accent);" onclick="saveEntry()">SAVE</button>
+  <div class="coming-soon">
+    <h2>Coming Soon</h2>
+    <p>Custom reporting for TSI entries - filter, sort, and analyze fix data across the fleet.</p>
+    <div class="features">
+      <span class="feat">FILTER BY ATA</span>
+      <span class="feat">FILTER BY FLEET</span>
+      <span class="feat">DATE RANGE</span>
+      <span class="feat">TOP REPEATERS</span>
+      <span class="feat">FIX RATE TRENDS</span>
+      <span class="feat">EXPORT CSV</span>
     </div>
   </div>
 </div>
 
-<!-- Closeout Modal -->
-<div class="modal-overlay" id="closeoutOverlay">
-  <div class="modal" style="max-width:420px;">
-    <div class="modal-header">
-      <h2 id="closeoutTitle">Close - Effective</h2>
-      <button class="modal-close" onclick="closeCloseout()">&times;</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label class="form-label">ACTION TAKEN <span class="req">*</span></label>
-        <div class="action-chips">
-          <span class="co-action-chip action-chip" onclick="coPickAction(this)">REMOVE/REPLACE</span>
-          <span class="co-action-chip action-chip" onclick="coPickAction(this)">REPAIR</span>
-          <span class="co-action-chip action-chip" onclick="coPickAction(this)">RESET/OPS CK</span>
-          <span class="co-action-chip action-chip" onclick="coPickAction(this)">NFF</span>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="tsi-btn" onclick="closeCloseout()">CANCEL</button>
-      <button class="tsi-btn" style="background:var(--accent);color:#fff;border-color:var(--accent);" onclick="confirmCloseout()">CONFIRM</button>
-    </div>
-  </div>
-</div>
-
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="auth.js"></script>
 <script>
-// ---- TSI-ENTRY.HTML: Uses shared auth.js ----
-var db = window.MOC_DB;
-
 window.addEventListener('moc-auth-ready', function() {
-  applyPermissions();
-  loadEntries();
+  document.body.style.opacity = '1';
 });
-
-function applyPermissions() {
-  var newBtn = document.getElementById('newTsiBtn');
-  if (newBtn) newBtn.style.display = window.mocCanEdit() ? '' : 'none';
-}
-
-// ---- AIRCRAFT DATA (from CSV, same as index.html) ----
-var AIRCRAFT = [];
-var TAIL_MAP = {};
-
-function tsiParseCSVRow(line) {
-  var result = [], cur = '', inQ = false;
-  for (var i = 0; i < line.length; i++) {
-    var c = line[i];
-    if (inQ) {
-      if (c === '"' && line[i+1] === '"') { cur += '"'; i++; }
-      else if (c === '"') { inQ = false; }
-      else { cur += c; }
-    } else {
-      if (c === '"') { inQ = true; }
-      else if (c === ',') { result.push(cur); cur = ''; }
-      else { cur += c; }
-    }
-  }
-  result.push(cur);
-  return result;
-}
-
-fetch('AircraftData.csv').then(function(r) { return r.ok ? r.text() : ''; }).then(function(text) {
-  if (!text) return;
-  var lines = text.split('\n');
-  for (var i = 1; i < lines.length; i++) {
-    var row = tsiParseCSVRow(lines[i]);
-    if (row.length >= 2 && row[0].trim()) {
-      AIRCRAFT.push([row[0].trim(), row[1].trim()]);
-      TAIL_MAP[row[0].trim()] = row[1].trim();
-    }
-  }
-}).catch(function(){});
-
-// ---- STATE ----
-var entries = [];
-var activeFleet = 'ALL';
-var activeStatus = 'ALL';
-var editingId = null;
-var tailHighlight = -1;
-
-// ---- FIRESTORE: LOAD ENTRIES ----
-function loadEntries() {
-  db.collection('tsi_entries').orderBy('created', 'desc').get().then(function(snap) {
-    entries = [];
-    snap.forEach(function(doc) {
-      var d = doc.data();
-      d.id = doc.id;
-      entries.push(d);
-    });
-    renderList();
-  }).catch(function(err) {
-    console.log('Load error:', err);
-    renderList();
-  });
-}
-
-// ---- FILTERS ----
-function setFleet(el) {
-  document.querySelectorAll('.f-chip').forEach(function(c) { c.classList.remove('active'); });
-  el.classList.add('active');
-  activeFleet = el.dataset.fleet;
-  renderList();
-}
-
-function setStatus(el) {
-  document.querySelectorAll('.s-chip').forEach(function(c) { c.classList.remove('active'); });
-  el.classList.add('active');
-  activeStatus = el.dataset.status;
-  renderList();
-}
-
-// ---- RENDER ----
-function renderList() {
-  var list = document.getElementById('tsiList');
-  var filtered = entries.filter(function(e) {
-    if (activeFleet !== 'ALL' && e.fleet !== activeFleet) return false;
-    if (activeStatus === 'IN_WORK' && e.status !== 'in_work') return false;
-    if (activeStatus === 'CLOSED' && e.status !== 'closed_eff' && e.status !== 'closed_ineff') return false;
-    return true;
-  });
-
-  // Sort: in_work first, then by created desc
-  filtered.sort(function(a, b) {
-    if (a.status === 'in_work' && b.status !== 'in_work') return -1;
-    if (a.status !== 'in_work' && b.status === 'in_work') return 1;
-    return new Date(b.created) - new Date(a.created);
-  });
-
-  document.getElementById('entryCount').textContent = filtered.length + ' of ' + entries.length + ' entries';
-
-  if (filtered.length === 0) {
-    list.innerHTML = '<div class="empty"><p>No TSI entries' + (activeFleet !== 'ALL' || activeStatus !== 'ALL' ? ' matching filters' : ' yet') + '</p><p class="hint">' + (entries.length === 0 ? 'Click + NEW TSI to add your first entry' : 'Try adjusting your filters') + '</p></div>';
-    return;
-  }
-
-  var html = '';
-  filtered.forEach(function(e) {
-    var statusLabel, statusClass;
-    if (e.status === 'in_work') { statusLabel = 'IN WORK'; statusClass = 'in-work'; }
-    else if (e.status === 'closed_eff') { statusLabel = 'CLOSED - EFFECTIVE'; statusClass = 'closed-eff'; }
-    else { statusLabel = 'CLOSED - INEFFECTIVE'; statusClass = 'closed-ineff'; }
-
-    var createdStr = fmtDate(e.created);
-    var dueStr = e.dueDate ? fmtDateShort(e.dueDate) : '-';
-    var closedStr = e.closedDate ? fmtDate(e.closedDate) : '';
-
-    html += '<div class="tsi-card">';
-    html += '<div class="tsi-card-top">';
-    html += '<span class="tsi-status ' + statusClass + '">' + statusLabel + '</span>';
-    html += '<span class="tsi-tail">' + esc(e.tail) + '</span>';
-    html += '<span class="tsi-fleet">' + esc(e.fleet) + '</span>';
-    html += '<span class="tsi-fc">' + esc(e.faultCode) + '</span>';
-    html += '<span class="tsi-effect">' + esc(e.effect) + '</span>';
-    html += '<span class="tsi-date">' + createdStr + '</span>';
-    html += '</div>';
-
-    html += '<div class="tsi-card-body">';
-    html += '<div class="tsi-row">';
-    html += '<div class="tsi-field"><div class="tsi-field-label">WORK ORDER</div><div class="tsi-field-value">' + esc(e.workOrder || '-') + '</div></div>';
-    html += '<div class="tsi-field"><div class="tsi-field-label">ACTION</div><div class="tsi-field-value">' + esc(e.actionType || '-') + '</div></div>';
-    html += '<div class="tsi-field"><div class="tsi-field-label">ATA</div><div class="tsi-field-value">' + esc(e.ata || '-') + '</div></div>';
-    html += '<div class="tsi-field"><div class="tsi-field-label">DUE DATE</div><div class="tsi-field-value">' + dueStr + '</div></div>';
-    if (e.ref) html += '<div class="tsi-field"><div class="tsi-field-label">AMM/FIM REF</div><div class="tsi-field-value">' + esc(e.ref) + '</div></div>';
-    html += '</div>';
-    if (e.notes) html += '<div class="tsi-action-text">' + esc(e.notes) + '</div>';
-    if (closedStr) {
-      html += '<div style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:10px;color:var(--text-dim);">Closed: ' + closedStr + '</div>';
-    }
-    html += '</div>';
-
-    // Action buttons
-    html += '<div class="tsi-card-actions">';
-    if (canEdit()) {
-      if (e.status === 'in_work') {
-        html += '<button class="tsi-btn btn-close-eff" onclick="openCloseout(\'' + e.id + '\',true)">CLOSE - EFFECTIVE</button>';
-        html += '<button class="tsi-btn btn-close-ineff" onclick="openCloseout(\'' + e.id + '\',false)">CLOSE - INEFFECTIVE</button>';
-      } else {
-        html += '<button class="tsi-btn btn-reopen" onclick="reopenEntry(\'' + e.id + '\')">REOPEN</button>';
-      }
-      html += '<button class="tsi-btn btn-delete" onclick="deleteEntry(\'' + e.id + '\')">DELETE</button>';
-    }
-    html += '</div>';
-
-    html += '</div>';
-  });
-
-  list.innerHTML = html;
-}
-
-// ---- MODAL ----
-function openNewModal() {
-  editingId = null;
-  document.getElementById('modalTitle').textContent = 'New TSI Entry';
-  clearForm();
-  document.getElementById('modalOverlay').classList.add('open');
-  document.getElementById('fTail').focus();
-}
-
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.getElementById('tailDropdown').classList.remove('open');
-}
-
-function clearForm() {
-  ['fTail','fFaultCode','fEffect','fWorkOrder','fNotes','fDueDate','fRef'].forEach(function(id) {
-    document.getElementById(id).value = '';
-  });
-  document.getElementById('fFleet').textContent = '-';
-  document.getElementById('fFleetVal').value = '';
-  document.getElementById('fAta').textContent = '-';
-  document.getElementById('tailDropdown').classList.remove('open');
-  document.getElementById('fcDropdown').classList.remove('open');
-}
-
-// ---- TAIL SEARCH ----
-function filterTails() {
-  var q = document.getElementById('fTail').value.toUpperCase().trim();
-  var dd = document.getElementById('tailDropdown');
-  if (!q) { dd.classList.remove('open'); return; }
-  var matches = AIRCRAFT.filter(function(a) { return a[0].indexOf(q) !== -1; }).slice(0, 50);
-  if (matches.length === 0) { dd.classList.remove('open'); return; }
-  tailHighlight = 0;
-  var html = '';
-  matches.forEach(function(a, i) {
-    html += '<div class="tail-opt' + (i === 0 ? ' highlighted' : '') + '" data-tail="' + a[0] + '" data-fleet="' + a[1] + '" onclick="selectTail(\'' + a[0] + '\',\'' + a[1] + '\')">';
-    html += '<span class="to-tail">' + a[0] + '</span>';
-    html += '<span class="to-fleet">' + a[1] + '</span>';
-    html += '</div>';
-  });
-  dd.innerHTML = html;
-  dd.classList.add('open');
-}
-
-function selectTail(tail, fleet) {
-  document.getElementById('fTail').value = tail;
-  document.getElementById('fFleet').textContent = fleet;
-  document.getElementById('fFleetVal').value = fleet;
-  document.getElementById('tailDropdown').classList.remove('open');
-  document.getElementById('fFaultCode').focus();
-}
-
-function tailKeyNav(e) {
-  var dd = document.getElementById('tailDropdown');
-  if (!dd.classList.contains('open')) return;
-  var opts = dd.querySelectorAll('.tail-opt');
-  if (!opts.length) return;
-  if (e.key === 'ArrowDown') {
-    e.preventDefault();
-    tailHighlight = Math.min(tailHighlight + 1, opts.length - 1);
-    opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === tailHighlight); });
-    opts[tailHighlight].scrollIntoView({block:'nearest'});
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault();
-    tailHighlight = Math.max(tailHighlight - 1, 0);
-    opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === tailHighlight); });
-    opts[tailHighlight].scrollIntoView({block:'nearest'});
-  } else if (e.key === 'Enter') {
-    e.preventDefault();
-    var sel = opts[tailHighlight];
-    if (sel) selectTail(sel.dataset.tail, sel.dataset.fleet);
-  } else if (e.key === 'Escape') {
-    dd.classList.remove('open');
-  }
-}
-
-// Close dropdown on outside click
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.tail-wrap')) document.getElementById('tailDropdown').classList.remove('open');
-  if (!e.target.closest('.fc-wrap')) document.getElementById('fcDropdown').classList.remove('open');
-});
-
-// ---- FAULT CODE AUTOCOMPLETE ----
-var FAULT_CODES = [];
-var fcHL = -1;
-
-fetch('FaultCodes.csv').then(function(r) { return r.ok ? r.text() : ''; }).then(function(text) {
-  if (!text) return;
-  var lines = text.split('\n');
-  for (var i = 1; i < lines.length; i++) {
-    var row = tsiParseCSVRow(lines[i]);
-    if (row.length >= 5 && row[0]) {
-      FAULT_CODES.push({ code: row[0].trim(), fimTask: row[1].trim(), title: row[2].trim(), message: row[3].trim(), ata: row[4].trim() });
-    }
-  }
-}).catch(function(){});
-
-function filterFC() {
-  var q = document.getElementById('fFaultCode').value.trim().toUpperCase();
-  var dd = document.getElementById('fcDropdown');
-  if (!q || q.length < 2 || FAULT_CODES.length === 0) { dd.classList.remove('open'); return; }
-  var matches = FAULT_CODES.filter(function(f) {
-    if (f.code.indexOf(q) === 0) return true;
-    if (q.length >= 3 && (f.message.toUpperCase().indexOf(q) !== -1 || f.title.toUpperCase().indexOf(q) !== -1)) return true;
-    return false;
-  }).slice(0, 50);
-  if (matches.length === 0) { dd.classList.remove('open'); return; }
-  fcHL = 0;
-  var html = '';
-  matches.forEach(function(f, i) {
-    html += '<div class="fc-opt' + (i === 0 ? ' highlighted' : '') + '" onclick="selectFC(' + i + ')">';
-    html += '<span class="fco-code">' + f.code + '</span>';
-    if (f.message) html += '<span class="fco-msg">' + f.message + '</span>';
-    if (f.fimTask) html += '<span class="fco-task">FIM: ' + f.fimTask + '</span>';
-    html += '</div>';
-  });
-  dd.innerHTML = html;
-  dd._matches = matches;
-  dd.classList.add('open');
-  autoFillATA();
-}
-
-function selectFC(idx) {
-  var dd = document.getElementById('fcDropdown');
-  var f = dd._matches[idx];
-  document.getElementById('fFaultCode').value = f.code;
-  if (f.message || f.title) {
-    var ef = document.getElementById('fEffect');
-    ef.value = f.message || f.title;
-    ef.setSelectionRange(0, 0);
-    ef.scrollLeft = 0;
-  }
-  if (f.fimTask) document.getElementById('fRef').value = f.fimTask;
-  autoFillATA();
-  dd.classList.remove('open');
-  document.getElementById('fEffect').focus();
-  setTimeout(function() { document.getElementById('fEffect').setSelectionRange(0, 0); document.getElementById('fEffect').scrollLeft = 0; }, 0);
-}
-
-function fcKeyNav(e) {
-  var dd = document.getElementById('fcDropdown');
-  if (!dd.classList.contains('open')) return;
-  var opts = dd.querySelectorAll('.fc-opt');
-  if (!opts.length) return;
-  if (e.key === 'ArrowDown') { e.preventDefault(); fcHL = Math.min(fcHL+1, opts.length-1); }
-  else if (e.key === 'ArrowUp') { e.preventDefault(); fcHL = Math.max(fcHL-1, 0); }
-  else if (e.key === 'Enter') { e.preventDefault(); selectFC(fcHL); return; }
-  else if (e.key === 'Escape') { dd.classList.remove('open'); return; }
-  else return;
-  opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === fcHL); });
-  opts[fcHL].scrollIntoView({block:'nearest'});
-}
-
-function autoFillATA() {
-  var code = document.getElementById('fFaultCode').value.trim();
-  var ataDiv = document.getElementById('fAta');
-  var match = code.match(/^(\d{2})-/);
-  ataDiv.textContent = match ? match[1] : '-';
-}
-
-// ---- SAVE ----
-function saveEntry() {
-  var tail = document.getElementById('fTail').value.trim().toUpperCase();
-  var fleet = document.getElementById('fFleetVal').value.trim();
-  var faultCode = document.getElementById('fFaultCode').value.trim().toUpperCase();
-  var effect = document.getElementById('fEffect').value.trim().toUpperCase();
-
-  if (!tail) { toast('Tail number is required'); document.getElementById('fTail').focus(); return; }
-  if (!faultCode) { toast('Fault code is required'); document.getElementById('fFaultCode').focus(); return; }
-  if (!effect) { toast('Flight deck effect is required'); document.getElementById('fEffect').focus(); return; }
-
-  if (!fleet && TAIL_MAP[tail]) fleet = TAIL_MAP[tail];
-  if (!fleet) { toast('Fleet type could not be determined - select a valid tail'); return; }
-
-  var ataMatch = faultCode.match(/^(\d{2})-/);
-  var ata = ataMatch ? ataMatch[1] : '';
-
-  var entry = {
-    tail: tail,
-    fleet: fleet,
-    ata: ata,
-    faultCode: faultCode,
-    effect: effect,
-    workOrder: document.getElementById('fWorkOrder').value.trim().toUpperCase(),
-    actionType: '',
-    notes: document.getElementById('fNotes').value.trim(),
-    dueDate: document.getElementById('fDueDate').value,
-    ref: document.getElementById('fRef').value.trim(),
-    status: 'in_work',
-    created: new Date().toISOString(),
-    closedDate: null,
-    createdBy: CURRENT_USER ? CURRENT_USER.enumVal : '',
-    createdByName: CURRENT_USER ? CURRENT_USER.name : ''
-  };
-
-  if (editingId) {
-    var existing = entries.find(function(e) { return e.id === editingId; });
-    if (existing) {
-      entry.status = existing.status;
-      entry.created = existing.created;
-      entry.closedDate = existing.closedDate;
-      entry.createdBy = existing.createdBy || entry.createdBy;
-      entry.createdByName = existing.createdByName || entry.createdByName;
-      entry.actionType = existing.actionType || '';
-    }
-    db.collection('tsi_entries').doc(editingId).set(entry).then(function() {
-      closeModal();
-      loadEntries();
-      toast('Entry updated');
-    }).catch(function(err) { toast('Save error: ' + err.message); });
-  } else {
-    db.collection('tsi_entries').add(entry).then(function() {
-      closeModal();
-      loadEntries();
-      toast('TSI entry added - IN WORK');
-    }).catch(function(err) { toast('Save error: ' + err.message); });
-  }
-}
-
-// ---- CLOSEOUT MODAL ----
-var closeoutId = null;
-var closeoutEffective = true;
-
-function openCloseout(id, effective) {
-  closeoutId = id;
-  closeoutEffective = effective;
-  document.getElementById('closeoutTitle').textContent = effective ? 'Close - Effective' : 'Close - Ineffective';
-  document.querySelectorAll('.co-action-chip').forEach(function(c) { c.classList.remove('selected'); });
-  document.getElementById('closeoutOverlay').classList.add('open');
-}
-
-function closeCloseout() {
-  document.getElementById('closeoutOverlay').classList.remove('open');
-  closeoutId = null;
-}
-
-function coPickAction(el) {
-  document.querySelectorAll('.co-action-chip').forEach(function(c) { c.classList.remove('selected'); });
-  el.classList.add('selected');
-}
-
-function confirmCloseout() {
-  if (!closeoutId) return;
-  var selectedChip = document.querySelector('.co-action-chip.selected');
-  if (!selectedChip) { toast('Select an action taken'); return; }
-  var actionType = selectedChip.textContent;
-  db.collection('tsi_entries').doc(closeoutId).update({
-    status: closeoutEffective ? 'closed_eff' : 'closed_ineff',
-    closedDate: new Date().toISOString(),
-    actionType: actionType
-  }).then(function() {
-    closeCloseout();
-    loadEntries();
-    toast(closeoutEffective ? 'Closed as effective' : 'Closed as ineffective');
-  }).catch(function(err) { toast('Error: ' + err.message); });
-}
-
-function reopenEntry(id) {
-  db.collection('tsi_entries').doc(id).update({
-    status: 'in_work',
-    closedDate: null
-  }).then(function() {
-    loadEntries();
-    toast('Reopened - back to IN WORK');
-  }).catch(function(err) { toast('Error: ' + err.message); });
-}
-
-function deleteEntry(id) {
-  if (!confirm('Delete this TSI entry? This cannot be undone.')) return;
-  db.collection('tsi_entries').doc(id).delete().then(function() {
-    loadEntries();
-    toast('Entry deleted');
-  }).catch(function(err) { toast('Error: ' + err.message); });
-}
-
-// ---- EXPORT ----
-function exportData() {
-  var blob = new Blob([JSON.stringify(entries, null, 2)], {type: 'application/json'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'tsi-fixrate-' + new Date().toISOString().slice(0,10) + '.json';
-  a.click();
-  URL.revokeObjectURL(url);
-  toast('Exported ' + entries.length + ' entries');
-}
-
-function canEdit() {
-  return window.mocCanEdit();
-}
-
-// ---- HELPERS ----
-function esc(s) {
-  if (!s) return '';
-  var d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
-}
-
-function fmtDate(iso) {
-  if (!iso) return '';
-  var d = new Date(iso);
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var day = d.getDate();
-  var h = d.getHours();
-  var m = d.getMinutes();
-  return (day < 10 ? '0' : '') + day + '-' + months[d.getMonth()] + '-' + d.getFullYear() + ' ' + (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
-}
-
-function fmtDateShort(dateStr) {
-  if (!dateStr) return '';
-  var parts = dateStr.split('-');
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return parseInt(parts[2]) + '-' + months[parseInt(parts[1]) - 1] + '-' + parts[0];
-}
-
-function toast(msg) {
-  var t = document.createElement('div');
-  t.className = 'toast';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(function() { t.style.opacity = '0'; setTimeout(function() { t.remove(); }, 300); }, 2500);
-}
-
-// Init happens via auth.onAuthStateChanged -> loadEntries -> renderList
+setTimeout(function() { document.body.style.opacity = '1'; }, 2000);
 </script>
 </body>
 </html>

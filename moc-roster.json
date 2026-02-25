@@ -1,0 +1,372 @@
+[
+  {
+    "enumVal": "30661",
+    "name": "Randy Day",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "104712",
+    "name": "Allen Church",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "79097",
+    "name": "August Stefkovich",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "116494",
+    "name": "Bart Shelley",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "121411",
+    "name": "Brent Martin",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "42197",
+    "name": "Brian Smith",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "108466",
+    "name": "Bryan Witkowski",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "127360",
+    "name": "Chad Prince",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "121254",
+    "name": "Charlie Patel",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "146124",
+    "name": "Chris Sherwood",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "134690",
+    "name": "Chris Szymanek",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "87692",
+    "name": "Chris Yurillo",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "128523",
+    "name": "Cody Glover",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "98254",
+    "name": "Craig Painter",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "105998",
+    "name": "Craig Petty",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "121417",
+    "name": "Craig Sandal",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "83225",
+    "name": "Dan Blatt",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "112242",
+    "name": "Daniel Caccia",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "133595",
+    "name": "Daniel Salcedo",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "69998",
+    "name": "Darren Murray",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "17451",
+    "name": "David Clark",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "99700",
+    "name": "David Clenin",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "172735",
+    "name": "David Price",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "86342",
+    "name": "David Sones",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "112974",
+    "name": "Elvy Tavarez",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "73061",
+    "name": "Eric Dulski",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "103381",
+    "name": "Eric Kancir",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "99711",
+    "name": "Eric Londono",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "114837",
+    "name": "Eric Watts",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "105051",
+    "name": "Erik Acker",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "106221",
+    "name": "Gary Westfall",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "97100",
+    "name": "Greg Edmundson",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "83078",
+    "name": "Harry Mack",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "81649",
+    "name": "James Adams",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "99674",
+    "name": "Jason Goodman",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "30367",
+    "name": "Jason Leyda",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "57235",
+    "name": "Jeff Frazier",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "107508",
+    "name": "Joao Tofani",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "92531",
+    "name": "Joe Fresquez",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "124623",
+    "name": "Joe Petkosh",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "163427",
+    "name": "John Lanahan",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "77379",
+    "name": "John Macdonald",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "55450",
+    "name": "Kevin Gales",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "17503",
+    "name": "Kevin Osborne",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "79676",
+    "name": "Lamar Thomas",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "103713",
+    "name": "Manny Quinones",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "114343",
+    "name": "Matthew Smoody",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "114431",
+    "name": "Michael Whittington",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "50240",
+    "name": "Mike Johnson",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "112799",
+    "name": "Mike Roca",
+    "role": "admin"
+  },
+  {
+    "enumVal": "73218",
+    "name": "Nikki diVittorio",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "139367",
+    "name": "Peter Lisboa",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "108437",
+    "name": "Randy Hansen",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "89982",
+    "name": "Raul Figueroa",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "60828",
+    "name": "Richard Johnson",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "104716",
+    "name": "Robby Clark",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "28909",
+    "name": "Rob Cush",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "106826",
+    "name": "Robert Clarke",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "42543",
+    "name": "Rob Glassett",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "12169",
+    "name": "Rod Davis",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "91172",
+    "name": "Russell Scott",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "76681",
+    "name": "Russ Hillman",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "85834",
+    "name": "Ryan Graf",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "36478",
+    "name": "Scott Rayburn",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "123208",
+    "name": "Sean Gallagher",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "106399",
+    "name": "Sean Garcia",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "139854",
+    "name": "Sem Montiel",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "105577",
+    "name": "Shane Massey",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "27865",
+    "name": "Shawn Holliman",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "133575",
+    "name": "Steve Lindstrom",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "104713",
+    "name": "Thomas Bolash",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "80314",
+    "name": "Tim Ananiadis",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "103379",
+    "name": "Tobin Miklas",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "103380",
+    "name": "William Durham",
+    "role": "viewer"
+  }
+]

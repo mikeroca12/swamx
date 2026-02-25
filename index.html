@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- MOC Toolbox v10.3 - 2025-02-25 auth fix -->
+<!-- MOC Toolbox v10.6 - 2025-02-25 moc-roster -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1422,11 +1422,12 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
 // ---- SEED ROSTER (runs once, safe to re-run) ----
 function seedRoster() {
-  var roster = [
-    { enumVal: '112799', name: 'Mike Roca', role: 'admin' }
-  ];
-  roster.forEach(function(c) {
-    db.collection('controllers').doc('E' + c.enumVal).set(c, { merge: true });
+  fetch('moc-roster.json').then(function(r) { return r.json(); }).then(function(roster) {
+    roster.forEach(function(c) {
+      db.collection('controllers').doc('E' + c.enumVal).set(c, { merge: true });
+    });
+  }).catch(function(err) {
+    console.log('Roster load error:', err);
   });
 }
 seedRoster();

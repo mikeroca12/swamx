@@ -41,7 +41,7 @@
   --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min-height:100vh;}
+body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min-height:100vh;opacity:0;transition:opacity 0.2s;}
 
 /* Nav */
 .nav-bar{background:var(--frame);border-bottom:1px solid var(--frame-border);padding:10px 24px;display:flex;align-items:center;gap:14px;font-size:14px;}
@@ -147,15 +147,6 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 .tail-opt:hover,.tail-opt.highlighted{background:var(--blue-bg);}
 .tail-opt .to-tail{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--text);}
 .tail-opt .to-fleet{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
-.fc-wrap{position:relative;}
-.fc-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:240px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
-.fc-dropdown.open{display:block;}
-.fc-opt{padding:8px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:background 0.1s;border-bottom:1px solid var(--surface2);}
-.fc-opt:last-child{border-bottom:none;}
-.fc-opt:hover,.fc-opt.highlighted{background:var(--blue-bg);}
-.fc-opt .fc-code{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:var(--text);}
-.fc-opt .fc-msg{font-size:11px;color:var(--text-secondary);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.fc-opt .fc-task{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
 
 /* Action taken dropdown */
 .action-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
@@ -174,6 +165,9 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
   .tsi-effect{display:none;}
 }
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -190,7 +184,7 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
   <h1>TSI Fix Rate - Manage Entries</h1>
   <div class="header-actions">
     <button class="header-btn" onclick="exportData()">EXPORT JSON</button>
-    <button class="header-btn primary" onclick="openNewModal()">+ NEW TSI</button>
+    <button class="header-btn primary" id="newTsiBtn" onclick="openNewModal()">+ NEW TSI</button>
   </div>
 </div>
 
@@ -237,10 +231,9 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
         </div>
       </div>
 
-      <div class="form-group fc-wrap">
+      <div class="form-group">
         <label class="form-label">FAULT CODE <span class="req">*</span></label>
-        <input type="text" class="form-input" id="fFaultCode" placeholder="e.g. 36-12020 or FAMV" autocomplete="off" oninput="filterFaultCodes()" onfocus="filterFaultCodes()" onkeydown="fcKeyNav(event)">
-        <div class="fc-dropdown" id="fcDropdown"></div>
+        <input type="text" class="form-input" id="fFaultCode" placeholder="e.g. 36-12020">
       </div>
 
       <div class="form-group">
@@ -301,835 +294,53 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 </div>
 
 <script>
-var AIRCRAFT = [
-["N1801U","MAX 8"],
-["N1802U","MAX 8"],
-["N1803U","MAX 8"],
-["N1804U","MAX 8"],
-["N1805U","MAX 8"],
-["N1806U","MAX 8"],
-["N1807U","MAX 8"],
-["N1808U","MAX 8"],
-["N1809U","MAX 8"],
-["N1810U","MAX 8"],
-["N1811U","MAX 8"],
-["N200WN","NG 700"],
-["N201LV","NG 700"],
-["N203WN","NG 700"],
-["N204WN","NG 700"],
-["N205WN","NG 700"],
-["N206WN","NG 700"],
-["N207WN","NG 700"],
-["N208WN","NG 700"],
-["N209WN","NG 700"],
-["N210WN","NG 700"],
-["N211WN","NG 700"],
-["N212WN","NG 700"],
-["N213WN","NG 700"],
-["N214WN","NG 700"],
-["N215WN","NG 700"],
-["N216WR","NG 700"],
-["N217JC","NG 700"],
-["N218WN","NG 700"],
-["N219WN","NG 700"],
-["N220WN","NG 700"],
-["N221WN","NG 700"],
-["N222WN","NG 700"],
-["N224WN","NG 700"],
-["N225WN","NG 700"],
-["N226WN","NG 700"],
-["N227WN","NG 700"],
-["N228WN","NG 700"],
-["N229WN","NG 700"],
-["N231WN","NG 700"],
-["N232WN","NG 700"],
-["N234WN","NG 700"],
-["N236WN","NG 700"],
-["N240WN","NG 700"],
-["N241WN","NG 700"],
-["N242WN","NG 700"],
-["N243WN","NG 700"],
-["N244WN","NG 700"],
-["N245WN","NG 700"],
-["N246LV","NG 700"],
-["N247WN","NG 700"],
-["N248WN","NG 700"],
-["N249WN","NG 700"],
-["N250WN","NG 700"],
-["N251WN","NG 700"],
-["N252WN","NG 700"],
-["N253WN","NG 700"],
-["N254WN","NG 700"],
-["N255WN","NG 700"],
-["N256WN","NG 700"],
-["N257WN","NG 700"],
-["N258WN","NG 700"],
-["N259WN","NG 700"],
-["N260WN","NG 700"],
-["N261WN","NG 700"],
-["N262WN","NG 700"],
-["N263WN","NG 700"],
-["N264LV","NG 700"],
-["N265WN","NG 700"],
-["N266WN","NG 700"],
-["N267WN","NG 700"],
-["N268WN","NG 700"],
-["N269WN","NG 700"],
-["N272WN","NG 700"],
-["N273WN","NG 700"],
-["N274WN","NG 700"],
-["N275WN","NG 700"],
-["N276WN","NG 700"],
-["N277WN","NG 700"],
-["N278WN","NG 700"],
-["N279WN","NG 700"],
-["N280WN","NG 700"],
-["N281WN","NG 700"],
-["N282WN","NG 700"],
-["N283WN","NG 700"],
-["N284WN","NG 700"],
-["N285WN","NG 700"],
-["N286WN","NG 700"],
-["N287WN","NG 700"],
-["N288WN","NG 700"],
-["N289CT","NG 700"],
-["N290WN","NG 700"],
-["N291WN","NG 700"],
-["N292WN","NG 700"],
-["N293WN","NG 700"],
-["N294WN","NG 700"],
-["N295WN","NG 700"],
-["N296WN","NG 700"],
-["N297WN","NG 700"],
-["N298WN","NG 700"],
-["N299WN","NG 700"],
-["N426WN","NG 700"],
-["N427WN","NG 700"],
-["N428WN","NG 700"],
-["N429WN","NG 700"],
-["N431WN","NG 700"],
-["N435WN","NG 700"],
-["N436WN","NG 700"],
-["N437WN","NG 700"],
-["N438WN","NG 700"],
-["N439WN","NG 700"],
-["N440LV","NG 700"],
-["N441WN","NG 700"],
-["N442WN","NG 700"],
-["N443WN","NG 700"],
-["N444WN","NG 700"],
-["N445WN","NG 700"],
-["N446WN","NG 700"],
-["N447WN","NG 700"],
-["N448WN","NG 700"],
-["N449WN","NG 700"],
-["N451WN","NG 700"],
-["N452WN","NG 700"],
-["N453WN","NG 700"],
-["N454WN","NG 700"],
-["N455WN","NG 700"],
-["N456WN","NG 700"],
-["N457WN","NG 700"],
-["N458WN","NG 700"],
-["N459WN","NG 700"],
-["N460WN","NG 700"],
-["N461WN","NG 700"],
-["N462WN","NG 700"],
-["N463WN","NG 700"],
-["N464WN","NG 700"],
-["N465WN","NG 700"],
-["N467WN","NG 700"],
-["N468WN","NG 700"],
-["N469WN","NG 700"],
-["N470WN","NG 700"],
-["N472WN","NG 700"],
-["N473WN","NG 700"],
-["N474WN","NG 700"],
-["N475WN","NG 700"],
-["N476WN","NG 700"],
-["N477WN","NG 700"],
-["N478WN","NG 700"],
-["N479WN","NG 700"],
-["N480WN","NG 700"],
-["N481WN","NG 700"],
-["N482WN","NG 700"],
-["N483WN","NG 700"],
-["N485WN","NG 700"],
-["N486WN","NG 700"],
-["N487WN","NG 700"],
-["N488WN","NG 700"],
-["N489WN","NG 700"],
-["N491WN","NG 700"],
-["N494WN","NG 700"],
-["N495WN","NG 700"],
-["N497WN","NG 700"],
-["N498WN","NG 700"],
-["N499WN","NG 700"],
-["N500WR","NG 800"],
-["N555LV","NG 700"],
-["N556WN","NG 700"],
-["N561WN","NG 700"],
-["N563WN","NG 700"],
-["N564WN","NG 700"],
-["N566WN","NG 700"],
-["N567WN","NG 700"],
-["N569WN","NG 700"],
-["N570WN","NG 700"],
-["N7702A","NG 700"],
-["N7704B","NG 700"],
-["N7713A","NG 700"],
-["N7715E","NG 700"],
-["N7721E","NG 700"],
-["N7723E","NG 700"],
-["N7724A","NG 700"],
-["N7729A","NG 700"],
-["N7731A","NG 700"],
-["N7732A","NG 700"],
-["N7733B","NG 700"],
-["N7734H","NG 700"],
-["N7735A","NG 700"],
-["N7736A","NG 700"],
-["N7737E","NG 700"],
-["N7738A","NG 700"],
-["N7739A","NG 700"],
-["N7740A","NG 700"],
-["N7741C","NG 700"],
-["N7742B","NG 700"],
-["N7743B","NG 700"],
-["N7744A","NG 700"],
-["N7745A","NG 700"],
-["N7746C","NG 700"],
-["N7747C","NG 700"],
-["N7748A","NG 700"],
-["N7749B","NG 700"],
-["N7750A","NG 700"],
-["N7751A","NG 700"],
-["N7752B","NG 700"],
-["N7815L","NG 700"],
-["N7820L","NG 700"],
-["N7821L","NG 700"],
-["N7823A","NG 700"],
-["N7825A","NG 700"],
-["N7826B","NG 700"],
-["N7827A","NG 700"],
-["N7828A","NG 700"],
-["N7831B","NG 700"],
-["N7832A","NG 700"],
-["N7833A","NG 700"],
-["N7835A","NG 700"],
-["N7843A","NG 700"],
-["N7844A","NG 700"],
-["N7847A","NG 700"],
-["N7848A","NG 700"],
-["N7852A","NG 700"],
-["N7854B","NG 700"],
-["N7855A","NG 700"],
-["N7857B","NG 700"],
-["N7858A","NG 700"],
-["N7860A","NG 700"],
-["N7861J","NG 700"],
-["N7862A","NG 700"],
-["N7868K","NG 700"],
-["N7869A","NG 700"],
-["N7873A","NG 700"],
-["N7874B","NG 700"],
-["N7875A","NG 700"],
-["N7876A","NG 700"],
-["N7877H","NG 700"],
-["N7878A","NG 700"],
-["N7879A","NG 700"],
-["N7880D","NG 700"],
-["N7881A","NG 700"],
-["N7885A","NG 700"],
-["N7886A","NG 700"],
-["N7887A","NG 700"],
-["N7888A","NG 700"],
-["N7889A","NG 700"],
-["N8301J","NG 800"],
-["N8302F","NG 800"],
-["N8303R","NG 800"],
-["N8305E","NG 800"],
-["N8306H","NG 800"],
-["N8307K","NG 800"],
-["N8308K","NG 800"],
-["N8309C","NG 800"],
-["N8310C","NG 800"],
-["N8311Q","NG 800"],
-["N8312C","NG 800"],
-["N8313F","NG 800"],
-["N8314L","NG 800"],
-["N8315C","NG 800"],
-["N8316H","NG 800"],
-["N8317M","NG 800"],
-["N8318F","NG 800"],
-["N8319F","NG 800"],
-["N8320J","NG 800"],
-["N8321D","NG 800"],
-["N8322X","NG 800"],
-["N8323C","NG 800"],
-["N8324A","NG 800"],
-["N8325D","NG 800"],
-["N8326F","NG 800"],
-["N8327A","NG 800"],
-["N8328A","NG 800"],
-["N8329B","NG 800"],
-["N8501V","NG 800"],
-["N8502Z","NG 800"],
-["N8503A","NG 800"],
-["N8504G","NG 800"],
-["N8507C","NG 800"],
-["N8508W","NG 800"],
-["N8509U","NG 800"],
-["N8510E","NG 800"],
-["N8511K","NG 800"],
-["N8512U","NG 800"],
-["N8513F","NG 800"],
-["N8514F","NG 800"],
-["N8515X","NG 800"],
-["N8517F","NG 800"],
-["N8518R","NG 800"],
-["N8519R","NG 800"],
-["N8520Q","NG 800"],
-["N8522P","NG 800"],
-["N8523W","NG 800"],
-["N8524Z","NG 800"],
-["N8525S","NG 800"],
-["N8526W","NG 800"],
-["N8527Q","NG 800"],
-["N8528Q","NG 800"],
-["N8529Z","NG 800"],
-["N8530W","NG 800"],
-["N8531Q","NG 800"],
-["N8532S","NG 800"],
-["N8533S","NG 800"],
-["N8534Z","NG 800"],
-["N8535S","NG 800"],
-["N8536Z","NG 800"],
-["N8537Z","NG 800"],
-["N8538V","NG 800"],
-["N8539V","NG 800"],
-["N8540V","NG 800"],
-["N8541W","NG 800"],
-["N8542Z","NG 800"],
-["N8543Z","NG 800"],
-["N8544Z","NG 800"],
-["N8545V","NG 800"],
-["N8546V","NG 800"],
-["N8547V","NG 800"],
-["N8548P","NG 800"],
-["N8549Z","NG 800"],
-["N8550Q","NG 800"],
-["N8551Q","NG 800"],
-["N8552Z","NG 800"],
-["N8553W","NG 800"],
-["N8554X","NG 800"],
-["N8555Z","NG 800"],
-["N8556Z","NG 800"],
-["N8557Q","NG 800"],
-["N8558Z","NG 800"],
-["N8559Q","NG 800"],
-["N8560Z","NG 800"],
-["N8561Z","NG 800"],
-["N8562Z","NG 800"],
-["N8563Z","NG 800"],
-["N8564Z","NG 800"],
-["N8565Z","NG 800"],
-["N8566Z","NG 800"],
-["N8567Z","NG 800"],
-["N8568Z","NG 800"],
-["N8569Z","NG 800"],
-["N8570W","NG 800"],
-["N8571Z","NG 800"],
-["N8572X","NG 800"],
-["N8573Z","NG 800"],
-["N8574Z","NG 800"],
-["N8575Z","NG 800"],
-["N8576Z","NG 800"],
-["N8577Z","NG 800"],
-["N8578Q","NG 800"],
-["N8579Z","NG 800"],
-["N8580Z","NG 800"],
-["N8581Z","NG 800"],
-["N8582Z","NG 800"],
-["N8583Z","NG 800"],
-["N8584Z","NG 800"],
-["N8600F","NG 800"],
-["N8602F","NG 800"],
-["N8603F","NG 800"],
-["N8605E","NG 800"],
-["N8606C","NG 800"],
-["N8607M","NG 800"],
-["N8608N","NG 800"],
-["N8609A","NG 800"],
-["N8610A","NG 800"],
-["N8611F","NG 800"],
-["N8612K","NG 800"],
-["N8613K","NG 800"],
-["N8614M","NG 800"],
-["N8619F","NG 800"],
-["N8623F","NG 800"],
-["N8626B","NG 800"],
-["N8628A","NG 800"],
-["N8629A","NG 800"],
-["N8630B","NG 800"],
-["N8631A","NG 800"],
-["N8632A","NG 800"],
-["N8633A","NG 800"],
-["N8634A","NG 800"],
-["N8635F","NG 800"],
-["N8637A","NG 800"],
-["N8638A","NG 800"],
-["N8639B","NG 800"],
-["N8640D","NG 800"],
-["N8641B","NG 800"],
-["N8643A","NG 800"],
-["N8644C","NG 800"],
-["N8645A","NG 800"],
-["N8646B","NG 800"],
-["N8647A","NG 800"],
-["N8648A","NG 800"],
-["N8649A","NG 800"],
-["N8650F","NG 800"],
-["N8651A","NG 800"],
-["N8652B","NG 800"],
-["N8653A","NG 800"],
-["N8654B","NG 800"],
-["N8655D","NG 800"],
-["N8656B","NG 800"],
-["N8657B","NG 800"],
-["N8658A","NG 800"],
-["N8659D","NG 800"],
-["N8660A","NG 800"],
-["N8661A","NG 800"],
-["N8662F","NG 800"],
-["N8663A","NG 800"],
-["N8664J","NG 800"],
-["N8665D","NG 800"],
-["N8667D","NG 800"],
-["N8668A","NG 800"],
-["N8669B","NG 800"],
-["N8670A","NG 800"],
-["N8671D","NG 800"],
-["N8672F","NG 800"],
-["N8673F","NG 800"],
-["N8674B","NG 800"],
-["N8675A","NG 800"],
-["N8676A","NG 800"],
-["N8677A","NG 800"],
-["N8678E","NG 800"],
-["N8679A","NG 800"],
-["N8680C","NG 800"],
-["N8681M","NG 800"],
-["N8682B","NG 800"],
-["N8683D","NG 800"],
-["N8684F","NG 800"],
-["N8685B","NG 800"],
-["N8686A","NG 800"],
-["N8687A","NG 800"],
-["N8688J","NG 800"],
-["N8689C","NG 800"],
-["N8690A","NG 800"],
-["N8691A","NG 800"],
-["N8692F","NG 800"],
-["N8693A","NG 800"],
-["N8694E","NG 800"],
-["N8695D","NG 800"],
-["N8696E","NG 800"],
-["N8697C","NG 800"],
-["N8698B","NG 800"],
-["N8699A","NG 800"],
-["N8701Q","MAX 8"],
-["N8702L","MAX 8"],
-["N8704Q","MAX 8"],
-["N8705Q","MAX 8"],
-["N8706W","MAX 8"],
-["N8707P","MAX 8"],
-["N8708Q","MAX 8"],
-["N8709Q","MAX 8"],
-["N8710M","MAX 8"],
-["N8711Q","MAX 8"],
-["N8712L","MAX 8"],
-["N8713M","MAX 8"],
-["N8714Q","MAX 8"],
-["N8715Q","MAX 8"],
-["N8716B","MAX 8"],
-["N8717M","MAX 8"],
-["N8718Q","MAX 8"],
-["N8719Q","MAX 8"],
-["N871HK","MAX 8"],
-["N8720L","MAX 8"],
-["N8721J","MAX 8"],
-["N8722L","MAX 8"],
-["N8723Q","MAX 8"],
-["N8724J","MAX 8"],
-["N8725L","MAX 8"],
-["N8726H","MAX 8"],
-["N8727M","MAX 8"],
-["N8728Q","MAX 8"],
-["N8729H","MAX 8"],
-["N872CB","MAX 8"],
-["N8730Q","MAX 8"],
-["N8731J","MAX 8"],
-["N8732S","MAX 8"],
-["N8733M","MAX 8"],
-["N8734Q","MAX 8"],
-["N8735L","MAX 8"],
-["N8736J","MAX 8"],
-["N8737L","MAX 8"],
-["N8738K","MAX 8"],
-["N8739L","MAX 8"],
-["N8740A","MAX 8"],
-["N8741L","MAX 8"],
-["N8742M","MAX 8"],
-["N8743K","MAX 8"],
-["N8744B","MAX 8"],
-["N8745K","MAX 8"],
-["N8746Q","MAX 8"],
-["N8747Q","MAX 8"],
-["N8748Q","MAX 8"],
-["N8749Q","MAX 8"],
-["N8750Q","MAX 8"],
-["N8751R","MAX 8"],
-["N8752Q","MAX 8"],
-["N8753Q","MAX 8"],
-["N8754S","MAX 8"],
-["N8755L","MAX 8"],
-["N8756S","MAX 8"],
-["N8757L","MAX 8"],
-["N8758L","MAX 8"],
-["N8759Q","MAX 8"],
-["N8760L","MAX 8"],
-["N8761L","MAX 8"],
-["N8762Q","MAX 8"],
-["N8763L","MAX 8"],
-["N8764Q","MAX 8"],
-["N8765Q","MAX 8"],
-["N8766T","MAX 8"],
-["N8767M","MAX 8"],
-["N8768Q","MAX 8"],
-["N8769Q","MAX 8"],
-["N8770Q","MAX 8"],
-["N8771D","MAX 8"],
-["N8772M","MAX 8"],
-["N8773Q","MAX 8"],
-["N8774Q","MAX 8"],
-["N8775Q","MAX 8"],
-["N8776L","MAX 8"],
-["N8777Q","MAX 8"],
-["N8778Q","MAX 8"],
-["N8779Q","MAX 8"],
-["N8780Q","MAX 8"],
-["N8781Q","MAX 8"],
-["N8782Q","MAX 8"],
-["N8783L","MAX 8"],
-["N8784Q","MAX 8"],
-["N8785L","MAX 8"],
-["N8786Q","MAX 8"],
-["N8787K","MAX 8"],
-["N8788L","MAX 8"],
-["N8789Q","MAX 8"],
-["N8790Q","MAX 8"],
-["N8791D","MAX 8"],
-["N8792Q","MAX 8"],
-["N8793Q","MAX 8"],
-["N8794Q","MAX 8"],
-["N8795L","MAX 8"],
-["N8796L","MAX 8"],
-["N8797Q","MAX 8"],
-["N8798Q","MAX 8"],
-["N8799Q","MAX 8"],
-["N8800L","MAX 8"],
-["N8801Q","MAX 8"],
-["N8802Q","MAX 8"],
-["N8803L","MAX 8"],
-["N8804L","MAX 8"],
-["N8805L","MAX 8"],
-["N8806Q","MAX 8"],
-["N8807L","MAX 8"],
-["N8808Q","MAX 8"],
-["N8809L","MAX 8"],
-["N8810L","MAX 8"],
-["N8811L","MAX 8"],
-["N8812Q","MAX 8"],
-["N8813Q","MAX 8"],
-["N8814K","MAX 8"],
-["N8815L","MAX 8"],
-["N8816Q","MAX 8"],
-["N8817L","MAX 8"],
-["N8818Q","MAX 8"],
-["N8819L","MAX 8"],
-["N8820L","MAX 8"],
-["N8821S","MAX 8"],
-["N8822Q","MAX 8"],
-["N8823Q","MAX 8"],
-["N8824Q","MAX 8"],
-["N8825Q","MAX 8"],
-["N8826Q","MAX 8"],
-["N8827Q","MAX 8"],
-["N8828L","MAX 8"],
-["N8829Q","MAX 8"],
-["N8830Q","MAX 8"],
-["N8831L","MAX 8"],
-["N8832H","MAX 8"],
-["N8833L","MAX 8"],
-["N8834L","MAX 8"],
-["N8835Q","MAX 8"],
-["N8836Q","MAX 8"],
-["N8837Q","MAX 8"],
-["N8838Q","MAX 8"],
-["N8839Q","MAX 8"],
-["N8840Q","MAX 8"],
-["N8841L","MAX 8"],
-["N8842L","MAX 8"],
-["N8843S","MAX 8"],
-["N8844Q","MAX 8"],
-["N8845L","MAX 8"],
-["N8846Q","MAX 8"],
-["N8847Q","MAX 8"],
-["N8848Q","MAX 8"],
-["N8849Q","MAX 8"],
-["N8850Q","MAX 8"],
-["N8851Q","MAX 8"],
-["N8852Q","MAX 8"],
-["N8853Q","MAX 8"],
-["N8854Q","MAX 8"],
-["N8855Q","MAX 8"],
-["N8856S","MAX 8"],
-["N8857Q","MAX 8"],
-["N8858K","MAX 8"],
-["N8859Q","MAX 8"],
-["N8860S","MAX 8"],
-["N8861Q","MAX 8"],
-["N8862Q","MAX 8"],
-["N8863Q","MAX 8"],
-["N8864H","MAX 8"],
-["N8865L","MAX 8"],
-["N8866H","MAX 8"],
-["N8867Q","MAX 8"],
-["N8868L","MAX 8"],
-["N8869L","MAX 8"],
-["N8870K","MAX 8"],
-["N8871Q","MAX 8"],
-["N8872Q","MAX 8"],
-["N8873S","MAX 8"],
-["N8874Q","MAX 8"],
-["N8875B","MAX 8"],
-["N8876Q","MAX 8"],
-["N8877Q","MAX 8"],
-["N8878L","MAX 8"],
-["N8879Q","MAX 8"],
-["N8880G","MAX 8"],
-["N8881L","MAX 8"],
-["N8882Q","MAX 8"],
-["N8883Q","MAX 8"],
-["N8884Q","MAX 8"],
-["N8885Q","MAX 8"],
-["N8886C","MAX 8"],
-["N8887Q","MAX 8"],
-["N8888M","MAX 8"],
-["N8889Q","MAX 8"],
-["N8890Q","MAX 8"],
-["N8891Q","MAX 8"],
-["N8892S","MAX 8"],
-["N8893L","MAX 8"],
-["N8894Q","MAX 8"],
-["N8895Q","MAX 8"],
-["N8896L","MAX 8"],
-["N8897K","MAX 8"],
-["N8898L","MAX 8"],
-["N8899H","MAX 8"],
-["N8900L","MAX 8"],
-["N8901Q","MAX 8"],
-["N8902Q","MAX 8"],
-["N8903H","MAX 8"],
-["N8904L","MAX 8"],
-["N8905Q","MAX 8"],
-["N8906K","MAX 8"],
-["N8907L","MAX 8"],
-["N8908Q","MAX 8"],
-["N8909L","MAX 8"],
-["N8910Q","MAX 8"],
-["N8911Q","MAX 8"],
-["N8912Q","MAX 8"],
-["N8913S","MAX 8"],
-["N8914Q","MAX 8"],
-["N8915Q","MAX 8"],
-["N8916Q","MAX 8"],
-["N8917Q","MAX 8"],
-["N8918Q","MAX 8"],
-["N8919K","MAX 8"],
-["N8920Q","MAX 8"],
-["N8921Q","MAX 8"],
-["N8922Q","MAX 8"],
-["N8923Q","MAX 8"],
-["N8924Q","MAX 8"],
-["N8925Q","MAX 8"],
-["N8926Q","MAX 8"],
-["N8927Q","MAX 8"],
-["N8928Q","MAX 8"],
-["N8929S","MAX 8"],
-["N8930S","MAX 8"],
-["N8931L","MAX 8"],
-["N8932Q","MAX 8"],
-["N8933Q","MAX 8"],
-["N8934Q","MAX 8"],
-["N8935Q","MAX 8"],
-["N8936Q","MAX 8"],
-["N8937Q","MAX 8"],
-["N8938Q","MAX 8"],
-["N8939Q","MAX 8"],
-["N8940Q","MAX 8"],
-["N8941Q","MAX 8"],
-["N8942L","MAX 8"],
-["N8943Q","MAX 8"],
-["N8944Q","MAX 8"],
-["N8945Q","MAX 8"],
-["N8946L","MAX 8"],
-["N8947Q","MAX 8"],
-["N8948Q","MAX 8"],
-["N8949Q","MAX 8"],
-["N8950L","MAX 8"],
-["N8951S","MAX 8"],
-["N8952Q","MAX 8"],
-["N8953Q","MAX 8"],
-["N8954Q","MAX 8"],
-["N8955Q","MAX 8"],
-["N8956Q","MAX 8"],
-["N8957Q","MAX 8"],
-["N8958Q","MAX 8"],
-["N8959Q","MAX 8"],
-["N8960L","MAX 8"],
-["N8961K","MAX 8"],
-["N8962L","MAX 8"],
-["N8963Q","MAX 8"],
-["N8964L","MAX 8"],
-["N8965Q","MAX 8"],
-["N8966S","MAX 8"],
-["N8967Q","MAX 8"],
-["N8969S","MAX 8"],
-["N8970Q","MAX 8"],
-["N8971L","MAX 8"],
-["N8972S","MAX 8"],
-["N8973S","MAX 8"],
-["N8974K","MAX 8"],
-["N8975K","MAX 8"],
-["N8976K","MAX 8"],
-["N8977G","MAX 8"],
-["N8978G","MAX 8"],
-["N8979L","MAX 8"],
-["N8980Q","MAX 8"],
-["N8981Q","MAX 8"],
-["N8982S","MAX 8"],
-["N8983Q","MAX 8"],
-["N8984L","MAX 8"],
-["N8985Q","MAX 8"],
-["N8986Q","MAX 8"],
-["N8987Q","MAX 8"],
-["N8988S","MAX 8"],
-["N8989L","MAX 8"],
-["N8990Q","MAX 8"],
-["N8991S","MAX 8"],
-["N8992L","MAX 8"],
-["N8993Q","MAX 8"],
-["N8994Q","MAX 8"],
-["N8995Q","MAX 8"],
-["N8996Q","MAX 8"],
-["N8997Q","MAX 8"],
-["N900WN","NG 700"],
-["N901WN","NG 700"],
-["N902WN","NG 700"],
-["N903WN","NG 700"],
-["N904WN","NG 700"],
-["N906WN","NG 700"],
-["N907WN","NG 700"],
-["N908WN","NG 700"],
-["N909WN","NG 700"],
-["N910WN","NG 700"],
-["N912WN","NG 700"],
-["N913WN","NG 700"],
-["N914WN","NG 700"],
-["N915WN","NG 700"],
-["N917WN","NG 700"],
-["N919WN","NG 700"],
-["N920WN","NG 700"],
-["N922WN","NG 700"],
-["N923WN","NG 700"],
-["N924WN","NG 700"],
-["N925WN","NG 700"],
-["N926WN","NG 700"],
-["N927WN","NG 700"],
-["N928WN","NG 700"],
-["N929WN","NG 700"],
-["N930WN","NG 700"],
-["N931WN","NG 700"],
-["N932WN","NG 700"],
-["N936WN","NG 700"],
-["N937WN","NG 700"],
-["N938WN","NG 700"],
-["N939WN","NG 700"],
-["N940WN","NG 700"],
-["N941WN","NG 700"],
-["N942WN","NG 700"],
-["N943WN","NG 700"],
-["N944WN","NG 700"],
-["N945WN","NG 700"],
-["N946WN","NG 700"],
-["N947WN","NG 700"],
-["N948WN","NG 700"],
-["N949WN","NG 700"],
-["N950WN","NG 700"],
-["N951WN","NG 700"],
-["N952WN","NG 700"],
-["N953WN","NG 700"],
-["N954WN","NG 700"],
-["N955WN","NG 700"],
-["N956WN","NG 700"],
-["N957WN","NG 700"],
-["N958WN","NG 700"],
-["N959WN","NG 700"],
-["N960WN","NG 700"],
-["N961WN","NG 700"],
-["N962WN","NG 700"],
-["N963WN","NG 700"],
-["N964WN","NG 700"],
-["N965WN","NG 700"],
-["N966WN","NG 700"],
-["N967WN","NG 700"],
-["N968WN","NG 700"],
-["N969WN","NG 700"],
-];
+// ---- FIREBASE INIT ----
+var firebaseConfig = {
+  apiKey: "AIzaSyDCTMWVKxFaQ1yqv3JuMy5XRSVR_74k6Ao",
+  authDomain: "moctoolbox.firebaseapp.com",
+  projectId: "moctoolbox",
+  storageBucket: "moctoolbox.firebasestorage.app",
+  messagingSenderId: "736001885411",
+  appId: "1:736001885411:web:7f28d24ed86505757071d6"
+};
+firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
+var auth = firebase.auth();
+var CURRENT_USER = null;
 
-// ---- AIRCRAFT LOOKUP ----
-var TAIL_MAP = {};
-AIRCRAFT.forEach(function(a) { TAIL_MAP[a[0]] = a[1]; });
-
-// ---- FAULT CODE DATABASE ----
-var FAULT_CODES = [];
-var fcHighlight = -1;
-
-function loadFaultCodeCSV() {
-  fetch('FaultCodes.csv')
-    .then(function(r) { return r.ok ? r.text() : ''; })
-    .then(function(text) {
-      if (!text) return;
-      var lines = text.split('\n');
-      for (var i = 1; i < lines.length; i++) {
-        var row = parseCSVRow(lines[i]);
-        if (row.length >= 5 && row[0]) {
-          FAULT_CODES.push({
-            code: row[0].trim(),
-            fimTask: row[1].trim(),
-            title: row[2].trim(),
-            message: row[3].trim(),
-            ata: row[4].trim()
-          });
-        }
+// ---- AUTH GATE ----
+auth.onAuthStateChanged(function(user) {
+  if (user) {
+    db.collection('controllers').doc(user.uid).get().then(function(doc) {
+      if (doc.exists) {
+        CURRENT_USER = doc.data();
+        CURRENT_USER.uid = user.uid;
+        document.body.style.opacity = '1';
+        applyPermissions();
+        loadEntries();
+      } else {
+        window.location.href = 'index.html';
       }
-    })
-    .catch(function() {});
+    }).catch(function() {
+      window.location.href = 'index.html';
+    });
+  } else {
+    window.location.href = 'index.html';
+  }
+});
+
+function applyPermissions() {
+  var role = CURRENT_USER ? CURRENT_USER.role : 'viewer';
+  var canEdit = (role === 'admin' || role === 'editor');
+  var newBtn = document.getElementById('newTsiBtn');
+  if (newBtn) newBtn.style.display = canEdit ? '' : 'none';
 }
 
-function parseCSVRow(line) {
+// ---- AIRCRAFT DATA (from CSV, same as index.html) ----
+var AIRCRAFT = [];
+var TAIL_MAP = {};
+
+function tsiParseCSVRow(line) {
   var result = [], cur = '', inQ = false;
   for (var i = 0; i < line.length; i++) {
     var c = line[i];
@@ -1147,83 +358,40 @@ function parseCSVRow(line) {
   return result;
 }
 
-loadFaultCodeCSV();
-
-function filterFaultCodes() {
-  var q = document.getElementById('fFaultCode').value.trim().toUpperCase();
-  var dd = document.getElementById('fcDropdown');
-  if (!q || q.length < 2 || FAULT_CODES.length === 0) { dd.classList.remove('open'); return; }
-  var matches = FAULT_CODES.filter(function(f) {
-    return f.code.indexOf(q) !== -1 || f.message.toUpperCase().indexOf(q) !== -1 || f.title.toUpperCase().indexOf(q) !== -1;
-  }).slice(0, 10);
-  if (matches.length === 0) { dd.classList.remove('open'); return; }
-  fcHighlight = 0;
-  var html = '';
-  matches.forEach(function(f, i) {
-    html += '<div class="fc-opt' + (i === 0 ? ' highlighted' : '') + '" data-idx="' + i + '" onclick="selectFaultCode(' + i + ')">';
-    html += '<span class="fc-code">' + esc(f.code) + '</span>';
-    if (f.message) html += '<span class="fc-msg">' + esc(f.message) + '</span>';
-    if (f.fimTask) html += '<span class="fc-task">FIM: ' + esc(f.fimTask) + '</span>';
-    html += '</div>';
-  });
-  dd.innerHTML = html;
-  dd._matches = matches;
-  dd.classList.add('open');
-}
-
-function selectFaultCode(idx) {
-  var dd = document.getElementById('fcDropdown');
-  var f = dd._matches[idx];
-  document.getElementById('fFaultCode').value = f.code;
-  var effectText = f.message || f.title;
-  if (effectText) document.getElementById('fEffect').value = effectText;
-  if (f.ata) document.getElementById('fAta').value = f.ata;
-  if (f.fimTask) document.getElementById('fRef').value = f.fimTask;
-  dd.classList.remove('open');
-  document.getElementById('fEffect').focus();
-}
-
-function fcKeyNav(e) {
-  var dd = document.getElementById('fcDropdown');
-  if (!dd.classList.contains('open')) return;
-  var opts = dd.querySelectorAll('.fc-opt');
-  if (!opts.length) return;
-  if (e.key === 'ArrowDown') {
-    e.preventDefault();
-    fcHighlight = Math.min(fcHighlight + 1, opts.length - 1);
-    opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === fcHighlight); });
-    opts[fcHighlight].scrollIntoView({block:'nearest'});
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault();
-    fcHighlight = Math.max(fcHighlight - 1, 0);
-    opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === fcHighlight); });
-    opts[fcHighlight].scrollIntoView({block:'nearest'});
-  } else if (e.key === 'Enter') {
-    e.preventDefault();
-    selectFaultCode(fcHighlight);
-  } else if (e.key === 'Escape') {
-    dd.classList.remove('open');
+fetch('AircraftData.csv').then(function(r) { return r.ok ? r.text() : ''; }).then(function(text) {
+  if (!text) return;
+  var lines = text.split('\n');
+  for (var i = 1; i < lines.length; i++) {
+    var row = tsiParseCSVRow(lines[i]);
+    if (row.length >= 2 && row[0].trim()) {
+      AIRCRAFT.push([row[0].trim(), row[1].trim()]);
+      TAIL_MAP[row[0].trim()] = row[1].trim();
+    }
   }
-}
-
-// ---- LOCAL STORAGE ----
-var LS_KEY = 'swamx_tsi_entries';
-
-function loadEntries() {
-  try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
-  catch(e) { return []; }
-}
-
-function saveEntries(entries) {
-  localStorage.setItem(LS_KEY, JSON.stringify(entries));
-}
+}).catch(function(){});
 
 // ---- STATE ----
-var entries = loadEntries();
+var entries = [];
 var activeFleet = 'ALL';
 var activeStatus = 'ALL';
 var editingId = null;
 var tailHighlight = -1;
+
+// ---- FIRESTORE: LOAD ENTRIES ----
+function loadEntries() {
+  db.collection('tsi_entries').orderBy('created', 'desc').get().then(function(snap) {
+    entries = [];
+    snap.forEach(function(doc) {
+      var d = doc.data();
+      d.id = doc.id;
+      entries.push(d);
+    });
+    renderList();
+  }).catch(function(err) {
+    console.log('Load error:', err);
+    renderList();
+  });
+}
 
 // ---- FILTERS ----
 function setFleet(el) {
@@ -1301,13 +469,15 @@ function renderList() {
 
     // Action buttons
     html += '<div class="tsi-card-actions">';
-    if (e.status === 'in_work') {
-      html += '<button class="tsi-btn btn-close-eff" onclick="closeEntry(\'' + e.id + '\',true)">CLOSE - EFFECTIVE</button>';
-      html += '<button class="tsi-btn btn-close-ineff" onclick="closeEntry(\'' + e.id + '\',false)">CLOSE - INEFFECTIVE</button>';
-    } else {
-      html += '<button class="tsi-btn btn-reopen" onclick="reopenEntry(\'' + e.id + '\')">REOPEN</button>';
+    if (canEdit()) {
+      if (e.status === 'in_work') {
+        html += '<button class="tsi-btn btn-close-eff" onclick="closeEntry(\'' + e.id + '\',true)">CLOSE - EFFECTIVE</button>';
+        html += '<button class="tsi-btn btn-close-ineff" onclick="closeEntry(\'' + e.id + '\',false)">CLOSE - INEFFECTIVE</button>';
+      } else {
+        html += '<button class="tsi-btn btn-reopen" onclick="reopenEntry(\'' + e.id + '\')">REOPEN</button>';
+      }
+      html += '<button class="tsi-btn btn-delete" onclick="deleteEntry(\'' + e.id + '\')">DELETE</button>';
     }
-    html += '<button class="tsi-btn btn-delete" onclick="deleteEntry(\'' + e.id + '\')">DELETE</button>';
     html += '</div>';
 
     html += '</div>';
@@ -1387,13 +557,10 @@ function tailKeyNav(e) {
   }
 }
 
-// Close dropdowns on outside click
+// Close dropdown on outside click
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.tail-wrap')) {
     document.getElementById('tailDropdown').classList.remove('open');
-  }
-  if (!e.target.closest('.fc-wrap')) {
-    document.getElementById('fcDropdown').classList.remove('open');
   }
 });
 
@@ -1414,7 +581,6 @@ function saveEntry() {
   if (!faultCode) { toast('Fault code is required'); document.getElementById('fFaultCode').focus(); return; }
   if (!effect) { toast('Flight deck effect is required'); document.getElementById('fEffect').focus(); return; }
 
-  // Auto-fill fleet from TAIL_MAP if not set
   if (!fleet && TAIL_MAP[tail]) fleet = TAIL_MAP[tail];
   if (!fleet) { toast('Fleet type could not be determined - select a valid tail'); return; }
 
@@ -1422,7 +588,6 @@ function saveEntry() {
   var actionType = selectedAction ? selectedAction.textContent : '';
 
   var entry = {
-    id: editingId || genId(),
     tail: tail,
     fleet: fleet,
     ata: document.getElementById('fAta').value.trim(),
@@ -1435,54 +600,61 @@ function saveEntry() {
     ref: document.getElementById('fRef').value.trim(),
     status: 'in_work',
     created: new Date().toISOString(),
-    closedDate: null
+    closedDate: null,
+    createdBy: CURRENT_USER ? CURRENT_USER.enumVal : '',
+    createdByName: CURRENT_USER ? CURRENT_USER.name : ''
   };
 
   if (editingId) {
-    var idx = entries.findIndex(function(e) { return e.id === editingId; });
-    if (idx !== -1) {
-      entry.status = entries[idx].status;
-      entry.created = entries[idx].created;
-      entry.closedDate = entries[idx].closedDate;
-      entries[idx] = entry;
+    var existing = entries.find(function(e) { return e.id === editingId; });
+    if (existing) {
+      entry.status = existing.status;
+      entry.created = existing.created;
+      entry.closedDate = existing.closedDate;
+      entry.createdBy = existing.createdBy || entry.createdBy;
+      entry.createdByName = existing.createdByName || entry.createdByName;
     }
+    db.collection('tsi_entries').doc(editingId).set(entry).then(function() {
+      closeModal();
+      loadEntries();
+      toast('Entry updated');
+    }).catch(function(err) { toast('Save error: ' + err.message); });
   } else {
-    entries.unshift(entry);
+    db.collection('tsi_entries').add(entry).then(function() {
+      closeModal();
+      loadEntries();
+      toast('TSI entry added - IN WORK');
+    }).catch(function(err) { toast('Save error: ' + err.message); });
   }
-
-  saveEntries(entries);
-  closeModal();
-  renderList();
-  toast(editingId ? 'Entry updated' : 'TSI entry added - IN WORK');
 }
 
 // ---- STATUS ACTIONS ----
 function closeEntry(id, effective) {
-  var e = entries.find(function(e) { return e.id === id; });
-  if (!e) return;
-  e.status = effective ? 'closed_eff' : 'closed_ineff';
-  e.closedDate = new Date().toISOString();
-  saveEntries(entries);
-  renderList();
-  toast(effective ? 'Closed as effective' : 'Closed as ineffective');
+  db.collection('tsi_entries').doc(id).update({
+    status: effective ? 'closed_eff' : 'closed_ineff',
+    closedDate: new Date().toISOString()
+  }).then(function() {
+    loadEntries();
+    toast(effective ? 'Closed as effective' : 'Closed as ineffective');
+  }).catch(function(err) { toast('Error: ' + err.message); });
 }
 
 function reopenEntry(id) {
-  var e = entries.find(function(e) { return e.id === id; });
-  if (!e) return;
-  e.status = 'in_work';
-  e.closedDate = null;
-  saveEntries(entries);
-  renderList();
-  toast('Reopened - back to IN WORK');
+  db.collection('tsi_entries').doc(id).update({
+    status: 'in_work',
+    closedDate: null
+  }).then(function() {
+    loadEntries();
+    toast('Reopened - back to IN WORK');
+  }).catch(function(err) { toast('Error: ' + err.message); });
 }
 
 function deleteEntry(id) {
   if (!confirm('Delete this TSI entry? This cannot be undone.')) return;
-  entries = entries.filter(function(e) { return e.id !== id; });
-  saveEntries(entries);
-  renderList();
-  toast('Entry deleted');
+  db.collection('tsi_entries').doc(id).delete().then(function() {
+    loadEntries();
+    toast('Entry deleted');
+  }).catch(function(err) { toast('Error: ' + err.message); });
 }
 
 // ---- EXPORT ----
@@ -1497,11 +669,12 @@ function exportData() {
   toast('Exported ' + entries.length + ' entries');
 }
 
-// ---- HELPERS ----
-function genId() {
-  return 'tsi-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6);
+function canEdit() {
+  if (!CURRENT_USER) return false;
+  return CURRENT_USER.role === 'admin' || CURRENT_USER.role === 'editor';
 }
 
+// ---- HELPERS ----
 function esc(s) {
   if (!s) return '';
   var d = document.createElement('div');
@@ -1534,8 +707,7 @@ function toast(msg) {
   setTimeout(function() { t.style.opacity = '0'; setTimeout(function() { t.remove(); }, 300); }, 2500);
 }
 
-// ---- INIT ----
-renderList();
+// Init happens via auth.onAuthStateChanged -> loadEntries -> renderList
 </script>
 </body>
 </html>

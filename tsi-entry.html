@@ -168,6 +168,7 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="auth.js"></script>
 </head>
 <body>
 
@@ -294,46 +295,17 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 </div>
 
 <script>
-// ---- FIREBASE INIT ----
-var firebaseConfig = {
-  apiKey: "AIzaSyDCTMWVKxFaQ1yqv3JuMy5XRSVR_74k6Ao",
-  authDomain: "moctoolbox.firebaseapp.com",
-  projectId: "moctoolbox",
-  storageBucket: "moctoolbox.firebasestorage.app",
-  messagingSenderId: "736001885411",
-  appId: "1:736001885411:web:7f28d24ed86505757071d6"
-};
-firebase.initializeApp(firebaseConfig);
-var db = firebase.firestore();
-var auth = firebase.auth();
-var CURRENT_USER = null;
+// ---- TSI-ENTRY.HTML: Uses shared auth.js ----
+var db = window.MOC_DB;
 
-// ---- AUTH GATE ----
-auth.onAuthStateChanged(function(user) {
-  if (user) {
-    db.collection('controllers').doc(user.uid).get().then(function(doc) {
-      if (doc.exists) {
-        CURRENT_USER = doc.data();
-        CURRENT_USER.uid = user.uid;
-        document.body.style.opacity = '1';
-        applyPermissions();
-        loadEntries();
-      } else {
-        window.location.href = 'index.html';
-      }
-    }).catch(function() {
-      window.location.href = 'index.html';
-    });
-  } else {
-    window.location.href = 'index.html';
-  }
+window.addEventListener('moc-auth-ready', function() {
+  applyPermissions();
+  loadEntries();
 });
 
 function applyPermissions() {
-  var role = CURRENT_USER ? CURRENT_USER.role : 'viewer';
-  var canEdit = (role === 'admin' || role === 'editor');
   var newBtn = document.getElementById('newTsiBtn');
-  if (newBtn) newBtn.style.display = canEdit ? '' : 'none';
+  if (newBtn) newBtn.style.display = window.mocCanEdit() ? '' : 'none';
 }
 
 // ---- AIRCRAFT DATA (from CSV, same as index.html) ----
@@ -670,8 +642,7 @@ function exportData() {
 }
 
 function canEdit() {
-  if (!CURRENT_USER) return false;
-  return CURRENT_USER.role === 'admin' || CURRENT_USER.role === 'editor';
+  return window.mocCanEdit();
 }
 
 // ---- HELPERS ----

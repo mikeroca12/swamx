@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- MOC Toolbox v10.6 - 2025-02-25 moc-roster -->
+<!-- MOC Toolbox v11.0 - 2025-02-25 shared auth + firestore rules -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -54,6 +54,8 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
+            opacity: 0;
+            transition: opacity 0.15s;
         }
 
         body::before {
@@ -1209,7 +1211,8 @@
                   radial-gradient(ellipse at 70% 80%, rgba(37,99,235,0.05) 0%, transparent 50%);
       pointer-events: none;
     }
-    #loginOverlay.hidden { display: none; }
+    #loginOverlay { display: none; }
+    #loginOverlay.visible { display: flex; }
     .login-card {
       background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
       width: 100%; max-width: 400px; padding: 40px 36px;
@@ -1266,150 +1269,68 @@
   </div>
 </div>
 
+<script src="auth.js"></script>
 <script>
-// ---- FIREBASE INIT ----
-var firebaseConfig = {
-  apiKey: "AIzaSyDCTMWVKxFaQ1yqv3JuMy5XRSVR_74k6Ao",
-  authDomain: "moctoolbox.firebaseapp.com",
-  projectId: "moctoolbox",
-  storageBucket: "moctoolbox.firebasestorage.app",
-  messagingSenderId: "736001885411",
-  appId: "1:736001885411:web:7f28d24ed86505757071d6",
-  measurementId: "G-Z5MKLNNHQW"
-};
-firebase.initializeApp(firebaseConfig);
-var db = firebase.firestore();
-var auth = firebase.auth();
+// ---- INDEX.HTML: AUTH HOOKS ----
+var db = window.MOC_DB;
+var auth = window.MOC_AUTH;
 
-var ACCESS_CODE = '8889';
-var CURRENT_USER = null;
-
-// ---- AUTH STATE LISTENER ----
-auth.onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in - look up their roster entry
-    db.collection('controllers').doc(user.uid).get().then(function(doc) {
-      if (doc.exists) {
-        CURRENT_USER = doc.data();
-        CURRENT_USER.uid = user.uid;
-        showApp();
-      } else {
-        // Signed in but not in roster (shouldn't happen) - sign out
-        auth.signOut();
-        showLogin('Account not found in roster.');
-      }
-    }).catch(function() {
-      showLogin('Error loading profile. Try again.');
-    });
-  } else {
-    showLogin('');
-  }
-});
-
-function showLogin(errMsg) {
-  document.getElementById('loginOverlay').classList.remove('hidden');
-  document.getElementById('mainApp').classList.remove('authed');
-  document.getElementById('loginError').textContent = errMsg || '';
-  document.getElementById('loginBtn').disabled = false;
-  document.getElementById('loginBtn').textContent = 'SIGN IN';
-}
-
-function showApp() {
-  document.getElementById('loginOverlay').classList.add('hidden');
+// Listen for auth ready from shared auth.js
+window.addEventListener('moc-auth-ready', function() {
+  document.getElementById('loginOverlay').classList.remove('visible');
   document.getElementById('mainApp').classList.add('authed');
+
   // Update user badge
   var badge = document.getElementById('userBadge');
   if (badge && CURRENT_USER) {
     var roleClass = 'ub-role-' + (CURRENT_USER.role || 'viewer');
     badge.innerHTML = '<span class="ub-name">' + CURRENT_USER.name + '</span>' +
       '<span class="ub-role ' + roleClass + '">' + (CURRENT_USER.role || 'viewer').toUpperCase() + '</span>' +
-      '<button class="ub-logout" onclick="doLogout()">Sign Out</button>';
+      '<button class="ub-logout" onclick="mocSignOut()">Sign Out</button>';
   }
-  // Hide/show TSI controls based on role
+
+  // Show roster sync button for admin
+  var syncBtn = document.getElementById('rosterSyncBtn');
+  if (syncBtn) syncBtn.style.display = window.mocIsAdmin() ? '' : 'none';
+
   applyRolePermissions();
-  // Update status bar
   if (typeof updateFixStatusBar === 'function') updateFixStatusBar();
-}
+});
 
 function applyRolePermissions() {
-  var role = CURRENT_USER ? CURRENT_USER.role : 'viewer';
-  var canEdit = (role === 'admin' || role === 'editor');
-  // Hide add/manage buttons for viewers
+  var canEdit = window.mocCanEdit();
   var addBtn = document.querySelector('.fix-action-btn.primary');
   if (addBtn) addBtn.style.display = canEdit ? '' : 'none';
 }
 
-// ---- LOGIN ----
+// ---- LOGIN (calls shared auth.js) ----
 function doLogin() {
-  var enumVal = document.getElementById('loginENum').value.trim().toUpperCase();
-  var code = document.getElementById('loginCode').value.trim();
+  var enumVal = document.getElementById('loginENum').value;
+  var code = document.getElementById('loginCode').value;
   var errEl = document.getElementById('loginError');
   var btn = document.getElementById('loginBtn');
 
-  if (!enumVal) { errEl.textContent = 'Enter your employee number.'; return; }
-  if (!code) { errEl.textContent = 'Enter the access code.'; return; }
-  if (code !== ACCESS_CODE) { errEl.textContent = 'Invalid access code.'; return; }
-
-  // Normalize E# - strip leading E if present
-  enumVal = enumVal.replace(/^E/, '');
-
+  var result = window.mocDoLogin(enumVal, code);
+  if (result && result.error) {
+    errEl.textContent = result.error;
+    return;
+  }
   btn.disabled = true;
   btn.textContent = 'SIGNING IN...';
   errEl.textContent = '';
-
-  // Check roster first
-  db.collection('controllers').where('enumVal', '==', enumVal).get().then(function(snap) {
-    if (snap.empty) {
-      btn.disabled = false;
-      btn.textContent = 'SIGN IN';
-      errEl.textContent = 'E# not recognized. Contact your admin.';
-      return;
-    }
-
-    var rosterDoc = snap.docs[0];
-    var rosterData = rosterDoc.data();
-    var email = 'moc' + enumVal + '@moctoolbox.com';
-    var password = ACCESS_CODE + enumVal;
-    console.log('AUTH ATTEMPT:', email);
-
-    // Try to sign in
-    auth.signInWithEmailAndPassword(email, password).then(function(cred) {
-      console.log('SIGN IN SUCCESS:', cred.user.uid);
-      // Check if roster doc needs to be updated to use auth UID
-      if (rosterDoc.id !== cred.user.uid) {
-        // Copy roster data to UID-keyed doc
-        db.collection('controllers').doc(cred.user.uid).set(rosterData);
-      }
-    }).catch(function(err) {
-      console.log('SIGN IN ERROR:', err.code, err.message);
-      if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
-        // First login - create the auth account
-        console.log('CREATING USER...');
-        auth.createUserWithEmailAndPassword(email, password).then(function(cred) {
-          console.log('CREATE SUCCESS:', cred.user.uid);
-          // Create UID-keyed roster doc
-          db.collection('controllers').doc(cred.user.uid).set(rosterData);
-        }).catch(function(createErr) {
-          console.log('CREATE ERROR:', createErr.code, createErr.message);
-          btn.disabled = false;
-          btn.textContent = 'SIGN IN';
-          errEl.textContent = 'Error creating account: ' + createErr.code;
-        });
-      } else {
-        btn.disabled = false;
-        btn.textContent = 'SIGN IN';
-        errEl.textContent = 'Login error. Try again.';
-      }
-    });
-  }).catch(function() {
-    btn.disabled = false;
-    btn.textContent = 'SIGN IN';
-    errEl.textContent = 'Connection error. Check your network.';
-  });
 }
 
-function doLogout() {
-  auth.signOut();
+// ---- ROSTER SYNC (admin only) ----
+function syncRoster() {
+  var btn = document.getElementById('rosterSyncBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'SYNCING...'; }
+  window.mocSyncRoster().then(function(count) {
+    if (btn) { btn.disabled = false; btn.textContent = 'SYNC ROSTER'; }
+    alert('Roster synced: ' + count + ' entries');
+  }).catch(function(err) {
+    if (btn) { btn.disabled = false; btn.textContent = 'SYNC ROSTER'; }
+    alert('Sync failed: ' + err);
+  });
 }
 
 // Enter key on inputs
@@ -1419,18 +1340,6 @@ document.getElementById('loginENum').addEventListener('keydown', function(e) {
 document.getElementById('loginCode').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') doLogin();
 });
-
-// ---- SEED ROSTER (runs once, safe to re-run) ----
-function seedRoster() {
-  fetch('moc-roster.json').then(function(r) { return r.json(); }).then(function(roster) {
-    roster.forEach(function(c) {
-      db.collection('controllers').doc('E' + c.enumVal).set(c, { merge: true });
-    });
-  }).catch(function(err) {
-    console.log('Roster load error:', err);
-  });
-}
-seedRoster();
 </script>
 
 <!-- MAIN APP (hidden until auth) -->
@@ -1446,6 +1355,7 @@ seedRoster();
                         <div class="ref-only">All content reference only</div>
                     </div>
                 </div>
+                <button class="ub-logout" id="rosterSyncBtn" style="display:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:rgba(255,255,255,0.3);cursor:pointer;padding:2px 6px;border:1px solid rgba(255,255,255,0.15);border-radius:4px;background:none;" onclick="syncRoster()">SYNC ROSTER</button>
                 <div class="user-badge" id="userBadge"></div>
             </div>
             <div class="nav-tabs">

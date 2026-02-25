@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TSI Fix Rate - Entry | MOC Toolbox</title>
+<title>TSI Fix Rate - Manage | MOC Toolbox</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -43,7 +43,6 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min-height:100vh;}
 
-/* Nav */
 .nav-bar{background:var(--frame);border-bottom:1px solid var(--frame-border);padding:10px 24px;display:flex;align-items:center;gap:14px;font-size:14px;}
 .nav-bar a{color:#ffffff;text-decoration:none;}
 .nav-bar .nav-title{font-weight:700;color:var(--text-on-dark);}
@@ -52,7 +51,6 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 .nav-bar img{height:28px;}
 .nav-logo{display:flex;align-items:center;gap:8px;}
 
-/* Header */
 .header{background:var(--frame);border-bottom:1px solid var(--frame-border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .header h1{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;letter-spacing:-0.5px;color:#ffffff;}
 .header-actions{display:flex;gap:8px;}
@@ -63,14 +61,12 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 
 .container{max-width:900px;margin:0 auto;padding:24px 24px 80px;}
 
-/* Filter bar */
 .filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
 .f-chip{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:6px 12px;border-radius:6px;border:1px solid var(--frame-border);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.15s;}
 .f-chip:hover{background:rgba(255,255,255,0.1);color:#fff;}
 .f-chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
 .f-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.4);margin-left:auto;}
 
-/* Status filter */
 .s-chip{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:4px 10px;border-radius:4px;cursor:pointer;transition:all 0.15s;letter-spacing:0.5px;}
 .s-chip.s-all{border:1px solid var(--frame-border);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);}
 .s-chip.s-all.active{background:rgba(255,255,255,0.15);color:#fff;}
@@ -79,44 +75,60 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 .s-chip.s-closed{border:1px solid var(--green-border);background:rgba(22,163,74,0.1);color:var(--green);}
 .s-chip.s-closed.active{background:var(--green);color:#fff;}
 
-/* TSI Cards */
-.tsi-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;box-shadow:var(--card-shadow);}
-.tsi-card-top{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
-.tsi-status{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:0.5px;flex-shrink:0;}
-.tsi-status.in-work{background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow-border);}
-.tsi-status.closed-eff{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);}
-.tsi-status.closed-ineff{background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border);}
-.tsi-tail{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--accent);}
-.tsi-fleet{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(22,163,74,0.1);color:#15803d;border:1px solid #86efac;}
-.tsi-fc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--text);}
-.tsi-effect{font-size:12px;color:var(--text-secondary);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tsi-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);flex-shrink:0;}
+/* Case Cards */
+.case-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden;box-shadow:var(--card-shadow);}
+.case-card-top{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.case-status{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:0.5px;flex-shrink:0;}
+.case-status.in-work{background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow-border);}
+.case-status.closed{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);}
+.case-tail{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--accent);}
+.case-fleet{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(22,163,74,0.1);color:#15803d;border:1px solid #86efac;}
+.case-fc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--text);}
+.case-effect{font-size:12px;color:var(--text-secondary);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.case-attempts{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;flex-shrink:0;}
+.case-attempts.single{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);}
+.case-attempts.multi{background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow-border);}
 
-.tsi-card-body{padding:12px 16px;}
-.tsi-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:8px;}
-.tsi-field{flex:1;min-width:120px;}
-.tsi-field-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--text-dim);letter-spacing:0.5px;margin-bottom:2px;}
-.tsi-field-value{font-size:12px;color:var(--text);font-weight:500;}
-.tsi-action-text{font-size:12px;color:var(--text);line-height:1.5;margin-top:4px;padding:8px 10px;background:#fff;border:1px solid var(--border);border-radius:6px;}
+/* Attempt timeline */
+.attempt-timeline{padding:0 16px 12px;}
+.attempt-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);position:relative;}
+.attempt-item:last-child{border-bottom:none;}
+.attempt-num{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.attempt-num.eff{background:var(--green);}
+.attempt-num.ineff{background:var(--red);}
+.attempt-num.pending{background:var(--yellow);}
+.attempt-body{flex:1;min-width:0;}
+.attempt-header{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;}
+.attempt-action{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--text);}
+.attempt-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
+.attempt-result{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;}
+.attempt-result.eff{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);}
+.attempt-result.ineff{background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border);}
+.attempt-result.pending{background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow-border);}
+.attempt-details{font-size:12px;color:var(--text-secondary);line-height:1.5;}
+.attempt-meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px;}
+.attempt-meta span{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
 
-.tsi-card-actions{padding:8px 16px;border-top:1px solid var(--border);display:flex;gap:6px;background:var(--surface2);}
+.window-divider{display:flex;align-items:center;gap:10px;padding:8px 0;margin:4px 0;}
+.window-divider-line{flex:1;height:1px;background:var(--border-strong);}
+.window-divider-text{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--text-dim);letter-spacing:1px;white-space:nowrap;}
+
+.case-card-actions{padding:8px 16px;border-top:1px solid var(--border);display:flex;gap:6px;background:var(--surface2);flex-wrap:wrap;}
 .tsi-btn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:5px 12px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;letter-spacing:0.3px;}
 .tsi-btn:hover{border-color:var(--accent);color:var(--accent);}
+.tsi-btn.btn-add{color:var(--blue-text);border-color:var(--blue-border);}
+.tsi-btn.btn-add:hover{background:var(--blue-bg);}
 .tsi-btn.btn-close-eff{color:var(--green-text);border-color:var(--green-border);}
 .tsi-btn.btn-close-eff:hover{background:var(--green-bg);}
 .tsi-btn.btn-close-ineff{color:var(--red-text);border-color:var(--red-border);}
 .tsi-btn.btn-close-ineff:hover{background:var(--red-bg);}
-.tsi-btn.btn-reopen{color:var(--yellow-text);border-color:var(--yellow-border);}
-.tsi-btn.btn-reopen:hover{background:var(--yellow-bg);}
 .tsi-btn.btn-delete{color:var(--red-text);border-color:var(--red-border);margin-left:auto;}
 .tsi-btn.btn-delete:hover{background:var(--red-bg);}
 
-/* Empty */
 .empty{text-align:center;padding:60px 24px;color:rgba(255,255,255,0.3);}
 .empty p{font-size:15px;margin-bottom:4px;}
 .empty .hint{font-size:12px;}
 
-/* Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
@@ -127,19 +139,18 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 .modal-body{padding:20px;}
 .modal-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
 
-/* Form */
+.existing-case-banner{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:var(--blue-text);line-height:1.5;}
+.existing-case-banner strong{font-family:'JetBrains Mono',monospace;font-size:11px;}
+
 .form-group{margin-bottom:16px;}
 .form-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;display:block;}
 .form-label .req{color:var(--red);}
 .form-input,.form-select,.form-textarea{width:100%;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:#fff;border:1px solid var(--border);border-radius:8px;outline:none;transition:border-color 0.15s;}
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.1);}
 .form-textarea{min-height:80px;resize:vertical;line-height:1.5;}
-.form-select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
 .form-row{display:flex;gap:12px;}
 .form-row .form-group{flex:1;}
-.form-hint{font-size:11px;color:var(--text-dim);margin-top:4px;}
 
-/* Tail search dropdown */
 .tail-wrap{position:relative;}
 .tail-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:200px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
 .tail-dropdown.open{display:block;}
@@ -148,21 +159,18 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 .tail-opt .to-tail{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--text);}
 .tail-opt .to-fleet{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
 
-/* Action taken dropdown */
 .action-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
 .action-chip{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;}
 .action-chip:hover{border-color:var(--accent);color:var(--accent);}
 .action-chip.selected{background:var(--accent);color:#fff;border-color:var(--accent);}
 
-/* Toast */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:opacity 0.3s;}
 
-/* Responsive */
 @media(max-width:640px){
   .container{padding:16px 14px 60px;}
-  .tsi-card-top{flex-wrap:wrap;}
+  .case-card-top{flex-wrap:wrap;}
   .form-row{flex-direction:column;gap:0;}
-  .tsi-effect{display:none;}
+  .case-effect{display:none;}
 }
 </style>
 </head>
@@ -178,9 +186,9 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 </div>
 
 <div class="header">
-  <h1>TSI Fix Rate - Manage Entries</h1>
+  <h1>TSI Fix Rate - Manage Cases</h1>
   <div class="header-actions">
-    <button class="header-btn" onclick="exportData()">EXPORT JSON</button>
+    <button class="header-btn" onclick="exportData()">EXPORT REPORT</button>
     <button class="header-btn primary" onclick="openNewModal()">+ NEW TSI</button>
   </div>
 </div>
@@ -198,11 +206,10 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
     <button class="s-chip s-closed" data-status="CLOSED" onclick="setStatus(this)">CLOSED</button>
     <span class="f-count" id="entryCount"></span>
   </div>
-
-  <div id="tsiList"></div>
+  <div id="caseList"></div>
 </div>
 
-<!-- New/Edit TSI Modal -->
+<!-- Modal -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-header">
@@ -210,14 +217,13 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
       <button class="modal-close" onclick="closeModal()">&times;</button>
     </div>
     <div class="modal-body">
-
-      <div class="form-group tail-wrap">
+      <div id="existingCaseBanner" class="existing-case-banner" style="display:none;"></div>
+      <div class="form-group tail-wrap" id="tailGroup">
         <label class="form-label">TAIL NUMBER <span class="req">*</span></label>
-        <input type="text" class="form-input" id="fTail" placeholder="Start typing tail..." autocomplete="off" oninput="filterTails()" onfocus="filterTails()" onkeydown="tailKeyNav(event)">
+        <input type="text" class="form-input" id="fTail" placeholder="Start typing tail..." autocomplete="off" oninput="filterTails();checkExisting();" onfocus="filterTails()" onkeydown="tailKeyNav(event)">
         <div class="tail-dropdown" id="tailDropdown"></div>
       </div>
-
-      <div class="form-row">
+      <div class="form-row" id="fleetAtaRow">
         <div class="form-group">
           <label class="form-label">FLEET</label>
           <input type="text" class="form-input" id="fFleet" readonly tabindex="-1" style="background:var(--surface);color:var(--text-dim);">
@@ -227,25 +233,21 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
           <input type="text" class="form-input" id="fAta" placeholder="e.g. 36" maxlength="5">
         </div>
       </div>
-
-      <div class="form-group">
+      <div class="form-group" id="faultCodeGroup">
         <label class="form-label">FAULT CODE <span class="req">*</span></label>
-        <input type="text" class="form-input" id="fFaultCode" placeholder="e.g. 36-12020">
+        <input type="text" class="form-input" id="fFaultCode" placeholder="e.g. 36-12020" oninput="checkExisting()">
       </div>
-
-      <div class="form-group">
+      <div class="form-group" id="effectGroup">
         <label class="form-label">FLIGHT DECK EFFECT / DESCRIPTION <span class="req">*</span></label>
         <input type="text" class="form-input" id="fEffect" placeholder="e.g. BLEED FAMV L - Status Message">
       </div>
-
       <div class="form-group">
         <label class="form-label">WORK ORDER</label>
         <input type="text" class="form-input" id="fWorkOrder" placeholder="e.g. TTG8Q01AL9VS">
       </div>
-
       <div class="form-group">
         <label class="form-label">ACTION TAKEN</label>
-        <div class="action-chips" id="actionChips">
+        <div class="action-chips">
           <span class="action-chip" onclick="pickAction(this)">IFIM/FIM TASK</span>
           <span class="action-chip" onclick="pickAction(this)">REMOVE/REPLACE</span>
           <span class="action-chip" onclick="pickAction(this)">RESET</span>
@@ -254,23 +256,11 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
           <span class="action-chip" onclick="pickAction(this)">TEST/OPS CK</span>
           <span class="action-chip" onclick="pickAction(this)">DEFERRED</span>
         </div>
-        <select class="form-select" id="fActionType" style="display:none;">
-          <option value="">Select action type...</option>
-          <option value="IFIM/FIM TASK">IFIM/FIM TASK</option>
-          <option value="REMOVE/REPLACE">REMOVE/REPLACE</option>
-          <option value="RESET">RESET</option>
-          <option value="SWAP">SWAP</option>
-          <option value="CB RESET">CB RESET</option>
-          <option value="TEST/OPS CK">TEST/OPS CK</option>
-          <option value="DEFERRED">DEFERRED</option>
-        </select>
       </div>
-
       <div class="form-group">
         <label class="form-label">TSI DETAILS / NOTES</label>
         <textarea class="form-textarea" id="fNotes" placeholder="Paste TSI verbiage or describe what was done..."></textarea>
       </div>
-
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">DUE DATE</label>
@@ -281,84 +271,117 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
           <input type="text" class="form-input" id="fRef" placeholder="e.g. AMM 36-12-03">
         </div>
       </div>
-
     </div>
     <div class="modal-footer">
       <button class="tsi-btn" onclick="closeModal()">CANCEL</button>
-      <button class="tsi-btn" style="background:var(--accent);color:#fff;border-color:var(--accent);" onclick="saveEntry()">SAVE</button>
+      <button class="tsi-btn" id="saveBtn" style="background:var(--accent);color:#fff;border-color:var(--accent);" onclick="saveEntry()">SAVE</button>
     </div>
   </div>
 </div>
 
 <script>
+// ============================================
+// CASE-BASED DATA MODEL
+// ============================================
+// case = { id, tail, fleet, ata, faultCode, effect, created, status, attempts[] }
+// attempt = { id, actionType, workOrder, notes, dueDate, ref, created, closedDate, result }
+// result: 'pending' | 'effective' | 'ineffective'
+// status: 'in_work' (latest attempt pending) | 'closed' (latest attempt resolved)
+//
+// FIX WINDOWS: attempts within 30 days = one fix window.
+// 1st attempt fix rate = windows with 1 effective attempt / total closed windows.
+
+var LS_KEY = 'swamx_tsi_cases';
+var FIX_WINDOW_DAYS = 30;
+
+function loadCases() {
+  try {
+    var d = JSON.parse(localStorage.getItem(LS_KEY));
+    if (d) return d;
+    return migrateLegacy();
+  } catch(e) { return []; }
+}
+
+function saveCases(c) { localStorage.setItem(LS_KEY, JSON.stringify(c)); }
+
+function migrateLegacy() {
+  try {
+    var old = JSON.parse(localStorage.getItem('swamx_tsi_entries'));
+    if (!old || !old.length) return [];
+    var map = {};
+    old.forEach(function(e) {
+      var key = e.tail + '|' + e.faultCode;
+      if (!map[key]) {
+        map[key] = {
+          id: genId('case'), tail: e.tail, fleet: e.fleet, ata: e.ata || '',
+          faultCode: e.faultCode, effect: e.effect, created: e.created,
+          status: 'in_work', attempts: []
+        };
+      }
+      var r = 'pending';
+      if (e.status === 'closed_eff') r = 'effective';
+      else if (e.status === 'closed_ineff') r = 'ineffective';
+      map[key].attempts.push({
+        id: e.id, actionType: e.actionType || '', workOrder: e.workOrder || '',
+        notes: e.notes || '', dueDate: e.dueDate || '', ref: e.ref || '',
+        created: e.created, closedDate: e.closedDate || null, result: r
+      });
+    });
+    var arr = Object.values(map);
+    arr.forEach(function(c) {
+      c.attempts.sort(function(a,b) { return new Date(a.created) - new Date(b.created); });
+      var last = c.attempts[c.attempts.length - 1];
+      c.status = last.result === 'pending' ? 'in_work' : 'closed';
+    });
+    saveCases(arr);
+    return arr;
+  } catch(e) { return []; }
+}
+
+// ---- AIRCRAFT ----
 var AIRCRAFT = [];
 var TAIL_MAP = {};
-var aircraftLoaded = false;
 
 function loadAircraftCSV() {
   fetch('AircraftData.csv')
     .then(function(r) { return r.text(); })
     .then(function(csv) {
       var lines = csv.split('\n');
-      var header = lines[0].split(',');
-      // Find column indices
-      var tailIdx = -1, descIdx = -1, inactiveIdx = -1;
-      for (var i = 0; i < header.length; i++) {
-        var h = header[i].trim().replace(/"/g, '');
-        if (h === 'Tail Number') tailIdx = i;
-        else if (h === 'ICAO Aircraft Type Description') descIdx = i;
-        else if (h === 'Inactive Date') inactiveIdx = i;
-      }
-      if (tailIdx === -1 || descIdx === -1) {
-        console.error('CSV columns not found. Headers:', header);
-        return;
-      }
-      AIRCRAFT = [];
-      for (var j = 1; j < lines.length; j++) {
-        if (!lines[j].trim()) continue;
-        var cols = lines[j].split(',');
-        var tail = (cols[tailIdx] || '').trim().replace(/"/g, '');
-        var desc = (cols[descIdx] || '').trim().replace(/"/g, '');
-        if (!tail) continue;
+      var hdr = lines[0].split(',');
+      var ti = 0, di = 4;
+      hdr.forEach(function(h, i) {
+        var ht = h.trim().replace(/"/g,'').toLowerCase();
+        if (ht === 'tail number') ti = i;
+        if (ht === 'icao aircraft type description') di = i;
+      });
+      var seen = {};
+      for (var i = 1; i < lines.length; i++) {
+        var cols = lines[i].split(',');
+        if (cols.length < di + 1) continue;
+        var tail = (cols[ti]||'').trim().replace(/"/g,'').toUpperCase();
+        var desc = (cols[di]||'').trim().replace(/"/g,'');
+        if (!tail || !desc || seen[tail]) continue;
+        seen[tail] = true;
         var fleet = '';
         if (desc.indexOf('MAX 8') !== -1) fleet = 'MAX 8';
         else if (desc.indexOf('MAX 7') !== -1) fleet = 'MAX 7';
-        else if (desc === '737-800') fleet = 'NG 800';
-        else if (desc === '737-700') fleet = 'NG 700';
-        else fleet = desc;
+        else if (desc.indexOf('737-800') !== -1) fleet = 'NG 800';
+        else if (desc.indexOf('737-700') !== -1) fleet = 'NG 700';
+        else continue;
         AIRCRAFT.push([tail, fleet]);
       }
-      AIRCRAFT.sort(function(a, b) { return a[0] < b[0] ? -1 : 1; });
-      TAIL_MAP = {};
+      AIRCRAFT.sort(function(a,b) { return a[0] < b[0] ? -1 : 1; });
       AIRCRAFT.forEach(function(a) { TAIL_MAP[a[0]] = a[1]; });
-      aircraftLoaded = true;
-      console.log('Aircraft loaded: ' + AIRCRAFT.length + ' tails');
     })
-    .catch(function(err) {
-      console.error('Failed to load AircraftData.csv:', err);
-    });
+    .catch(function(err) { console.error('CSV load failed:', err); });
 }
-
 loadAircraftCSV();
 
-
-// ---- LOCAL STORAGE ----
-var LS_KEY = 'swamx_tsi_entries';
-
-function loadEntries() {
-  try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
-  catch(e) { return []; }
-}
-
-function saveEntries(entries) {
-  localStorage.setItem(LS_KEY, JSON.stringify(entries));
-}
-
 // ---- STATE ----
-var entries = loadEntries();
+var cases = loadCases();
 var activeFleet = 'ALL';
 var activeStatus = 'ALL';
-var editingId = null;
+var addingToCaseId = null;
 var tailHighlight = -1;
 
 // ---- FILTERS ----
@@ -368,7 +391,6 @@ function setFleet(el) {
   activeFleet = el.dataset.fleet;
   renderList();
 }
-
 function setStatus(el) {
   document.querySelectorAll('.s-chip').forEach(function(c) { c.classList.remove('active'); });
   el.classList.add('active');
@@ -376,77 +398,129 @@ function setStatus(el) {
   renderList();
 }
 
+// ---- FIX WINDOWS ----
+function getFixWindows(c) {
+  if (!c.attempts.length) return [];
+  var sorted = c.attempts.slice().sort(function(a,b) { return new Date(a.created) - new Date(b.created); });
+  var wins = [[sorted[0]]];
+  for (var i = 1; i < sorted.length; i++) {
+    var prev = sorted[i-1];
+    var curr = sorted[i];
+    var prevEnd = prev.closedDate ? new Date(prev.closedDate) : new Date(prev.created);
+    var daysDiff = (new Date(curr.created) - prevEnd) / 86400000;
+    if (prev.result !== 'pending' && daysDiff > FIX_WINDOW_DAYS) {
+      wins.push([curr]);
+    } else {
+      wins[wins.length-1].push(curr);
+    }
+  }
+  return wins;
+}
+
+function calcFixRate() {
+  var total = 0, first = 0;
+  cases.forEach(function(c) {
+    getFixWindows(c).forEach(function(w) {
+      var last = w[w.length-1];
+      if (last.result === 'pending') return;
+      total++;
+      if (w.length === 1 && last.result === 'effective') first++;
+    });
+  });
+  return total === 0 ? null : Math.round((first / total) * 100);
+}
+
 // ---- RENDER ----
 function renderList() {
-  var list = document.getElementById('tsiList');
-  var filtered = entries.filter(function(e) {
-    if (activeFleet !== 'ALL' && e.fleet !== activeFleet) return false;
-    if (activeStatus === 'IN_WORK' && e.status !== 'in_work') return false;
-    if (activeStatus === 'CLOSED' && e.status !== 'closed_eff' && e.status !== 'closed_ineff') return false;
+  var list = document.getElementById('caseList');
+  var filtered = cases.filter(function(c) {
+    if (activeFleet !== 'ALL' && c.fleet !== activeFleet) return false;
+    if (activeStatus === 'IN_WORK' && c.status !== 'in_work') return false;
+    if (activeStatus === 'CLOSED' && c.status !== 'closed') return false;
     return true;
   });
 
-  // Sort: in_work first, then by created desc
   filtered.sort(function(a, b) {
     if (a.status === 'in_work' && b.status !== 'in_work') return -1;
     if (a.status !== 'in_work' && b.status === 'in_work') return 1;
-    return new Date(b.created) - new Date(a.created);
+    var aL = a.attempts.length ? new Date(a.attempts[a.attempts.length-1].created) : new Date(a.created);
+    var bL = b.attempts.length ? new Date(b.attempts[b.attempts.length-1].created) : new Date(b.created);
+    return bL - aL;
   });
 
-  document.getElementById('entryCount').textContent = filtered.length + ' of ' + entries.length + ' entries';
+  var inWork = cases.filter(function(c) { return c.status === 'in_work'; }).length;
+  var closed = cases.filter(function(c) { return c.status === 'closed'; }).length;
+  var fr = calcFixRate();
+  document.getElementById('entryCount').textContent =
+    filtered.length + ' shown | ' + inWork + ' in work | ' + closed + ' closed' +
+    (fr !== null ? ' | ' + fr + '% 1st fix' : '');
 
-  if (filtered.length === 0) {
-    list.innerHTML = '<div class="empty"><p>No TSI entries' + (activeFleet !== 'ALL' || activeStatus !== 'ALL' ? ' matching filters' : ' yet') + '</p><p class="hint">' + (entries.length === 0 ? 'Click + NEW TSI to add your first entry' : 'Try adjusting your filters') + '</p></div>';
+  if (!filtered.length) {
+    list.innerHTML = '<div class="empty"><p>No TSI cases' +
+      (activeFleet !== 'ALL' || activeStatus !== 'ALL' ? ' matching filters' : ' yet') +
+      '</p><p class="hint">' +
+      (cases.length === 0 ? 'Click + NEW TSI to add your first entry' : 'Try adjusting filters') +
+      '</p></div>';
     return;
   }
 
   var html = '';
-  filtered.forEach(function(e) {
-    var statusLabel, statusClass;
-    if (e.status === 'in_work') { statusLabel = 'IN WORK'; statusClass = 'in-work'; }
-    else if (e.status === 'closed_eff') { statusLabel = 'CLOSED - EFFECTIVE'; statusClass = 'closed-eff'; }
-    else { statusLabel = 'CLOSED - INEFFECTIVE'; statusClass = 'closed-ineff'; }
+  filtered.forEach(function(c) {
+    var n = c.attempts.length;
+    var sc = c.status === 'in_work' ? 'in-work' : 'closed';
+    var sl = c.status === 'in_work' ? 'IN WORK' : 'CLOSED';
+    var ac = n > 1 ? 'multi' : 'single';
 
-    var createdStr = fmtDate(e.created);
-    var dueStr = e.dueDate ? fmtDateShort(e.dueDate) : '-';
-    var closedStr = e.closedDate ? fmtDate(e.closedDate) : '';
-
-    html += '<div class="tsi-card">';
-    html += '<div class="tsi-card-top">';
-    html += '<span class="tsi-status ' + statusClass + '">' + statusLabel + '</span>';
-    html += '<span class="tsi-tail">' + esc(e.tail) + '</span>';
-    html += '<span class="tsi-fleet">' + esc(e.fleet) + '</span>';
-    html += '<span class="tsi-fc">' + esc(e.faultCode) + '</span>';
-    html += '<span class="tsi-effect">' + esc(e.effect) + '</span>';
-    html += '<span class="tsi-date">' + createdStr + '</span>';
+    html += '<div class="case-card"><div class="case-card-top">';
+    html += '<span class="case-status ' + sc + '">' + sl + '</span>';
+    html += '<span class="case-tail">' + esc(c.tail) + '</span>';
+    html += '<span class="case-fleet">' + esc(c.fleet) + '</span>';
+    html += '<span class="case-fc">' + esc(c.faultCode) + '</span>';
+    html += '<span class="case-effect">' + esc(c.effect) + '</span>';
+    html += '<span class="case-attempts ' + ac + '">' + n + (n===1?' ATTEMPT':' ATTEMPTS') + '</span>';
     html += '</div>';
 
-    html += '<div class="tsi-card-body">';
-    html += '<div class="tsi-row">';
-    html += '<div class="tsi-field"><div class="tsi-field-label">WORK ORDER</div><div class="tsi-field-value">' + esc(e.workOrder || '-') + '</div></div>';
-    html += '<div class="tsi-field"><div class="tsi-field-label">ACTION</div><div class="tsi-field-value">' + esc(e.actionType || '-') + '</div></div>';
-    html += '<div class="tsi-field"><div class="tsi-field-label">ATA</div><div class="tsi-field-value">' + esc(e.ata || '-') + '</div></div>';
-    html += '<div class="tsi-field"><div class="tsi-field-label">DUE DATE</div><div class="tsi-field-value">' + dueStr + '</div></div>';
-    if (e.ref) html += '<div class="tsi-field"><div class="tsi-field-label">AMM/FIM REF</div><div class="tsi-field-value">' + esc(e.ref) + '</div></div>';
-    html += '</div>';
-    if (e.notes) html += '<div class="tsi-action-text">' + esc(e.notes) + '</div>';
-    if (closedStr) {
-      html += '<div style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:10px;color:var(--text-dim);">Closed: ' + closedStr + '</div>';
-    }
+    // Timeline
+    html += '<div class="attempt-timeline">';
+    var wins = getFixWindows(c);
+    var cnt = 0;
+    wins.forEach(function(w, wi) {
+      if (wi > 0) {
+        html += '<div class="window-divider"><div class="window-divider-line"></div>';
+        html += '<div class="window-divider-text">NEW FIX WINDOW - 30+ DAYS</div>';
+        html += '<div class="window-divider-line"></div></div>';
+      }
+      w.forEach(function(att) {
+        cnt++;
+        var nc = att.result === 'effective' ? 'eff' : att.result === 'ineffective' ? 'ineff' : 'pending';
+        var rl = att.result === 'effective' ? 'EFFECTIVE' : att.result === 'ineffective' ? 'INEFFECTIVE' : 'IN WORK';
+        html += '<div class="attempt-item"><div class="attempt-num ' + nc + '">' + cnt + '</div>';
+        html += '<div class="attempt-body"><div class="attempt-header">';
+        html += '<span class="attempt-action">' + esc(att.actionType || 'No action specified') + '</span>';
+        html += '<span class="attempt-date">' + fmtDate(att.created) + '</span>';
+        html += '<span class="attempt-result ' + nc + '">' + rl + '</span></div>';
+        if (att.notes) html += '<div class="attempt-details">' + esc(att.notes) + '</div>';
+        html += '<div class="attempt-meta">';
+        if (att.workOrder) html += '<span>WO: ' + esc(att.workOrder) + '</span>';
+        if (att.ref) html += '<span>REF: ' + esc(att.ref) + '</span>';
+        if (att.dueDate) html += '<span>DUE: ' + fmtDateShort(att.dueDate) + '</span>';
+        if (att.closedDate) html += '<span>CLOSED: ' + fmtDate(att.closedDate) + '</span>';
+        html += '</div></div></div>';
+      });
+    });
     html += '</div>';
 
-    // Action buttons
-    html += '<div class="tsi-card-actions">';
-    if (e.status === 'in_work') {
-      html += '<button class="tsi-btn btn-close-eff" onclick="closeEntry(\'' + e.id + '\',true)">CLOSE - EFFECTIVE</button>';
-      html += '<button class="tsi-btn btn-close-ineff" onclick="closeEntry(\'' + e.id + '\',false)">CLOSE - INEFFECTIVE</button>';
+    // Actions
+    html += '<div class="case-card-actions">';
+    var last = c.attempts.length ? c.attempts[c.attempts.length-1] : null;
+    if (last && last.result === 'pending') {
+      html += '<button class="tsi-btn btn-close-eff" onclick="closeAttempt(\'' + c.id + '\',true)">CLOSE - EFFECTIVE</button>';
+      html += '<button class="tsi-btn btn-close-ineff" onclick="closeAttempt(\'' + c.id + '\',false)">CLOSE - INEFFECTIVE</button>';
     } else {
-      html += '<button class="tsi-btn btn-reopen" onclick="reopenEntry(\'' + e.id + '\')">REOPEN</button>';
+      html += '<button class="tsi-btn btn-add" onclick="addAttemptUI(\'' + c.id + '\')">+ ADD ATTEMPT (FAULT RETURNED)</button>';
     }
-    html += '<button class="tsi-btn btn-delete" onclick="deleteEntry(\'' + e.id + '\')">DELETE</button>';
-    html += '</div>';
-
-    html += '</div>';
+    html += '<button class="tsi-btn btn-delete" onclick="deleteCase(\'' + c.id + '\')">DELETE</button>';
+    html += '</div></div>';
   });
 
   list.innerHTML = html;
@@ -454,16 +528,43 @@ function renderList() {
 
 // ---- MODAL ----
 function openNewModal() {
-  editingId = null;
+  addingToCaseId = null;
   document.getElementById('modalTitle').textContent = 'New TSI Entry';
+  document.getElementById('existingCaseBanner').style.display = 'none';
+  showCaseFields(true);
+  document.getElementById('saveBtn').textContent = 'SAVE';
   clearForm();
   document.getElementById('modalOverlay').classList.add('open');
   document.getElementById('fTail').focus();
 }
 
+function addAttemptUI(caseId) {
+  var c = cases.find(function(x) { return x.id === caseId; });
+  if (!c) return;
+  addingToCaseId = caseId;
+  document.getElementById('modalTitle').textContent = 'Add Attempt - Fault Returned';
+  var ban = document.getElementById('existingCaseBanner');
+  ban.innerHTML = '<strong>' + esc(c.tail) + ' - ' + esc(c.faultCode) + '</strong><br>' +
+    esc(c.effect) + '<br>Adding attempt #' + (c.attempts.length + 1) + '. Previous fix will be marked ineffective.';
+  ban.style.display = 'block';
+  showCaseFields(false);
+  document.getElementById('saveBtn').textContent = 'ADD ATTEMPT';
+  clearForm();
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function showCaseFields(show) {
+  var d = show ? '' : 'none';
+  document.getElementById('tailGroup').style.display = d;
+  document.getElementById('fleetAtaRow').style.display = d;
+  document.getElementById('faultCodeGroup').style.display = d;
+  document.getElementById('effectGroup').style.display = d;
+}
+
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('open');
   document.getElementById('tailDropdown').classList.remove('open');
+  addingToCaseId = null;
 }
 
 function clearForm() {
@@ -473,22 +574,38 @@ function clearForm() {
   document.querySelectorAll('.action-chip').forEach(function(c) { c.classList.remove('selected'); });
 }
 
+// ---- CHECK EXISTING ----
+function checkExisting() {
+  if (addingToCaseId) return;
+  var tail = document.getElementById('fTail').value.trim().toUpperCase();
+  var fc = document.getElementById('fFaultCode').value.trim().toUpperCase();
+  var ban = document.getElementById('existingCaseBanner');
+  if (!tail || !fc) { ban.style.display = 'none'; return; }
+  var ex = cases.find(function(c) { return c.tail === tail && c.faultCode === fc; });
+  if (ex) {
+    ban.innerHTML = '<strong>Existing case: ' + esc(tail) + ' - ' + esc(fc) + '</strong><br>' +
+      esc(ex.effect) + ' - ' + ex.attempts.length + ' attempt' + (ex.attempts.length !== 1 ? 's' : '') +
+      '<br>Saving will add attempt #' + (ex.attempts.length + 1) + ' to this case.';
+    ban.style.display = 'block';
+  } else {
+    ban.style.display = 'none';
+  }
+}
+
 // ---- TAIL SEARCH ----
 function filterTails() {
   var q = document.getElementById('fTail').value.toUpperCase().trim();
   var dd = document.getElementById('tailDropdown');
   if (!q) { dd.classList.remove('open'); return; }
-  var matches = AIRCRAFT.filter(function(a) { return a[0].indexOf(q) !== -1; }).slice(0, 12);
-  if (matches.length === 0) { dd.classList.remove('open'); return; }
+  var m = AIRCRAFT.filter(function(a) { return a[0].indexOf(q) !== -1; }).slice(0,12);
+  if (!m.length) { dd.classList.remove('open'); return; }
   tailHighlight = 0;
-  var html = '';
-  matches.forEach(function(a, i) {
-    html += '<div class="tail-opt' + (i === 0 ? ' highlighted' : '') + '" data-tail="' + a[0] + '" data-fleet="' + a[1] + '" onclick="selectTail(\'' + a[0] + '\',\'' + a[1] + '\')">';
-    html += '<span class="to-tail">' + a[0] + '</span>';
-    html += '<span class="to-fleet">' + a[1] + '</span>';
-    html += '</div>';
+  var h = '';
+  m.forEach(function(a,i) {
+    h += '<div class="tail-opt' + (i===0?' highlighted':'') + '" data-tail="' + a[0] + '" data-fleet="' + a[1] + '" onclick="selectTail(\'' + a[0] + '\',\'' + a[1] + '\')">';
+    h += '<span class="to-tail">' + a[0] + '</span><span class="to-fleet">' + a[1] + '</span></div>';
   });
-  dd.innerHTML = html;
+  dd.innerHTML = h;
   dd.classList.add('open');
 }
 
@@ -497,6 +614,7 @@ function selectTail(tail, fleet) {
   document.getElementById('fFleet').value = fleet;
   document.getElementById('tailDropdown').classList.remove('open');
   document.getElementById('fFaultCode').focus();
+  checkExisting();
 }
 
 function tailKeyNav(e) {
@@ -504,33 +622,19 @@ function tailKeyNav(e) {
   if (!dd.classList.contains('open')) return;
   var opts = dd.querySelectorAll('.tail-opt');
   if (!opts.length) return;
-  if (e.key === 'ArrowDown') {
-    e.preventDefault();
-    tailHighlight = Math.min(tailHighlight + 1, opts.length - 1);
-    opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === tailHighlight); });
-    opts[tailHighlight].scrollIntoView({block:'nearest'});
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault();
-    tailHighlight = Math.max(tailHighlight - 1, 0);
-    opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === tailHighlight); });
-    opts[tailHighlight].scrollIntoView({block:'nearest'});
-  } else if (e.key === 'Enter') {
-    e.preventDefault();
-    var sel = opts[tailHighlight];
-    if (sel) selectTail(sel.dataset.tail, sel.dataset.fleet);
-  } else if (e.key === 'Escape') {
-    dd.classList.remove('open');
-  }
+  if (e.key === 'ArrowDown') { e.preventDefault(); tailHighlight = Math.min(tailHighlight+1,opts.length-1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); tailHighlight = Math.max(tailHighlight-1,0); }
+  else if (e.key === 'Enter') { e.preventDefault(); var s = opts[tailHighlight]; if(s) selectTail(s.dataset.tail,s.dataset.fleet); return; }
+  else if (e.key === 'Escape') { dd.classList.remove('open'); return; }
+  else return;
+  opts.forEach(function(o,i) { o.classList.toggle('highlighted',i===tailHighlight); });
+  opts[tailHighlight].scrollIntoView({block:'nearest'});
 }
 
-// Close dropdown on outside click
 document.addEventListener('click', function(e) {
-  if (!e.target.closest('.tail-wrap')) {
-    document.getElementById('tailDropdown').classList.remove('open');
-  }
+  if (!e.target.closest('.tail-wrap')) document.getElementById('tailDropdown').classList.remove('open');
 });
 
-// ---- ACTION CHIPS ----
 function pickAction(el) {
   document.querySelectorAll('.action-chip').forEach(function(c) { c.classList.remove('selected'); });
   el.classList.add('selected');
@@ -538,136 +642,145 @@ function pickAction(el) {
 
 // ---- SAVE ----
 function saveEntry() {
-  var tail = document.getElementById('fTail').value.trim().toUpperCase();
-  var fleet = document.getElementById('fFleet').value.trim();
-  var faultCode = document.getElementById('fFaultCode').value.trim().toUpperCase();
-  var effect = document.getElementById('fEffect').value.trim().toUpperCase();
-
-  if (!tail) { toast('Tail number is required'); document.getElementById('fTail').focus(); return; }
-  if (!faultCode) { toast('Fault code is required'); document.getElementById('fFaultCode').focus(); return; }
-  if (!effect) { toast('Flight deck effect is required'); document.getElementById('fEffect').focus(); return; }
-
-  // Auto-fill fleet from TAIL_MAP if not set
-  if (!fleet && TAIL_MAP[tail]) fleet = TAIL_MAP[tail];
-  if (!fleet) { toast('Fleet type could not be determined - select a valid tail'); return; }
-
-  var selectedAction = document.querySelector('.action-chip.selected');
-  var actionType = selectedAction ? selectedAction.textContent : '';
-
-  var entry = {
-    id: editingId || genId(),
-    tail: tail,
-    fleet: fleet,
-    ata: document.getElementById('fAta').value.trim(),
-    faultCode: faultCode,
-    effect: effect,
+  var sel = document.querySelector('.action-chip.selected');
+  var att = {
+    id: genId('att'),
+    actionType: sel ? sel.textContent : '',
     workOrder: document.getElementById('fWorkOrder').value.trim().toUpperCase(),
-    actionType: actionType,
     notes: document.getElementById('fNotes').value.trim(),
     dueDate: document.getElementById('fDueDate').value,
     ref: document.getElementById('fRef').value.trim(),
-    status: 'in_work',
     created: new Date().toISOString(),
-    closedDate: null
+    closedDate: null,
+    result: 'pending'
   };
 
-  if (editingId) {
-    var idx = entries.findIndex(function(e) { return e.id === editingId; });
-    if (idx !== -1) {
-      entry.status = entries[idx].status;
-      entry.created = entries[idx].created;
-      entry.closedDate = entries[idx].closedDate;
-      entries[idx] = entry;
-    }
-  } else {
-    entries.unshift(entry);
+  // Adding to existing case via button
+  if (addingToCaseId) {
+    var c = cases.find(function(x) { return x.id === addingToCaseId; });
+    if (!c) { toast('Case not found'); return; }
+    var prev = c.attempts[c.attempts.length-1];
+    if (prev && prev.result === 'effective') prev.result = 'ineffective';
+    c.attempts.push(att);
+    c.status = 'in_work';
+    saveCases(cases);
+    closeModal();
+    renderList();
+    toast('Attempt #' + c.attempts.length + ' added');
+    return;
   }
 
-  saveEntries(entries);
+  // New entry
+  var tail = document.getElementById('fTail').value.trim().toUpperCase();
+  var fleet = document.getElementById('fFleet').value.trim();
+  var fc = document.getElementById('fFaultCode').value.trim().toUpperCase();
+  var effect = document.getElementById('fEffect').value.trim().toUpperCase();
+  var ata = document.getElementById('fAta').value.trim();
+
+  if (!tail) { toast('Tail number required'); document.getElementById('fTail').focus(); return; }
+  if (!fc) { toast('Fault code required'); document.getElementById('fFaultCode').focus(); return; }
+  if (!effect) { toast('Flight deck effect required'); document.getElementById('fEffect').focus(); return; }
+  if (!fleet && TAIL_MAP[tail]) fleet = TAIL_MAP[tail];
+  if (!fleet) { toast('Could not determine fleet type'); return; }
+
+  // Check existing
+  var ex = cases.find(function(c) { return c.tail === tail && c.faultCode === fc; });
+  if (ex) {
+    var prev = ex.attempts[ex.attempts.length-1];
+    if (prev && prev.result === 'effective') prev.result = 'ineffective';
+    ex.attempts.push(att);
+    ex.status = 'in_work';
+    saveCases(cases);
+    closeModal();
+    renderList();
+    toast('Added attempt #' + ex.attempts.length + ' to existing case');
+    return;
+  }
+
+  cases.unshift({
+    id: genId('case'), tail: tail, fleet: fleet, ata: ata,
+    faultCode: fc, effect: effect, created: new Date().toISOString(),
+    status: 'in_work', attempts: [att]
+  });
+  saveCases(cases);
   closeModal();
   renderList();
-  toast(editingId ? 'Entry updated' : 'TSI entry added - IN WORK');
+  toast('New case created');
 }
 
-// ---- STATUS ACTIONS ----
-function closeEntry(id, effective) {
-  var e = entries.find(function(e) { return e.id === id; });
-  if (!e) return;
-  e.status = effective ? 'closed_eff' : 'closed_ineff';
-  e.closedDate = new Date().toISOString();
-  saveEntries(entries);
+// ---- CLOSE / DELETE ----
+function closeAttempt(caseId, effective) {
+  var c = cases.find(function(x) { return x.id === caseId; });
+  if (!c) return;
+  var last = c.attempts[c.attempts.length-1];
+  if (!last || last.result !== 'pending') return;
+  last.result = effective ? 'effective' : 'ineffective';
+  last.closedDate = new Date().toISOString();
+  c.status = 'closed';
+  saveCases(cases);
   renderList();
-  toast(effective ? 'Closed as effective' : 'Closed as ineffective');
+  toast(effective ? 'Closed - effective' : 'Closed - ineffective');
 }
 
-function reopenEntry(id) {
-  var e = entries.find(function(e) { return e.id === id; });
-  if (!e) return;
-  e.status = 'in_work';
-  e.closedDate = null;
-  saveEntries(entries);
+function deleteCase(caseId) {
+  if (!confirm('Delete this case and all attempts?')) return;
+  cases = cases.filter(function(c) { return c.id !== caseId; });
+  saveCases(cases);
   renderList();
-  toast('Reopened - back to IN WORK');
-}
-
-function deleteEntry(id) {
-  if (!confirm('Delete this TSI entry? This cannot be undone.')) return;
-  entries = entries.filter(function(e) { return e.id !== id; });
-  saveEntries(entries);
-  renderList();
-  toast('Entry deleted');
+  toast('Case deleted');
 }
 
 // ---- EXPORT ----
 function exportData() {
-  var blob = new Blob([JSON.stringify(entries, null, 2)], {type: 'application/json'});
+  var fr = calcFixRate();
+  var iw = cases.filter(function(c) { return c.status === 'in_work'; }).length;
+  var cl = cases.filter(function(c) { return c.status === 'closed'; }).length;
+  var ta = 0; cases.forEach(function(c) { ta += c.attempts.length; });
+  var fcMap = {};
+  cases.forEach(function(c) { fcMap[c.faultCode] = (fcMap[c.faultCode]||0)+1; });
+  var topFC = Object.keys(fcMap).sort(function(a,b) { return fcMap[b]-fcMap[a]; }).slice(0,10);
+
+  var report = {
+    generated: new Date().toISOString(),
+    summary: {
+      totalCases: cases.length, inWork: iw, closed: cl, totalAttempts: ta,
+      firstAttemptFixRate: fr !== null ? fr + '%' : 'N/A',
+      fixWindowDays: FIX_WINDOW_DAYS
+    },
+    topFaultCodes: topFC.map(function(f) { return {faultCode:f,count:fcMap[f]}; }),
+    cases: cases
+  };
+
+  var blob = new Blob([JSON.stringify(report,null,2)], {type:'application/json'});
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url;
-  a.download = 'tsi-fixrate-' + new Date().toISOString().slice(0,10) + '.json';
+  a.download = 'tsi-report-' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
   URL.revokeObjectURL(url);
-  toast('Exported ' + entries.length + ' entries');
+  toast('Report exported');
 }
 
 // ---- HELPERS ----
-function genId() {
-  return 'tsi-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6);
-}
-
-function esc(s) {
-  if (!s) return '';
-  var d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
-}
-
+function genId(p) { return p + '-' + Date.now() + '-' + Math.random().toString(36).substr(2,6); }
+function esc(s) { if(!s) return ''; var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 function fmtDate(iso) {
-  if (!iso) return '';
-  var d = new Date(iso);
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var day = d.getDate();
-  var h = d.getHours();
-  var m = d.getMinutes();
-  return (day < 10 ? '0' : '') + day + '-' + months[d.getMonth()] + '-' + d.getFullYear() + ' ' + (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+  if(!iso) return '';
+  var d=new Date(iso), mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var dd=d.getDate(),h=d.getHours(),m=d.getMinutes();
+  return (dd<10?'0':'')+dd+'-'+mo[d.getMonth()]+'-'+d.getFullYear()+' '+(h<10?'0':'')+h+':'+(m<10?'0':'')+m;
 }
-
-function fmtDateShort(dateStr) {
-  if (!dateStr) return '';
-  var parts = dateStr.split('-');
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return parseInt(parts[2]) + '-' + months[parseInt(parts[1]) - 1] + '-' + parts[0];
+function fmtDateShort(s) {
+  if(!s) return '';
+  var p=s.split('-'), mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return parseInt(p[2])+'-'+mo[parseInt(p[1])-1]+'-'+p[0];
 }
-
 function toast(msg) {
-  var t = document.createElement('div');
-  t.className = 'toast';
-  t.textContent = msg;
+  var t=document.createElement('div'); t.className='toast'; t.textContent=msg;
   document.body.appendChild(t);
-  setTimeout(function() { t.style.opacity = '0'; setTimeout(function() { t.remove(); }, 300); }, 2500);
+  setTimeout(function(){t.style.opacity='0';setTimeout(function(){t.remove();},300);},2500);
 }
 
-// ---- INIT ----
 renderList();
 </script>
 </body>

@@ -1189,8 +1189,248 @@
 
         .section.active { animation: fadeUp 0.3s ease both; }
     </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <style>
+    /* ---- LOGIN OVERLAY ---- */
+    #loginOverlay {
+      position: fixed; inset: 0; z-index: 99999;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    #loginOverlay::before {
+      content: '';
+      position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(ellipse at 30% 20%, rgba(37,99,235,0.08) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 80%, rgba(37,99,235,0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    #loginOverlay.hidden { display: none; }
+    .login-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+      width: 100%; max-width: 400px; padding: 40px 36px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05);
+      position: relative; z-index: 1; margin: 20px;
+    }
+    .login-logo { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 8px; }
+    .login-logo img { height: 52px; }
+    .login-logo-text h1 { font-family: 'DM Sans', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); line-height: 1; }
+    .login-logo-text h1 span { color: var(--accent); }
+    .login-ref { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--red); text-align: center; margin-bottom: 32px; }
+    .login-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; display: block; }
+    .login-input { width: 100%; padding: 12px 14px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 8px; outline: none; transition: border-color 0.15s; margin-bottom: 20px; box-sizing: border-box; }
+    .login-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    .login-input::placeholder { color: #94a3b8; }
+    .login-btn { width: 100%; padding: 13px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 1px; color: #fff; background: var(--accent); border: none; border-radius: 8px; cursor: pointer; transition: background 0.15s; }
+    .login-btn:hover { background: #1d4ed8; }
+    .login-btn:disabled { background: #64748b; cursor: not-allowed; }
+    .login-error { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--red); text-align: center; margin-top: 12px; min-height: 16px; }
+    .login-footer { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-dim); text-align: center; margin-top: 20px; letter-spacing: 0.5px; }
+    /* Main content hidden until auth */
+    #mainApp { display: none; }
+    #mainApp.authed { display: block; }
+    /* User badge in nav area */
+    .user-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.5); margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .user-badge .ub-name { color: #ffffff; }
+    .user-badge .ub-logout { color: rgba(255,255,255,0.3); cursor: pointer; font-size: 9px; padding: 2px 6px; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; transition: all 0.15s; background: none; }
+    .user-badge .ub-logout:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
+    .user-badge .ub-role { font-size: 8px; padding: 2px 5px; border-radius: 3px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .ub-role-admin { background: rgba(37,99,235,0.15); color: #93c5fd; border: 1px solid rgba(37,99,235,0.3); }
+    .ub-role-editor { background: rgba(22,163,74,0.15); color: #86efac; border: 1px solid rgba(22,163,74,0.3); }
+    .ub-role-viewer { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); }
+    </style>
 </head>
 <body>
+
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay">
+  <div class="login-card">
+    <div class="login-logo">
+      <img src="logo.webp" alt="MOC Toolbox">
+      <div class="login-logo-text">
+        <h1>MOC <span>Toolbox</span></h1>
+      </div>
+    </div>
+    <div class="login-ref">All content reference only</div>
+    <label class="login-label">Employee Number</label>
+    <input type="text" class="login-input" id="loginENum" placeholder="Enter your E#" autocomplete="off">
+    <label class="login-label">Access Code</label>
+    <input type="password" class="login-input" id="loginCode" placeholder="Enter 4-digit code">
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">SIGN IN</button>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-footer">Maintenance Operations Center - Southwest Airlines</div>
+  </div>
+</div>
+
+<script>
+// ---- FIREBASE INIT ----
+var firebaseConfig = {
+  apiKey: "AIzaSyDCTMWVKxFaQ1yqv3JuMy5XRSVR_74k6Ao",
+  authDomain: "moctoolbox.firebaseapp.com",
+  projectId: "moctoolbox",
+  storageBucket: "moctoolbox.firebasestorage.app",
+  messagingSenderId: "736001885411",
+  appId: "1:736001885411:web:7f28d24ed86505757071d6",
+  measurementId: "G-Z5MKLNNHQW"
+};
+firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
+var auth = firebase.auth();
+
+var ACCESS_CODE = '8889';
+var CURRENT_USER = null;
+
+// ---- AUTH STATE LISTENER ----
+auth.onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in - look up their roster entry
+    db.collection('controllers').doc(user.uid).get().then(function(doc) {
+      if (doc.exists) {
+        CURRENT_USER = doc.data();
+        CURRENT_USER.uid = user.uid;
+        showApp();
+      } else {
+        // Signed in but not in roster (shouldn't happen) - sign out
+        auth.signOut();
+        showLogin('Account not found in roster.');
+      }
+    }).catch(function() {
+      showLogin('Error loading profile. Try again.');
+    });
+  } else {
+    showLogin('');
+  }
+});
+
+function showLogin(errMsg) {
+  document.getElementById('loginOverlay').classList.remove('hidden');
+  document.getElementById('mainApp').classList.remove('authed');
+  document.getElementById('loginError').textContent = errMsg || '';
+  document.getElementById('loginBtn').disabled = false;
+  document.getElementById('loginBtn').textContent = 'SIGN IN';
+}
+
+function showApp() {
+  document.getElementById('loginOverlay').classList.add('hidden');
+  document.getElementById('mainApp').classList.add('authed');
+  // Update user badge
+  var badge = document.getElementById('userBadge');
+  if (badge && CURRENT_USER) {
+    var roleClass = 'ub-role-' + (CURRENT_USER.role || 'viewer');
+    badge.innerHTML = '<span class="ub-name">' + CURRENT_USER.name + '</span>' +
+      '<span class="ub-role ' + roleClass + '">' + (CURRENT_USER.role || 'viewer').toUpperCase() + '</span>' +
+      '<button class="ub-logout" onclick="doLogout()">Sign Out</button>';
+  }
+  // Hide/show TSI controls based on role
+  applyRolePermissions();
+  // Update status bar
+  if (typeof updateFixStatusBar === 'function') updateFixStatusBar();
+}
+
+function applyRolePermissions() {
+  var role = CURRENT_USER ? CURRENT_USER.role : 'viewer';
+  var canEdit = (role === 'admin' || role === 'editor');
+  // Hide add/manage buttons for viewers
+  var addBtn = document.querySelector('.fix-action-btn.primary');
+  if (addBtn) addBtn.style.display = canEdit ? '' : 'none';
+}
+
+// ---- LOGIN ----
+function doLogin() {
+  var enumVal = document.getElementById('loginENum').value.trim().toUpperCase();
+  var code = document.getElementById('loginCode').value.trim();
+  var errEl = document.getElementById('loginError');
+  var btn = document.getElementById('loginBtn');
+
+  if (!enumVal) { errEl.textContent = 'Enter your employee number.'; return; }
+  if (!code) { errEl.textContent = 'Enter the access code.'; return; }
+  if (code !== ACCESS_CODE) { errEl.textContent = 'Invalid access code.'; return; }
+
+  // Normalize E# - strip leading E if present
+  enumVal = enumVal.replace(/^E/, '');
+
+  btn.disabled = true;
+  btn.textContent = 'SIGNING IN...';
+  errEl.textContent = '';
+
+  // Check roster first
+  db.collection('controllers').where('enumVal', '==', enumVal).get().then(function(snap) {
+    if (snap.empty) {
+      btn.disabled = false;
+      btn.textContent = 'SIGN IN';
+      errEl.textContent = 'E# not recognized. Contact your admin.';
+      return;
+    }
+
+    var rosterDoc = snap.docs[0];
+    var rosterData = rosterDoc.data();
+    var email = enumVal + '@swamx.local';
+    var password = ACCESS_CODE + enumVal;
+
+    // Try to sign in
+    auth.signInWithEmailAndPassword(email, password).then(function(cred) {
+      // Check if roster doc needs to be updated to use auth UID
+      if (rosterDoc.id !== cred.user.uid) {
+        // Copy roster data to UID-keyed doc
+        db.collection('controllers').doc(cred.user.uid).set(rosterData);
+      }
+    }).catch(function(err) {
+      if (err.code === 'auth/user-not-found') {
+        // First login - create the auth account
+        auth.createUserWithEmailAndPassword(email, password).then(function(cred) {
+          // Create UID-keyed roster doc
+          db.collection('controllers').doc(cred.user.uid).set(rosterData);
+        }).catch(function(createErr) {
+          btn.disabled = false;
+          btn.textContent = 'SIGN IN';
+          errEl.textContent = 'Error creating account. Try again.';
+        });
+      } else if (err.code === 'auth/wrong-password') {
+        btn.disabled = false;
+        btn.textContent = 'SIGN IN';
+        errEl.textContent = 'Access code has changed. Contact your admin.';
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'SIGN IN';
+        errEl.textContent = 'Login error. Try again.';
+      }
+    });
+  }).catch(function() {
+    btn.disabled = false;
+    btn.textContent = 'SIGN IN';
+    errEl.textContent = 'Connection error. Check your network.';
+  });
+}
+
+function doLogout() {
+  auth.signOut();
+}
+
+// Enter key on inputs
+document.getElementById('loginENum').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('loginCode').focus();
+});
+document.getElementById('loginCode').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+
+// ---- SEED ROSTER (runs once, safe to re-run) ----
+function seedRoster() {
+  var roster = [
+    { enumVal: '112799', name: 'Mike Roca', role: 'admin' }
+  ];
+  roster.forEach(function(c) {
+    db.collection('controllers').doc('E' + c.enumVal).set(c, { merge: true });
+  });
+}
+seedRoster();
+</script>
+
+<!-- MAIN APP (hidden until auth) -->
+<div id="mainApp">
     <div class="container">
 
         <header>
@@ -1202,6 +1442,7 @@
                         <div class="ref-only">All content reference only</div>
                     </div>
                 </div>
+                <div class="user-badge" id="userBadge"></div>
             </div>
             <div class="nav-tabs">
                 <button class="nav-tab active" data-tab="quickref">Quick Reference</button>
@@ -2024,55 +2265,58 @@
 
         fixSearchInput.addEventListener('input', renderFixRate);
 
-        // ---- LIVE CASE DATA FROM LOCALSTORAGE ----
-        function loadLiveEntries() {
-            try { return JSON.parse(localStorage.getItem('swamx_tsi_entries')) || []; }
-            catch(e) { return []; }
-        }
-
+        // ---- LIVE CASE DATA FROM FIRESTORE ----
         function updateFixStatusBar() {
-            var entries = loadLiveEntries();
-            var inWork = entries.filter(function(e) { return e.status === 'in_work'; }).length;
-            var closed = entries.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; }).length;
-            var eff = entries.filter(function(e) { return e.status === 'closed_eff'; }).length;
-            var fr = closed > 0 ? Math.round((eff / closed) * 100) : null;
-            var elIW = document.getElementById('fixInWork');
-            var elCL = document.getElementById('fixClosed');
-            var elTT = document.getElementById('fixTotal');
-            var elFR = document.getElementById('fixRate');
-            elIW.textContent = inWork + ' IN WORK';
-            elCL.textContent = closed + ' CLOSED';
-            elTT.textContent = entries.length + ' TOTAL';
-            elFR.textContent = (fr !== null ? fr + '%' : '--') + ' 1ST ATTEMPT FIX RATE';
-            elIW.classList.toggle('has-data', inWork > 0);
-            elCL.classList.toggle('has-data', closed > 0);
-            elTT.classList.toggle('has-data', entries.length > 0);
-            elFR.classList.toggle('has-data', fr !== null);
+            if (typeof db === 'undefined') return;
+            db.collection('tsi_entries').get().then(function(snap) {
+                var entries = [];
+                snap.forEach(function(doc) { entries.push(doc.data()); });
+                var inWork = entries.filter(function(e) { return e.status === 'in_work'; }).length;
+                var closed = entries.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; }).length;
+                var eff = entries.filter(function(e) { return e.status === 'closed_eff'; }).length;
+                var fr = closed > 0 ? Math.round((eff / closed) * 100) : null;
+                var elIW = document.getElementById('fixInWork');
+                var elCL = document.getElementById('fixClosed');
+                var elTT = document.getElementById('fixTotal');
+                var elFR = document.getElementById('fixRate');
+                if (!elIW) return;
+                elIW.textContent = inWork + ' IN WORK';
+                elCL.textContent = closed + ' CLOSED';
+                elTT.textContent = entries.length + ' TOTAL';
+                elFR.textContent = (fr !== null ? fr + '%' : '--') + ' 1ST ATTEMPT FIX RATE';
+                elIW.classList.toggle('has-data', inWork > 0);
+                elCL.classList.toggle('has-data', closed > 0);
+                elTT.classList.toggle('has-data', entries.length > 0);
+                elFR.classList.toggle('has-data', fr !== null);
+            }).catch(function() {});
         }
-        updateFixStatusBar();
 
         function exportFixReport() {
-            var entries = loadLiveEntries();
-            var iw = entries.filter(function(e) { return e.status === 'in_work'; }).length;
-            var cl = entries.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; }).length;
-            var eff = entries.filter(function(e) { return e.status === 'closed_eff'; }).length;
-            var fr = cl > 0 ? Math.round((eff/cl)*100) + '%' : 'N/A';
-            var fcMap = {};
-            entries.forEach(function(e) { fcMap[e.faultCode] = (fcMap[e.faultCode]||0)+1; });
-            var topFC = Object.keys(fcMap).sort(function(a,b) { return fcMap[b]-fcMap[a]; }).slice(0,10);
-            var report = {
-                generated: new Date().toISOString(),
-                summary: { totalEntries: entries.length, inWork: iw, closed: cl, effective: eff, fixRate: fr },
-                topFaultCodes: topFC.map(function(f) { return {faultCode:f,count:fcMap[f]}; }),
-                entries: entries
-            };
-            var blob = new Blob([JSON.stringify(report,null,2)], {type:'application/json'});
-            var url = URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = url;
-            a.download = 'tsi-report-' + new Date().toISOString().slice(0,10) + '.json';
-            a.click();
-            URL.revokeObjectURL(url);
+            if (typeof db === 'undefined') return;
+            db.collection('tsi_entries').get().then(function(snap) {
+                var entries = [];
+                snap.forEach(function(doc) { var d = doc.data(); d.id = doc.id; entries.push(d); });
+                var iw = entries.filter(function(e) { return e.status === 'in_work'; }).length;
+                var cl = entries.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; }).length;
+                var eff = entries.filter(function(e) { return e.status === 'closed_eff'; }).length;
+                var fr = cl > 0 ? Math.round((eff/cl)*100) + '%' : 'N/A';
+                var fcMap = {};
+                entries.forEach(function(e) { fcMap[e.faultCode] = (fcMap[e.faultCode]||0)+1; });
+                var topFC = Object.keys(fcMap).sort(function(a,b) { return fcMap[b]-fcMap[a]; }).slice(0,10);
+                var report = {
+                    generated: new Date().toISOString(),
+                    summary: { totalEntries: entries.length, inWork: iw, closed: cl, effective: eff, fixRate: fr },
+                    topFaultCodes: topFC.map(function(f) { return {faultCode:f,count:fcMap[f]}; }),
+                    entries: entries
+                };
+                var blob = new Blob([JSON.stringify(report,null,2)], {type:'application/json'});
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'tsi-report-' + new Date().toISOString().slice(0,10) + '.json';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
         }
 
         function confClass(c) {
@@ -2851,6 +3095,9 @@
         });
     </script>
 
+    </div><!-- /container -->
+</div><!-- /mainApp -->
+
 <!-- TSI Entry Modal -->
 <div class="tsi-modal-overlay" id="tsiModalOverlay">
   <div class="tsi-modal">
@@ -3100,7 +3347,6 @@ function saveTsiEntry() {
   var actionType = selectedAction ? selectedAction.textContent : '';
 
   var entry = {
-    id: 'tsi-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6),
     tail: tail,
     fleet: fleet,
     ata: document.getElementById('tAta').value.trim(),
@@ -3113,17 +3359,19 @@ function saveTsiEntry() {
     ref: document.getElementById('tRef').value.trim(),
     status: 'in_work',
     created: new Date().toISOString(),
-    closedDate: null
+    closedDate: null,
+    createdBy: CURRENT_USER ? CURRENT_USER.enumVal : '',
+    createdByName: CURRENT_USER ? CURRENT_USER.name : ''
   };
 
-  var entries = [];
-  try { entries = JSON.parse(localStorage.getItem('swamx_tsi_entries')) || []; } catch(e) {}
-  entries.unshift(entry);
-  localStorage.setItem('swamx_tsi_entries', JSON.stringify(entries));
-
-  closeTsiModal();
-  updateFixStatusBar();
-  tsiToast('TSI entry added - IN WORK');
+  // Save to Firestore
+  db.collection('tsi_entries').add(entry).then(function() {
+    closeTsiModal();
+    updateFixStatusBar();
+    tsiToast('TSI entry added - IN WORK');
+  }).catch(function(err) {
+    tsiToast('Error saving entry. Try again.');
+  });
 }
 
 function tsiToast(msg) {

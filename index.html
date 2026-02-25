@@ -841,10 +841,54 @@
             border-radius: 4px;
             letter-spacing: 0.5px;
         }
-        .fsp-work { background: var(--yellow-bg); color: var(--yellow-text); border: 1px solid var(--yellow-border); }
-        .fsp-closed { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
-        .fsp-total { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); border: 1px solid var(--frame-border); }
-        .fsp-rate { background: rgba(37,99,235,0.1); color: #93c5fd; border: 1px solid rgba(37,99,235,0.3); }
+        .fsp-work, .fsp-closed, .fsp-total { background: rgba(255,255,255,0.06); color: #ffffff; border: 1px solid var(--frame-border); }
+        .fsp-work.has-data { background: var(--yellow-bg); color: var(--yellow-text); border-color: var(--yellow-border); }
+        .fsp-closed.has-data { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); }
+        .fsp-rate { background: rgba(255,255,255,0.06); color: #ffffff; border: 1px solid var(--frame-border); }
+        .fsp-rate.has-data { background: rgba(37,99,235,0.15); color: #93c5fd; border-color: rgba(37,99,235,0.3); }
+
+        /* TSI Modal */
+        .tsi-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;}
+        .tsi-modal-overlay.open{display:flex;}
+        .tsi-modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+        .tsi-modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+        .tsi-modal-header h2{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--text);}
+        .tsi-modal-close{background:none;border:none;font-size:20px;color:var(--text-dim);cursor:pointer;padding:4px;}
+        .tsi-modal-close:hover{color:var(--text);}
+        .tsi-modal-body{padding:20px;}
+        .tsi-modal-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
+        .tsi-form-group{margin-bottom:16px;}
+        .tsi-form-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;display:block;}
+        .tsi-form-label .req{color:var(--red);}
+        .tsi-form-input,.tsi-form-textarea{width:100%;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:#fff;border:1px solid var(--border);border-radius:8px;outline:none;transition:border-color 0.15s;box-sizing:border-box;}
+        .tsi-form-input:focus,.tsi-form-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.1);}
+        .tsi-form-textarea{min-height:80px;resize:vertical;line-height:1.5;}
+        .tsi-form-row{display:flex;gap:12px;}
+        .tsi-form-row .tsi-form-group{flex:1;}
+        .tsi-tail-wrap{position:relative;}
+        .tsi-tail-dd{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:200px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
+        .tsi-tail-dd.open{display:block;}
+        .tsi-tail-opt{padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;transition:background 0.1s;}
+        .tsi-tail-opt:hover,.tsi-tail-opt.highlighted{background:var(--blue-bg);}
+        .tsi-tail-opt .tt-tail{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--text);}
+        .tsi-tail-opt .tt-fleet{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
+        .tsi-fc-wrap{position:relative;}
+        .tsi-fc-dd{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:240px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
+        .tsi-fc-dd.open{display:block;}
+        .tsi-fc-opt{padding:8px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:background 0.1s;border-bottom:1px solid var(--surface2);}
+        .tsi-fc-opt:last-child{border-bottom:none;}
+        .tsi-fc-opt:hover,.tsi-fc-opt.highlighted{background:var(--blue-bg);}
+        .tsi-fc-opt .tfc-code{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:var(--text);}
+        .tsi-fc-opt .tfc-msg{font-size:11px;color:var(--text-secondary);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+        .tsi-fc-opt .tfc-task{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
+        .tsi-action-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+        .tsi-action-chip{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;}
+        .tsi-action-chip:hover{border-color:var(--accent);color:var(--accent);}
+        .tsi-action-chip.selected{background:var(--accent);color:#fff;border-color:var(--accent);}
+        .tsi-save-btn{padding:8px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text);}
+        .tsi-save-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+        .tsi-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:opacity 0.3s;}
+        @media(max-width:640px){ .tsi-form-row{flex-direction:column;gap:0;} }
 
         /* ---- QUICK LINKS ---- */
         /* ---- QUICK LINKS v2: Masonry + Korry ---- */
@@ -1216,7 +1260,7 @@
         <!-- TSI FIX RATE -->
         <section id="fixrate" class="section">
             <div class="fix-action-row">
-                <a href="tsi-entry.html" class="fix-action-btn primary">+ ADD NEW TSI</a>
+                <button class="fix-action-btn primary" onclick="openTsiModal()">+ ADD NEW TSI</button>
                 <a href="tsi-entry.html" class="fix-action-btn secondary">MANAGE ENTRIES</a>
                 <a href="#" class="fix-action-btn secondary" onclick="exportFixReport();return false;">EXPORT REPORT</a>
             </div>
@@ -1981,70 +2025,46 @@
         fixSearchInput.addEventListener('input', renderFixRate);
 
         // ---- LIVE CASE DATA FROM LOCALSTORAGE ----
-        var FIX_WINDOW_DAYS = 30;
-
-        function loadLiveCases() {
-            try { return JSON.parse(localStorage.getItem('swamx_tsi_cases')) || []; }
+        function loadLiveEntries() {
+            try { return JSON.parse(localStorage.getItem('swamx_tsi_entries')) || []; }
             catch(e) { return []; }
         }
 
-        function getLiveFixWindows(c) {
-            if (!c.attempts || !c.attempts.length) return [];
-            var sorted = c.attempts.slice().sort(function(a,b) { return new Date(a.created) - new Date(b.created); });
-            var wins = [[sorted[0]]];
-            for (var i = 1; i < sorted.length; i++) {
-                var prev = sorted[i-1];
-                var curr = sorted[i];
-                var prevEnd = prev.closedDate ? new Date(prev.closedDate) : new Date(prev.created);
-                var daysDiff = (new Date(curr.created) - prevEnd) / 86400000;
-                if (prev.result !== 'pending' && daysDiff > FIX_WINDOW_DAYS) {
-                    wins.push([curr]);
-                } else {
-                    wins[wins.length-1].push(curr);
-                }
-            }
-            return wins;
-        }
-
-        function calcLiveFixRate(cases) {
-            var total = 0, first = 0;
-            cases.forEach(function(c) {
-                getLiveFixWindows(c).forEach(function(w) {
-                    var last = w[w.length-1];
-                    if (last.result === 'pending') return;
-                    total++;
-                    if (w.length === 1 && last.result === 'effective') first++;
-                });
-            });
-            return total === 0 ? null : Math.round((first / total) * 100);
-        }
-
         function updateFixStatusBar() {
-            var cases = loadLiveCases();
-            var inWork = cases.filter(function(c) { return c.status === 'in_work'; }).length;
-            var closed = cases.filter(function(c) { return c.status === 'closed'; }).length;
-            var fr = calcLiveFixRate(cases);
-            document.getElementById('fixInWork').textContent = inWork + ' IN WORK';
-            document.getElementById('fixClosed').textContent = closed + ' CLOSED';
-            document.getElementById('fixTotal').textContent = cases.length + ' TOTAL';
-            document.getElementById('fixRate').textContent = (fr !== null ? fr + '%' : '--') + ' 1ST ATTEMPT FIX RATE';
+            var entries = loadLiveEntries();
+            var inWork = entries.filter(function(e) { return e.status === 'in_work'; }).length;
+            var closed = entries.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; }).length;
+            var eff = entries.filter(function(e) { return e.status === 'closed_eff'; }).length;
+            var fr = closed > 0 ? Math.round((eff / closed) * 100) : null;
+            var elIW = document.getElementById('fixInWork');
+            var elCL = document.getElementById('fixClosed');
+            var elTT = document.getElementById('fixTotal');
+            var elFR = document.getElementById('fixRate');
+            elIW.textContent = inWork + ' IN WORK';
+            elCL.textContent = closed + ' CLOSED';
+            elTT.textContent = entries.length + ' TOTAL';
+            elFR.textContent = (fr !== null ? fr + '%' : '--') + ' 1ST ATTEMPT FIX RATE';
+            elIW.classList.toggle('has-data', inWork > 0);
+            elCL.classList.toggle('has-data', closed > 0);
+            elTT.classList.toggle('has-data', entries.length > 0);
+            elFR.classList.toggle('has-data', fr !== null);
         }
         updateFixStatusBar();
 
         function exportFixReport() {
-            var cases = loadLiveCases();
-            var fr = calcLiveFixRate(cases);
-            var iw = cases.filter(function(c) { return c.status === 'in_work'; }).length;
-            var cl = cases.filter(function(c) { return c.status === 'closed'; }).length;
-            var ta = 0; cases.forEach(function(c) { ta += (c.attempts ? c.attempts.length : 0); });
+            var entries = loadLiveEntries();
+            var iw = entries.filter(function(e) { return e.status === 'in_work'; }).length;
+            var cl = entries.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; }).length;
+            var eff = entries.filter(function(e) { return e.status === 'closed_eff'; }).length;
+            var fr = cl > 0 ? Math.round((eff/cl)*100) + '%' : 'N/A';
             var fcMap = {};
-            cases.forEach(function(c) { fcMap[c.faultCode] = (fcMap[c.faultCode]||0)+1; });
+            entries.forEach(function(e) { fcMap[e.faultCode] = (fcMap[e.faultCode]||0)+1; });
             var topFC = Object.keys(fcMap).sort(function(a,b) { return fcMap[b]-fcMap[a]; }).slice(0,10);
             var report = {
                 generated: new Date().toISOString(),
-                summary: { totalCases: cases.length, inWork: iw, closed: cl, totalAttempts: ta, firstAttemptFixRate: fr !== null ? fr + '%' : 'N/A', fixWindowDays: FIX_WINDOW_DAYS },
+                summary: { totalEntries: entries.length, inWork: iw, closed: cl, effective: eff, fixRate: fr },
                 topFaultCodes: topFC.map(function(f) { return {faultCode:f,count:fcMap[f]}; }),
-                cases: cases
+                entries: entries
             };
             var blob = new Blob([JSON.stringify(report,null,2)], {type:'application/json'});
             var url = URL.createObjectURL(blob);
@@ -2830,5 +2850,295 @@
             qlResizeTimer = setTimeout(qlRenderMasonry, 50);
         });
     </script>
+
+<!-- TSI Entry Modal -->
+<div class="tsi-modal-overlay" id="tsiModalOverlay">
+  <div class="tsi-modal">
+    <div class="tsi-modal-header">
+      <h2>New TSI Entry</h2>
+      <button class="tsi-modal-close" onclick="closeTsiModal()">&times;</button>
+    </div>
+    <div class="tsi-modal-body">
+      <div class="tsi-form-group tsi-tail-wrap">
+        <label class="tsi-form-label">TAIL NUMBER <span class="req">*</span></label>
+        <input type="text" class="tsi-form-input" id="tFail" placeholder="Start typing tail..." autocomplete="off" oninput="tsiFilterTails()" onfocus="tsiFilterTails()" onkeydown="tsiTailKeyNav(event)">
+        <div class="tsi-tail-dd" id="tsiTailDD"></div>
+      </div>
+      <div class="tsi-form-row">
+        <div class="tsi-form-group">
+          <label class="tsi-form-label">FLEET</label>
+          <input type="text" class="tsi-form-input" id="tFleet" readonly tabindex="-1" style="background:var(--surface);color:var(--text-dim);">
+        </div>
+        <div class="tsi-form-group">
+          <label class="tsi-form-label">ATA</label>
+          <input type="text" class="tsi-form-input" id="tAta" placeholder="e.g. 36" maxlength="5">
+        </div>
+      </div>
+      <div class="tsi-form-group tsi-fc-wrap">
+        <label class="tsi-form-label">FAULT CODE <span class="req">*</span></label>
+        <input type="text" class="tsi-form-input" id="tFaultCode" placeholder="e.g. 36-12020 or FAMV" autocomplete="off" oninput="tsiFilterFC()" onfocus="tsiFilterFC()" onkeydown="tsiFcKeyNav(event)">
+        <div class="tsi-fc-dd" id="tsiFcDD"></div>
+      </div>
+      <div class="tsi-form-group">
+        <label class="tsi-form-label">FLIGHT DECK EFFECT / DESCRIPTION <span class="req">*</span></label>
+        <input type="text" class="tsi-form-input" id="tEffect" placeholder="e.g. BLEED FAMV L - Status Message">
+      </div>
+      <div class="tsi-form-group">
+        <label class="tsi-form-label">WORK ORDER</label>
+        <input type="text" class="tsi-form-input" id="tWorkOrder" placeholder="e.g. TTG8Q01AL9VS">
+      </div>
+      <div class="tsi-form-group">
+        <label class="tsi-form-label">ACTION TAKEN</label>
+        <div class="tsi-action-chips" id="tsiActionChips">
+          <span class="tsi-action-chip" onclick="tsiPickAction(this)">IFIM/FIM TASK</span>
+          <span class="tsi-action-chip" onclick="tsiPickAction(this)">REMOVE/REPLACE</span>
+          <span class="tsi-action-chip" onclick="tsiPickAction(this)">RESET</span>
+          <span class="tsi-action-chip" onclick="tsiPickAction(this)">SWAP</span>
+          <span class="tsi-action-chip" onclick="tsiPickAction(this)">CB RESET</span>
+          <span class="tsi-action-chip" onclick="tsiPickAction(this)">TEST/OPS CK</span>
+          <span class="tsi-action-chip" onclick="tsiPickAction(this)">DEFERRED</span>
+        </div>
+      </div>
+      <div class="tsi-form-group">
+        <label class="tsi-form-label">TSI DETAILS / NOTES</label>
+        <textarea class="tsi-form-textarea" id="tNotes" placeholder="Paste TSI verbiage or describe what was done..."></textarea>
+      </div>
+      <div class="tsi-form-row">
+        <div class="tsi-form-group">
+          <label class="tsi-form-label">DUE DATE</label>
+          <input type="date" class="tsi-form-input" id="tDueDate">
+        </div>
+        <div class="tsi-form-group">
+          <label class="tsi-form-label">AMM/FIM REFERENCE</label>
+          <input type="text" class="tsi-form-input" id="tRef" placeholder="e.g. AMM 36-12-03">
+        </div>
+      </div>
+    </div>
+    <div class="tsi-modal-footer">
+      <button class="tsi-save-btn" onclick="closeTsiModal()">CANCEL</button>
+      <button class="tsi-save-btn primary" onclick="saveTsiEntry()">SAVE</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- TSI MODAL: AIRCRAFT + FAULT CODE DATA ----
+var TSI_AIRCRAFT = [];
+var TSI_FAULT_CODES = [];
+var tsiTailHL = -1;
+var tsiFcHL = -1;
+
+function tsiParseCSVRow(line) {
+  var result = [], cur = '', inQ = false;
+  for (var i = 0; i < line.length; i++) {
+    var c = line[i];
+    if (inQ) {
+      if (c === '"' && line[i+1] === '"') { cur += '"'; i++; }
+      else if (c === '"') { inQ = false; }
+      else { cur += c; }
+    } else {
+      if (c === '"') { inQ = true; }
+      else if (c === ',') { result.push(cur); cur = ''; }
+      else { cur += c; }
+    }
+  }
+  result.push(cur);
+  return result;
+}
+
+fetch('AircraftData.csv').then(function(r) { return r.ok ? r.text() : ''; }).then(function(text) {
+  if (!text) return;
+  var lines = text.split('\n');
+  for (var i = 1; i < lines.length; i++) {
+    var row = tsiParseCSVRow(lines[i]);
+    if (row.length >= 2 && row[0]) TSI_AIRCRAFT.push([row[0].trim(), row[1].trim()]);
+  }
+}).catch(function(){});
+
+fetch('FaultCodes.csv').then(function(r) { return r.ok ? r.text() : ''; }).then(function(text) {
+  if (!text) return;
+  var lines = text.split('\n');
+  for (var i = 1; i < lines.length; i++) {
+    var row = tsiParseCSVRow(lines[i]);
+    if (row.length >= 5 && row[0]) {
+      TSI_FAULT_CODES.push({ code: row[0].trim(), fimTask: row[1].trim(), title: row[2].trim(), message: row[3].trim(), ata: row[4].trim() });
+    }
+  }
+}).catch(function(){});
+
+// ---- TSI MODAL: OPEN/CLOSE ----
+function openTsiModal() {
+  tsiClearForm();
+  document.getElementById('tsiModalOverlay').classList.add('open');
+  setTimeout(function() { document.getElementById('tFail').focus(); }, 100);
+}
+
+function closeTsiModal() {
+  document.getElementById('tsiModalOverlay').classList.remove('open');
+  document.getElementById('tsiTailDD').classList.remove('open');
+  document.getElementById('tsiFcDD').classList.remove('open');
+}
+
+function tsiClearForm() {
+  ['tFail','tFleet','tAta','tFaultCode','tEffect','tWorkOrder','tNotes','tDueDate','tRef'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+  document.querySelectorAll('.tsi-action-chip').forEach(function(c) { c.classList.remove('selected'); });
+}
+
+// ---- TSI MODAL: TAIL AUTOCOMPLETE ----
+function tsiFilterTails() {
+  var q = document.getElementById('tFail').value.toUpperCase().trim();
+  var dd = document.getElementById('tsiTailDD');
+  if (!q) { dd.classList.remove('open'); return; }
+  var matches = TSI_AIRCRAFT.filter(function(a) { return a[0].indexOf(q) !== -1; }).slice(0, 12);
+  if (matches.length === 0) { dd.classList.remove('open'); return; }
+  tsiTailHL = 0;
+  var html = '';
+  matches.forEach(function(a, i) {
+    html += '<div class="tsi-tail-opt' + (i === 0 ? ' highlighted' : '') + '" onclick="tsiSelectTail(\'' + a[0] + '\',\'' + a[1] + '\')">';
+    html += '<span class="tt-tail">' + a[0] + '</span><span class="tt-fleet">' + a[1] + '</span></div>';
+  });
+  dd.innerHTML = html;
+  dd.classList.add('open');
+}
+
+function tsiSelectTail(tail, fleet) {
+  document.getElementById('tFail').value = tail;
+  document.getElementById('tFleet').value = fleet;
+  document.getElementById('tsiTailDD').classList.remove('open');
+  document.getElementById('tFaultCode').focus();
+}
+
+function tsiTailKeyNav(e) {
+  var dd = document.getElementById('tsiTailDD');
+  if (!dd.classList.contains('open')) return;
+  var opts = dd.querySelectorAll('.tsi-tail-opt');
+  if (!opts.length) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); tsiTailHL = Math.min(tsiTailHL+1, opts.length-1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); tsiTailHL = Math.max(tsiTailHL-1, 0); }
+  else if (e.key === 'Enter') { e.preventDefault(); opts[tsiTailHL].click(); return; }
+  else if (e.key === 'Escape') { dd.classList.remove('open'); return; }
+  else return;
+  opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === tsiTailHL); });
+  opts[tsiTailHL].scrollIntoView({block:'nearest'});
+}
+
+// ---- TSI MODAL: FAULT CODE AUTOCOMPLETE ----
+function tsiFilterFC() {
+  var q = document.getElementById('tFaultCode').value.trim().toUpperCase();
+  var dd = document.getElementById('tsiFcDD');
+  if (!q || q.length < 2 || TSI_FAULT_CODES.length === 0) { dd.classList.remove('open'); return; }
+  var matches = TSI_FAULT_CODES.filter(function(f) {
+    return f.code.indexOf(q) !== -1 || f.message.toUpperCase().indexOf(q) !== -1 || f.title.toUpperCase().indexOf(q) !== -1;
+  }).slice(0, 10);
+  if (matches.length === 0) { dd.classList.remove('open'); return; }
+  tsiFcHL = 0;
+  var html = '';
+  matches.forEach(function(f, i) {
+    html += '<div class="tsi-fc-opt' + (i === 0 ? ' highlighted' : '') + '" data-idx="' + i + '" onclick="tsiSelectFC(' + i + ')">';
+    html += '<span class="tfc-code">' + f.code + '</span>';
+    if (f.message) html += '<span class="tfc-msg">' + f.message + '</span>';
+    if (f.fimTask) html += '<span class="tfc-task">FIM: ' + f.fimTask + '</span>';
+    html += '</div>';
+  });
+  dd.innerHTML = html;
+  dd._matches = matches;
+  dd.classList.add('open');
+}
+
+function tsiSelectFC(idx) {
+  var dd = document.getElementById('tsiFcDD');
+  var f = dd._matches[idx];
+  document.getElementById('tFaultCode').value = f.code;
+  if (f.message || f.title) document.getElementById('tEffect').value = f.message || f.title;
+  if (f.ata) document.getElementById('tAta').value = f.ata;
+  if (f.fimTask) document.getElementById('tRef').value = f.fimTask;
+  dd.classList.remove('open');
+  document.getElementById('tEffect').focus();
+}
+
+function tsiFcKeyNav(e) {
+  var dd = document.getElementById('tsiFcDD');
+  if (!dd.classList.contains('open')) return;
+  var opts = dd.querySelectorAll('.tsi-fc-opt');
+  if (!opts.length) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); tsiFcHL = Math.min(tsiFcHL+1, opts.length-1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); tsiFcHL = Math.max(tsiFcHL-1, 0); }
+  else if (e.key === 'Enter') { e.preventDefault(); tsiSelectFC(tsiFcHL); return; }
+  else if (e.key === 'Escape') { dd.classList.remove('open'); return; }
+  else return;
+  opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === tsiFcHL); });
+  opts[tsiFcHL].scrollIntoView({block:'nearest'});
+}
+
+// ---- TSI MODAL: ACTION CHIPS ----
+function tsiPickAction(el) {
+  document.querySelectorAll('.tsi-action-chip').forEach(function(c) { c.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+// ---- TSI MODAL: SAVE ----
+function saveTsiEntry() {
+  var tail = document.getElementById('tFail').value.trim().toUpperCase();
+  var fleet = document.getElementById('tFleet').value.trim();
+  var faultCode = document.getElementById('tFaultCode').value.trim().toUpperCase();
+  var effect = document.getElementById('tEffect').value.trim().toUpperCase();
+
+  if (!tail) { tsiToast('Tail number is required'); document.getElementById('tFail').focus(); return; }
+  if (!faultCode) { tsiToast('Fault code is required'); document.getElementById('tFaultCode').focus(); return; }
+  if (!effect) { tsiToast('Flight deck effect is required'); document.getElementById('tEffect').focus(); return; }
+
+  // Auto-fill fleet from aircraft data
+  if (!fleet) {
+    var match = TSI_AIRCRAFT.find(function(a) { return a[0] === tail; });
+    if (match) fleet = match[1];
+  }
+  if (!fleet) { tsiToast('Fleet could not be determined - select a valid tail'); return; }
+
+  var selectedAction = document.querySelector('.tsi-action-chip.selected');
+  var actionType = selectedAction ? selectedAction.textContent : '';
+
+  var entry = {
+    id: 'tsi-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6),
+    tail: tail,
+    fleet: fleet,
+    ata: document.getElementById('tAta').value.trim(),
+    faultCode: faultCode,
+    effect: effect,
+    workOrder: document.getElementById('tWorkOrder').value.trim().toUpperCase(),
+    actionType: actionType,
+    notes: document.getElementById('tNotes').value.trim(),
+    dueDate: document.getElementById('tDueDate').value,
+    ref: document.getElementById('tRef').value.trim(),
+    status: 'in_work',
+    created: new Date().toISOString(),
+    closedDate: null
+  };
+
+  var entries = [];
+  try { entries = JSON.parse(localStorage.getItem('swamx_tsi_entries')) || []; } catch(e) {}
+  entries.unshift(entry);
+  localStorage.setItem('swamx_tsi_entries', JSON.stringify(entries));
+
+  closeTsiModal();
+  updateFixStatusBar();
+  tsiToast('TSI entry added - IN WORK');
+}
+
+function tsiToast(msg) {
+  var t = document.createElement('div');
+  t.className = 'tsi-toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function() { t.style.opacity = '0'; setTimeout(function() { t.remove(); }, 300); }, 2500);
+}
+
+// Close dropdowns on outside click
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.tsi-tail-wrap')) document.getElementById('tsiTailDD').classList.remove('open');
+  if (!e.target.closest('.tsi-fc-wrap')) document.getElementById('tsiFcDD').classList.remove('open');
+});
+</script>
 </body>
 </html>

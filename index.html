@@ -844,10 +844,10 @@
             border-radius: 4px;
             letter-spacing: 0.5px;
         }
-        .fsp-work, .fsp-closed, .fsp-total { background: rgba(255,255,255,0.06); color: #ffffff; border: 1px solid var(--frame-border); }
-        .fsp-work.has-data { background: var(--yellow-bg); color: var(--yellow-text); border-color: var(--yellow-border); }
-        .fsp-closed.has-data { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); }
-        .fsp-total.has-data { background: rgba(255,255,255,0.12); color: #ffffff; border-color: rgba(255,255,255,0.2); }
+        .fsp-work, .fsp-closed, .fsp-total { background: rgba(255,255,255,0.08); color: #ffffff; border: 1px solid rgba(255,255,255,0.15); }
+        .fsp-work.has-data { background: #fbbf24; color: #1e293b; border-color: #fbbf24; font-weight: 700; }
+        .fsp-closed.has-data { background: #4ade80; color: #1e293b; border-color: #4ade80; font-weight: 700; }
+        .fsp-total.has-data { background: rgba(255,255,255,0.15); color: #ffffff; border-color: rgba(255,255,255,0.25); }
         .fsp-rate { background: rgba(255,255,255,0.06); color: #ffffff; border: 1px solid var(--frame-border); }
         .fsp-rate.has-data { background: rgba(37,99,235,0.15); color: #93c5fd; border-color: rgba(37,99,235,0.3); }
 
@@ -902,6 +902,10 @@
             padding: 10px 16px; font-size: 12px; color: var(--text); line-height: 1.5;
             border-bottom: 1px solid var(--border); background: #fff;
         }
+        .fec-corrective {
+            padding: 10px 16px; font-size: 12px; color: var(--green-text); line-height: 1.5;
+            border-bottom: 1px solid var(--border); background: var(--green-bg);
+        }
         .fec-actions {
             padding: 10px 16px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
         }
@@ -910,10 +914,10 @@
             padding: 6px 12px; border-radius: 5px; border: 1px solid; cursor: pointer;
             letter-spacing: 0.3px; transition: all 0.15s;
         }
-        .fec-btn-eff { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); }
-        .fec-btn-eff:hover { background: var(--green-border); color: #fff; }
-        .fec-btn-ineff { background: var(--yellow-bg); color: var(--yellow-text); border-color: var(--yellow-border); }
-        .fec-btn-ineff:hover { background: var(--yellow-border); color: #fff; }
+        .fec-btn-update { background: var(--blue-bg); color: var(--blue-text); border-color: var(--blue-border); }
+        .fec-btn-update:hover { background: var(--blue-border); color: #fff; }
+        .fec-btn-close { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); }
+        .fec-btn-close:hover { background: var(--green-border); color: #fff; }
         .fec-btn-reopen { background: var(--blue-bg); color: var(--blue-text); border-color: var(--blue-border); }
         .fec-btn-reopen:hover { background: var(--blue-border); color: #fff; }
         .fec-btn-del { background: none; color: var(--red-text); border-color: var(--red-border); margin-left: auto; }
@@ -930,6 +934,15 @@
         }
         .fco-chip:hover { border-color: var(--accent); background: var(--blue-bg); }
         .fco-chip.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+        /* Effective/Ineffective chips */
+        .fco-eff-chip {
+            font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+            padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border);
+            background: var(--surface); color: var(--text); cursor: pointer; transition: all 0.15s;
+        }
+        .fco-eff-chip:hover { border-color: var(--green); }
+        .fco-eff-chip.selected { background: var(--green); color: #fff; border-color: var(--green); }
 
         /* TSI Modal */
         .tsi-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;}
@@ -1532,18 +1545,35 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         <!-- Closeout modal -->
         <div class="tsi-modal-overlay" id="fixCoOverlay">
-            <div class="tsi-modal" style="max-width:420px;">
-                <div class="modal-header"><h2 id="fixCoTitle">Close - Effective</h2><button class="modal-close" onclick="fixCoCancel()">&times;</button></div>
-                <div class="modal-body" style="padding:16px 20px;">
-                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">Select the action taken:</div>
-                    <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                        <span class="fco-chip" onclick="fcoPickAction(this)">REMOVE/REPLACE</span>
-                        <span class="fco-chip" onclick="fcoPickAction(this)">REPAIR</span>
-                        <span class="fco-chip" onclick="fcoPickAction(this)">RESET/OPS CK</span>
-                        <span class="fco-chip" onclick="fcoPickAction(this)">NFF</span>
+            <div class="tsi-modal" style="max-width:480px;">
+                <div class="modal-header"><h2>Close TSI</h2><button class="modal-close" onclick="fixCoCancel()">&times;</button></div>
+                <div class="modal-body" style="padding:14px 20px 8px;">
+                    <div class="form-group">
+                        <label class="form-label">Result</label>
+                        <div style="display:flex;gap:6px;">
+                            <span class="fco-eff-chip" onclick="fcoPickEff(this, true)">EFFECTIVE</span>
+                            <span class="fco-eff-chip" onclick="fcoPickEff(this, false)">INEFFECTIVE</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Action Taken</label>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <span class="fco-chip" onclick="fcoPickAction(this)">REMOVE/REPLACE</span>
+                            <span class="fco-chip" onclick="fcoPickAction(this)">REPAIR</span>
+                            <span class="fco-chip" onclick="fcoPickAction(this)">RESET/OPS CK</span>
+                            <span class="fco-chip" onclick="fcoPickAction(this)">NFF</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Corrective Action Notes</label>
+                        <textarea id="fcoNotes" class="form-input" rows="3" placeholder="R/R #1 IASC P/N 1234, OPS CK SAT..." style="resize:vertical;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Close Date</label>
+                        <input type="date" id="fcoDate" class="form-input">
                     </div>
                 </div>
-                <div class="modal-footer"><button class="modal-save" onclick="fixCoConfirm()">CONFIRM</button><button class="modal-cancel" onclick="fixCoCancel()">CANCEL</button></div>
+                <div class="modal-footer"><button class="modal-save" onclick="fixCoConfirm()">CLOSE ENTRY</button><button class="modal-cancel" onclick="fixCoCancel()">CANCEL</button></div>
             </div>
         </div>
 
@@ -2257,7 +2287,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             // Text search
             if (q) {
                 results = results.filter(function(e) {
-                    var hay = [e.faultCode||'', e.effect||'', e.ata||'', e.fleet||'', e.tail||'', e.notes||'', e.workOrder||'', e.ref||'', e.actionType||''].join(' ').toLowerCase();
+                    var hay = [e.faultCode||'', e.effect||'', e.ata||'', e.fleet||'', e.tail||'', e.notes||'', e.workOrder||'', e.ref||'', e.actionType||'', e.correctiveAction||''].join(' ').toLowerCase();
                     return words.every(function(w) { return hay.indexOf(w) !== -1; });
                 });
             }
@@ -2309,12 +2339,17 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                     html += '<div class="fec-notes">' + esc(e.notes) + '</div>';
                 }
 
+                // Corrective action (shown when closed)
+                if (e.correctiveAction) {
+                    html += '<div class="fec-corrective"><span class="fec-label" style="margin-bottom:2px;">CORRECTIVE ACTION</span><div>' + esc(e.correctiveAction) + '</div></div>';
+                }
+
                 // Action buttons
                 if (canEdit) {
                     html += '<div class="fec-actions">';
                     if (e.status === 'in_work') {
-                        html += '<button class="fec-btn fec-btn-eff" onclick="fixCloseout(\'' + e.id + '\',true)">CLOSE - EFFECTIVE</button>';
-                        html += '<button class="fec-btn fec-btn-ineff" onclick="fixCloseout(\'' + e.id + '\',false)">CLOSE - INEFFECTIVE</button>';
+                        html += '<button class="fec-btn fec-btn-update" onclick="fixUpdate(\'' + e.id + '\')">UPDATE</button>';
+                        html += '<button class="fec-btn fec-btn-close" onclick="fixClose(\'' + e.id + '\')">CLOSE</button>';
                     } else {
                         html += '<button class="fec-btn fec-btn-reopen" onclick="fixReopen(\'' + e.id + '\')">REOPEN</button>';
                     }
@@ -2328,21 +2363,39 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             fixResults.innerHTML = html;
         }
 
-        // Closeout from Fix Rate tab
+        // Close from Fix Rate tab
         var fixCloseoutId = null;
-        var fixCloseoutEff = true;
+        var fixCloseoutEff = null;
 
-        function fixCloseout(id, effective) {
+        function fixClose(id) {
             fixCloseoutId = id;
-            fixCloseoutEff = effective;
-            document.getElementById('fixCoTitle').textContent = effective ? 'Close - Effective' : 'Close - Ineffective';
+            fixCloseoutEff = null;
             document.querySelectorAll('.fco-chip').forEach(function(c) { c.classList.remove('selected'); });
+            document.querySelectorAll('.fco-eff-chip').forEach(function(c) { c.classList.remove('selected'); });
+            document.getElementById('fcoNotes').value = '';
+            // Default close date to today
+            var today = new Date();
+            var yyyy = today.getFullYear();
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var dd = String(today.getDate()).padStart(2, '0');
+            document.getElementById('fcoDate').value = yyyy + '-' + mm + '-' + dd;
             document.getElementById('fixCoOverlay').classList.add('open');
+        }
+
+        function fixUpdate(id) {
+            tsiToast('Edit coming soon');
         }
 
         function fixCoCancel() {
             document.getElementById('fixCoOverlay').classList.remove('open');
             fixCloseoutId = null;
+            fixCloseoutEff = null;
+        }
+
+        function fcoPickEff(el, eff) {
+            document.querySelectorAll('.fco-eff-chip').forEach(function(c) { c.classList.remove('selected'); });
+            el.classList.add('selected');
+            fixCloseoutEff = eff;
         }
 
         function fcoPickAction(el) {
@@ -2352,16 +2405,22 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         function fixCoConfirm() {
             if (!fixCloseoutId) return;
+            if (fixCloseoutEff === null) { tsiToast('Select effective or ineffective'); return; }
             var chip = document.querySelector('.fco-chip.selected');
             if (!chip) { tsiToast('Select an action taken'); return; }
+            var notes = document.getElementById('fcoNotes').value.trim();
+            if (!notes) { tsiToast('Enter corrective action notes'); document.getElementById('fcoNotes').focus(); return; }
+            var closeDate = document.getElementById('fcoDate').value;
+            if (!closeDate) { tsiToast('Enter a close date'); return; }
             db.collection('tsi_entries').doc(fixCloseoutId).update({
                 status: fixCloseoutEff ? 'closed_eff' : 'closed_ineff',
-                closedDate: new Date().toISOString(),
-                actionType: chip.textContent.trim()
+                closedDate: closeDate + 'T' + new Date().toTimeString().slice(0,8),
+                actionType: chip.textContent.trim(),
+                correctiveAction: notes
             }).then(function() {
                 fixCoCancel();
                 loadTsiEntries();
-                tsiToast(fixCloseoutEff ? 'Closed as effective' : 'Closed as ineffective');
+                tsiToast(fixCloseoutEff ? 'Closed - Effective' : 'Closed - Ineffective');
             }).catch(function(err) { tsiToast('Error: ' + err.message); });
         }
 

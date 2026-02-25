@@ -120,15 +120,15 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
-.modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-header{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .modal-header h2{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--text);}
 .modal-close{background:none;border:none;font-size:20px;color:var(--text-dim);cursor:pointer;padding:4px;}
 .modal-close:hover{color:var(--text);}
-.modal-body{padding:20px;}
-.modal-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
+.modal-body{padding:14px 20px 8px;}
+.modal-footer{padding:10px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
 
 /* Form */
-.form-group{margin-bottom:16px;}
+.form-group{margin-bottom:12px;}
 .form-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;display:block;}
 .form-label .req{color:var(--red);}
 .form-input,.form-select,.form-textarea{width:100%;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:#fff;border:1px solid var(--border);border-radius:8px;outline:none;transition:border-color 0.15s;}
@@ -150,7 +150,7 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 
 /* Fault code autocomplete */
 .fc-wrap{position:relative;}
-.fc-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:240px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
+.fc-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:340px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
 .fc-dropdown.open{display:block;}
 .fc-opt{padding:8px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:background 0.1s;border-bottom:1px solid var(--surface2);}
 .fc-opt:last-child{border-bottom:none;}
@@ -506,7 +506,7 @@ function filterTails() {
   var q = document.getElementById('fTail').value.toUpperCase().trim();
   var dd = document.getElementById('tailDropdown');
   if (!q) { dd.classList.remove('open'); return; }
-  var matches = AIRCRAFT.filter(function(a) { return a[0].indexOf(q) !== -1; }).slice(0, 12);
+  var matches = AIRCRAFT.filter(function(a) { return a[0].indexOf(q) !== -1; }).slice(0, 50);
   if (matches.length === 0) { dd.classList.remove('open'); return; }
   tailHighlight = 0;
   var html = '';
@@ -581,7 +581,7 @@ function filterFC() {
     if (f.code.indexOf(q) === 0) return true;
     if (q.length >= 3 && (f.message.toUpperCase().indexOf(q) !== -1 || f.title.toUpperCase().indexOf(q) !== -1)) return true;
     return false;
-  }).slice(0, 12);
+  }).slice(0, 50);
   if (matches.length === 0) { dd.classList.remove('open'); return; }
   fcHL = 0;
   var html = '';
@@ -602,11 +602,17 @@ function selectFC(idx) {
   var dd = document.getElementById('fcDropdown');
   var f = dd._matches[idx];
   document.getElementById('fFaultCode').value = f.code;
-  if (f.message || f.title) document.getElementById('fEffect').value = f.message || f.title;
+  if (f.message || f.title) {
+    var ef = document.getElementById('fEffect');
+    ef.value = f.message || f.title;
+    ef.setSelectionRange(0, 0);
+    ef.scrollLeft = 0;
+  }
   if (f.fimTask) document.getElementById('fRef').value = f.fimTask;
   autoFillATA();
   dd.classList.remove('open');
   document.getElementById('fEffect').focus();
+  setTimeout(function() { document.getElementById('fEffect').setSelectionRange(0, 0); document.getElementById('fEffect').scrollLeft = 0; }, 0);
 }
 
 function fcKeyNav(e) {

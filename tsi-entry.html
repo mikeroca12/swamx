@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TSI Fix Rate - Manage | MOC Toolbox</title>
+<title>TSI Fix Rate - Entry | MOC Toolbox</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -43,6 +43,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min-height:100vh;}
 
+/* Nav */
 .nav-bar{background:var(--frame);border-bottom:1px solid var(--frame-border);padding:10px 24px;display:flex;align-items:center;gap:14px;font-size:14px;}
 .nav-bar a{color:#ffffff;text-decoration:none;}
 .nav-bar .nav-title{font-weight:700;color:var(--text-on-dark);}
@@ -51,6 +52,7 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 .nav-bar img{height:28px;}
 .nav-logo{display:flex;align-items:center;gap:8px;}
 
+/* Header */
 .header{background:var(--frame);border-bottom:1px solid var(--frame-border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .header h1{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;letter-spacing:-0.5px;color:#ffffff;}
 .header-actions{display:flex;gap:8px;}
@@ -61,12 +63,14 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 
 .container{max-width:900px;margin:0 auto;padding:24px 24px 80px;}
 
+/* Filter bar */
 .filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
 .f-chip{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:6px 12px;border-radius:6px;border:1px solid var(--frame-border);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.15s;}
 .f-chip:hover{background:rgba(255,255,255,0.1);color:#fff;}
 .f-chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
 .f-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.4);margin-left:auto;}
 
+/* Status filter */
 .s-chip{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:4px 10px;border-radius:4px;cursor:pointer;transition:all 0.15s;letter-spacing:0.5px;}
 .s-chip.s-all{border:1px solid var(--frame-border);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);}
 .s-chip.s-all.active{background:rgba(255,255,255,0.15);color:#fff;}
@@ -75,60 +79,44 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 .s-chip.s-closed{border:1px solid var(--green-border);background:rgba(22,163,74,0.1);color:var(--green);}
 .s-chip.s-closed.active{background:var(--green);color:#fff;}
 
-/* Case Cards */
-.case-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden;box-shadow:var(--card-shadow);}
-.case-card-top{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
-.case-status{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:0.5px;flex-shrink:0;}
-.case-status.in-work{background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow-border);}
-.case-status.closed{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);}
-.case-tail{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--accent);}
-.case-fleet{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(22,163,74,0.1);color:#15803d;border:1px solid #86efac;}
-.case-fc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--text);}
-.case-effect{font-size:12px;color:var(--text-secondary);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.case-attempts{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;flex-shrink:0;}
-.case-attempts.single{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);}
-.case-attempts.multi{background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow-border);}
+/* TSI Cards */
+.tsi-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;box-shadow:var(--card-shadow);}
+.tsi-card-top{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.tsi-status{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:0.5px;flex-shrink:0;}
+.tsi-status.in-work{background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow-border);}
+.tsi-status.closed-eff{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);}
+.tsi-status.closed-ineff{background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border);}
+.tsi-tail{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--accent);}
+.tsi-fleet{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(22,163,74,0.1);color:#15803d;border:1px solid #86efac;}
+.tsi-fc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--text);}
+.tsi-effect{font-size:12px;color:var(--text-secondary);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tsi-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);flex-shrink:0;}
 
-/* Attempt timeline */
-.attempt-timeline{padding:0 16px 12px;}
-.attempt-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);position:relative;}
-.attempt-item:last-child{border-bottom:none;}
-.attempt-num{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
-.attempt-num.eff{background:var(--green);}
-.attempt-num.ineff{background:var(--red);}
-.attempt-num.pending{background:var(--yellow);}
-.attempt-body{flex:1;min-width:0;}
-.attempt-header{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;}
-.attempt-action{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--text);}
-.attempt-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
-.attempt-result{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;}
-.attempt-result.eff{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);}
-.attempt-result.ineff{background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border);}
-.attempt-result.pending{background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow-border);}
-.attempt-details{font-size:12px;color:var(--text-secondary);line-height:1.5;}
-.attempt-meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px;}
-.attempt-meta span{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
+.tsi-card-body{padding:12px 16px;}
+.tsi-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:8px;}
+.tsi-field{flex:1;min-width:120px;}
+.tsi-field-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--text-dim);letter-spacing:0.5px;margin-bottom:2px;}
+.tsi-field-value{font-size:12px;color:var(--text);font-weight:500;}
+.tsi-action-text{font-size:12px;color:var(--text);line-height:1.5;margin-top:4px;padding:8px 10px;background:#fff;border:1px solid var(--border);border-radius:6px;}
 
-.window-divider{display:flex;align-items:center;gap:10px;padding:8px 0;margin:4px 0;}
-.window-divider-line{flex:1;height:1px;background:var(--border-strong);}
-.window-divider-text{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--text-dim);letter-spacing:1px;white-space:nowrap;}
-
-.case-card-actions{padding:8px 16px;border-top:1px solid var(--border);display:flex;gap:6px;background:var(--surface2);flex-wrap:wrap;}
+.tsi-card-actions{padding:8px 16px;border-top:1px solid var(--border);display:flex;gap:6px;background:var(--surface2);}
 .tsi-btn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:5px 12px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;letter-spacing:0.3px;}
 .tsi-btn:hover{border-color:var(--accent);color:var(--accent);}
-.tsi-btn.btn-add{color:var(--blue-text);border-color:var(--blue-border);}
-.tsi-btn.btn-add:hover{background:var(--blue-bg);}
 .tsi-btn.btn-close-eff{color:var(--green-text);border-color:var(--green-border);}
 .tsi-btn.btn-close-eff:hover{background:var(--green-bg);}
 .tsi-btn.btn-close-ineff{color:var(--red-text);border-color:var(--red-border);}
 .tsi-btn.btn-close-ineff:hover{background:var(--red-bg);}
+.tsi-btn.btn-reopen{color:var(--yellow-text);border-color:var(--yellow-border);}
+.tsi-btn.btn-reopen:hover{background:var(--yellow-bg);}
 .tsi-btn.btn-delete{color:var(--red-text);border-color:var(--red-border);margin-left:auto;}
 .tsi-btn.btn-delete:hover{background:var(--red-bg);}
 
+/* Empty */
 .empty{text-align:center;padding:60px 24px;color:rgba(255,255,255,0.3);}
 .empty p{font-size:15px;margin-bottom:4px;}
 .empty .hint{font-size:12px;}
 
+/* Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
@@ -139,18 +127,19 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 .modal-body{padding:20px;}
 .modal-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
 
-.existing-case-banner{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:var(--blue-text);line-height:1.5;}
-.existing-case-banner strong{font-family:'JetBrains Mono',monospace;font-size:11px;}
-
+/* Form */
 .form-group{margin-bottom:16px;}
 .form-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;display:block;}
 .form-label .req{color:var(--red);}
 .form-input,.form-select,.form-textarea{width:100%;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:#fff;border:1px solid var(--border);border-radius:8px;outline:none;transition:border-color 0.15s;}
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.1);}
 .form-textarea{min-height:80px;resize:vertical;line-height:1.5;}
+.form-select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
 .form-row{display:flex;gap:12px;}
 .form-row .form-group{flex:1;}
+.form-hint{font-size:11px;color:var(--text-dim);margin-top:4px;}
 
+/* Tail search dropdown */
 .tail-wrap{position:relative;}
 .tail-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:200px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
 .tail-dropdown.open{display:block;}
@@ -158,19 +147,31 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 .tail-opt:hover,.tail-opt.highlighted{background:var(--blue-bg);}
 .tail-opt .to-tail{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--text);}
 .tail-opt .to-fleet{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
+.fc-wrap{position:relative;}
+.fc-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:240px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
+.fc-dropdown.open{display:block;}
+.fc-opt{padding:8px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:background 0.1s;border-bottom:1px solid var(--surface2);}
+.fc-opt:last-child{border-bottom:none;}
+.fc-opt:hover,.fc-opt.highlighted{background:var(--blue-bg);}
+.fc-opt .fc-code{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:var(--text);}
+.fc-opt .fc-msg{font-size:11px;color:var(--text-secondary);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fc-opt .fc-task{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
 
+/* Action taken dropdown */
 .action-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
 .action-chip{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;}
 .action-chip:hover{border-color:var(--accent);color:var(--accent);}
 .action-chip.selected{background:var(--accent);color:#fff;border-color:var(--accent);}
 
+/* Toast */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:opacity 0.3s;}
 
+/* Responsive */
 @media(max-width:640px){
   .container{padding:16px 14px 60px;}
-  .case-card-top{flex-wrap:wrap;}
+  .tsi-card-top{flex-wrap:wrap;}
   .form-row{flex-direction:column;gap:0;}
-  .case-effect{display:none;}
+  .tsi-effect{display:none;}
 }
 </style>
 </head>
@@ -186,9 +187,9 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 </div>
 
 <div class="header">
-  <h1>TSI Fix Rate - Manage Cases</h1>
+  <h1>TSI Fix Rate - Manage Entries</h1>
   <div class="header-actions">
-    <button class="header-btn" onclick="exportData()">EXPORT REPORT</button>
+    <button class="header-btn" onclick="exportData()">EXPORT JSON</button>
     <button class="header-btn primary" onclick="openNewModal()">+ NEW TSI</button>
   </div>
 </div>
@@ -206,10 +207,11 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
     <button class="s-chip s-closed" data-status="CLOSED" onclick="setStatus(this)">CLOSED</button>
     <span class="f-count" id="entryCount"></span>
   </div>
-  <div id="caseList"></div>
+
+  <div id="tsiList"></div>
 </div>
 
-<!-- Modal -->
+<!-- New/Edit TSI Modal -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-header">
@@ -217,13 +219,14 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
       <button class="modal-close" onclick="closeModal()">&times;</button>
     </div>
     <div class="modal-body">
-      <div id="existingCaseBanner" class="existing-case-banner" style="display:none;"></div>
-      <div class="form-group tail-wrap" id="tailGroup">
+
+      <div class="form-group tail-wrap">
         <label class="form-label">TAIL NUMBER <span class="req">*</span></label>
-        <input type="text" class="form-input" id="fTail" placeholder="Start typing tail..." autocomplete="off" oninput="filterTails();checkExisting();" onfocus="filterTails()" onkeydown="tailKeyNav(event)">
+        <input type="text" class="form-input" id="fTail" placeholder="Start typing tail..." autocomplete="off" oninput="filterTails()" onfocus="filterTails()" onkeydown="tailKeyNav(event)">
         <div class="tail-dropdown" id="tailDropdown"></div>
       </div>
-      <div class="form-row" id="fleetAtaRow">
+
+      <div class="form-row">
         <div class="form-group">
           <label class="form-label">FLEET</label>
           <input type="text" class="form-input" id="fFleet" readonly tabindex="-1" style="background:var(--surface);color:var(--text-dim);">
@@ -233,21 +236,26 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
           <input type="text" class="form-input" id="fAta" placeholder="e.g. 36" maxlength="5">
         </div>
       </div>
-      <div class="form-group" id="faultCodeGroup">
+
+      <div class="form-group fc-wrap">
         <label class="form-label">FAULT CODE <span class="req">*</span></label>
-        <input type="text" class="form-input" id="fFaultCode" placeholder="e.g. 36-12020" oninput="checkExisting()">
+        <input type="text" class="form-input" id="fFaultCode" placeholder="e.g. 36-12020 or FAMV" autocomplete="off" oninput="filterFaultCodes()" onfocus="filterFaultCodes()" onkeydown="fcKeyNav(event)">
+        <div class="fc-dropdown" id="fcDropdown"></div>
       </div>
-      <div class="form-group" id="effectGroup">
+
+      <div class="form-group">
         <label class="form-label">FLIGHT DECK EFFECT / DESCRIPTION <span class="req">*</span></label>
         <input type="text" class="form-input" id="fEffect" placeholder="e.g. BLEED FAMV L - Status Message">
       </div>
+
       <div class="form-group">
         <label class="form-label">WORK ORDER</label>
         <input type="text" class="form-input" id="fWorkOrder" placeholder="e.g. TTG8Q01AL9VS">
       </div>
+
       <div class="form-group">
         <label class="form-label">ACTION TAKEN</label>
-        <div class="action-chips">
+        <div class="action-chips" id="actionChips">
           <span class="action-chip" onclick="pickAction(this)">IFIM/FIM TASK</span>
           <span class="action-chip" onclick="pickAction(this)">REMOVE/REPLACE</span>
           <span class="action-chip" onclick="pickAction(this)">RESET</span>
@@ -256,11 +264,23 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
           <span class="action-chip" onclick="pickAction(this)">TEST/OPS CK</span>
           <span class="action-chip" onclick="pickAction(this)">DEFERRED</span>
         </div>
+        <select class="form-select" id="fActionType" style="display:none;">
+          <option value="">Select action type...</option>
+          <option value="IFIM/FIM TASK">IFIM/FIM TASK</option>
+          <option value="REMOVE/REPLACE">REMOVE/REPLACE</option>
+          <option value="RESET">RESET</option>
+          <option value="SWAP">SWAP</option>
+          <option value="CB RESET">CB RESET</option>
+          <option value="TEST/OPS CK">TEST/OPS CK</option>
+          <option value="DEFERRED">DEFERRED</option>
+        </select>
       </div>
+
       <div class="form-group">
         <label class="form-label">TSI DETAILS / NOTES</label>
         <textarea class="form-textarea" id="fNotes" placeholder="Paste TSI verbiage or describe what was done..."></textarea>
       </div>
+
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">DUE DATE</label>
@@ -271,117 +291,938 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
           <input type="text" class="form-input" id="fRef" placeholder="e.g. AMM 36-12-03">
         </div>
       </div>
+
     </div>
     <div class="modal-footer">
       <button class="tsi-btn" onclick="closeModal()">CANCEL</button>
-      <button class="tsi-btn" id="saveBtn" style="background:var(--accent);color:#fff;border-color:var(--accent);" onclick="saveEntry()">SAVE</button>
+      <button class="tsi-btn" style="background:var(--accent);color:#fff;border-color:var(--accent);" onclick="saveEntry()">SAVE</button>
     </div>
   </div>
 </div>
 
 <script>
-// ============================================
-// CASE-BASED DATA MODEL
-// ============================================
-// case = { id, tail, fleet, ata, faultCode, effect, created, status, attempts[] }
-// attempt = { id, actionType, workOrder, notes, dueDate, ref, created, closedDate, result }
-// result: 'pending' | 'effective' | 'ineffective'
-// status: 'in_work' (latest attempt pending) | 'closed' (latest attempt resolved)
-//
-// FIX WINDOWS: attempts within 30 days = one fix window.
-// 1st attempt fix rate = windows with 1 effective attempt / total closed windows.
+var AIRCRAFT = [
+["N1801U","MAX 8"],
+["N1802U","MAX 8"],
+["N1803U","MAX 8"],
+["N1804U","MAX 8"],
+["N1805U","MAX 8"],
+["N1806U","MAX 8"],
+["N1807U","MAX 8"],
+["N1808U","MAX 8"],
+["N1809U","MAX 8"],
+["N1810U","MAX 8"],
+["N1811U","MAX 8"],
+["N200WN","NG 700"],
+["N201LV","NG 700"],
+["N203WN","NG 700"],
+["N204WN","NG 700"],
+["N205WN","NG 700"],
+["N206WN","NG 700"],
+["N207WN","NG 700"],
+["N208WN","NG 700"],
+["N209WN","NG 700"],
+["N210WN","NG 700"],
+["N211WN","NG 700"],
+["N212WN","NG 700"],
+["N213WN","NG 700"],
+["N214WN","NG 700"],
+["N215WN","NG 700"],
+["N216WR","NG 700"],
+["N217JC","NG 700"],
+["N218WN","NG 700"],
+["N219WN","NG 700"],
+["N220WN","NG 700"],
+["N221WN","NG 700"],
+["N222WN","NG 700"],
+["N224WN","NG 700"],
+["N225WN","NG 700"],
+["N226WN","NG 700"],
+["N227WN","NG 700"],
+["N228WN","NG 700"],
+["N229WN","NG 700"],
+["N231WN","NG 700"],
+["N232WN","NG 700"],
+["N234WN","NG 700"],
+["N236WN","NG 700"],
+["N240WN","NG 700"],
+["N241WN","NG 700"],
+["N242WN","NG 700"],
+["N243WN","NG 700"],
+["N244WN","NG 700"],
+["N245WN","NG 700"],
+["N246LV","NG 700"],
+["N247WN","NG 700"],
+["N248WN","NG 700"],
+["N249WN","NG 700"],
+["N250WN","NG 700"],
+["N251WN","NG 700"],
+["N252WN","NG 700"],
+["N253WN","NG 700"],
+["N254WN","NG 700"],
+["N255WN","NG 700"],
+["N256WN","NG 700"],
+["N257WN","NG 700"],
+["N258WN","NG 700"],
+["N259WN","NG 700"],
+["N260WN","NG 700"],
+["N261WN","NG 700"],
+["N262WN","NG 700"],
+["N263WN","NG 700"],
+["N264LV","NG 700"],
+["N265WN","NG 700"],
+["N266WN","NG 700"],
+["N267WN","NG 700"],
+["N268WN","NG 700"],
+["N269WN","NG 700"],
+["N272WN","NG 700"],
+["N273WN","NG 700"],
+["N274WN","NG 700"],
+["N275WN","NG 700"],
+["N276WN","NG 700"],
+["N277WN","NG 700"],
+["N278WN","NG 700"],
+["N279WN","NG 700"],
+["N280WN","NG 700"],
+["N281WN","NG 700"],
+["N282WN","NG 700"],
+["N283WN","NG 700"],
+["N284WN","NG 700"],
+["N285WN","NG 700"],
+["N286WN","NG 700"],
+["N287WN","NG 700"],
+["N288WN","NG 700"],
+["N289CT","NG 700"],
+["N290WN","NG 700"],
+["N291WN","NG 700"],
+["N292WN","NG 700"],
+["N293WN","NG 700"],
+["N294WN","NG 700"],
+["N295WN","NG 700"],
+["N296WN","NG 700"],
+["N297WN","NG 700"],
+["N298WN","NG 700"],
+["N299WN","NG 700"],
+["N426WN","NG 700"],
+["N427WN","NG 700"],
+["N428WN","NG 700"],
+["N429WN","NG 700"],
+["N431WN","NG 700"],
+["N435WN","NG 700"],
+["N436WN","NG 700"],
+["N437WN","NG 700"],
+["N438WN","NG 700"],
+["N439WN","NG 700"],
+["N440LV","NG 700"],
+["N441WN","NG 700"],
+["N442WN","NG 700"],
+["N443WN","NG 700"],
+["N444WN","NG 700"],
+["N445WN","NG 700"],
+["N446WN","NG 700"],
+["N447WN","NG 700"],
+["N448WN","NG 700"],
+["N449WN","NG 700"],
+["N451WN","NG 700"],
+["N452WN","NG 700"],
+["N453WN","NG 700"],
+["N454WN","NG 700"],
+["N455WN","NG 700"],
+["N456WN","NG 700"],
+["N457WN","NG 700"],
+["N458WN","NG 700"],
+["N459WN","NG 700"],
+["N460WN","NG 700"],
+["N461WN","NG 700"],
+["N462WN","NG 700"],
+["N463WN","NG 700"],
+["N464WN","NG 700"],
+["N465WN","NG 700"],
+["N467WN","NG 700"],
+["N468WN","NG 700"],
+["N469WN","NG 700"],
+["N470WN","NG 700"],
+["N472WN","NG 700"],
+["N473WN","NG 700"],
+["N474WN","NG 700"],
+["N475WN","NG 700"],
+["N476WN","NG 700"],
+["N477WN","NG 700"],
+["N478WN","NG 700"],
+["N479WN","NG 700"],
+["N480WN","NG 700"],
+["N481WN","NG 700"],
+["N482WN","NG 700"],
+["N483WN","NG 700"],
+["N485WN","NG 700"],
+["N486WN","NG 700"],
+["N487WN","NG 700"],
+["N488WN","NG 700"],
+["N489WN","NG 700"],
+["N491WN","NG 700"],
+["N494WN","NG 700"],
+["N495WN","NG 700"],
+["N497WN","NG 700"],
+["N498WN","NG 700"],
+["N499WN","NG 700"],
+["N500WR","NG 800"],
+["N555LV","NG 700"],
+["N556WN","NG 700"],
+["N561WN","NG 700"],
+["N563WN","NG 700"],
+["N564WN","NG 700"],
+["N566WN","NG 700"],
+["N567WN","NG 700"],
+["N569WN","NG 700"],
+["N570WN","NG 700"],
+["N7702A","NG 700"],
+["N7704B","NG 700"],
+["N7713A","NG 700"],
+["N7715E","NG 700"],
+["N7721E","NG 700"],
+["N7723E","NG 700"],
+["N7724A","NG 700"],
+["N7729A","NG 700"],
+["N7731A","NG 700"],
+["N7732A","NG 700"],
+["N7733B","NG 700"],
+["N7734H","NG 700"],
+["N7735A","NG 700"],
+["N7736A","NG 700"],
+["N7737E","NG 700"],
+["N7738A","NG 700"],
+["N7739A","NG 700"],
+["N7740A","NG 700"],
+["N7741C","NG 700"],
+["N7742B","NG 700"],
+["N7743B","NG 700"],
+["N7744A","NG 700"],
+["N7745A","NG 700"],
+["N7746C","NG 700"],
+["N7747C","NG 700"],
+["N7748A","NG 700"],
+["N7749B","NG 700"],
+["N7750A","NG 700"],
+["N7751A","NG 700"],
+["N7752B","NG 700"],
+["N7815L","NG 700"],
+["N7820L","NG 700"],
+["N7821L","NG 700"],
+["N7823A","NG 700"],
+["N7825A","NG 700"],
+["N7826B","NG 700"],
+["N7827A","NG 700"],
+["N7828A","NG 700"],
+["N7831B","NG 700"],
+["N7832A","NG 700"],
+["N7833A","NG 700"],
+["N7835A","NG 700"],
+["N7843A","NG 700"],
+["N7844A","NG 700"],
+["N7847A","NG 700"],
+["N7848A","NG 700"],
+["N7852A","NG 700"],
+["N7854B","NG 700"],
+["N7855A","NG 700"],
+["N7857B","NG 700"],
+["N7858A","NG 700"],
+["N7860A","NG 700"],
+["N7861J","NG 700"],
+["N7862A","NG 700"],
+["N7868K","NG 700"],
+["N7869A","NG 700"],
+["N7873A","NG 700"],
+["N7874B","NG 700"],
+["N7875A","NG 700"],
+["N7876A","NG 700"],
+["N7877H","NG 700"],
+["N7878A","NG 700"],
+["N7879A","NG 700"],
+["N7880D","NG 700"],
+["N7881A","NG 700"],
+["N7885A","NG 700"],
+["N7886A","NG 700"],
+["N7887A","NG 700"],
+["N7888A","NG 700"],
+["N7889A","NG 700"],
+["N8301J","NG 800"],
+["N8302F","NG 800"],
+["N8303R","NG 800"],
+["N8305E","NG 800"],
+["N8306H","NG 800"],
+["N8307K","NG 800"],
+["N8308K","NG 800"],
+["N8309C","NG 800"],
+["N8310C","NG 800"],
+["N8311Q","NG 800"],
+["N8312C","NG 800"],
+["N8313F","NG 800"],
+["N8314L","NG 800"],
+["N8315C","NG 800"],
+["N8316H","NG 800"],
+["N8317M","NG 800"],
+["N8318F","NG 800"],
+["N8319F","NG 800"],
+["N8320J","NG 800"],
+["N8321D","NG 800"],
+["N8322X","NG 800"],
+["N8323C","NG 800"],
+["N8324A","NG 800"],
+["N8325D","NG 800"],
+["N8326F","NG 800"],
+["N8327A","NG 800"],
+["N8328A","NG 800"],
+["N8329B","NG 800"],
+["N8501V","NG 800"],
+["N8502Z","NG 800"],
+["N8503A","NG 800"],
+["N8504G","NG 800"],
+["N8507C","NG 800"],
+["N8508W","NG 800"],
+["N8509U","NG 800"],
+["N8510E","NG 800"],
+["N8511K","NG 800"],
+["N8512U","NG 800"],
+["N8513F","NG 800"],
+["N8514F","NG 800"],
+["N8515X","NG 800"],
+["N8517F","NG 800"],
+["N8518R","NG 800"],
+["N8519R","NG 800"],
+["N8520Q","NG 800"],
+["N8522P","NG 800"],
+["N8523W","NG 800"],
+["N8524Z","NG 800"],
+["N8525S","NG 800"],
+["N8526W","NG 800"],
+["N8527Q","NG 800"],
+["N8528Q","NG 800"],
+["N8529Z","NG 800"],
+["N8530W","NG 800"],
+["N8531Q","NG 800"],
+["N8532S","NG 800"],
+["N8533S","NG 800"],
+["N8534Z","NG 800"],
+["N8535S","NG 800"],
+["N8536Z","NG 800"],
+["N8537Z","NG 800"],
+["N8538V","NG 800"],
+["N8539V","NG 800"],
+["N8540V","NG 800"],
+["N8541W","NG 800"],
+["N8542Z","NG 800"],
+["N8543Z","NG 800"],
+["N8544Z","NG 800"],
+["N8545V","NG 800"],
+["N8546V","NG 800"],
+["N8547V","NG 800"],
+["N8548P","NG 800"],
+["N8549Z","NG 800"],
+["N8550Q","NG 800"],
+["N8551Q","NG 800"],
+["N8552Z","NG 800"],
+["N8553W","NG 800"],
+["N8554X","NG 800"],
+["N8555Z","NG 800"],
+["N8556Z","NG 800"],
+["N8557Q","NG 800"],
+["N8558Z","NG 800"],
+["N8559Q","NG 800"],
+["N8560Z","NG 800"],
+["N8561Z","NG 800"],
+["N8562Z","NG 800"],
+["N8563Z","NG 800"],
+["N8564Z","NG 800"],
+["N8565Z","NG 800"],
+["N8566Z","NG 800"],
+["N8567Z","NG 800"],
+["N8568Z","NG 800"],
+["N8569Z","NG 800"],
+["N8570W","NG 800"],
+["N8571Z","NG 800"],
+["N8572X","NG 800"],
+["N8573Z","NG 800"],
+["N8574Z","NG 800"],
+["N8575Z","NG 800"],
+["N8576Z","NG 800"],
+["N8577Z","NG 800"],
+["N8578Q","NG 800"],
+["N8579Z","NG 800"],
+["N8580Z","NG 800"],
+["N8581Z","NG 800"],
+["N8582Z","NG 800"],
+["N8583Z","NG 800"],
+["N8584Z","NG 800"],
+["N8600F","NG 800"],
+["N8602F","NG 800"],
+["N8603F","NG 800"],
+["N8605E","NG 800"],
+["N8606C","NG 800"],
+["N8607M","NG 800"],
+["N8608N","NG 800"],
+["N8609A","NG 800"],
+["N8610A","NG 800"],
+["N8611F","NG 800"],
+["N8612K","NG 800"],
+["N8613K","NG 800"],
+["N8614M","NG 800"],
+["N8619F","NG 800"],
+["N8623F","NG 800"],
+["N8626B","NG 800"],
+["N8628A","NG 800"],
+["N8629A","NG 800"],
+["N8630B","NG 800"],
+["N8631A","NG 800"],
+["N8632A","NG 800"],
+["N8633A","NG 800"],
+["N8634A","NG 800"],
+["N8635F","NG 800"],
+["N8637A","NG 800"],
+["N8638A","NG 800"],
+["N8639B","NG 800"],
+["N8640D","NG 800"],
+["N8641B","NG 800"],
+["N8643A","NG 800"],
+["N8644C","NG 800"],
+["N8645A","NG 800"],
+["N8646B","NG 800"],
+["N8647A","NG 800"],
+["N8648A","NG 800"],
+["N8649A","NG 800"],
+["N8650F","NG 800"],
+["N8651A","NG 800"],
+["N8652B","NG 800"],
+["N8653A","NG 800"],
+["N8654B","NG 800"],
+["N8655D","NG 800"],
+["N8656B","NG 800"],
+["N8657B","NG 800"],
+["N8658A","NG 800"],
+["N8659D","NG 800"],
+["N8660A","NG 800"],
+["N8661A","NG 800"],
+["N8662F","NG 800"],
+["N8663A","NG 800"],
+["N8664J","NG 800"],
+["N8665D","NG 800"],
+["N8667D","NG 800"],
+["N8668A","NG 800"],
+["N8669B","NG 800"],
+["N8670A","NG 800"],
+["N8671D","NG 800"],
+["N8672F","NG 800"],
+["N8673F","NG 800"],
+["N8674B","NG 800"],
+["N8675A","NG 800"],
+["N8676A","NG 800"],
+["N8677A","NG 800"],
+["N8678E","NG 800"],
+["N8679A","NG 800"],
+["N8680C","NG 800"],
+["N8681M","NG 800"],
+["N8682B","NG 800"],
+["N8683D","NG 800"],
+["N8684F","NG 800"],
+["N8685B","NG 800"],
+["N8686A","NG 800"],
+["N8687A","NG 800"],
+["N8688J","NG 800"],
+["N8689C","NG 800"],
+["N8690A","NG 800"],
+["N8691A","NG 800"],
+["N8692F","NG 800"],
+["N8693A","NG 800"],
+["N8694E","NG 800"],
+["N8695D","NG 800"],
+["N8696E","NG 800"],
+["N8697C","NG 800"],
+["N8698B","NG 800"],
+["N8699A","NG 800"],
+["N8701Q","MAX 8"],
+["N8702L","MAX 8"],
+["N8704Q","MAX 8"],
+["N8705Q","MAX 8"],
+["N8706W","MAX 8"],
+["N8707P","MAX 8"],
+["N8708Q","MAX 8"],
+["N8709Q","MAX 8"],
+["N8710M","MAX 8"],
+["N8711Q","MAX 8"],
+["N8712L","MAX 8"],
+["N8713M","MAX 8"],
+["N8714Q","MAX 8"],
+["N8715Q","MAX 8"],
+["N8716B","MAX 8"],
+["N8717M","MAX 8"],
+["N8718Q","MAX 8"],
+["N8719Q","MAX 8"],
+["N871HK","MAX 8"],
+["N8720L","MAX 8"],
+["N8721J","MAX 8"],
+["N8722L","MAX 8"],
+["N8723Q","MAX 8"],
+["N8724J","MAX 8"],
+["N8725L","MAX 8"],
+["N8726H","MAX 8"],
+["N8727M","MAX 8"],
+["N8728Q","MAX 8"],
+["N8729H","MAX 8"],
+["N872CB","MAX 8"],
+["N8730Q","MAX 8"],
+["N8731J","MAX 8"],
+["N8732S","MAX 8"],
+["N8733M","MAX 8"],
+["N8734Q","MAX 8"],
+["N8735L","MAX 8"],
+["N8736J","MAX 8"],
+["N8737L","MAX 8"],
+["N8738K","MAX 8"],
+["N8739L","MAX 8"],
+["N8740A","MAX 8"],
+["N8741L","MAX 8"],
+["N8742M","MAX 8"],
+["N8743K","MAX 8"],
+["N8744B","MAX 8"],
+["N8745K","MAX 8"],
+["N8746Q","MAX 8"],
+["N8747Q","MAX 8"],
+["N8748Q","MAX 8"],
+["N8749Q","MAX 8"],
+["N8750Q","MAX 8"],
+["N8751R","MAX 8"],
+["N8752Q","MAX 8"],
+["N8753Q","MAX 8"],
+["N8754S","MAX 8"],
+["N8755L","MAX 8"],
+["N8756S","MAX 8"],
+["N8757L","MAX 8"],
+["N8758L","MAX 8"],
+["N8759Q","MAX 8"],
+["N8760L","MAX 8"],
+["N8761L","MAX 8"],
+["N8762Q","MAX 8"],
+["N8763L","MAX 8"],
+["N8764Q","MAX 8"],
+["N8765Q","MAX 8"],
+["N8766T","MAX 8"],
+["N8767M","MAX 8"],
+["N8768Q","MAX 8"],
+["N8769Q","MAX 8"],
+["N8770Q","MAX 8"],
+["N8771D","MAX 8"],
+["N8772M","MAX 8"],
+["N8773Q","MAX 8"],
+["N8774Q","MAX 8"],
+["N8775Q","MAX 8"],
+["N8776L","MAX 8"],
+["N8777Q","MAX 8"],
+["N8778Q","MAX 8"],
+["N8779Q","MAX 8"],
+["N8780Q","MAX 8"],
+["N8781Q","MAX 8"],
+["N8782Q","MAX 8"],
+["N8783L","MAX 8"],
+["N8784Q","MAX 8"],
+["N8785L","MAX 8"],
+["N8786Q","MAX 8"],
+["N8787K","MAX 8"],
+["N8788L","MAX 8"],
+["N8789Q","MAX 8"],
+["N8790Q","MAX 8"],
+["N8791D","MAX 8"],
+["N8792Q","MAX 8"],
+["N8793Q","MAX 8"],
+["N8794Q","MAX 8"],
+["N8795L","MAX 8"],
+["N8796L","MAX 8"],
+["N8797Q","MAX 8"],
+["N8798Q","MAX 8"],
+["N8799Q","MAX 8"],
+["N8800L","MAX 8"],
+["N8801Q","MAX 8"],
+["N8802Q","MAX 8"],
+["N8803L","MAX 8"],
+["N8804L","MAX 8"],
+["N8805L","MAX 8"],
+["N8806Q","MAX 8"],
+["N8807L","MAX 8"],
+["N8808Q","MAX 8"],
+["N8809L","MAX 8"],
+["N8810L","MAX 8"],
+["N8811L","MAX 8"],
+["N8812Q","MAX 8"],
+["N8813Q","MAX 8"],
+["N8814K","MAX 8"],
+["N8815L","MAX 8"],
+["N8816Q","MAX 8"],
+["N8817L","MAX 8"],
+["N8818Q","MAX 8"],
+["N8819L","MAX 8"],
+["N8820L","MAX 8"],
+["N8821S","MAX 8"],
+["N8822Q","MAX 8"],
+["N8823Q","MAX 8"],
+["N8824Q","MAX 8"],
+["N8825Q","MAX 8"],
+["N8826Q","MAX 8"],
+["N8827Q","MAX 8"],
+["N8828L","MAX 8"],
+["N8829Q","MAX 8"],
+["N8830Q","MAX 8"],
+["N8831L","MAX 8"],
+["N8832H","MAX 8"],
+["N8833L","MAX 8"],
+["N8834L","MAX 8"],
+["N8835Q","MAX 8"],
+["N8836Q","MAX 8"],
+["N8837Q","MAX 8"],
+["N8838Q","MAX 8"],
+["N8839Q","MAX 8"],
+["N8840Q","MAX 8"],
+["N8841L","MAX 8"],
+["N8842L","MAX 8"],
+["N8843S","MAX 8"],
+["N8844Q","MAX 8"],
+["N8845L","MAX 8"],
+["N8846Q","MAX 8"],
+["N8847Q","MAX 8"],
+["N8848Q","MAX 8"],
+["N8849Q","MAX 8"],
+["N8850Q","MAX 8"],
+["N8851Q","MAX 8"],
+["N8852Q","MAX 8"],
+["N8853Q","MAX 8"],
+["N8854Q","MAX 8"],
+["N8855Q","MAX 8"],
+["N8856S","MAX 8"],
+["N8857Q","MAX 8"],
+["N8858K","MAX 8"],
+["N8859Q","MAX 8"],
+["N8860S","MAX 8"],
+["N8861Q","MAX 8"],
+["N8862Q","MAX 8"],
+["N8863Q","MAX 8"],
+["N8864H","MAX 8"],
+["N8865L","MAX 8"],
+["N8866H","MAX 8"],
+["N8867Q","MAX 8"],
+["N8868L","MAX 8"],
+["N8869L","MAX 8"],
+["N8870K","MAX 8"],
+["N8871Q","MAX 8"],
+["N8872Q","MAX 8"],
+["N8873S","MAX 8"],
+["N8874Q","MAX 8"],
+["N8875B","MAX 8"],
+["N8876Q","MAX 8"],
+["N8877Q","MAX 8"],
+["N8878L","MAX 8"],
+["N8879Q","MAX 8"],
+["N8880G","MAX 8"],
+["N8881L","MAX 8"],
+["N8882Q","MAX 8"],
+["N8883Q","MAX 8"],
+["N8884Q","MAX 8"],
+["N8885Q","MAX 8"],
+["N8886C","MAX 8"],
+["N8887Q","MAX 8"],
+["N8888M","MAX 8"],
+["N8889Q","MAX 8"],
+["N8890Q","MAX 8"],
+["N8891Q","MAX 8"],
+["N8892S","MAX 8"],
+["N8893L","MAX 8"],
+["N8894Q","MAX 8"],
+["N8895Q","MAX 8"],
+["N8896L","MAX 8"],
+["N8897K","MAX 8"],
+["N8898L","MAX 8"],
+["N8899H","MAX 8"],
+["N8900L","MAX 8"],
+["N8901Q","MAX 8"],
+["N8902Q","MAX 8"],
+["N8903H","MAX 8"],
+["N8904L","MAX 8"],
+["N8905Q","MAX 8"],
+["N8906K","MAX 8"],
+["N8907L","MAX 8"],
+["N8908Q","MAX 8"],
+["N8909L","MAX 8"],
+["N8910Q","MAX 8"],
+["N8911Q","MAX 8"],
+["N8912Q","MAX 8"],
+["N8913S","MAX 8"],
+["N8914Q","MAX 8"],
+["N8915Q","MAX 8"],
+["N8916Q","MAX 8"],
+["N8917Q","MAX 8"],
+["N8918Q","MAX 8"],
+["N8919K","MAX 8"],
+["N8920Q","MAX 8"],
+["N8921Q","MAX 8"],
+["N8922Q","MAX 8"],
+["N8923Q","MAX 8"],
+["N8924Q","MAX 8"],
+["N8925Q","MAX 8"],
+["N8926Q","MAX 8"],
+["N8927Q","MAX 8"],
+["N8928Q","MAX 8"],
+["N8929S","MAX 8"],
+["N8930S","MAX 8"],
+["N8931L","MAX 8"],
+["N8932Q","MAX 8"],
+["N8933Q","MAX 8"],
+["N8934Q","MAX 8"],
+["N8935Q","MAX 8"],
+["N8936Q","MAX 8"],
+["N8937Q","MAX 8"],
+["N8938Q","MAX 8"],
+["N8939Q","MAX 8"],
+["N8940Q","MAX 8"],
+["N8941Q","MAX 8"],
+["N8942L","MAX 8"],
+["N8943Q","MAX 8"],
+["N8944Q","MAX 8"],
+["N8945Q","MAX 8"],
+["N8946L","MAX 8"],
+["N8947Q","MAX 8"],
+["N8948Q","MAX 8"],
+["N8949Q","MAX 8"],
+["N8950L","MAX 8"],
+["N8951S","MAX 8"],
+["N8952Q","MAX 8"],
+["N8953Q","MAX 8"],
+["N8954Q","MAX 8"],
+["N8955Q","MAX 8"],
+["N8956Q","MAX 8"],
+["N8957Q","MAX 8"],
+["N8958Q","MAX 8"],
+["N8959Q","MAX 8"],
+["N8960L","MAX 8"],
+["N8961K","MAX 8"],
+["N8962L","MAX 8"],
+["N8963Q","MAX 8"],
+["N8964L","MAX 8"],
+["N8965Q","MAX 8"],
+["N8966S","MAX 8"],
+["N8967Q","MAX 8"],
+["N8969S","MAX 8"],
+["N8970Q","MAX 8"],
+["N8971L","MAX 8"],
+["N8972S","MAX 8"],
+["N8973S","MAX 8"],
+["N8974K","MAX 8"],
+["N8975K","MAX 8"],
+["N8976K","MAX 8"],
+["N8977G","MAX 8"],
+["N8978G","MAX 8"],
+["N8979L","MAX 8"],
+["N8980Q","MAX 8"],
+["N8981Q","MAX 8"],
+["N8982S","MAX 8"],
+["N8983Q","MAX 8"],
+["N8984L","MAX 8"],
+["N8985Q","MAX 8"],
+["N8986Q","MAX 8"],
+["N8987Q","MAX 8"],
+["N8988S","MAX 8"],
+["N8989L","MAX 8"],
+["N8990Q","MAX 8"],
+["N8991S","MAX 8"],
+["N8992L","MAX 8"],
+["N8993Q","MAX 8"],
+["N8994Q","MAX 8"],
+["N8995Q","MAX 8"],
+["N8996Q","MAX 8"],
+["N8997Q","MAX 8"],
+["N900WN","NG 700"],
+["N901WN","NG 700"],
+["N902WN","NG 700"],
+["N903WN","NG 700"],
+["N904WN","NG 700"],
+["N906WN","NG 700"],
+["N907WN","NG 700"],
+["N908WN","NG 700"],
+["N909WN","NG 700"],
+["N910WN","NG 700"],
+["N912WN","NG 700"],
+["N913WN","NG 700"],
+["N914WN","NG 700"],
+["N915WN","NG 700"],
+["N917WN","NG 700"],
+["N919WN","NG 700"],
+["N920WN","NG 700"],
+["N922WN","NG 700"],
+["N923WN","NG 700"],
+["N924WN","NG 700"],
+["N925WN","NG 700"],
+["N926WN","NG 700"],
+["N927WN","NG 700"],
+["N928WN","NG 700"],
+["N929WN","NG 700"],
+["N930WN","NG 700"],
+["N931WN","NG 700"],
+["N932WN","NG 700"],
+["N936WN","NG 700"],
+["N937WN","NG 700"],
+["N938WN","NG 700"],
+["N939WN","NG 700"],
+["N940WN","NG 700"],
+["N941WN","NG 700"],
+["N942WN","NG 700"],
+["N943WN","NG 700"],
+["N944WN","NG 700"],
+["N945WN","NG 700"],
+["N946WN","NG 700"],
+["N947WN","NG 700"],
+["N948WN","NG 700"],
+["N949WN","NG 700"],
+["N950WN","NG 700"],
+["N951WN","NG 700"],
+["N952WN","NG 700"],
+["N953WN","NG 700"],
+["N954WN","NG 700"],
+["N955WN","NG 700"],
+["N956WN","NG 700"],
+["N957WN","NG 700"],
+["N958WN","NG 700"],
+["N959WN","NG 700"],
+["N960WN","NG 700"],
+["N961WN","NG 700"],
+["N962WN","NG 700"],
+["N963WN","NG 700"],
+["N964WN","NG 700"],
+["N965WN","NG 700"],
+["N966WN","NG 700"],
+["N967WN","NG 700"],
+["N968WN","NG 700"],
+["N969WN","NG 700"],
+];
 
-var LS_KEY = 'swamx_tsi_cases';
-var FIX_WINDOW_DAYS = 30;
-
-function loadCases() {
-  try {
-    var d = JSON.parse(localStorage.getItem(LS_KEY));
-    if (d) return d;
-    return migrateLegacy();
-  } catch(e) { return []; }
-}
-
-function saveCases(c) { localStorage.setItem(LS_KEY, JSON.stringify(c)); }
-
-function migrateLegacy() {
-  try {
-    var old = JSON.parse(localStorage.getItem('swamx_tsi_entries'));
-    if (!old || !old.length) return [];
-    var map = {};
-    old.forEach(function(e) {
-      var key = e.tail + '|' + e.faultCode;
-      if (!map[key]) {
-        map[key] = {
-          id: genId('case'), tail: e.tail, fleet: e.fleet, ata: e.ata || '',
-          faultCode: e.faultCode, effect: e.effect, created: e.created,
-          status: 'in_work', attempts: []
-        };
-      }
-      var r = 'pending';
-      if (e.status === 'closed_eff') r = 'effective';
-      else if (e.status === 'closed_ineff') r = 'ineffective';
-      map[key].attempts.push({
-        id: e.id, actionType: e.actionType || '', workOrder: e.workOrder || '',
-        notes: e.notes || '', dueDate: e.dueDate || '', ref: e.ref || '',
-        created: e.created, closedDate: e.closedDate || null, result: r
-      });
-    });
-    var arr = Object.values(map);
-    arr.forEach(function(c) {
-      c.attempts.sort(function(a,b) { return new Date(a.created) - new Date(b.created); });
-      var last = c.attempts[c.attempts.length - 1];
-      c.status = last.result === 'pending' ? 'in_work' : 'closed';
-    });
-    saveCases(arr);
-    return arr;
-  } catch(e) { return []; }
-}
-
-// ---- AIRCRAFT ----
-var AIRCRAFT = [];
+// ---- AIRCRAFT LOOKUP ----
 var TAIL_MAP = {};
+AIRCRAFT.forEach(function(a) { TAIL_MAP[a[0]] = a[1]; });
 
-function loadAircraftCSV() {
-  fetch('AircraftData.csv')
-    .then(function(r) { return r.text(); })
-    .then(function(csv) {
-      var lines = csv.split('\n');
-      var hdr = lines[0].split(',');
-      var ti = 0, di = 4;
-      hdr.forEach(function(h, i) {
-        var ht = h.trim().replace(/"/g,'').toLowerCase();
-        if (ht === 'tail number') ti = i;
-        if (ht === 'icao aircraft type description') di = i;
-      });
-      var seen = {};
+// ---- FAULT CODE DATABASE ----
+var FAULT_CODES = [];
+var fcHighlight = -1;
+
+function loadFaultCodeCSV() {
+  fetch('FaultCodes.csv')
+    .then(function(r) { return r.ok ? r.text() : ''; })
+    .then(function(text) {
+      if (!text) return;
+      var lines = text.split('\n');
       for (var i = 1; i < lines.length; i++) {
-        var cols = lines[i].split(',');
-        if (cols.length < di + 1) continue;
-        var tail = (cols[ti]||'').trim().replace(/"/g,'').toUpperCase();
-        var desc = (cols[di]||'').trim().replace(/"/g,'');
-        if (!tail || !desc || seen[tail]) continue;
-        seen[tail] = true;
-        var fleet = '';
-        if (desc.indexOf('MAX 8') !== -1) fleet = 'MAX 8';
-        else if (desc.indexOf('MAX 7') !== -1) fleet = 'MAX 7';
-        else if (desc.indexOf('737-800') !== -1) fleet = 'NG 800';
-        else if (desc.indexOf('737-700') !== -1) fleet = 'NG 700';
-        else continue;
-        AIRCRAFT.push([tail, fleet]);
+        var row = parseCSVRow(lines[i]);
+        if (row.length >= 5 && row[0]) {
+          FAULT_CODES.push({
+            code: row[0].trim(),
+            fimTask: row[1].trim(),
+            title: row[2].trim(),
+            message: row[3].trim(),
+            ata: row[4].trim()
+          });
+        }
       }
-      AIRCRAFT.sort(function(a,b) { return a[0] < b[0] ? -1 : 1; });
-      AIRCRAFT.forEach(function(a) { TAIL_MAP[a[0]] = a[1]; });
     })
-    .catch(function(err) { console.error('CSV load failed:', err); });
+    .catch(function() {});
 }
-loadAircraftCSV();
+
+function parseCSVRow(line) {
+  var result = [], cur = '', inQ = false;
+  for (var i = 0; i < line.length; i++) {
+    var c = line[i];
+    if (inQ) {
+      if (c === '"' && line[i+1] === '"') { cur += '"'; i++; }
+      else if (c === '"') { inQ = false; }
+      else { cur += c; }
+    } else {
+      if (c === '"') { inQ = true; }
+      else if (c === ',') { result.push(cur); cur = ''; }
+      else { cur += c; }
+    }
+  }
+  result.push(cur);
+  return result;
+}
+
+loadFaultCodeCSV();
+
+function filterFaultCodes() {
+  var q = document.getElementById('fFaultCode').value.trim().toUpperCase();
+  var dd = document.getElementById('fcDropdown');
+  if (!q || q.length < 2 || FAULT_CODES.length === 0) { dd.classList.remove('open'); return; }
+  var matches = FAULT_CODES.filter(function(f) {
+    return f.code.indexOf(q) !== -1 || f.message.toUpperCase().indexOf(q) !== -1 || f.title.toUpperCase().indexOf(q) !== -1;
+  }).slice(0, 10);
+  if (matches.length === 0) { dd.classList.remove('open'); return; }
+  fcHighlight = 0;
+  var html = '';
+  matches.forEach(function(f, i) {
+    html += '<div class="fc-opt' + (i === 0 ? ' highlighted' : '') + '" data-idx="' + i + '" onclick="selectFaultCode(' + i + ')">';
+    html += '<span class="fc-code">' + esc(f.code) + '</span>';
+    if (f.message) html += '<span class="fc-msg">' + esc(f.message) + '</span>';
+    if (f.fimTask) html += '<span class="fc-task">FIM: ' + esc(f.fimTask) + '</span>';
+    html += '</div>';
+  });
+  dd.innerHTML = html;
+  dd._matches = matches;
+  dd.classList.add('open');
+}
+
+function selectFaultCode(idx) {
+  var dd = document.getElementById('fcDropdown');
+  var f = dd._matches[idx];
+  document.getElementById('fFaultCode').value = f.code;
+  var effectText = f.message || f.title;
+  if (effectText) document.getElementById('fEffect').value = effectText;
+  if (f.ata) document.getElementById('fAta').value = f.ata;
+  if (f.fimTask) document.getElementById('fRef').value = f.fimTask;
+  dd.classList.remove('open');
+  document.getElementById('fEffect').focus();
+}
+
+function fcKeyNav(e) {
+  var dd = document.getElementById('fcDropdown');
+  if (!dd.classList.contains('open')) return;
+  var opts = dd.querySelectorAll('.fc-opt');
+  if (!opts.length) return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    fcHighlight = Math.min(fcHighlight + 1, opts.length - 1);
+    opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === fcHighlight); });
+    opts[fcHighlight].scrollIntoView({block:'nearest'});
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    fcHighlight = Math.max(fcHighlight - 1, 0);
+    opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === fcHighlight); });
+    opts[fcHighlight].scrollIntoView({block:'nearest'});
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    selectFaultCode(fcHighlight);
+  } else if (e.key === 'Escape') {
+    dd.classList.remove('open');
+  }
+}
+
+// ---- LOCAL STORAGE ----
+var LS_KEY = 'swamx_tsi_entries';
+
+function loadEntries() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
+  catch(e) { return []; }
+}
+
+function saveEntries(entries) {
+  localStorage.setItem(LS_KEY, JSON.stringify(entries));
+}
 
 // ---- STATE ----
-var cases = loadCases();
+var entries = loadEntries();
 var activeFleet = 'ALL';
 var activeStatus = 'ALL';
-var addingToCaseId = null;
+var editingId = null;
 var tailHighlight = -1;
 
 // ---- FILTERS ----
@@ -391,6 +1232,7 @@ function setFleet(el) {
   activeFleet = el.dataset.fleet;
   renderList();
 }
+
 function setStatus(el) {
   document.querySelectorAll('.s-chip').forEach(function(c) { c.classList.remove('active'); });
   el.classList.add('active');
@@ -398,129 +1240,77 @@ function setStatus(el) {
   renderList();
 }
 
-// ---- FIX WINDOWS ----
-function getFixWindows(c) {
-  if (!c.attempts.length) return [];
-  var sorted = c.attempts.slice().sort(function(a,b) { return new Date(a.created) - new Date(b.created); });
-  var wins = [[sorted[0]]];
-  for (var i = 1; i < sorted.length; i++) {
-    var prev = sorted[i-1];
-    var curr = sorted[i];
-    var prevEnd = prev.closedDate ? new Date(prev.closedDate) : new Date(prev.created);
-    var daysDiff = (new Date(curr.created) - prevEnd) / 86400000;
-    if (prev.result !== 'pending' && daysDiff > FIX_WINDOW_DAYS) {
-      wins.push([curr]);
-    } else {
-      wins[wins.length-1].push(curr);
-    }
-  }
-  return wins;
-}
-
-function calcFixRate() {
-  var total = 0, first = 0;
-  cases.forEach(function(c) {
-    getFixWindows(c).forEach(function(w) {
-      var last = w[w.length-1];
-      if (last.result === 'pending') return;
-      total++;
-      if (w.length === 1 && last.result === 'effective') first++;
-    });
-  });
-  return total === 0 ? null : Math.round((first / total) * 100);
-}
-
 // ---- RENDER ----
 function renderList() {
-  var list = document.getElementById('caseList');
-  var filtered = cases.filter(function(c) {
-    if (activeFleet !== 'ALL' && c.fleet !== activeFleet) return false;
-    if (activeStatus === 'IN_WORK' && c.status !== 'in_work') return false;
-    if (activeStatus === 'CLOSED' && c.status !== 'closed') return false;
+  var list = document.getElementById('tsiList');
+  var filtered = entries.filter(function(e) {
+    if (activeFleet !== 'ALL' && e.fleet !== activeFleet) return false;
+    if (activeStatus === 'IN_WORK' && e.status !== 'in_work') return false;
+    if (activeStatus === 'CLOSED' && e.status !== 'closed_eff' && e.status !== 'closed_ineff') return false;
     return true;
   });
 
+  // Sort: in_work first, then by created desc
   filtered.sort(function(a, b) {
     if (a.status === 'in_work' && b.status !== 'in_work') return -1;
     if (a.status !== 'in_work' && b.status === 'in_work') return 1;
-    var aL = a.attempts.length ? new Date(a.attempts[a.attempts.length-1].created) : new Date(a.created);
-    var bL = b.attempts.length ? new Date(b.attempts[b.attempts.length-1].created) : new Date(b.created);
-    return bL - aL;
+    return new Date(b.created) - new Date(a.created);
   });
 
-  var inWork = cases.filter(function(c) { return c.status === 'in_work'; }).length;
-  var closed = cases.filter(function(c) { return c.status === 'closed'; }).length;
-  var fr = calcFixRate();
-  document.getElementById('entryCount').textContent =
-    filtered.length + ' shown | ' + inWork + ' in work | ' + closed + ' closed' +
-    (fr !== null ? ' | ' + fr + '% 1st fix' : '');
+  document.getElementById('entryCount').textContent = filtered.length + ' of ' + entries.length + ' entries';
 
-  if (!filtered.length) {
-    list.innerHTML = '<div class="empty"><p>No TSI cases' +
-      (activeFleet !== 'ALL' || activeStatus !== 'ALL' ? ' matching filters' : ' yet') +
-      '</p><p class="hint">' +
-      (cases.length === 0 ? 'Click + NEW TSI to add your first entry' : 'Try adjusting filters') +
-      '</p></div>';
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty"><p>No TSI entries' + (activeFleet !== 'ALL' || activeStatus !== 'ALL' ? ' matching filters' : ' yet') + '</p><p class="hint">' + (entries.length === 0 ? 'Click + NEW TSI to add your first entry' : 'Try adjusting your filters') + '</p></div>';
     return;
   }
 
   var html = '';
-  filtered.forEach(function(c) {
-    var n = c.attempts.length;
-    var sc = c.status === 'in_work' ? 'in-work' : 'closed';
-    var sl = c.status === 'in_work' ? 'IN WORK' : 'CLOSED';
-    var ac = n > 1 ? 'multi' : 'single';
+  filtered.forEach(function(e) {
+    var statusLabel, statusClass;
+    if (e.status === 'in_work') { statusLabel = 'IN WORK'; statusClass = 'in-work'; }
+    else if (e.status === 'closed_eff') { statusLabel = 'CLOSED - EFFECTIVE'; statusClass = 'closed-eff'; }
+    else { statusLabel = 'CLOSED - INEFFECTIVE'; statusClass = 'closed-ineff'; }
 
-    html += '<div class="case-card"><div class="case-card-top">';
-    html += '<span class="case-status ' + sc + '">' + sl + '</span>';
-    html += '<span class="case-tail">' + esc(c.tail) + '</span>';
-    html += '<span class="case-fleet">' + esc(c.fleet) + '</span>';
-    html += '<span class="case-fc">' + esc(c.faultCode) + '</span>';
-    html += '<span class="case-effect">' + esc(c.effect) + '</span>';
-    html += '<span class="case-attempts ' + ac + '">' + n + (n===1?' ATTEMPT':' ATTEMPTS') + '</span>';
+    var createdStr = fmtDate(e.created);
+    var dueStr = e.dueDate ? fmtDateShort(e.dueDate) : '-';
+    var closedStr = e.closedDate ? fmtDate(e.closedDate) : '';
+
+    html += '<div class="tsi-card">';
+    html += '<div class="tsi-card-top">';
+    html += '<span class="tsi-status ' + statusClass + '">' + statusLabel + '</span>';
+    html += '<span class="tsi-tail">' + esc(e.tail) + '</span>';
+    html += '<span class="tsi-fleet">' + esc(e.fleet) + '</span>';
+    html += '<span class="tsi-fc">' + esc(e.faultCode) + '</span>';
+    html += '<span class="tsi-effect">' + esc(e.effect) + '</span>';
+    html += '<span class="tsi-date">' + createdStr + '</span>';
     html += '</div>';
 
-    // Timeline
-    html += '<div class="attempt-timeline">';
-    var wins = getFixWindows(c);
-    var cnt = 0;
-    wins.forEach(function(w, wi) {
-      if (wi > 0) {
-        html += '<div class="window-divider"><div class="window-divider-line"></div>';
-        html += '<div class="window-divider-text">NEW FIX WINDOW - 30+ DAYS</div>';
-        html += '<div class="window-divider-line"></div></div>';
-      }
-      w.forEach(function(att) {
-        cnt++;
-        var nc = att.result === 'effective' ? 'eff' : att.result === 'ineffective' ? 'ineff' : 'pending';
-        var rl = att.result === 'effective' ? 'EFFECTIVE' : att.result === 'ineffective' ? 'INEFFECTIVE' : 'IN WORK';
-        html += '<div class="attempt-item"><div class="attempt-num ' + nc + '">' + cnt + '</div>';
-        html += '<div class="attempt-body"><div class="attempt-header">';
-        html += '<span class="attempt-action">' + esc(att.actionType || 'No action specified') + '</span>';
-        html += '<span class="attempt-date">' + fmtDate(att.created) + '</span>';
-        html += '<span class="attempt-result ' + nc + '">' + rl + '</span></div>';
-        if (att.notes) html += '<div class="attempt-details">' + esc(att.notes) + '</div>';
-        html += '<div class="attempt-meta">';
-        if (att.workOrder) html += '<span>WO: ' + esc(att.workOrder) + '</span>';
-        if (att.ref) html += '<span>REF: ' + esc(att.ref) + '</span>';
-        if (att.dueDate) html += '<span>DUE: ' + fmtDateShort(att.dueDate) + '</span>';
-        if (att.closedDate) html += '<span>CLOSED: ' + fmtDate(att.closedDate) + '</span>';
-        html += '</div></div></div>';
-      });
-    });
+    html += '<div class="tsi-card-body">';
+    html += '<div class="tsi-row">';
+    html += '<div class="tsi-field"><div class="tsi-field-label">WORK ORDER</div><div class="tsi-field-value">' + esc(e.workOrder || '-') + '</div></div>';
+    html += '<div class="tsi-field"><div class="tsi-field-label">ACTION</div><div class="tsi-field-value">' + esc(e.actionType || '-') + '</div></div>';
+    html += '<div class="tsi-field"><div class="tsi-field-label">ATA</div><div class="tsi-field-value">' + esc(e.ata || '-') + '</div></div>';
+    html += '<div class="tsi-field"><div class="tsi-field-label">DUE DATE</div><div class="tsi-field-value">' + dueStr + '</div></div>';
+    if (e.ref) html += '<div class="tsi-field"><div class="tsi-field-label">AMM/FIM REF</div><div class="tsi-field-value">' + esc(e.ref) + '</div></div>';
     html += '</div>';
-
-    // Actions
-    html += '<div class="case-card-actions">';
-    var last = c.attempts.length ? c.attempts[c.attempts.length-1] : null;
-    if (last && last.result === 'pending') {
-      html += '<button class="tsi-btn btn-close-eff" onclick="closeAttempt(\'' + c.id + '\',true)">CLOSE - EFFECTIVE</button>';
-      html += '<button class="tsi-btn btn-close-ineff" onclick="closeAttempt(\'' + c.id + '\',false)">CLOSE - INEFFECTIVE</button>';
-    } else {
-      html += '<button class="tsi-btn btn-add" onclick="addAttemptUI(\'' + c.id + '\')">+ ADD ATTEMPT (FAULT RETURNED)</button>';
+    if (e.notes) html += '<div class="tsi-action-text">' + esc(e.notes) + '</div>';
+    if (closedStr) {
+      html += '<div style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:10px;color:var(--text-dim);">Closed: ' + closedStr + '</div>';
     }
-    html += '<button class="tsi-btn btn-delete" onclick="deleteCase(\'' + c.id + '\')">DELETE</button>';
-    html += '</div></div>';
+    html += '</div>';
+
+    // Action buttons
+    html += '<div class="tsi-card-actions">';
+    if (e.status === 'in_work') {
+      html += '<button class="tsi-btn btn-close-eff" onclick="closeEntry(\'' + e.id + '\',true)">CLOSE - EFFECTIVE</button>';
+      html += '<button class="tsi-btn btn-close-ineff" onclick="closeEntry(\'' + e.id + '\',false)">CLOSE - INEFFECTIVE</button>';
+    } else {
+      html += '<button class="tsi-btn btn-reopen" onclick="reopenEntry(\'' + e.id + '\')">REOPEN</button>';
+    }
+    html += '<button class="tsi-btn btn-delete" onclick="deleteEntry(\'' + e.id + '\')">DELETE</button>';
+    html += '</div>';
+
+    html += '</div>';
   });
 
   list.innerHTML = html;
@@ -528,43 +1318,16 @@ function renderList() {
 
 // ---- MODAL ----
 function openNewModal() {
-  addingToCaseId = null;
+  editingId = null;
   document.getElementById('modalTitle').textContent = 'New TSI Entry';
-  document.getElementById('existingCaseBanner').style.display = 'none';
-  showCaseFields(true);
-  document.getElementById('saveBtn').textContent = 'SAVE';
   clearForm();
   document.getElementById('modalOverlay').classList.add('open');
   document.getElementById('fTail').focus();
 }
 
-function addAttemptUI(caseId) {
-  var c = cases.find(function(x) { return x.id === caseId; });
-  if (!c) return;
-  addingToCaseId = caseId;
-  document.getElementById('modalTitle').textContent = 'Add Attempt - Fault Returned';
-  var ban = document.getElementById('existingCaseBanner');
-  ban.innerHTML = '<strong>' + esc(c.tail) + ' - ' + esc(c.faultCode) + '</strong><br>' +
-    esc(c.effect) + '<br>Adding attempt #' + (c.attempts.length + 1) + '. Previous fix will be marked ineffective.';
-  ban.style.display = 'block';
-  showCaseFields(false);
-  document.getElementById('saveBtn').textContent = 'ADD ATTEMPT';
-  clearForm();
-  document.getElementById('modalOverlay').classList.add('open');
-}
-
-function showCaseFields(show) {
-  var d = show ? '' : 'none';
-  document.getElementById('tailGroup').style.display = d;
-  document.getElementById('fleetAtaRow').style.display = d;
-  document.getElementById('faultCodeGroup').style.display = d;
-  document.getElementById('effectGroup').style.display = d;
-}
-
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('open');
   document.getElementById('tailDropdown').classList.remove('open');
-  addingToCaseId = null;
 }
 
 function clearForm() {
@@ -574,38 +1337,22 @@ function clearForm() {
   document.querySelectorAll('.action-chip').forEach(function(c) { c.classList.remove('selected'); });
 }
 
-// ---- CHECK EXISTING ----
-function checkExisting() {
-  if (addingToCaseId) return;
-  var tail = document.getElementById('fTail').value.trim().toUpperCase();
-  var fc = document.getElementById('fFaultCode').value.trim().toUpperCase();
-  var ban = document.getElementById('existingCaseBanner');
-  if (!tail || !fc) { ban.style.display = 'none'; return; }
-  var ex = cases.find(function(c) { return c.tail === tail && c.faultCode === fc; });
-  if (ex) {
-    ban.innerHTML = '<strong>Existing case: ' + esc(tail) + ' - ' + esc(fc) + '</strong><br>' +
-      esc(ex.effect) + ' - ' + ex.attempts.length + ' attempt' + (ex.attempts.length !== 1 ? 's' : '') +
-      '<br>Saving will add attempt #' + (ex.attempts.length + 1) + ' to this case.';
-    ban.style.display = 'block';
-  } else {
-    ban.style.display = 'none';
-  }
-}
-
 // ---- TAIL SEARCH ----
 function filterTails() {
   var q = document.getElementById('fTail').value.toUpperCase().trim();
   var dd = document.getElementById('tailDropdown');
   if (!q) { dd.classList.remove('open'); return; }
-  var m = AIRCRAFT.filter(function(a) { return a[0].indexOf(q) !== -1; }).slice(0,12);
-  if (!m.length) { dd.classList.remove('open'); return; }
+  var matches = AIRCRAFT.filter(function(a) { return a[0].indexOf(q) !== -1; }).slice(0, 12);
+  if (matches.length === 0) { dd.classList.remove('open'); return; }
   tailHighlight = 0;
-  var h = '';
-  m.forEach(function(a,i) {
-    h += '<div class="tail-opt' + (i===0?' highlighted':'') + '" data-tail="' + a[0] + '" data-fleet="' + a[1] + '" onclick="selectTail(\'' + a[0] + '\',\'' + a[1] + '\')">';
-    h += '<span class="to-tail">' + a[0] + '</span><span class="to-fleet">' + a[1] + '</span></div>';
+  var html = '';
+  matches.forEach(function(a, i) {
+    html += '<div class="tail-opt' + (i === 0 ? ' highlighted' : '') + '" data-tail="' + a[0] + '" data-fleet="' + a[1] + '" onclick="selectTail(\'' + a[0] + '\',\'' + a[1] + '\')">';
+    html += '<span class="to-tail">' + a[0] + '</span>';
+    html += '<span class="to-fleet">' + a[1] + '</span>';
+    html += '</div>';
   });
-  dd.innerHTML = h;
+  dd.innerHTML = html;
   dd.classList.add('open');
 }
 
@@ -614,7 +1361,6 @@ function selectTail(tail, fleet) {
   document.getElementById('fFleet').value = fleet;
   document.getElementById('tailDropdown').classList.remove('open');
   document.getElementById('fFaultCode').focus();
-  checkExisting();
 }
 
 function tailKeyNav(e) {
@@ -622,19 +1368,36 @@ function tailKeyNav(e) {
   if (!dd.classList.contains('open')) return;
   var opts = dd.querySelectorAll('.tail-opt');
   if (!opts.length) return;
-  if (e.key === 'ArrowDown') { e.preventDefault(); tailHighlight = Math.min(tailHighlight+1,opts.length-1); }
-  else if (e.key === 'ArrowUp') { e.preventDefault(); tailHighlight = Math.max(tailHighlight-1,0); }
-  else if (e.key === 'Enter') { e.preventDefault(); var s = opts[tailHighlight]; if(s) selectTail(s.dataset.tail,s.dataset.fleet); return; }
-  else if (e.key === 'Escape') { dd.classList.remove('open'); return; }
-  else return;
-  opts.forEach(function(o,i) { o.classList.toggle('highlighted',i===tailHighlight); });
-  opts[tailHighlight].scrollIntoView({block:'nearest'});
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    tailHighlight = Math.min(tailHighlight + 1, opts.length - 1);
+    opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === tailHighlight); });
+    opts[tailHighlight].scrollIntoView({block:'nearest'});
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    tailHighlight = Math.max(tailHighlight - 1, 0);
+    opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === tailHighlight); });
+    opts[tailHighlight].scrollIntoView({block:'nearest'});
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    var sel = opts[tailHighlight];
+    if (sel) selectTail(sel.dataset.tail, sel.dataset.fleet);
+  } else if (e.key === 'Escape') {
+    dd.classList.remove('open');
+  }
 }
 
+// Close dropdowns on outside click
 document.addEventListener('click', function(e) {
-  if (!e.target.closest('.tail-wrap')) document.getElementById('tailDropdown').classList.remove('open');
+  if (!e.target.closest('.tail-wrap')) {
+    document.getElementById('tailDropdown').classList.remove('open');
+  }
+  if (!e.target.closest('.fc-wrap')) {
+    document.getElementById('fcDropdown').classList.remove('open');
+  }
 });
 
+// ---- ACTION CHIPS ----
 function pickAction(el) {
   document.querySelectorAll('.action-chip').forEach(function(c) { c.classList.remove('selected'); });
   el.classList.add('selected');
@@ -642,145 +1405,136 @@ function pickAction(el) {
 
 // ---- SAVE ----
 function saveEntry() {
-  var sel = document.querySelector('.action-chip.selected');
-  var att = {
-    id: genId('att'),
-    actionType: sel ? sel.textContent : '',
+  var tail = document.getElementById('fTail').value.trim().toUpperCase();
+  var fleet = document.getElementById('fFleet').value.trim();
+  var faultCode = document.getElementById('fFaultCode').value.trim().toUpperCase();
+  var effect = document.getElementById('fEffect').value.trim().toUpperCase();
+
+  if (!tail) { toast('Tail number is required'); document.getElementById('fTail').focus(); return; }
+  if (!faultCode) { toast('Fault code is required'); document.getElementById('fFaultCode').focus(); return; }
+  if (!effect) { toast('Flight deck effect is required'); document.getElementById('fEffect').focus(); return; }
+
+  // Auto-fill fleet from TAIL_MAP if not set
+  if (!fleet && TAIL_MAP[tail]) fleet = TAIL_MAP[tail];
+  if (!fleet) { toast('Fleet type could not be determined - select a valid tail'); return; }
+
+  var selectedAction = document.querySelector('.action-chip.selected');
+  var actionType = selectedAction ? selectedAction.textContent : '';
+
+  var entry = {
+    id: editingId || genId(),
+    tail: tail,
+    fleet: fleet,
+    ata: document.getElementById('fAta').value.trim(),
+    faultCode: faultCode,
+    effect: effect,
     workOrder: document.getElementById('fWorkOrder').value.trim().toUpperCase(),
+    actionType: actionType,
     notes: document.getElementById('fNotes').value.trim(),
     dueDate: document.getElementById('fDueDate').value,
     ref: document.getElementById('fRef').value.trim(),
+    status: 'in_work',
     created: new Date().toISOString(),
-    closedDate: null,
-    result: 'pending'
+    closedDate: null
   };
 
-  // Adding to existing case via button
-  if (addingToCaseId) {
-    var c = cases.find(function(x) { return x.id === addingToCaseId; });
-    if (!c) { toast('Case not found'); return; }
-    var prev = c.attempts[c.attempts.length-1];
-    if (prev && prev.result === 'effective') prev.result = 'ineffective';
-    c.attempts.push(att);
-    c.status = 'in_work';
-    saveCases(cases);
-    closeModal();
-    renderList();
-    toast('Attempt #' + c.attempts.length + ' added');
-    return;
+  if (editingId) {
+    var idx = entries.findIndex(function(e) { return e.id === editingId; });
+    if (idx !== -1) {
+      entry.status = entries[idx].status;
+      entry.created = entries[idx].created;
+      entry.closedDate = entries[idx].closedDate;
+      entries[idx] = entry;
+    }
+  } else {
+    entries.unshift(entry);
   }
 
-  // New entry
-  var tail = document.getElementById('fTail').value.trim().toUpperCase();
-  var fleet = document.getElementById('fFleet').value.trim();
-  var fc = document.getElementById('fFaultCode').value.trim().toUpperCase();
-  var effect = document.getElementById('fEffect').value.trim().toUpperCase();
-  var ata = document.getElementById('fAta').value.trim();
-
-  if (!tail) { toast('Tail number required'); document.getElementById('fTail').focus(); return; }
-  if (!fc) { toast('Fault code required'); document.getElementById('fFaultCode').focus(); return; }
-  if (!effect) { toast('Flight deck effect required'); document.getElementById('fEffect').focus(); return; }
-  if (!fleet && TAIL_MAP[tail]) fleet = TAIL_MAP[tail];
-  if (!fleet) { toast('Could not determine fleet type'); return; }
-
-  // Check existing
-  var ex = cases.find(function(c) { return c.tail === tail && c.faultCode === fc; });
-  if (ex) {
-    var prev = ex.attempts[ex.attempts.length-1];
-    if (prev && prev.result === 'effective') prev.result = 'ineffective';
-    ex.attempts.push(att);
-    ex.status = 'in_work';
-    saveCases(cases);
-    closeModal();
-    renderList();
-    toast('Added attempt #' + ex.attempts.length + ' to existing case');
-    return;
-  }
-
-  cases.unshift({
-    id: genId('case'), tail: tail, fleet: fleet, ata: ata,
-    faultCode: fc, effect: effect, created: new Date().toISOString(),
-    status: 'in_work', attempts: [att]
-  });
-  saveCases(cases);
+  saveEntries(entries);
   closeModal();
   renderList();
-  toast('New case created');
+  toast(editingId ? 'Entry updated' : 'TSI entry added - IN WORK');
 }
 
-// ---- CLOSE / DELETE ----
-function closeAttempt(caseId, effective) {
-  var c = cases.find(function(x) { return x.id === caseId; });
-  if (!c) return;
-  var last = c.attempts[c.attempts.length-1];
-  if (!last || last.result !== 'pending') return;
-  last.result = effective ? 'effective' : 'ineffective';
-  last.closedDate = new Date().toISOString();
-  c.status = 'closed';
-  saveCases(cases);
+// ---- STATUS ACTIONS ----
+function closeEntry(id, effective) {
+  var e = entries.find(function(e) { return e.id === id; });
+  if (!e) return;
+  e.status = effective ? 'closed_eff' : 'closed_ineff';
+  e.closedDate = new Date().toISOString();
+  saveEntries(entries);
   renderList();
-  toast(effective ? 'Closed - effective' : 'Closed - ineffective');
+  toast(effective ? 'Closed as effective' : 'Closed as ineffective');
 }
 
-function deleteCase(caseId) {
-  if (!confirm('Delete this case and all attempts?')) return;
-  cases = cases.filter(function(c) { return c.id !== caseId; });
-  saveCases(cases);
+function reopenEntry(id) {
+  var e = entries.find(function(e) { return e.id === id; });
+  if (!e) return;
+  e.status = 'in_work';
+  e.closedDate = null;
+  saveEntries(entries);
   renderList();
-  toast('Case deleted');
+  toast('Reopened - back to IN WORK');
+}
+
+function deleteEntry(id) {
+  if (!confirm('Delete this TSI entry? This cannot be undone.')) return;
+  entries = entries.filter(function(e) { return e.id !== id; });
+  saveEntries(entries);
+  renderList();
+  toast('Entry deleted');
 }
 
 // ---- EXPORT ----
 function exportData() {
-  var fr = calcFixRate();
-  var iw = cases.filter(function(c) { return c.status === 'in_work'; }).length;
-  var cl = cases.filter(function(c) { return c.status === 'closed'; }).length;
-  var ta = 0; cases.forEach(function(c) { ta += c.attempts.length; });
-  var fcMap = {};
-  cases.forEach(function(c) { fcMap[c.faultCode] = (fcMap[c.faultCode]||0)+1; });
-  var topFC = Object.keys(fcMap).sort(function(a,b) { return fcMap[b]-fcMap[a]; }).slice(0,10);
-
-  var report = {
-    generated: new Date().toISOString(),
-    summary: {
-      totalCases: cases.length, inWork: iw, closed: cl, totalAttempts: ta,
-      firstAttemptFixRate: fr !== null ? fr + '%' : 'N/A',
-      fixWindowDays: FIX_WINDOW_DAYS
-    },
-    topFaultCodes: topFC.map(function(f) { return {faultCode:f,count:fcMap[f]}; }),
-    cases: cases
-  };
-
-  var blob = new Blob([JSON.stringify(report,null,2)], {type:'application/json'});
+  var blob = new Blob([JSON.stringify(entries, null, 2)], {type: 'application/json'});
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url;
-  a.download = 'tsi-report-' + new Date().toISOString().slice(0,10) + '.json';
+  a.download = 'tsi-fixrate-' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
   URL.revokeObjectURL(url);
-  toast('Report exported');
+  toast('Exported ' + entries.length + ' entries');
 }
 
 // ---- HELPERS ----
-function genId(p) { return p + '-' + Date.now() + '-' + Math.random().toString(36).substr(2,6); }
-function esc(s) { if(!s) return ''; var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
-function fmtDate(iso) {
-  if(!iso) return '';
-  var d=new Date(iso), mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var dd=d.getDate(),h=d.getHours(),m=d.getMinutes();
-  return (dd<10?'0':'')+dd+'-'+mo[d.getMonth()]+'-'+d.getFullYear()+' '+(h<10?'0':'')+h+':'+(m<10?'0':'')+m;
-}
-function fmtDateShort(s) {
-  if(!s) return '';
-  var p=s.split('-'), mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return parseInt(p[2])+'-'+mo[parseInt(p[1])-1]+'-'+p[0];
-}
-function toast(msg) {
-  var t=document.createElement('div'); t.className='toast'; t.textContent=msg;
-  document.body.appendChild(t);
-  setTimeout(function(){t.style.opacity='0';setTimeout(function(){t.remove();},300);},2500);
+function genId() {
+  return 'tsi-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6);
 }
 
+function esc(s) {
+  if (!s) return '';
+  var d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  var d = new Date(iso);
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var day = d.getDate();
+  var h = d.getHours();
+  var m = d.getMinutes();
+  return (day < 10 ? '0' : '') + day + '-' + months[d.getMonth()] + '-' + d.getFullYear() + ' ' + (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+}
+
+function fmtDateShort(dateStr) {
+  if (!dateStr) return '';
+  var parts = dateStr.split('-');
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return parseInt(parts[2]) + '-' + months[parseInt(parts[1]) - 1] + '-' + parts[0];
+}
+
+function toast(msg) {
+  var t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function() { t.style.opacity = '0'; setTimeout(function() { t.remove(); }, 300); }, 2500);
+}
+
+// ---- INIT ----
 renderList();
 </script>
 </body>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- MOC Toolbox v10.2 - 2025-02-25 auth debug -->
+<!-- MOC Toolbox v10.3 - 2025-02-25 auth fix -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1382,7 +1382,7 @@ function doLogin() {
       }
     }).catch(function(err) {
       console.log('SIGN IN ERROR:', err.code, err.message);
-      if (err.code === 'auth/user-not-found') {
+      if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
         // First login - create the auth account
         console.log('CREATING USER...');
         auth.createUserWithEmailAndPassword(email, password).then(function(cred) {
@@ -1395,10 +1395,6 @@ function doLogin() {
           btn.textContent = 'SIGN IN';
           errEl.textContent = 'Error creating account: ' + createErr.code;
         });
-      } else if (err.code === 'auth/wrong-password') {
-        btn.disabled = false;
-        btn.textContent = 'SIGN IN';
-        errEl.textContent = 'Access code has changed. Contact your admin.';
       } else {
         btn.disabled = false;
         btn.textContent = 'SIGN IN';

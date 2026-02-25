@@ -861,11 +861,11 @@
             border-bottom: 1px solid var(--border);
         }
         .fec-status {
-            font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
-            padding: 3px 7px; border-radius: 3px; letter-spacing: 0.5px;
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+            padding: 4px 8px; border-radius: 4px; letter-spacing: 0.5px;
         }
-        .fts-work { background: var(--yellow-bg); color: var(--yellow-text); border: 1px solid var(--yellow-border); }
-        .fts-eff { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
+        .fts-work { background: #fbbf24; color: #1e293b; }
+        .fts-eff { background: #4ade80; color: #1e293b; }
         .fts-ineff { background: var(--red-bg); color: var(--red-text); border: 1px solid var(--red-border); }
         .fec-tail {
             font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: var(--text);
@@ -882,9 +882,14 @@
             font-size: 12px; color: var(--text-secondary); flex: 1; min-width: 120px;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
+        .fec-header-right {
+            margin-left: auto; text-align: right; white-space: nowrap;
+        }
         .fec-date {
-            font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-dim);
-            margin-left: auto; white-space: nowrap;
+            font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--text);
+        }
+        .fec-created-by {
+            font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-dim); margin-top: 1px;
         }
         .fec-details {
             padding: 10px 16px; display: flex; gap: 20px; flex-wrap: wrap;
@@ -896,18 +901,23 @@
             letter-spacing: 0.5px; color: var(--text-dim); text-transform: uppercase;
         }
         .fec-val {
-            font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--text);
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text);
         }
         .fec-notes {
-            padding: 10px 16px; font-size: 12px; color: var(--text); line-height: 1.5;
-            border-bottom: 1px solid var(--border); background: #fff;
+            margin: 10px 16px; padding: 10px 14px; font-size: 12px; color: var(--text); line-height: 1.5;
+            background: #fff; border: 1px solid var(--border); border-radius: 6px;
         }
         .fec-corrective {
-            padding: 10px 16px; font-size: 12px; color: var(--green-text); line-height: 1.5;
-            border-bottom: 1px solid var(--border); background: var(--green-bg);
+            margin: 0 16px 10px; padding: 10px 14px; font-size: 12px; color: var(--green-text); line-height: 1.5;
+            background: var(--green-bg); border: 1px solid var(--green-border); border-radius: 6px;
         }
         .fec-actions {
             padding: 10px 16px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+            border-top: 1px solid var(--border);
+        }
+        .fec-updated {
+            font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-dim);
+            margin-left: 12px;
         }
         .fec-btn {
             font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
@@ -915,13 +925,13 @@
             letter-spacing: 0.3px; transition: all 0.15s;
         }
         .fec-btn-update { background: var(--blue-bg); color: var(--blue-text); border-color: var(--blue-border); }
-        .fec-btn-update:hover { background: var(--blue-border); color: #fff; }
+        .fec-btn-update:hover { background: #93c5fd; color: #1e3a5f; }
         .fec-btn-close { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); }
-        .fec-btn-close:hover { background: var(--green-border); color: #fff; }
+        .fec-btn-close:hover { background: #86efac; color: #14532d; }
         .fec-btn-reopen { background: var(--blue-bg); color: var(--blue-text); border-color: var(--blue-border); }
-        .fec-btn-reopen:hover { background: var(--blue-border); color: #fff; }
-        .fec-btn-del { background: none; color: var(--red-text); border-color: var(--red-border); margin-left: auto; }
-        .fec-btn-del:hover { background: var(--red-bg); }
+        .fec-btn-reopen:hover { background: #93c5fd; color: #1e3a5f; }
+        .fec-btn-del { background: var(--red-bg); color: var(--red-text); border-color: var(--red-border); margin-left: auto; }
+        .fec-btn-del:hover { background: #fca5a5; color: #7f1d1d; }
 
         /* Status filter chips */
         .fix-status-chip.active { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.3); }
@@ -934,15 +944,6 @@
         }
         .fco-chip:hover { border-color: var(--accent); background: var(--blue-bg); }
         .fco-chip.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
-
-        /* Effective/Ineffective chips */
-        .fco-eff-chip {
-            font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
-            padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border);
-            background: var(--surface); color: var(--text); cursor: pointer; transition: all 0.15s;
-        }
-        .fco-eff-chip:hover { border-color: var(--green); }
-        .fco-eff-chip.selected { background: var(--green); color: #fff; border-color: var(--green); }
 
         /* TSI Modal */
         .tsi-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;}
@@ -957,7 +958,7 @@
         .tsi-form-group{margin-bottom:12px;}
         .tsi-form-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;display:block;}
         .tsi-form-label .req{color:var(--red);}
-        .tsi-form-input,.tsi-form-textarea{width:100%;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:#fff;border:1px solid var(--border);border-radius:8px;outline:none;transition:border-color 0.15s;box-sizing:border-box;}
+        .tsi-form-input,.tsi-form-textarea{width:100%;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:#fff;border:1px solid var(--border);border-radius:8px;outline:none;transition:border-color 0.15s;box-sizing:border-box;text-transform:uppercase;}
         .tsi-form-input:focus,.tsi-form-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.1);}
         .tsi-form-textarea{min-height:80px;resize:vertical;line-height:1.5;}
         .tsi-form-row{display:flex;gap:12px;}
@@ -1509,16 +1510,16 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         <!-- TSI FIX RATE -->
         <section id="fixrate" class="section">
-            <div class="fix-action-row">
-                <button class="fix-action-btn primary" onclick="openTsiModal()">+ ADD TSI</button>
-                <a href="tsi-entry.html" class="fix-action-btn secondary">REPORTS</a>
-            </div>
             <div class="fix-status-bar" id="fixStatusBar">
                 <span class="fix-status-pill fsp-work" id="fixInWork">0 IN WORK</span>
                 <span class="fix-status-pill fsp-closed" id="fixClosed">0 CLOSED</span>
                 <span class="fix-status-pill fsp-total" id="fixTotal">0 TOTAL</span>
                 <span style="flex:1;"></span>
                 <span class="fix-status-pill fsp-rate" id="fixRate">-- 1ST ATTEMPT FIX RATE</span>
+            </div>
+            <div class="fix-action-row">
+                <button class="fix-action-btn primary" onclick="openTsiModal()">+ ADD TSI</button>
+                <a href="tsi-entry.html" class="fix-action-btn secondary">REPORTS</a>
             </div>
             <div class="fix-search-box">
                 <span class="fix-search-icon">&#128269;</span>
@@ -1531,8 +1532,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 <button class="fix-chip" data-fix-filter="NG 800">NG 800</button>
                 <button class="fix-chip" data-fix-filter="NG 700">NG 700</button>
                 <span style="width:1px;height:20px;background:var(--frame-border);margin:0 4px;"></span>
-                <button class="fix-chip fix-status-chip active" data-status-filter="ALL">ALL</button>
-                <button class="fix-chip fix-status-chip" data-status-filter="IN WORK">IN WORK</button>
+                <button class="fix-chip fix-status-chip active" data-status-filter="IN WORK">IN WORK</button>
                 <button class="fix-chip fix-status-chip" data-status-filter="CLOSED">CLOSED</button>
             </div>
             <div id="fixResults">
@@ -1548,13 +1548,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             <div class="tsi-modal" style="max-width:480px;">
                 <div class="tsi-modal-header"><h2>Close TSI</h2><button class="tsi-modal-close" onclick="fixCoCancel()">&times;</button></div>
                 <div class="tsi-modal-body">
-                    <div class="tsi-form-group">
-                        <label class="tsi-form-label">RESULT <span class="req">*</span></label>
-                        <div style="display:flex;gap:6px;">
-                            <span class="fco-eff-chip" onclick="fcoPickEff(this, true)">EFFECTIVE</span>
-                            <span class="fco-eff-chip" onclick="fcoPickEff(this, false)">INEFFECTIVE</span>
-                        </div>
-                    </div>
                     <div class="tsi-form-group">
                         <label class="tsi-form-label">ACTION TAKEN <span class="req">*</span></label>
                         <div style="display:flex;gap:6px;flex-wrap:wrap;">
@@ -2210,7 +2203,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         // ---- TSI FIX RATE (Firestore-backed) ----
         var TSI_ENTRIES = [];
-        var fixStatusFilter = 'ALL';
+        var fixStatusFilter = 'IN WORK';
 
         const fixSearchInput = document.getElementById('fixSearchInput');
         const fixResults = document.getElementById('fixResults');
@@ -2230,9 +2223,16 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         document.querySelectorAll('[data-status-filter]').forEach(function(chip) {
             chip.addEventListener('click', function() {
-                document.querySelectorAll('[data-status-filter]').forEach(function(c) { c.classList.remove('active'); });
-                chip.classList.add('active');
-                fixStatusFilter = chip.dataset.statusFilter;
+                if (chip.classList.contains('active')) {
+                    // Toggle off - show all
+                    chip.classList.remove('active');
+                    fixStatusFilter = 'ALL';
+                } else {
+                    // Select this one, deselect others
+                    document.querySelectorAll('[data-status-filter]').forEach(function(c) { c.classList.remove('active'); });
+                    chip.classList.add('active');
+                    fixStatusFilter = chip.dataset.statusFilter;
+                }
                 renderFixRate();
             });
         });
@@ -2295,8 +2295,13 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 });
             }
 
-            if (results.length === 0 && !q && activeFixFilter === 'ALL' && fixStatusFilter === 'ALL') {
+            if (results.length === 0 && TSI_ENTRIES.length === 0) {
                 fixResults.innerHTML = '<div class="fix-empty-state"><p>No TSI entries yet</p><p class="hint">Click + ADD TSI to create your first entry</p></div>';
+                return;
+            }
+
+            if (results.length === 0 && fixStatusFilter === 'IN WORK') {
+                fixResults.innerHTML = '<div class="fix-empty-state"><p>No entries in work</p><p class="hint">All caught up - or click CLOSED to see history</p></div>';
                 return;
             }
 
@@ -2311,10 +2316,11 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             results.forEach(function(e) {
                 var statusLabel, statusClass;
                 if (e.status === 'in_work') { statusLabel = 'IN WORK'; statusClass = 'fts-work'; }
-                else if (e.status === 'closed_eff') { statusLabel = 'EFFECTIVE'; statusClass = 'fts-eff'; }
-                else { statusLabel = 'INEFFECTIVE'; statusClass = 'fts-ineff'; }
+                else if (e.status === 'closed_eff') { statusLabel = 'CLOSED'; statusClass = 'fts-eff'; }
+                else { statusLabel = 'CLOSED'; statusClass = 'fts-eff'; }
 
                 var dateStr = formatTsiDate(e.created);
+                var createdBy = e.createdByName || e.createdBy || '';
 
                 html += '<div class="fix-entry-card">';
 
@@ -2325,7 +2331,10 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 html += '<span class="fec-fleet">' + esc(e.fleet||'') + '</span>';
                 html += '<span class="fec-fc">' + esc(e.faultCode||'') + '</span>';
                 if (e.effect) html += '<span class="fec-effect">' + esc(e.effect) + '</span>';
-                html += '<span class="fec-date">' + dateStr + '</span>';
+                html += '<div class="fec-header-right">';
+                html += '<div class="fec-date">' + dateStr + '</div>';
+                if (createdBy) html += '<div class="fec-created-by">by ' + esc(createdBy) + '</div>';
+                html += '</div>';
                 html += '</div>';
 
                 // Details row
@@ -2344,7 +2353,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
                 // Corrective action (shown when closed)
                 if (e.correctiveAction) {
-                    html += '<div class="fec-corrective"><span class="fec-label" style="margin-bottom:2px;">CORRECTIVE ACTION</span><div>' + esc(e.correctiveAction) + '</div></div>';
+                    html += '<div class="fec-corrective"><span class="fec-label" style="margin-bottom:2px;color:var(--green-text);">CORRECTIVE ACTION</span><div>' + esc(e.correctiveAction) + '</div></div>';
                 }
 
                 // Action buttons
@@ -2355,6 +2364,9 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                         html += '<button class="fec-btn fec-btn-close" onclick="fixClose(\'' + e.id + '\')">CLOSE</button>';
                     } else {
                         html += '<button class="fec-btn fec-btn-reopen" onclick="fixReopen(\'' + e.id + '\')">REOPEN</button>';
+                    }
+                    if (e.updatedAt) {
+                        html += '<span class="fec-updated">Updated ' + formatTsiDate(e.updatedAt) + (e.updatedByName ? ' by ' + esc(e.updatedByName) : '') + '</span>';
                     }
                     html += '<button class="fec-btn fec-btn-del" onclick="fixDelete(\'' + e.id + '\')">DELETE</button>';
                     html += '</div>';
@@ -2368,15 +2380,11 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         // Close from Fix Rate tab
         var fixCloseoutId = null;
-        var fixCloseoutEff = null;
 
         function fixClose(id) {
             fixCloseoutId = id;
-            fixCloseoutEff = null;
             document.querySelectorAll('.fco-chip').forEach(function(c) { c.classList.remove('selected'); });
-            document.querySelectorAll('.fco-eff-chip').forEach(function(c) { c.classList.remove('selected'); });
             document.getElementById('fcoNotes').value = '';
-            // Default close date to today
             var today = new Date();
             var yyyy = today.getFullYear();
             var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -2392,13 +2400,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         function fixCoCancel() {
             document.getElementById('fixCoOverlay').classList.remove('open');
             fixCloseoutId = null;
-            fixCloseoutEff = null;
-        }
-
-        function fcoPickEff(el, eff) {
-            document.querySelectorAll('.fco-eff-chip').forEach(function(c) { c.classList.remove('selected'); });
-            el.classList.add('selected');
-            fixCloseoutEff = eff;
         }
 
         function fcoPickAction(el) {
@@ -2408,22 +2409,21 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         function fixCoConfirm() {
             if (!fixCloseoutId) return;
-            if (fixCloseoutEff === null) { tsiToast('Select effective or ineffective'); return; }
             var chip = document.querySelector('.fco-chip.selected');
             if (!chip) { tsiToast('Select an action taken'); return; }
-            var notes = document.getElementById('fcoNotes').value.trim();
+            var notes = document.getElementById('fcoNotes').value.trim().toUpperCase();
             if (!notes) { tsiToast('Enter corrective action notes'); document.getElementById('fcoNotes').focus(); return; }
             var closeDate = document.getElementById('fcoDate').value;
             if (!closeDate) { tsiToast('Enter a close date'); return; }
             db.collection('tsi_entries').doc(fixCloseoutId).update({
-                status: fixCloseoutEff ? 'closed_eff' : 'closed_ineff',
+                status: 'closed_eff',
                 closedDate: closeDate + 'T' + new Date().toTimeString().slice(0,8),
                 actionType: chip.textContent.trim(),
                 correctiveAction: notes
             }).then(function() {
                 fixCoCancel();
                 loadTsiEntries();
-                tsiToast(fixCloseoutEff ? 'Closed - Effective' : 'Closed - Ineffective');
+                tsiToast('TSI closed');
             }).catch(function(err) { tsiToast('Error: ' + err.message); });
         }
 
@@ -3421,9 +3421,9 @@ function saveTsiEntry() {
     effect: effect,
     workOrder: document.getElementById('tWorkOrder').value.trim().toUpperCase(),
     actionType: '',
-    notes: document.getElementById('tNotes').value.trim(),
+    notes: document.getElementById('tNotes').value.trim().toUpperCase(),
     dueDate: document.getElementById('tDueDate').value,
-    ref: document.getElementById('tRef').value.trim(),
+    ref: document.getElementById('tRef').value.trim().toUpperCase(),
     status: 'in_work',
     created: new Date().toISOString(),
     closedDate: null,
@@ -3437,9 +3437,11 @@ function saveTsiEntry() {
     db.collection('tsi_entries').doc(tsiEditId).update({
       tail: tail, fleet: fleet, ata: ata, faultCode: faultCode, effect: effect,
       workOrder: document.getElementById('tWorkOrder').value.trim().toUpperCase(),
-      notes: document.getElementById('tNotes').value.trim(),
+      notes: document.getElementById('tNotes').value.trim().toUpperCase(),
       dueDate: document.getElementById('tDueDate').value,
-      ref: document.getElementById('tRef').value.trim()
+      ref: document.getElementById('tRef').value.trim().toUpperCase(),
+      updatedAt: new Date().toISOString(),
+      updatedByName: CURRENT_USER ? CURRENT_USER.name : ''
     }).then(function() {
       closeTsiModal();
       loadTsiEntries();

@@ -1546,17 +1546,17 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         <!-- Closeout modal -->
         <div class="tsi-modal-overlay" id="fixCoOverlay">
             <div class="tsi-modal" style="max-width:480px;">
-                <div class="modal-header"><h2>Close TSI</h2><button class="modal-close" onclick="fixCoCancel()">&times;</button></div>
-                <div class="modal-body" style="padding:14px 20px 8px;">
-                    <div class="form-group">
-                        <label class="form-label">Result</label>
+                <div class="tsi-modal-header"><h2>Close TSI</h2><button class="tsi-modal-close" onclick="fixCoCancel()">&times;</button></div>
+                <div class="tsi-modal-body">
+                    <div class="tsi-form-group">
+                        <label class="tsi-form-label">RESULT <span class="req">*</span></label>
                         <div style="display:flex;gap:6px;">
                             <span class="fco-eff-chip" onclick="fcoPickEff(this, true)">EFFECTIVE</span>
                             <span class="fco-eff-chip" onclick="fcoPickEff(this, false)">INEFFECTIVE</span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Action Taken</label>
+                    <div class="tsi-form-group">
+                        <label class="tsi-form-label">ACTION TAKEN <span class="req">*</span></label>
                         <div style="display:flex;gap:6px;flex-wrap:wrap;">
                             <span class="fco-chip" onclick="fcoPickAction(this)">REMOVE/REPLACE</span>
                             <span class="fco-chip" onclick="fcoPickAction(this)">REPAIR</span>
@@ -1564,16 +1564,19 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                             <span class="fco-chip" onclick="fcoPickAction(this)">NFF</span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Corrective Action Notes</label>
-                        <textarea id="fcoNotes" class="form-input" rows="3" placeholder="R/R #1 IASC P/N 1234, OPS CK SAT..." style="resize:vertical;"></textarea>
+                    <div class="tsi-form-group">
+                        <label class="tsi-form-label">CORRECTIVE ACTION <span class="req">*</span></label>
+                        <textarea id="fcoNotes" class="tsi-form-input" rows="3" placeholder="R/R #1 IASC P/N 1234, OPS CK SAT..." style="resize:vertical;min-height:70px;"></textarea>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Close Date</label>
-                        <input type="date" id="fcoDate" class="form-input">
+                    <div class="tsi-form-group">
+                        <label class="tsi-form-label">CLOSE DATE</label>
+                        <input type="date" id="fcoDate" class="tsi-form-input">
                     </div>
                 </div>
-                <div class="modal-footer"><button class="modal-save" onclick="fixCoConfirm()">CLOSE ENTRY</button><button class="modal-cancel" onclick="fixCoCancel()">CANCEL</button></div>
+                <div class="tsi-modal-footer">
+                    <button class="tsi-save-btn" onclick="fixCoCancel()">CANCEL</button>
+                    <button class="tsi-save-btn primary" onclick="fixCoConfirm()">CLOSE ENTRY</button>
+                </div>
             </div>
         </div>
 
@@ -2383,7 +2386,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         }
 
         function fixUpdate(id) {
-            tsiToast('Edit coming soon');
+            openTsiModal(id);
         }
 
         function fixCoCancel() {
@@ -3135,7 +3138,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 <div class="tsi-modal-overlay" id="tsiModalOverlay">
   <div class="tsi-modal">
     <div class="tsi-modal-header">
-      <h2>New TSI Entry</h2>
+      <h2 id="tsiModalTitle">New TSI Entry</h2>
       <button class="tsi-modal-close" onclick="closeTsiModal()">&times;</button>
     </div>
     <div class="tsi-modal-body">
@@ -3192,7 +3195,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
     </div>
     <div class="tsi-modal-footer">
       <button class="tsi-save-btn" onclick="closeTsiModal()">CANCEL</button>
-      <button class="tsi-save-btn primary" onclick="saveTsiEntry()">SAVE</button>
+      <button class="tsi-save-btn primary" id="tsiSaveBtn" onclick="saveTsiEntry()">SAVE</button>
     </div>
   </div>
 </div>
@@ -3243,8 +3246,28 @@ fetch('FaultCodes.csv').then(function(r) { return r.ok ? r.text() : ''; }).then(
 }).catch(function(){});
 
 // ---- TSI MODAL: OPEN/CLOSE ----
-function openTsiModal() {
+var tsiEditId = null;
+
+function openTsiModal(editId) {
   tsiClearForm();
+  tsiEditId = editId || null;
+  document.getElementById('tsiModalTitle').textContent = tsiEditId ? 'Edit TSI Entry' : 'New TSI Entry';
+  document.getElementById('tsiSaveBtn').textContent = tsiEditId ? 'UPDATE' : 'SAVE';
+  if (tsiEditId) {
+    var entry = TSI_ENTRIES.find(function(e) { return e.id === tsiEditId; });
+    if (entry) {
+      document.getElementById('tFail').value = entry.tail || '';
+      document.getElementById('tFleet').textContent = entry.fleet || '-';
+      document.getElementById('tFleetVal').value = entry.fleet || '';
+      document.getElementById('tFaultCode').value = entry.faultCode || '';
+      document.getElementById('tAta').textContent = entry.ata || '-';
+      document.getElementById('tEffect').value = entry.effect || '';
+      document.getElementById('tWorkOrder').value = entry.workOrder || '';
+      document.getElementById('tRef').value = entry.ref || '';
+      document.getElementById('tNotes').value = entry.notes || '';
+      document.getElementById('tDueDate').value = entry.dueDate || '';
+    }
+  }
   document.getElementById('tsiModalOverlay').classList.add('open');
   setTimeout(function() { document.getElementById('tFail').focus(); }, 100);
 }
@@ -3409,13 +3432,31 @@ function saveTsiEntry() {
   };
 
   // Save to Firestore
-  db.collection('tsi_entries').add(entry).then(function() {
-    closeTsiModal();
-    loadTsiEntries();
-    tsiToast('TSI entry added - IN WORK');
-  }).catch(function(err) {
-    tsiToast('Error saving entry. Try again.');
-  });
+  if (tsiEditId) {
+    // Edit mode - update existing entry
+    db.collection('tsi_entries').doc(tsiEditId).update({
+      tail: tail, fleet: fleet, ata: ata, faultCode: faultCode, effect: effect,
+      workOrder: document.getElementById('tWorkOrder').value.trim().toUpperCase(),
+      notes: document.getElementById('tNotes').value.trim(),
+      dueDate: document.getElementById('tDueDate').value,
+      ref: document.getElementById('tRef').value.trim()
+    }).then(function() {
+      closeTsiModal();
+      loadTsiEntries();
+      tsiToast('TSI entry updated');
+    }).catch(function(err) {
+      tsiToast('Error updating entry. Try again.');
+    });
+  } else {
+    // Create mode - new entry
+    db.collection('tsi_entries').add(entry).then(function() {
+      closeTsiModal();
+      loadTsiEntries();
+      tsiToast('TSI entry added - IN WORK');
+    }).catch(function(err) {
+      tsiToast('Error saving entry. Try again.');
+    });
+  }
 }
 
 function tsiToast(msg) {

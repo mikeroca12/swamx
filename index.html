@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- MOC Toolbox v10.1 - 2025-02-25 -->
+<!-- MOC Toolbox v10.2 - 2025-02-25 auth debug -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1368,26 +1368,32 @@ function doLogin() {
 
     var rosterDoc = snap.docs[0];
     var rosterData = rosterDoc.data();
-    var email = enumVal + '@moctoolbox.firebaseapp.com';
+    var email = 'moc' + enumVal + '@moctoolbox.com';
     var password = ACCESS_CODE + enumVal;
+    console.log('AUTH ATTEMPT:', email);
 
     // Try to sign in
     auth.signInWithEmailAndPassword(email, password).then(function(cred) {
+      console.log('SIGN IN SUCCESS:', cred.user.uid);
       // Check if roster doc needs to be updated to use auth UID
       if (rosterDoc.id !== cred.user.uid) {
         // Copy roster data to UID-keyed doc
         db.collection('controllers').doc(cred.user.uid).set(rosterData);
       }
     }).catch(function(err) {
+      console.log('SIGN IN ERROR:', err.code, err.message);
       if (err.code === 'auth/user-not-found') {
         // First login - create the auth account
+        console.log('CREATING USER...');
         auth.createUserWithEmailAndPassword(email, password).then(function(cred) {
+          console.log('CREATE SUCCESS:', cred.user.uid);
           // Create UID-keyed roster doc
           db.collection('controllers').doc(cred.user.uid).set(rosterData);
         }).catch(function(createErr) {
+          console.log('CREATE ERROR:', createErr.code, createErr.message);
           btn.disabled = false;
           btn.textContent = 'SIGN IN';
-          errEl.textContent = 'Error creating account. Try again.';
+          errEl.textContent = 'Error creating account: ' + createErr.code;
         });
       } else if (err.code === 'auth/wrong-password') {
         btn.disabled = false;

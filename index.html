@@ -1169,14 +1169,19 @@
 
         <!-- TSI FIX RATE -->
         <section id="fixrate" class="section">
-            <div class="fix-search-box">
-                <span class="fix-search-icon">&#128269;</span>
-                <input type="text" id="fixSearchInput" placeholder="Search by fault code, flight deck effect, or keyword..." autocomplete="off">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                <div class="fix-search-box" style="flex:1;margin-bottom:0;">
+                    <span class="fix-search-icon">&#128269;</span>
+                    <input type="text" id="fixSearchInput" placeholder="Search by fault code, flight deck effect, or keyword..." autocomplete="off">
+                </div>
+                <a href="tsi-entry.html" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:#fff;background:var(--accent);padding:10px 16px;border-radius:8px;text-decoration:none;margin-left:12px;white-space:nowrap;letter-spacing:0.5px;">+ MANAGE</a>
             </div>
             <div class="fix-filter-row" id="fixFilterRow">
                 <button class="fix-chip active" data-fix-filter="ALL">ALL</button>
-                <button class="fix-chip" data-fix-filter="MAX">MAX</button>
-                <button class="fix-chip" data-fix-filter="NG">NG</button>
+                <button class="fix-chip" data-fix-filter="MAX 8">MAX 8</button>
+                <button class="fix-chip" data-fix-filter="MAX 7">MAX 7</button>
+                <button class="fix-chip" data-fix-filter="NG 800">NG 800</button>
+                <button class="fix-chip" data-fix-filter="NG 700">NG 700</button>
             </div>
             <div id="fixResults">
                 <div class="fix-empty-state">
@@ -1821,7 +1826,7 @@
                 effect: "BLEED FAMV L - Status Message",
                 description: "ENGINE-1 FAMV IS NOT IN COMMANDED POSITION. DETECTED BY: INTEGRATED AIR SYSTEMS CONTROLLER (IASC)-LEFT",
                 ata: "36",
-                fleet: "MAX",
+                fleet: "MAX 8",
                 actions: [
                     {name: "C/W IFIM Task 36-12-00-810-801", confidence: 85},
                     {name: "Replace Fan Air Modulating Valve (FAMV)", confidence: 45},
@@ -1839,7 +1844,7 @@
                 effect: "BLEED FAMV L - Overhead Panel Light",
                 description: "LEFT ENGINE BLEED FAMV LIGHT ILLUMINATED ON OVERHEAD PANEL. INTERMITTENT DURING CLIMB.",
                 ata: "36",
-                fleet: "NG",
+                fleet: "NG 800",
                 actions: [
                     {name: "Perform pneumatic engine on test per AMM 36-00-00", confidence: 92},
                     {name: "Replace Fan Air Modulating Valve (FAMV)", confidence: 38}
@@ -1860,7 +1865,7 @@
                 effect: "SPOILER CNTRL SYS - Status Message",
                 description: "SPOILER CONTROL MODULE COMMUNICATION FAULT. MX LIGHT ILLUMINATED.",
                 ata: "27",
-                fleet: "MAX",
+                fleet: "MAX 8",
                 actions: [
                     {name: "Reset via BITE, test spoiler system full cycle", confidence: 78},
                     {name: "Replace Spoiler Control Module", confidence: 35},
@@ -1876,7 +1881,7 @@
                 effect: "SPEED TRIM FAIL",
                 description: "SPEED TRIM FAIL INDICATION ON TAKEOFF. CREW FOLLOWED QRH PROCEDURE.",
                 ata: "22",
-                fleet: "MAX",
+                fleet: "MAX 8",
                 actions: [
                     {name: "Replace stab trim motor (M1659) + elevator position sensor (M929)", confidence: 72},
                     {name: "C/W IFIM 22-11186, monitor for recurrence", confidence: 40},
@@ -1892,7 +1897,7 @@
                 effect: "RADIO ALTIMETER - HUD Pitch Limit / Bank Warning",
                 description: "RECEIVED TAIL STRIKE PITCH LIMIT CUE AND BANK WARNING SYMBOLS IN HUD AFTER LIFTOFF. STEADY HORN WITH THROTTLE RETARD.",
                 ata: "31",
-                fleet: "700",
+                fleet: "NG 700",
                 actions: [
                     {name: "Replace #1 and #2 Radio Altimeters per AMM 34-33-21", confidence: 80},
                     {name: "Replace Rad Alt Receive/Transmit Antennas per AMM 34-33-11", confidence: 45},

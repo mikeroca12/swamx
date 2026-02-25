@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TSI Manage Entries | MOC Toolbox</title>
+<title>TSI Fix Rate - Entry | MOC Toolbox</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -16,6 +16,10 @@
   --border: #c8ceda;
   --border-strong: #b4bcc9;
   --text: #1e293b;
+  --text-secondary: #475569;
+  --text-dim: #64748b;
+  --text-on-dark: #e2e8f0;
+  --text-on-dark-dim: #ffffff;
   --green: #16a34a;
   --green-bg: #dcfce7;
   --green-border: #86efac;
@@ -34,6 +38,7 @@
   --blue-text: #1d4ed8;
   --accent: #2563eb;
   --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min-height:100vh;opacity:0;transition:opacity 0.08s;}
@@ -41,7 +46,7 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 /* Nav */
 .nav-bar{background:var(--frame);border-bottom:1px solid var(--frame-border);padding:10px 24px;display:flex;align-items:center;gap:14px;font-size:14px;}
 .nav-bar a{color:#ffffff;text-decoration:none;}
-.nav-bar .nav-title{font-weight:700;color:#ffffff;}
+.nav-bar .nav-title{font-weight:700;color:var(--text-on-dark);}
 .nav-bar .nav-title span{color:#3b82f6;}
 .nav-bar .nav-sep{color:var(--frame-border);}
 .nav-bar img{height:28px;}
@@ -51,157 +56,130 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 .header{background:var(--frame);border-bottom:1px solid var(--frame-border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .header h1{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;letter-spacing:-0.5px;color:#ffffff;}
 .header-actions{display:flex;gap:8px;}
-.hdr-btn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:6px 14px;border-radius:6px;border:1px solid var(--frame-border);background:rgba(255,255,255,0.08);color:#ffffff;cursor:pointer;transition:all 0.15s;letter-spacing:0.5px;}
-.hdr-btn:hover{background:rgba(255,255,255,0.15);}
-.hdr-btn.primary{background:var(--accent);border-color:var(--accent);}
-.hdr-btn.primary:hover{background:#1d4ed8;}
+.header-btn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:6px 14px;border-radius:6px;border:1px solid var(--frame-border);background:rgba(255,255,255,0.08);color:#ffffff;cursor:pointer;transition:all 0.15s;letter-spacing:0.5px;}
+.header-btn:hover{background:rgba(255,255,255,0.15);}
+.header-btn.primary{background:var(--accent);border-color:var(--accent);}
+.header-btn.primary:hover{background:#1d4ed8;}
 
 .container{max-width:900px;margin:0 auto;padding:24px 24px 80px;}
 
 /* Filter bar */
-.fbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
-.fc{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:6px 12px;border-radius:6px;border:1px solid var(--frame-border);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.8);cursor:pointer;transition:all 0.15s;}
-.fc:hover{background:rgba(255,255,255,0.1);color:#fff;}
-.fc.on{background:var(--accent);color:#fff;border-color:var(--accent);}
-.sc{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:4px 10px;border-radius:4px;cursor:pointer;transition:all 0.15s;letter-spacing:0.5px;}
-.sc.sa{border:1px solid var(--frame-border);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.8);}
-.sc.sa.on{background:rgba(255,255,255,0.15);color:#fff;}
-.sc.sw{border:1px solid var(--yellow-border);background:rgba(217,119,6,0.1);color:var(--yellow);}
-.sc.sw.on{background:var(--yellow);color:#fff;}
-.sc.scl{border:1px solid var(--green-border);background:rgba(22,163,74,0.1);color:var(--green);}
-.sc.scl.on{background:var(--green);color:#fff;}
-.fcount{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.8);margin-left:auto;}
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
+.f-chip{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:6px 12px;border-radius:6px;border:1px solid var(--frame-border);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.15s;}
+.f-chip:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.f-chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.f-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.4);margin-left:auto;}
 
-/* TSI Card */
-.tc{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;box-shadow:var(--card-shadow);}
-.tc-top{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
-.badge{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:0.5px;flex-shrink:0;}
-.badge-iw{background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow-border);}
-.badge-ce{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);}
-.badge-ci{background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border);}
-.tc-tail{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--accent);}
-.tc-fleet{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(22,163,74,0.1);color:#15803d;border:1px solid #86efac;}
-.tc-fc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--text);}
-.tc-effect{font-size:12px;color:var(--text);flex:1;line-height:1.4;min-width:120px;}
-.tc-date{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--text);flex-shrink:0;}
+/* Status filter */
+.s-chip{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:4px 10px;border-radius:4px;cursor:pointer;transition:all 0.15s;letter-spacing:0.5px;}
+.s-chip.s-all{border:1px solid var(--frame-border);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);}
+.s-chip.s-all.active{background:rgba(255,255,255,0.15);color:#fff;}
+.s-chip.s-work{border:1px solid var(--yellow-border);background:rgba(217,119,6,0.1);color:var(--yellow);}
+.s-chip.s-work.active{background:var(--yellow);color:#fff;}
+.s-chip.s-closed{border:1px solid var(--green-border);background:rgba(22,163,74,0.1);color:var(--green);}
+.s-chip.s-closed.active{background:var(--green);color:#fff;}
 
-.tc-body{padding:12px 16px;}
-.tc-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:8px;}
-.tc-fld{flex:1;min-width:100px;}
-.tc-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--text);letter-spacing:0.5px;margin-bottom:2px;}
-.tc-val{font-size:12px;color:var(--text);font-weight:500;}
-.tc-notes{font-size:12px;color:var(--text);line-height:1.5;margin-top:4px;padding:8px 10px;background:#fff;border:1px solid var(--border);border-radius:6px;}
-.tc-by{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--text);margin-top:6px;}
+/* TSI Cards */
+.tsi-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;box-shadow:var(--card-shadow);}
+.tsi-card-top{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.tsi-status{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:0.5px;flex-shrink:0;}
+.tsi-status.in-work{background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow-border);}
+.tsi-status.closed-eff{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);}
+.tsi-status.closed-ineff{background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border);}
+.tsi-tail{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--accent);}
+.tsi-fleet{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(22,163,74,0.1);color:#15803d;border:1px solid #86efac;}
+.tsi-fc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--text);}
+.tsi-effect{font-size:12px;color:var(--text-secondary);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tsi-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);flex-shrink:0;}
 
-/* Attempts */
-.att-sec{margin-top:10px;border-top:1px solid var(--border);padding-top:10px;}
-.att-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--text);letter-spacing:1px;margin-bottom:8px;}
-.att{padding:8px 10px;background:#fff;border:1px solid var(--border);border-radius:6px;margin-bottom:4px;}
-.att-hdr{display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap;}
-.att-num{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:#fff;padding:2px 6px;border-radius:3px;background:var(--accent);}
-.att-num.ineff{background:var(--red);}
-.att-num.eff{background:var(--green);}
-.att-dt{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--text);}
-.att-wo{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--accent);}
-.att-act{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--surface);border:1px solid var(--border);color:var(--text);}
-.att-res{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;}
-.att-res.r-ineff{background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border);}
-.att-res.r-open{background:var(--yellow-bg);color:var(--yellow-text);border:1px solid var(--yellow-border);}
-.att-res.r-closed{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);}
-.att-notes{font-size:11px;color:var(--text);line-height:1.5;}
+.tsi-card-body{padding:12px 16px;}
+.tsi-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:8px;}
+.tsi-field{flex:1;min-width:120px;}
+.tsi-field-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--text-dim);letter-spacing:0.5px;margin-bottom:2px;}
+.tsi-field-value{font-size:12px;color:var(--text);font-weight:500;}
+.tsi-action-text{font-size:12px;color:var(--text);line-height:1.5;margin-top:4px;padding:8px 10px;background:#fff;border:1px solid var(--border);border-radius:6px;}
 
-/* Action bar */
-.tc-acts{padding:10px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;background:var(--surface2);}
-.tb{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:6px 14px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;letter-spacing:0.3px;}
-.tb:hover{border-color:var(--accent);color:var(--accent);}
-.tb-upd{color:var(--blue-text);border-color:var(--blue-border);background:var(--blue-bg);}
-.tb-upd:hover{background:#bfdbfe;}
-.tb-cls{color:var(--green-text);border-color:var(--green-border);background:var(--green-bg);}
-.tb-cls:hover{background:#bbf7d0;}
-.tb-reo{color:var(--yellow-text);border-color:var(--yellow-border);background:var(--yellow-bg);}
-.tb-reo:hover{background:#fde68a;}
-.tb-del{color:var(--red-text);border-color:var(--red-border);margin-left:auto;}
-.tb-del:hover{background:var(--red-bg);}
-
-/* 3-sec confirm states */
-.tb.arm-cls{background:var(--green);color:#fff;border-color:var(--green);animation:pg 0.5s ease;}
-.tb.arm-del{background:var(--red);color:#fff;border-color:var(--red);animation:pr 0.5s ease;margin-left:auto;}
-.tb.arm-reo{background:var(--yellow);color:#fff;border-color:var(--yellow);animation:py 0.5s ease;}
-@keyframes pg{0%{box-shadow:0 0 0 0 rgba(22,163,74,0.4);}100%{box-shadow:0 0 0 8px rgba(22,163,74,0);}}
-@keyframes pr{0%{box-shadow:0 0 0 0 rgba(220,38,38,0.4);}100%{box-shadow:0 0 0 8px rgba(220,38,38,0);}}
-@keyframes py{0%{box-shadow:0 0 0 0 rgba(217,119,6,0.4);}100%{box-shadow:0 0 0 8px rgba(217,119,6,0);}}
+.tsi-card-actions{padding:8px 16px;border-top:1px solid var(--border);display:flex;gap:6px;background:var(--surface2);}
+.tsi-btn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:5px 12px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;letter-spacing:0.3px;}
+.tsi-btn:hover{border-color:var(--accent);color:var(--accent);}
+.tsi-btn.btn-close-eff{color:var(--green-text);border-color:var(--green-border);}
+.tsi-btn.btn-close-eff:hover{background:var(--green-bg);}
+.tsi-btn.btn-close-ineff{color:var(--red-text);border-color:var(--red-border);}
+.tsi-btn.btn-close-ineff:hover{background:var(--red-bg);}
+.tsi-btn.btn-reopen{color:var(--yellow-text);border-color:var(--yellow-border);}
+.tsi-btn.btn-reopen:hover{background:var(--yellow-bg);}
+.tsi-btn.btn-delete{color:var(--red-text);border-color:var(--red-border);margin-left:auto;}
+.tsi-btn.btn-delete:hover{background:var(--red-bg);}
 
 /* Empty */
-.empty{text-align:center;padding:60px 24px;color:rgba(255,255,255,0.7);}
+.empty{text-align:center;padding:60px 24px;color:rgba(255,255,255,0.3);}
 .empty p{font-size:15px;margin-bottom:4px;}
 .empty .hint{font-size:12px;}
 
-/* Modal overlay */
-.mo{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;}
-.mo.open{display:flex;}
-.mdl{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
-.mdl-hdr{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.mdl-hdr h2{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--text);}
-.mdl-x{background:none;border:none;font-size:20px;color:var(--text);cursor:pointer;padding:4px;}
-.mdl-x:hover{color:var(--red);}
-.mdl-body{padding:20px;}
-.mdl-foot{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-header h2{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--text);}
+.modal-close{background:none;border:none;font-size:20px;color:var(--text-dim);cursor:pointer;padding:4px;}
+.modal-close:hover{color:var(--text);}
+.modal-body{padding:20px;}
+.modal-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
 
 /* Form */
-.fg{margin-bottom:16px;}
-.fl{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:6px;display:block;}
-.fl .rq{color:var(--red);}
-.fi,.fsl,.fta{width:100%;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:#fff;border:1px solid var(--border);border-radius:8px;outline:none;transition:border-color 0.15s;}
-.fi:focus,.fsl:focus,.fta:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.1);}
-.fta{min-height:80px;resize:vertical;line-height:1.5;}
-.fsl{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231e293b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
-.fr{display:flex;gap:12px;}
-.fr .fg{flex:1;}
+.form-group{margin-bottom:16px;}
+.form-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;display:block;}
+.form-label .req{color:var(--red);}
+.form-input,.form-select,.form-textarea{width:100%;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:#fff;border:1px solid var(--border);border-radius:8px;outline:none;transition:border-color 0.15s;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.1);}
+.form-textarea{min-height:80px;resize:vertical;line-height:1.5;}
+.form-select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+.form-row{display:flex;gap:12px;}
+.form-row .form-group{flex:1;}
+.form-hint{font-size:11px;color:var(--text-dim);margin-top:4px;}
 
-/* Dropdown helpers */
-.dd-wrap{position:relative;}
-.dd{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:200px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
-.dd.open{display:block;}
-.dd-opt{padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;transition:background 0.1s;}
-.dd-opt:hover,.dd-opt.hl{background:var(--blue-bg);}
-.dd-code{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--text);}
-.dd-name{color:var(--text);}
-.dd-fleet{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text);}
+/* Tail search dropdown */
+.tail-wrap{position:relative;}
+.tail-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:200px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
+.tail-dropdown.open{display:block;}
+.tail-opt{padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;transition:background 0.1s;}
+.tail-opt:hover,.tail-opt.highlighted{background:var(--blue-bg);}
+.tail-opt .to-tail{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--text);}
+.tail-opt .to-fleet{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
 
-/* Action chips */
-.achips{display:flex;flex-wrap:wrap;gap:6px;}
-.ach{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;}
-.ach:hover{border-color:var(--accent);color:var(--accent);}
-.ach.sel{background:var(--accent);color:#fff;border-color:var(--accent);}
+/* Fault code search dropdown */
+.fc-wrap{position:relative;}
+.fc-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:240px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
+.fc-dropdown.open{display:block;}
+.fc-opt{padding:8px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px;font-size:13px;transition:background 0.1s;border-bottom:1px solid #f1f5f9;}
+.fc-opt:last-child{border-bottom:none;}
+.fc-opt:hover,.fc-opt.highlighted{background:var(--blue-bg);}
+.fc-opt .fco-code{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--text);font-size:12px;}
+.fc-opt .fco-msg{font-size:11px;color:var(--text);line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fc-opt .fco-task{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:1px;}
 
-/* Close modal action chips */
-.cach{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:6px 12px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;}
-.cach:hover{border-color:var(--green);color:var(--green-text);}
-.cach.sel{background:var(--green);color:#fff;border-color:var(--green);}
-
-/* Confirm delete modal */
-.del-icon{width:48px;height:48px;background:var(--red-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px;color:var(--red);}
-.del-msg{text-align:center;margin-bottom:16px;}
-.del-msg p{font-size:13px;color:var(--text);line-height:1.5;}
-.del-msg .del-warn{font-size:12px;color:var(--red-text);font-weight:600;margin-top:6px;}
-.del-ids{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--text);}
-.mdl-foot .btn-cancel{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:8px 20px;border-radius:6px;border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;}
-.mdl-foot .btn-cancel:hover{background:var(--surface2);}
-.mdl-foot .btn-del{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:8px 20px;border-radius:6px;border:1px solid var(--red);background:var(--red);color:#fff;cursor:pointer;}
-.mdl-foot .btn-del:hover{background:#b91c1c;}
+/* Action taken dropdown */
+.action-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+.action-chip{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;}
+.action-chip:hover{border-color:var(--accent);color:var(--accent);}
+.action-chip.selected{background:var(--accent);color:#fff;border-color:var(--accent);}
 
 /* Toast */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:opacity 0.3s;}
 
+/* Responsive */
 @media(max-width:640px){
   .container{padding:16px 14px 60px;}
-  .tc-top{flex-wrap:wrap;}
-  .fr{flex-direction:column;gap:0;}
-  .tc-effect{display:none;}
-  .header{padding:12px 16px;}
-  .header h1{font-size:13px;}
+  .tsi-card-top{flex-wrap:wrap;}
+  .form-row{flex-direction:column;gap:0;}
+  .tsi-effect{display:none;}
 }
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="auth.js"></script>
 </head>
 <body>
 
@@ -217,252 +195,190 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 <div class="header">
   <h1>TSI Fix Rate - Manage Entries</h1>
   <div class="header-actions">
-    <button class="hdr-btn" onclick="exportData()">EXPORT</button>
-    <button class="hdr-btn primary" id="newBtn" onclick="openNewModal()" style="display:none;">+ NEW TSI</button>
+    <button class="header-btn" onclick="exportData()">EXPORT JSON</button>
+    <button class="header-btn primary" id="newTsiBtn" onclick="openNewModal()">+ NEW TSI</button>
   </div>
 </div>
 
 <div class="container">
-  <div class="fbar">
-    <button class="fc on" data-f="ALL" onclick="setFleet(this)">ALL</button>
-    <button class="fc" data-f="MAX 8" onclick="setFleet(this)">MAX 8</button>
-    <button class="fc" data-f="MAX 7" onclick="setFleet(this)">MAX 7</button>
-    <button class="fc" data-f="NG 800" onclick="setFleet(this)">NG 800</button>
-    <button class="fc" data-f="NG 700" onclick="setFleet(this)">NG 700</button>
+  <div class="filter-bar">
+    <button class="f-chip active" data-fleet="ALL" onclick="setFleet(this)">ALL</button>
+    <button class="f-chip" data-fleet="MAX 8" onclick="setFleet(this)">MAX 8</button>
+    <button class="f-chip" data-fleet="MAX 7" onclick="setFleet(this)">MAX 7</button>
+    <button class="f-chip" data-fleet="NG 800" onclick="setFleet(this)">NG 800</button>
+    <button class="f-chip" data-fleet="NG 700" onclick="setFleet(this)">NG 700</button>
     <span style="color:var(--frame-border);margin:0 4px;">|</span>
-    <button class="sc sa on" data-s="ALL" onclick="setStatus(this)">ALL</button>
-    <button class="sc sw" data-s="IN_WORK" onclick="setStatus(this)">IN WORK</button>
-    <button class="sc scl" data-s="CLOSED" onclick="setStatus(this)">CLOSED</button>
-    <span class="fcount" id="cnt"></span>
+    <button class="s-chip s-all active" data-status="ALL" onclick="setStatus(this)">ALL</button>
+    <button class="s-chip s-work" data-status="IN_WORK" onclick="setStatus(this)">IN WORK</button>
+    <button class="s-chip s-closed" data-status="CLOSED" onclick="setStatus(this)">CLOSED</button>
+    <span class="f-count" id="entryCount"></span>
   </div>
-  <div id="list"></div>
+
+  <div id="tsiList"></div>
 </div>
 
-<!-- New/Edit Modal -->
-<div class="mo" id="entryModal">
-  <div class="mdl">
-    <div class="mdl-hdr">
-      <h2 id="mTitle">New TSI Entry</h2>
-      <button class="mdl-x" onclick="closeModal()">&times;</button>
+<!-- New/Edit TSI Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle">New TSI Entry</h2>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
     </div>
-    <div class="mdl-body">
-      <div class="fg dd-wrap">
-        <label class="fl">TAIL NUMBER <span class="rq">*</span></label>
-        <input type="text" class="fi" id="fTail" placeholder="Start typing tail..." autocomplete="off">
-        <div class="dd" id="ddTail"></div>
+    <div class="modal-body">
+
+      <div class="form-group tail-wrap">
+        <label class="form-label">TAIL NUMBER <span class="req">*</span></label>
+        <input type="text" class="form-input" id="fTail" placeholder="Start typing tail..." autocomplete="off" oninput="filterTails()" onfocus="filterTails()" onkeydown="tailKeyNav(event)">
+        <div class="tail-dropdown" id="tailDropdown"></div>
       </div>
-      <div class="fr">
-        <div class="fg">
-          <label class="fl">FLEET</label>
-          <input type="text" class="fi" id="fFleet" readonly tabindex="-1" style="background:var(--surface);color:var(--text);">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">FLEET</label>
+          <input type="text" class="form-input" id="fFleet" readonly tabindex="-1" style="background:var(--surface);color:var(--text-dim);">
         </div>
-        <div class="fg dd-wrap">
-          <label class="fl">ATA</label>
-          <input type="text" class="fi" id="fAta" placeholder="e.g. 36" autocomplete="off">
-          <div class="dd" id="ddAta"></div>
-        </div>
-      </div>
-      <div class="fg">
-        <label class="fl">FAULT CODE <span class="rq">*</span></label>
-        <input type="text" class="fi" id="fFC" placeholder="e.g. 36-12030">
-      </div>
-      <div class="fg">
-        <label class="fl">FLIGHT DECK EFFECT / DESCRIPTION <span class="rq">*</span></label>
-        <input type="text" class="fi" id="fEffect" placeholder="e.g. BLEED FAMV RVDT L - Status Message">
-      </div>
-      <div class="fg">
-        <label class="fl">FIM/AMM REFERENCE</label>
-        <input type="text" class="fi" id="fRef" placeholder="e.g. 36-12-00-810-801">
-      </div>
-      <div class="fg">
-        <label class="fl">WORK ORDER / BARCODE</label>
-        <input type="text" class="fi" id="fWO" placeholder="e.g. TTG8Q01AL9VS">
-      </div>
-      <div class="fg">
-        <label class="fl">ACTION TAKEN</label>
-        <div class="achips" id="actChips">
-          <span class="ach" onclick="pickAct(this)">IFIM/FIM TASK</span>
-          <span class="ach" onclick="pickAct(this)">REMOVE/REPLACE</span>
-          <span class="ach" onclick="pickAct(this)">REPAIR</span>
-          <span class="ach" onclick="pickAct(this)">RESET</span>
-          <span class="ach" onclick="pickAct(this)">NO FAULTS FOUND</span>
-          <span class="ach" onclick="pickAct(this)">TEST/OPS CK</span>
+        <div class="form-group">
+          <label class="form-label">ATA</label>
+          <input type="text" class="form-input" id="fAta" placeholder="e.g. 36" maxlength="5">
         </div>
       </div>
-      <div class="fg">
-        <label class="fl">NOTES</label>
-        <textarea class="fta" id="fNotes" placeholder="Describe the issue, write-up, actions taken..."></textarea>
-      </div>
-    </div>
-    <div class="mdl-foot">
-      <button class="btn-cancel" onclick="closeModal()">CANCEL</button>
-      <button class="btn-del" style="background:var(--accent);border-color:var(--accent);" onclick="saveEntry()" id="saveBtn">SAVE ENTRY</button>
-    </div>
-  </div>
-</div>
 
-<!-- Close Modal (action taken on close) -->
-<div class="mo" id="closeModal">
-  <div class="mdl" style="max-width:440px;">
-    <div class="mdl-hdr">
-      <h2>Close TSI</h2>
-      <button class="mdl-x" onclick="cancelClose()">&times;</button>
-    </div>
-    <div class="mdl-body">
-      <div class="fg">
-        <label class="fl">ACTION TAKEN ON CLOSE <span class="rq">*</span></label>
-        <div class="achips" id="closeActChips">
-          <span class="cach" onclick="pickCloseAct(this)">REMOVE/REPLACE</span>
-          <span class="cach" onclick="pickCloseAct(this)">REPAIR</span>
-          <span class="cach" onclick="pickCloseAct(this)">RESET</span>
-          <span class="cach" onclick="pickCloseAct(this)">NO FAULTS FOUND</span>
-          <span class="cach" onclick="pickCloseAct(this)">IFIM/FIM TASK</span>
-          <span class="cach" onclick="pickCloseAct(this)">TEST/OPS CK</span>
+      <div class="form-group fc-wrap">
+        <label class="form-label">FAULT CODE <span class="req">*</span></label>
+        <input type="text" class="form-input" id="fFaultCode" placeholder="e.g. 36-12020 or FAMV" autocomplete="off" oninput="filterFC()" onfocus="filterFC()" onkeydown="fcKeyNav(event)">
+        <div class="fc-dropdown" id="fcDropdown"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">FLIGHT DECK EFFECT / DESCRIPTION <span class="req">*</span></label>
+        <input type="text" class="form-input" id="fEffect" placeholder="e.g. BLEED FAMV L - Status Message">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">WORK ORDER</label>
+        <input type="text" class="form-input" id="fWorkOrder" placeholder="e.g. TTG8Q01AL9VS">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">ACTION TAKEN</label>
+        <div class="action-chips" id="actionChips">
+          <span class="action-chip" onclick="pickAction(this)">IFIM/FIM TASK</span>
+          <span class="action-chip" onclick="pickAction(this)">REMOVE/REPLACE</span>
+          <span class="action-chip" onclick="pickAction(this)">RESET</span>
+          <span class="action-chip" onclick="pickAction(this)">SWAP</span>
+          <span class="action-chip" onclick="pickAction(this)">CB RESET</span>
+          <span class="action-chip" onclick="pickAction(this)">TEST/OPS CK</span>
+          <span class="action-chip" onclick="pickAction(this)">DEFERRED</span>
+        </div>
+        <select class="form-select" id="fActionType" style="display:none;">
+          <option value="">Select action type...</option>
+          <option value="IFIM/FIM TASK">IFIM/FIM TASK</option>
+          <option value="REMOVE/REPLACE">REMOVE/REPLACE</option>
+          <option value="RESET">RESET</option>
+          <option value="SWAP">SWAP</option>
+          <option value="CB RESET">CB RESET</option>
+          <option value="TEST/OPS CK">TEST/OPS CK</option>
+          <option value="DEFERRED">DEFERRED</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">TSI DETAILS / NOTES</label>
+        <textarea class="form-textarea" id="fNotes" placeholder="Paste TSI verbiage or describe what was done..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">DUE DATE</label>
+          <input type="date" class="form-input" id="fDueDate">
+        </div>
+        <div class="form-group">
+          <label class="form-label">AMM/FIM REFERENCE</label>
+          <input type="text" class="form-input" id="fRef" placeholder="e.g. AMM 36-12-03">
         </div>
       </div>
-      <div class="fg">
-        <label class="fl">CLOSE NOTES (OPTIONAL)</label>
-        <textarea class="fta" id="closeNotes" placeholder="Final sign-off notes..." style="min-height:60px;"></textarea>
-      </div>
+
     </div>
-    <div class="mdl-foot">
-      <button class="btn-cancel" onclick="cancelClose()">CANCEL</button>
-      <button class="btn-del" style="background:var(--green);border-color:var(--green);" onclick="confirmClose()" id="closeSaveBtn">CLOSE TSI</button>
+    <div class="modal-footer">
+      <button class="tsi-btn" onclick="closeModal()">CANCEL</button>
+      <button class="tsi-btn" style="background:var(--accent);color:#fff;border-color:var(--accent);" onclick="saveEntry()">SAVE</button>
     </div>
   </div>
 </div>
 
-<!-- Delete Confirm Modal -->
-<div class="mo" id="delModal">
-  <div class="mdl" style="max-width:400px;">
-    <div class="mdl-hdr">
-      <h2>Delete Entry</h2>
-      <button class="mdl-x" onclick="cancelDel()">&times;</button>
-    </div>
-    <div class="mdl-body">
-      <div class="del-icon">X</div>
-      <div class="del-msg">
-        <p>Delete TSI for <span class="del-ids" id="delIds"></span>?</p>
-        <p class="del-warn">This action cannot be undone</p>
-      </div>
-    </div>
-    <div class="mdl-foot">
-      <button class="btn-cancel" onclick="cancelDel()">CANCEL</button>
-      <button class="btn-del" onclick="confirmDel()">DELETE ENTRY</button>
-    </div>
-  </div>
-</div>
-
-<!-- Reopen Modal -->
-<div class="mo" id="reopenModal">
-  <div class="mdl" style="max-width:480px;">
-    <div class="mdl-hdr">
-      <h2>Reopen TSI</h2>
-      <button class="mdl-x" onclick="cancelReopen()">&times;</button>
-    </div>
-    <div class="mdl-body">
-      <p style="font-size:13px;color:var(--text);line-height:1.6;margin-bottom:16px;">This will mark the previous close as <strong style="color:var(--red);">INEFFECTIVE</strong> and start a new attempt.</p>
-      <div class="fg">
-        <label class="fl">NEW WORK ORDER / BARCODE</label>
-        <input type="text" class="fi" id="reopenWO" placeholder="New MXI barcode...">
-      </div>
-      <div class="fg">
-        <label class="fl">NOTES</label>
-        <textarea class="fta" id="reopenNotes" placeholder="Why is it being reopened?" style="min-height:60px;"></textarea>
-      </div>
-    </div>
-    <div class="mdl-foot">
-      <button class="btn-cancel" onclick="cancelReopen()">CANCEL</button>
-      <button class="btn-del" style="background:var(--yellow);border-color:var(--yellow);" onclick="confirmReopen()">REOPEN TSI</button>
-    </div>
-  </div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="auth.js"></script>
 <script>
-// tsi-entry.js - all logic for manage entries page
+// ---- TSI-ENTRY.HTML: Uses shared auth.js ----
+var db = window.MOC_DB;
 
-// ---- ATA CODES (standard 737 chapters) ----
-var ATA_CODES = [
-  {code:'05',name:'Time Limits/Maint Checks'},{code:'06',name:'Dimensions and Areas'},
-  {code:'07',name:'Lifting and Shoring'},{code:'08',name:'Leveling and Weighing'},
-  {code:'09',name:'Towing and Taxiing'},{code:'10',name:'Parking and Mooring'},
-  {code:'11',name:'Placards and Markings'},{code:'12',name:'Servicing'},
-  {code:'20',name:'Standard Practices'},{code:'21',name:'Air Conditioning'},
-  {code:'22',name:'Autoflight'},{code:'23',name:'Communications'},
-  {code:'24',name:'Electrical Power'},{code:'25',name:'Equipment/Furnishings'},
-  {code:'26',name:'Fire Protection'},{code:'27',name:'Flight Controls'},
-  {code:'28',name:'Fuel'},{code:'29',name:'Hydraulic Power'},
-  {code:'30',name:'Ice and Rain Protection'},{code:'31',name:'Indicating/Recording'},
-  {code:'32',name:'Landing Gear'},{code:'33',name:'Lights'},
-  {code:'34',name:'Navigation'},{code:'35',name:'Oxygen'},
-  {code:'36',name:'Pneumatic'},{code:'38',name:'Water/Waste'},
-  {code:'47',name:'Inert Gas System'},{code:'49',name:'APU'},
-  {code:'51',name:'Structures'},{code:'52',name:'Doors'},
-  {code:'53',name:'Fuselage'},{code:'54',name:'Nacelles/Pylons'},
-  {code:'55',name:'Stabilizers'},{code:'56',name:'Windows'},
-  {code:'57',name:'Wings'},{code:'70',name:'Standard Practices - Engine'},
-  {code:'71',name:'Power Plant'},{code:'72',name:'Engine'},
-  {code:'73',name:'Engine Fuel and Control'},{code:'74',name:'Ignition'},
-  {code:'75',name:'Air - Engine'},{code:'76',name:'Engine Controls'},
-  {code:'77',name:'Engine Indication'},{code:'78',name:'Exhaust/Thrust Reverser'},
-  {code:'79',name:'Oil'},{code:'80',name:'Starting'}
-];
-
-// ---- STATE ----
-var db = null;
-var entries = [];
-var curFleet = 'ALL';
-var curStatus = 'ALL';
-var editId = null; // null = new entry
-var closeId = null;
-var deleteId = null;
-var reopenId = null;
-var tailHighlight = -1;
-var ataHighlight = -1;
-
-// ---- TAIL NUMBERS ----
-// Loaded from Firestore controllers collection (fleet field) or hardcoded fallback
-var TAILS = [];
-
-// ---- INIT ----
 window.addEventListener('moc-auth-ready', function() {
-  db = window.MOC_DB;
-  applyPerms();
-  loadTails();
+  applyPermissions();
   loadEntries();
 });
 
-// 2-sec safety timeout
-setTimeout(function() { document.body.style.opacity = '1'; }, 2000);
+function applyPermissions() {
+  var newBtn = document.getElementById('newTsiBtn');
+  if (newBtn) newBtn.style.display = window.mocCanEdit() ? '' : 'none';
+}
 
-function applyPerms() {
-  if (window.mocCanEdit && window.mocCanEdit()) {
-    document.getElementById('newBtn').style.display = '';
+// ---- AIRCRAFT DATA (from CSV, same as index.html) ----
+var AIRCRAFT = [];
+var TAIL_MAP = {};
+
+function tsiParseCSVRow(line) {
+  var result = [], cur = '', inQ = false;
+  for (var i = 0; i < line.length; i++) {
+    var c = line[i];
+    if (inQ) {
+      if (c === '"' && line[i+1] === '"') { cur += '"'; i++; }
+      else if (c === '"') { inQ = false; }
+      else { cur += c; }
+    } else {
+      if (c === '"') { inQ = true; }
+      else if (c === ',') { result.push(cur); cur = ''; }
+      else { cur += c; }
+    }
   }
+  result.push(cur);
+  return result;
 }
 
-function loadTails() {
-  // Try to load from Firestore, fall back to empty
-  if (!db) return;
-  db.collection('aircraft').orderBy('tail').get().then(function(snap) {
-    TAILS = [];
-    snap.forEach(function(doc) {
-      var d = doc.data();
-      TAILS.push({tail: d.tail, fleet: d.fleet || ''});
-    });
-  }).catch(function() {
-    // No aircraft collection yet - tails typed manually, fleet typed manually
-  });
-}
+fetch('AircraftData.csv').then(function(r) { return r.ok ? r.text() : ''; }).then(function(text) {
+  if (!text) return;
+  var lines = text.split('\n');
+  for (var i = 1; i < lines.length; i++) {
+    var row = tsiParseCSVRow(lines[i]);
+    if (row.length >= 2 && row[0].trim()) {
+      AIRCRAFT.push([row[0].trim(), row[1].trim()]);
+      TAIL_MAP[row[0].trim()] = row[1].trim();
+    }
+  }
+}).catch(function(){});
 
-// ---- LOAD ENTRIES FROM FIRESTORE ----
+// ---- FAULT CODE DATA (from CSV, same as index.html) ----
+var FAULT_CODES = [];
+var fcHL = -1;
+
+fetch('FaultCodes.csv').then(function(r) { return r.ok ? r.text() : ''; }).then(function(text) {
+  if (!text) return;
+  var lines = text.split('\n');
+  for (var i = 1; i < lines.length; i++) {
+    var row = tsiParseCSVRow(lines[i]);
+    if (row.length >= 5 && row[0]) {
+      FAULT_CODES.push({ code: row[0].trim(), fimTask: row[1].trim(), title: row[2].trim(), message: row[3].trim(), ata: row[4].trim() });
+    }
+  }
+}).catch(function(){});
+
+// ---- STATE ----
+var entries = [];
+var activeFleet = 'ALL';
+var activeStatus = 'ALL';
+var editingId = null;
+var tailHighlight = -1;
+
+// ---- FIRESTORE: LOAD ENTRIES ----
 function loadEntries() {
-  if (!db) { renderList(); return; }
-  db.collection('tsi_entries').orderBy('createdAt','desc').get().then(function(snap) {
+  db.collection('tsi_entries').orderBy('created', 'desc').get().then(function(snap) {
     entries = [];
     snap.forEach(function(doc) {
       var d = doc.data();
@@ -471,403 +387,140 @@ function loadEntries() {
     });
     renderList();
   }).catch(function(err) {
-    toast('Error loading: ' + err.message);
+    console.log('Load error:', err);
     renderList();
   });
 }
 
 // ---- FILTERS ----
 function setFleet(el) {
-  document.querySelectorAll('.fc').forEach(function(c){c.classList.remove('on');});
-  el.classList.add('on');
-  curFleet = el.getAttribute('data-f');
+  document.querySelectorAll('.f-chip').forEach(function(c) { c.classList.remove('active'); });
+  el.classList.add('active');
+  activeFleet = el.dataset.fleet;
   renderList();
 }
 
 function setStatus(el) {
-  document.querySelectorAll('.sc').forEach(function(c){c.classList.remove('on');});
-  el.classList.add('on');
-  curStatus = el.getAttribute('data-s');
+  document.querySelectorAll('.s-chip').forEach(function(c) { c.classList.remove('active'); });
+  el.classList.add('active');
+  activeStatus = el.dataset.status;
   renderList();
 }
 
-// ---- RENDER LIST ----
+// ---- RENDER ----
 function renderList() {
+  var list = document.getElementById('tsiList');
   var filtered = entries.filter(function(e) {
-    if (curFleet !== 'ALL' && e.fleet !== curFleet) return false;
-    if (curStatus === 'IN_WORK' && e.status !== 'in_work') return false;
-    if (curStatus === 'CLOSED' && e.status !== 'closed') return false;
+    if (activeFleet !== 'ALL' && e.fleet !== activeFleet) return false;
+    if (activeStatus === 'IN_WORK' && e.status !== 'in_work') return false;
+    if (activeStatus === 'CLOSED' && e.status !== 'closed_eff' && e.status !== 'closed_ineff') return false;
     return true;
   });
 
-  document.getElementById('cnt').textContent = filtered.length + ' entr' + (filtered.length === 1 ? 'y' : 'ies');
-  var el = document.getElementById('list');
+  // Sort: in_work first, then by created desc
+  filtered.sort(function(a, b) {
+    if (a.status === 'in_work' && b.status !== 'in_work') return -1;
+    if (a.status !== 'in_work' && b.status === 'in_work') return 1;
+    return new Date(b.created) - new Date(a.created);
+  });
+
+  document.getElementById('entryCount').textContent = filtered.length + ' of ' + entries.length + ' entries';
 
   if (filtered.length === 0) {
-    el.innerHTML = '<div class="empty"><p>No entries found</p><p class="hint">Create a new TSI or adjust filters</p></div>';
+    list.innerHTML = '<div class="empty"><p>No TSI entries' + (activeFleet !== 'ALL' || activeStatus !== 'ALL' ? ' matching filters' : ' yet') + '</p><p class="hint">' + (entries.length === 0 ? 'Click + NEW TSI to add your first entry' : 'Try adjusting your filters') + '</p></div>';
     return;
   }
 
   var html = '';
   filtered.forEach(function(e) {
-    var isClosed = e.status === 'closed';
-    var attempts = e.attempts || [];
-    var lastAttempt = attempts.length > 0 ? attempts[attempts.length - 1] : null;
-    var canAct = window.mocCanEdit && window.mocCanEdit();
+    var statusLabel, statusClass;
+    if (e.status === 'in_work') { statusLabel = 'IN WORK'; statusClass = 'in-work'; }
+    else if (e.status === 'closed_eff') { statusLabel = 'CLOSED - EFFECTIVE'; statusClass = 'closed-eff'; }
+    else { statusLabel = 'CLOSED - INEFFECTIVE'; statusClass = 'closed-ineff'; }
 
-    // Status badge
-    var statusBadge = '';
-    if (isClosed) {
-      statusBadge = '<span class="badge badge-ce">CLOSED</span>';
-    } else {
-      statusBadge = '<span class="badge badge-iw">IN WORK</span>';
-    }
+    var createdStr = fmtDate(e.created);
+    var dueStr = e.dueDate ? fmtDateShort(e.dueDate) : '-';
+    var closedStr = e.closedDate ? fmtDate(e.closedDate) : '';
 
-    // Attempts HTML
-    var attHtml = '';
-    if (attempts.length > 0) {
-      attHtml = '<div class="att-sec"><div class="att-lbl">ATTEMPTS (' + attempts.length + ')</div>';
-      attempts.forEach(function(a, idx) {
-        var numClass = '';
-        var resHtml = '';
-        if (a.resolution === 'ineffective') {
-          numClass = ' ineff';
-          resHtml = '<span class="att-res r-ineff">INEFFECTIVE</span>';
-        } else if (a.resolution === 'closed') {
-          numClass = ' eff';
-          resHtml = '<span class="att-res r-closed">CLOSED</span>';
-        } else {
-          resHtml = '<span class="att-res r-open">IN WORK</span>';
-        }
-        attHtml += '<div class="att">';
-        attHtml += '<div class="att-hdr">';
-        attHtml += '<span class="att-num' + numClass + '">#' + (idx + 1) + '</span>';
-        attHtml += '<span class="att-dt">' + fmtDate(a.openedAt) + '</span>';
-        if (a.workOrder) attHtml += '<span class="att-wo">' + esc(a.workOrder) + '</span>';
-        if (a.action) attHtml += '<span class="att-act">' + esc(a.action) + '</span>';
-        attHtml += resHtml;
-        attHtml += '</div>';
-        if (a.notes) attHtml += '<div class="att-notes">' + esc(a.notes) + '</div>';
-        if (a.closeNotes) attHtml += '<div class="att-notes" style="margin-top:4px;font-style:italic;">Close: ' + esc(a.closeNotes) + '</div>';
-        if (a.closedAt) attHtml += '<div class="att-dt" style="margin-top:4px;font-size:9px;">Closed: ' + fmtDate(a.closedAt) + '</div>';
-        attHtml += '</div>';
-      });
-      attHtml += '</div>';
+    html += '<div class="tsi-card">';
+    html += '<div class="tsi-card-top">';
+    html += '<span class="tsi-status ' + statusClass + '">' + statusLabel + '</span>';
+    html += '<span class="tsi-tail">' + esc(e.tail) + '</span>';
+    html += '<span class="tsi-fleet">' + esc(e.fleet) + '</span>';
+    html += '<span class="tsi-fc">' + esc(e.faultCode) + '</span>';
+    html += '<span class="tsi-effect">' + esc(e.effect) + '</span>';
+    html += '<span class="tsi-date">' + createdStr + '</span>';
+    html += '</div>';
+
+    html += '<div class="tsi-card-body">';
+    html += '<div class="tsi-row">';
+    html += '<div class="tsi-field"><div class="tsi-field-label">WORK ORDER</div><div class="tsi-field-value">' + esc(e.workOrder || '-') + '</div></div>';
+    html += '<div class="tsi-field"><div class="tsi-field-label">ACTION</div><div class="tsi-field-value">' + esc(e.actionType || '-') + '</div></div>';
+    html += '<div class="tsi-field"><div class="tsi-field-label">ATA</div><div class="tsi-field-value">' + esc(e.ata || '-') + '</div></div>';
+    html += '<div class="tsi-field"><div class="tsi-field-label">DUE DATE</div><div class="tsi-field-value">' + dueStr + '</div></div>';
+    if (e.ref) html += '<div class="tsi-field"><div class="tsi-field-label">AMM/FIM REF</div><div class="tsi-field-value">' + esc(e.ref) + '</div></div>';
+    html += '</div>';
+    if (e.notes) html += '<div class="tsi-action-text">' + esc(e.notes) + '</div>';
+    if (closedStr) {
+      html += '<div style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:10px;color:var(--text-dim);">Closed: ' + closedStr + '</div>';
     }
+    html += '</div>';
 
     // Action buttons
-    var actHtml = '';
-    if (canAct) {
-      actHtml = '<div class="tc-acts">';
-      actHtml += '<button class="tb tb-upd" onclick="openEditModal(\'' + e.id + '\')">UPDATE</button>';
-      if (isClosed) {
-        actHtml += '<button class="tb tb-reo" onclick="startReopen(\'' + e.id + '\')">REOPEN</button>';
+    html += '<div class="tsi-card-actions">';
+    if (canEdit()) {
+      if (e.status === 'in_work') {
+        html += '<button class="tsi-btn btn-close-eff" onclick="closeEntry(\'' + e.id + '\',true)">CLOSE - EFFECTIVE</button>';
+        html += '<button class="tsi-btn btn-close-ineff" onclick="closeEntry(\'' + e.id + '\',false)">CLOSE - INEFFECTIVE</button>';
       } else {
-        actHtml += '<button class="tb tb-cls" onclick="startClose(\'' + e.id + '\')">CLOSE</button>';
+        html += '<button class="tsi-btn btn-reopen" onclick="reopenEntry(\'' + e.id + '\')">REOPEN</button>';
       }
-      actHtml += '<button class="tb tb-del" onclick="startDel(\'' + e.id + '\')">DELETE</button>';
-      actHtml += '</div>';
+      html += '<button class="tsi-btn btn-delete" onclick="deleteEntry(\'' + e.id + '\')">DELETE</button>';
     }
-
-    html += '<div class="tc" id="card-' + e.id + '">';
-    html += '<div class="tc-top">';
-    html += statusBadge;
-    html += '<span class="tc-tail">' + esc(e.tail || '') + '</span>';
-    if (e.fleet) html += '<span class="tc-fleet">' + esc(e.fleet) + '</span>';
-    html += '<span class="tc-fc">' + esc(e.faultCode || '') + '</span>';
-    html += '<span class="tc-effect">' + esc(e.effect || '') + '</span>';
-    html += '<span class="tc-date">' + fmtDate(e.createdAt) + '</span>';
     html += '</div>';
 
-    html += '<div class="tc-body">';
-    var row1 = '';
-    if (e.ata) row1 += '<div class="tc-fld"><div class="tc-lbl">ATA</div><div class="tc-val">' + esc(e.ata) + '</div></div>';
-    if (e.ref) row1 += '<div class="tc-fld"><div class="tc-lbl">FIM/AMM REF</div><div class="tc-val">' + esc(e.ref) + '</div></div>';
-    if (lastAttempt && lastAttempt.workOrder) row1 += '<div class="tc-fld"><div class="tc-lbl">WORK ORDER</div><div class="tc-val">' + esc(lastAttempt.workOrder) + '</div></div>';
-    if (lastAttempt && lastAttempt.action) row1 += '<div class="tc-fld"><div class="tc-lbl">ACTION</div><div class="tc-val">' + esc(lastAttempt.action) + '</div></div>';
-    if (row1) html += '<div class="tc-row">' + row1 + '</div>';
-
-    if (lastAttempt && lastAttempt.notes) {
-      html += '<div class="tc-notes">' + esc(lastAttempt.notes) + '</div>';
-    }
-
-    if (e.createdBy) html += '<div class="tc-by">Created by: ' + esc(e.createdBy) + '</div>';
-
-    html += attHtml;
-    html += '</div>';
-    html += actHtml;
     html += '</div>';
   });
 
-  el.innerHTML = html;
+  list.innerHTML = html;
 }
 
-// ---- NEW/EDIT MODAL ----
+// ---- MODAL ----
 function openNewModal() {
-  editId = null;
-  document.getElementById('mTitle').textContent = 'New TSI Entry';
-  document.getElementById('saveBtn').textContent = 'SAVE ENTRY';
+  editingId = null;
+  document.getElementById('modalTitle').textContent = 'New TSI Entry';
   clearForm();
-  document.getElementById('entryModal').classList.add('open');
+  document.getElementById('modalOverlay').classList.add('open');
   document.getElementById('fTail').focus();
 }
 
-function openEditModal(id) {
-  var e = entries.find(function(x) { return x.id === id; });
-  if (!e) return;
-  editId = id;
-  document.getElementById('mTitle').textContent = 'Update TSI';
-  document.getElementById('saveBtn').textContent = 'UPDATE ENTRY';
-  var last = (e.attempts && e.attempts.length > 0) ? e.attempts[e.attempts.length - 1] : {};
-  document.getElementById('fTail').value = e.tail || '';
-  document.getElementById('fFleet').value = e.fleet || '';
-  document.getElementById('fAta').value = e.ata || '';
-  document.getElementById('fFC').value = e.faultCode || '';
-  document.getElementById('fEffect').value = e.effect || '';
-  document.getElementById('fRef').value = e.ref || '';
-  document.getElementById('fWO').value = last.workOrder || '';
-  document.getElementById('fNotes').value = last.notes || '';
-  // Set action chip
-  document.querySelectorAll('#actChips .ach').forEach(function(c) {
-    c.classList.toggle('sel', c.textContent === (last.action || ''));
-  });
-  document.getElementById('entryModal').classList.add('open');
-}
-
 function closeModal() {
-  document.getElementById('entryModal').classList.remove('open');
-  editId = null;
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.getElementById('tailDropdown').classList.remove('open');
 }
 
 function clearForm() {
-  ['fTail','fFleet','fAta','fFC','fEffect','fRef','fWO','fNotes'].forEach(function(id) {
+  ['fTail','fFleet','fAta','fFaultCode','fEffect','fWorkOrder','fNotes','fDueDate','fRef'].forEach(function(id) {
     document.getElementById(id).value = '';
   });
-  document.querySelectorAll('#actChips .ach').forEach(function(c) { c.classList.remove('sel'); });
+  document.querySelectorAll('.action-chip').forEach(function(c) { c.classList.remove('selected'); });
+  document.getElementById('tailDropdown').classList.remove('open');
+  document.getElementById('fcDropdown').classList.remove('open');
 }
 
-// ---- SAVE (CREATE / UPDATE) ----
-function saveEntry() {
-  var tail = document.getElementById('fTail').value.trim().toUpperCase();
-  var fc = document.getElementById('fFC').value.trim();
-  var effect = document.getElementById('fEffect').value.trim();
-  if (!tail || !fc || !effect) {
-    toast('Tail, Fault Code, and Effect are required');
-    return;
-  }
-
-  var fleet = document.getElementById('fFleet').value.trim();
-  var ata = document.getElementById('fAta').value.trim();
-  var ref = document.getElementById('fRef').value.trim();
-  var wo = document.getElementById('fWO').value.trim();
-  var notes = document.getElementById('fNotes').value.trim();
-  var action = '';
-  var selAct = document.querySelector('#actChips .ach.sel');
-  if (selAct) action = selAct.textContent;
-
-  if (editId) {
-    // UPDATE existing
-    var existing = entries.find(function(x) { return x.id === editId; });
-    if (!existing) return;
-    var updateData = { tail: tail, fleet: fleet, ata: ata, faultCode: fc, effect: effect, ref: ref };
-    // Update the current (last) attempt
-    var attempts = existing.attempts ? existing.attempts.slice() : [];
-    if (attempts.length > 0) {
-      var last = Object.assign({}, attempts[attempts.length - 1]);
-      last.workOrder = wo;
-      last.notes = notes;
-      last.action = action;
-      attempts[attempts.length - 1] = last;
-    }
-    updateData.attempts = attempts;
-    db.collection('tsi_entries').doc(editId).update(updateData).then(function() {
-      closeModal();
-      loadEntries();
-      toast('Entry updated');
-    }).catch(function(err) { toast('Error: ' + err.message); });
-  } else {
-    // CREATE new
-    var now = new Date().toISOString();
-    var user = window.CURRENT_USER ? window.CURRENT_USER.name : 'Unknown';
-    var newEntry = {
-      tail: tail,
-      fleet: fleet,
-      ata: ata,
-      faultCode: fc,
-      effect: effect,
-      ref: ref,
-      status: 'in_work',
-      createdAt: now,
-      createdBy: user,
-      attempts: [{
-        openedAt: now,
-        workOrder: wo,
-        action: action,
-        notes: notes,
-        resolution: 'open',
-        closedAt: null,
-        closeAction: null,
-        closeNotes: null
-      }]
-    };
-    db.collection('tsi_entries').add(newEntry).then(function() {
-      closeModal();
-      loadEntries();
-      toast('TSI created for ' + tail + ' / ' + fc);
-    }).catch(function(err) { toast('Error: ' + err.message); });
-  }
-}
-
-// ---- CLOSE FLOW ----
-function startClose(id) {
-  closeId = id;
-  document.querySelectorAll('#closeActChips .cach').forEach(function(c) { c.classList.remove('sel'); });
-  document.getElementById('closeNotes').value = '';
-  document.getElementById('closeModal').classList.add('open');
-}
-
-function cancelClose() {
-  closeId = null;
-  document.getElementById('closeModal').classList.remove('open');
-}
-
-function pickCloseAct(el) {
-  document.querySelectorAll('#closeActChips .cach').forEach(function(c) { c.classList.remove('sel'); });
-  el.classList.add('sel');
-}
-
-function confirmClose() {
-  if (!closeId) return;
-  var selAct = document.querySelector('#closeActChips .cach.sel');
-  if (!selAct) { toast('Select an action taken'); return; }
-  var closeAction = selAct.textContent;
-  var closeNotes = document.getElementById('closeNotes').value.trim();
-  var now = new Date().toISOString();
-
-  var entry = entries.find(function(x) { return x.id === closeId; });
-  if (!entry) return;
-
-  var attempts = entry.attempts ? entry.attempts.slice() : [];
-  if (attempts.length > 0) {
-    var last = Object.assign({}, attempts[attempts.length - 1]);
-    last.resolution = 'closed';
-    last.closedAt = now;
-    last.closeAction = closeAction;
-    last.closeNotes = closeNotes;
-    attempts[attempts.length - 1] = last;
-  }
-
-  db.collection('tsi_entries').doc(closeId).update({
-    status: 'closed',
-    closedDate: now,
-    attempts: attempts
-  }).then(function() {
-    cancelClose();
-    loadEntries();
-    toast('TSI closed');
-  }).catch(function(err) { toast('Error: ' + err.message); });
-}
-
-// ---- REOPEN FLOW ----
-function startReopen(id) {
-  reopenId = id;
-  document.getElementById('reopenWO').value = '';
-  document.getElementById('reopenNotes').value = '';
-  document.getElementById('reopenModal').classList.add('open');
-}
-
-function cancelReopen() {
-  reopenId = null;
-  document.getElementById('reopenModal').classList.remove('open');
-}
-
-function confirmReopen() {
-  if (!reopenId) return;
-  var wo = document.getElementById('reopenWO').value.trim();
-  var notes = document.getElementById('reopenNotes').value.trim();
-  var now = new Date().toISOString();
-
-  var entry = entries.find(function(x) { return x.id === reopenId; });
-  if (!entry) return;
-
-  var attempts = entry.attempts ? entry.attempts.slice() : [];
-  // Mark last attempt as ineffective
-  if (attempts.length > 0) {
-    var last = Object.assign({}, attempts[attempts.length - 1]);
-    last.resolution = 'ineffective';
-    attempts[attempts.length - 1] = last;
-  }
-  // Add new attempt
-  attempts.push({
-    openedAt: now,
-    workOrder: wo,
-    action: '',
-    notes: notes,
-    resolution: 'open',
-    closedAt: null,
-    closeAction: null,
-    closeNotes: null
-  });
-
-  db.collection('tsi_entries').doc(reopenId).update({
-    status: 'in_work',
-    closedDate: null,
-    attempts: attempts
-  }).then(function() {
-    cancelReopen();
-    loadEntries();
-    toast('Reopened - previous attempt marked ineffective');
-  }).catch(function(err) { toast('Error: ' + err.message); });
-}
-
-// ---- DELETE FLOW (modal confirm) ----
-function startDel(id) {
-  deleteId = id;
-  var entry = entries.find(function(x) { return x.id === id; });
-  if (!entry) return;
-  document.getElementById('delIds').textContent = (entry.tail || '') + ' / ' + (entry.faultCode || '');
-  document.getElementById('delModal').classList.add('open');
-}
-
-function cancelDel() {
-  deleteId = null;
-  document.getElementById('delModal').classList.remove('open');
-}
-
-function confirmDel() {
-  if (!deleteId) return;
-  var id = deleteId;
-  deleteId = null;
-  document.getElementById('delModal').classList.remove('open');
-  db.collection('tsi_entries').doc(id).delete().then(function() {
-    loadEntries();
-    toast('Entry deleted');
-  }).catch(function(err) { toast('Error: ' + err.message); });
-}
-
-// ---- ACTION CHIPS (create/edit modal) ----
-function pickAct(el) {
-  document.querySelectorAll('#actChips .ach').forEach(function(c) { c.classList.remove('sel'); });
-  el.classList.add('sel');
-}
-
-// ---- TAIL AUTOCOMPLETE ----
-document.getElementById('fTail').addEventListener('input', function() { filterTails(); });
-document.getElementById('fTail').addEventListener('focus', function() { filterTails(); });
-document.getElementById('fTail').addEventListener('keydown', function(e) { tailKeyNav(e); });
-
+// ---- TAIL SEARCH ----
 function filterTails() {
-  var val = document.getElementById('fTail').value.trim().toUpperCase();
-  var dd = document.getElementById('ddTail');
-  if (!val || TAILS.length === 0) { dd.classList.remove('open'); return; }
-  var matches = TAILS.filter(function(t) { return t.tail.indexOf(val) === 0; }).slice(0, 15);
+  var q = document.getElementById('fTail').value.toUpperCase().trim();
+  var dd = document.getElementById('tailDropdown');
+  if (!q) { dd.classList.remove('open'); return; }
+  var matches = AIRCRAFT.filter(function(a) { return a[0].indexOf(q) !== -1; }).slice(0, 12);
   if (matches.length === 0) { dd.classList.remove('open'); return; }
-  tailHighlight = -1;
+  tailHighlight = 0;
   var html = '';
-  matches.forEach(function(t, i) {
-    html += '<div class="dd-opt" data-i="' + i + '" onmousedown="selectTail(\'' + esc(t.tail) + '\',\'' + esc(t.fleet) + '\')">';
-    html += '<span class="dd-code">' + esc(t.tail) + '</span>';
-    html += '<span class="dd-fleet">' + esc(t.fleet) + '</span>';
+  matches.forEach(function(a, i) {
+    html += '<div class="tail-opt' + (i === 0 ? ' highlighted' : '') + '" data-tail="' + a[0] + '" data-fleet="' + a[1] + '" onclick="selectTail(\'' + a[0] + '\',\'' + a[1] + '\')">';
+    html += '<span class="to-tail">' + a[0] + '</span>';
+    html += '<span class="to-fleet">' + a[1] + '</span>';
     html += '</div>';
   });
   dd.innerHTML = html;
@@ -877,72 +530,184 @@ function filterTails() {
 function selectTail(tail, fleet) {
   document.getElementById('fTail').value = tail;
   document.getElementById('fFleet').value = fleet;
-  document.getElementById('ddTail').classList.remove('open');
+  document.getElementById('tailDropdown').classList.remove('open');
+  document.getElementById('fFaultCode').focus();
 }
 
 function tailKeyNav(e) {
-  var dd = document.getElementById('ddTail');
-  var opts = dd.querySelectorAll('.dd-opt');
-  if (!dd.classList.contains('open') || opts.length === 0) return;
-  if (e.key === 'ArrowDown') { e.preventDefault(); tailHighlight = Math.min(tailHighlight + 1, opts.length - 1); hlTails(opts); }
-  else if (e.key === 'ArrowUp') { e.preventDefault(); tailHighlight = Math.max(tailHighlight - 1, 0); hlTails(opts); }
-  else if (e.key === 'Enter' && tailHighlight >= 0) { e.preventDefault(); opts[tailHighlight].dispatchEvent(new Event('mousedown')); }
-  else if (e.key === 'Escape') { dd.classList.remove('open'); }
-}
-function hlTails(opts) {
-  opts.forEach(function(o, i) { o.classList.toggle('hl', i === tailHighlight); });
-  if (tailHighlight >= 0 && opts[tailHighlight]) opts[tailHighlight].scrollIntoView({block:'nearest'});
+  var dd = document.getElementById('tailDropdown');
+  if (!dd.classList.contains('open')) return;
+  var opts = dd.querySelectorAll('.tail-opt');
+  if (!opts.length) return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    tailHighlight = Math.min(tailHighlight + 1, opts.length - 1);
+    opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === tailHighlight); });
+    opts[tailHighlight].scrollIntoView({block:'nearest'});
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    tailHighlight = Math.max(tailHighlight - 1, 0);
+    opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === tailHighlight); });
+    opts[tailHighlight].scrollIntoView({block:'nearest'});
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    var sel = opts[tailHighlight];
+    if (sel) selectTail(sel.dataset.tail, sel.dataset.fleet);
+  } else if (e.key === 'Escape') {
+    dd.classList.remove('open');
+  }
 }
 
-// ---- ATA AUTOCOMPLETE ----
-document.getElementById('fAta').addEventListener('input', function() { filterAta(); });
-document.getElementById('fAta').addEventListener('focus', function() { filterAta(); });
-document.getElementById('fAta').addEventListener('keydown', function(e) { ataKeyNav(e); });
-
-function filterAta() {
-  var val = document.getElementById('fAta').value.trim().toLowerCase();
-  var dd = document.getElementById('ddAta');
-  var matches = ATA_CODES.filter(function(a) {
-    return a.code.indexOf(val) === 0 || a.name.toLowerCase().indexOf(val) >= 0;
-  }).slice(0, 15);
-  if (val === '' || matches.length === 0) { dd.classList.remove('open'); return; }
-  ataHighlight = -1;
+// ---- FAULT CODE AUTOCOMPLETE ----
+function filterFC() {
+  var q = document.getElementById('fFaultCode').value.trim().toUpperCase();
+  var dd = document.getElementById('fcDropdown');
+  if (!q || q.length < 2 || FAULT_CODES.length === 0) { dd.classList.remove('open'); return; }
+  var matches = FAULT_CODES.filter(function(f) {
+    return f.code.indexOf(q) !== -1 || f.message.toUpperCase().indexOf(q) !== -1 || f.title.toUpperCase().indexOf(q) !== -1;
+  }).slice(0, 10);
+  if (matches.length === 0) { dd.classList.remove('open'); return; }
+  fcHL = 0;
   var html = '';
-  matches.forEach(function(a, i) {
-    html += '<div class="dd-opt" data-i="' + i + '" onmousedown="selectAta(\'' + a.code + '\')">';
-    html += '<span class="dd-code" style="min-width:30px;">' + a.code + '</span>';
-    html += '<span class="dd-name">' + esc(a.name) + '</span>';
+  matches.forEach(function(f, i) {
+    html += '<div class="fc-opt' + (i === 0 ? ' highlighted' : '') + '" data-idx="' + i + '" onclick="selectFC(' + i + ')">';
+    html += '<span class="fco-code">' + f.code + '</span>';
+    if (f.message) html += '<span class="fco-msg">' + f.message + '</span>';
+    if (f.fimTask) html += '<span class="fco-task">FIM: ' + f.fimTask + '</span>';
     html += '</div>';
   });
   dd.innerHTML = html;
+  dd._matches = matches;
   dd.classList.add('open');
 }
 
-function selectAta(code) {
-  document.getElementById('fAta').value = code;
-  document.getElementById('ddAta').classList.remove('open');
+function selectFC(idx) {
+  var dd = document.getElementById('fcDropdown');
+  var f = dd._matches[idx];
+  document.getElementById('fFaultCode').value = f.code;
+  if (f.message || f.title) document.getElementById('fEffect').value = f.message || f.title;
+  if (f.ata) document.getElementById('fAta').value = f.ata;
+  if (f.fimTask) document.getElementById('fRef').value = f.fimTask;
+  dd.classList.remove('open');
+  document.getElementById('fEffect').focus();
 }
 
-function ataKeyNav(e) {
-  var dd = document.getElementById('ddAta');
-  var opts = dd.querySelectorAll('.dd-opt');
-  if (!dd.classList.contains('open') || opts.length === 0) return;
-  if (e.key === 'ArrowDown') { e.preventDefault(); ataHighlight = Math.min(ataHighlight + 1, opts.length - 1); hlAta(opts); }
-  else if (e.key === 'ArrowUp') { e.preventDefault(); ataHighlight = Math.max(ataHighlight - 1, 0); hlAta(opts); }
-  else if (e.key === 'Enter' && ataHighlight >= 0) { e.preventDefault(); opts[ataHighlight].dispatchEvent(new Event('mousedown')); }
-  else if (e.key === 'Escape') { dd.classList.remove('open'); }
-}
-function hlAta(opts) {
-  opts.forEach(function(o, i) { o.classList.toggle('hl', i === ataHighlight); });
-  if (ataHighlight >= 0 && opts[ataHighlight]) opts[ataHighlight].scrollIntoView({block:'nearest'});
+function fcKeyNav(e) {
+  var dd = document.getElementById('fcDropdown');
+  if (!dd.classList.contains('open')) return;
+  var opts = dd.querySelectorAll('.fc-opt');
+  if (!opts.length) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); fcHL = Math.min(fcHL+1, opts.length-1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); fcHL = Math.max(fcHL-1, 0); }
+  else if (e.key === 'Enter') { e.preventDefault(); selectFC(fcHL); return; }
+  else if (e.key === 'Escape') { dd.classList.remove('open'); return; }
+  else return;
+  opts.forEach(function(o, i) { o.classList.toggle('highlighted', i === fcHL); });
+  opts[fcHL].scrollIntoView({block:'nearest'});
 }
 
 // Close dropdowns on outside click
 document.addEventListener('click', function(e) {
-  if (!e.target.closest('.dd-wrap')) {
-    document.querySelectorAll('.dd').forEach(function(d) { d.classList.remove('open'); });
+  if (!e.target.closest('.tail-wrap')) {
+    document.getElementById('tailDropdown').classList.remove('open');
+  }
+  if (!e.target.closest('.fc-wrap')) {
+    document.getElementById('fcDropdown').classList.remove('open');
   }
 });
+
+// ---- ACTION CHIPS ----
+function pickAction(el) {
+  document.querySelectorAll('.action-chip').forEach(function(c) { c.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+// ---- SAVE ----
+function saveEntry() {
+  var tail = document.getElementById('fTail').value.trim().toUpperCase();
+  var fleet = document.getElementById('fFleet').value.trim();
+  var faultCode = document.getElementById('fFaultCode').value.trim().toUpperCase();
+  var effect = document.getElementById('fEffect').value.trim().toUpperCase();
+
+  if (!tail) { toast('Tail number is required'); document.getElementById('fTail').focus(); return; }
+  if (!faultCode) { toast('Fault code is required'); document.getElementById('fFaultCode').focus(); return; }
+  if (!effect) { toast('Flight deck effect is required'); document.getElementById('fEffect').focus(); return; }
+
+  if (!fleet && TAIL_MAP[tail]) fleet = TAIL_MAP[tail];
+  if (!fleet) { toast('Fleet type could not be determined - select a valid tail'); return; }
+
+  var selectedAction = document.querySelector('.action-chip.selected');
+  var actionType = selectedAction ? selectedAction.textContent : '';
+
+  var entry = {
+    tail: tail,
+    fleet: fleet,
+    ata: document.getElementById('fAta').value.trim(),
+    faultCode: faultCode,
+    effect: effect,
+    workOrder: document.getElementById('fWorkOrder').value.trim().toUpperCase(),
+    actionType: actionType,
+    notes: document.getElementById('fNotes').value.trim(),
+    dueDate: document.getElementById('fDueDate').value,
+    ref: document.getElementById('fRef').value.trim(),
+    status: 'in_work',
+    created: new Date().toISOString(),
+    closedDate: null,
+    createdBy: CURRENT_USER ? CURRENT_USER.enumVal : '',
+    createdByName: CURRENT_USER ? CURRENT_USER.name : ''
+  };
+
+  if (editingId) {
+    var existing = entries.find(function(e) { return e.id === editingId; });
+    if (existing) {
+      entry.status = existing.status;
+      entry.created = existing.created;
+      entry.closedDate = existing.closedDate;
+      entry.createdBy = existing.createdBy || entry.createdBy;
+      entry.createdByName = existing.createdByName || entry.createdByName;
+    }
+    db.collection('tsi_entries').doc(editingId).set(entry).then(function() {
+      closeModal();
+      loadEntries();
+      toast('Entry updated');
+    }).catch(function(err) { toast('Save error: ' + err.message); });
+  } else {
+    db.collection('tsi_entries').add(entry).then(function() {
+      closeModal();
+      loadEntries();
+      toast('TSI entry added - IN WORK');
+    }).catch(function(err) { toast('Save error: ' + err.message); });
+  }
+}
+
+// ---- STATUS ACTIONS ----
+function closeEntry(id, effective) {
+  db.collection('tsi_entries').doc(id).update({
+    status: effective ? 'closed_eff' : 'closed_ineff',
+    closedDate: new Date().toISOString()
+  }).then(function() {
+    loadEntries();
+    toast(effective ? 'Closed as effective' : 'Closed as ineffective');
+  }).catch(function(err) { toast('Error: ' + err.message); });
+}
+
+function reopenEntry(id) {
+  db.collection('tsi_entries').doc(id).update({
+    status: 'in_work',
+    closedDate: null
+  }).then(function() {
+    loadEntries();
+    toast('Reopened - back to IN WORK');
+  }).catch(function(err) { toast('Error: ' + err.message); });
+}
+
+function deleteEntry(id) {
+  if (!confirm('Delete this TSI entry? This cannot be undone.')) return;
+  db.collection('tsi_entries').doc(id).delete().then(function() {
+    loadEntries();
+    toast('Entry deleted');
+  }).catch(function(err) { toast('Error: ' + err.message); });
+}
 
 // ---- EXPORT ----
 function exportData() {
@@ -950,10 +715,14 @@ function exportData() {
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url;
-  a.download = 'tsi-fixrate-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.download = 'tsi-fixrate-' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
   URL.revokeObjectURL(url);
   toast('Exported ' + entries.length + ' entries');
+}
+
+function canEdit() {
+  return window.mocCanEdit();
 }
 
 // ---- HELPERS ----
@@ -966,24 +735,30 @@ function esc(s) {
 
 function fmtDate(iso) {
   if (!iso) return '';
-  try {
-    var d = new Date(iso);
-    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return ('0' + d.getDate()).slice(-2) + '-' + months[d.getMonth()] + '-' + d.getFullYear();
-  } catch(e) { return iso; }
+  var d = new Date(iso);
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var day = d.getDate();
+  var h = d.getHours();
+  var m = d.getMinutes();
+  return (day < 10 ? '0' : '') + day + '-' + months[d.getMonth()] + '-' + d.getFullYear() + ' ' + (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+}
+
+function fmtDateShort(dateStr) {
+  if (!dateStr) return '';
+  var parts = dateStr.split('-');
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return parseInt(parts[2]) + '-' + months[parseInt(parts[1]) - 1] + '-' + parts[0];
 }
 
 function toast(msg) {
-  var existing = document.querySelector('.toast');
-  if (existing) existing.remove();
   var t = document.createElement('div');
   t.className = 'toast';
   t.textContent = msg;
   document.body.appendChild(t);
-  setTimeout(function() { t.style.opacity = '0'; }, 2500);
-  setTimeout(function() { t.remove(); }, 3000);
+  setTimeout(function() { t.style.opacity = '0'; setTimeout(function() { t.remove(); }, 300); }, 2500);
 }
 
+// Init happens via auth.onAuthStateChanged -> loadEntries -> renderList
 </script>
 </body>
 </html>

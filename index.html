@@ -2951,7 +2951,7 @@ fetch('AircraftData.csv').then(function(r) { return r.ok ? r.text() : ''; }).the
   var lines = text.split('\n');
   for (var i = 1; i < lines.length; i++) {
     var row = tsiParseCSVRow(lines[i]);
-    if (row.length >= 2 && row[0]) TSI_AIRCRAFT.push([row[0].trim(), row[1].trim()]);
+    if (row.length >= 2 && row[0].trim()) TSI_AIRCRAFT.push([row[0].trim(), row[1].trim()]);
   }
 }).catch(function(){});
 

@@ -271,25 +271,6 @@
             margin-bottom: 16px;
         }
 
-        .search-icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text);
-            pointer-events: none;
-        }
-
-        .search-icon svg {
-            width: 20px;
-            height: 20px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
         .search-input {
             width: 100%;
             padding: 16px 16px 16px 48px;
@@ -310,6 +291,49 @@
         .search-input:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        /* Unified search bar - shared across all tabs */
+        .uni-search {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .uni-search .us-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--text-dim);
+        }
+        .uni-search .us-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .uni-search input {
+            width: 100%;
+            padding: 14px 16px 14px 46px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--text);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: var(--card-shadow);
+        }
+        .uni-search input::placeholder { color: var(--text-dim); }
+        .uni-search input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow, rgba(37,99,235,0.08));
         }
 
         .filter-row {
@@ -718,30 +742,6 @@
             align-items: center;
             margin-bottom: 12px;
         }
-        .fh-search-wrap {
-            flex: 1;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: var(--card-shadow);
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-        .fh-search-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
-        .fh-search-wrap input {
-            border: none;
-            outline: none;
-            font-size: 15px;
-            font-family: 'Outfit', sans-serif;
-            flex: 1;
-            color: var(--text);
-            background: transparent;
-        }
-        .fh-search-wrap input::placeholder { color: var(--text-dim); }
-        .fh-search-icon { color: var(--text-dim); font-size: 16px; }
         .fh-chip-row {
             display: flex;
             align-items: center;
@@ -958,7 +958,8 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             font-weight: 700;
-            padding: 12px 18px;
+            padding: 0 20px;
+            height: 48px;
             border-radius: 12px;
             border: none;
             cursor: pointer;
@@ -1125,13 +1126,10 @@
 
         /* ---- QUICK LINKS ---- */
         /* ---- QUICK LINKS v2: Masonry + Korry ---- */
-        .ql-search{background:#fff;border:2px solid var(--accent-light,#2563eb);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:12px;box-shadow:0 2px 8px rgba(37,99,235,0.1);}
-        .ql-search input{flex:1;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--text);outline:none;}
-        .ql-search input::placeholder{color:var(--text);}
-        .ql-search .qs-icon{color:var(--accent-light,#2563eb);font-size:14px;}
-        .ql-search .qs-clear{background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:14px;display:none;padding:0 2px;}
+        .ql-search input{padding-right:220px;}
+        .ql-search .qs-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:14px;display:none;padding:0 4px;}
         .ql-search .qs-clear.show{display:block;}
-        .ql-search .qs-hint{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;color:#ffffff;background:var(--accent);padding:3px 8px;border-radius:4px;border:none;flex-shrink:0;display:none;letter-spacing:0.3px;}
+        .ql-search .qs-hint{position:absolute;right:34px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;color:#ffffff;background:var(--accent);padding:3px 8px;border-radius:4px;border:none;flex-shrink:0;display:none;letter-spacing:0.3px;}
         .ql-search .qs-hint.show{display:block;}
 
         .ql-fav-sec{margin-bottom:10px;border-bottom:1px solid var(--frame-border);padding:6px 0;display:flex;align-items:flex-start;gap:8px;min-height:28px;}
@@ -1418,6 +1416,7 @@
             .utc-analog canvas { width: 110px !important; height: 110px !important; }
             .apps-grid { grid-template-columns: 1fr; }
             .search-input { font-size: 15px; padding: 14px 14px 14px 44px; }
+            .uni-search input { font-size: 14px; padding: 12px 14px 12px 42px; }
             .utility-bar { padding: 6px 0 0; gap: 6px; }
             .utility-bar .ub-name { font-size: 9px; }
         }
@@ -1655,8 +1654,8 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         <!-- QUICK LINKS -->
         <section id="quicklinks" class="section active">
-            <div class="ql-search">
-                <span class="qs-icon">&#128269;</span>
+            <div class="ql-search uni-search" style="margin-bottom:12px;">
+                <span class="us-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
                 <input type="text" id="qlSearchInput" placeholder="Search all links..." oninput="qlFilter()" onkeydown="qlKeyNav(event)">
                 <span class="qs-hint" id="qlHint">TAB to cycle, ENTER to open</span>
                 <button class="qs-clear" id="qlClear" onclick="qlClearSearch()">&#10005;</button>
@@ -1673,8 +1672,8 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         <section id="fixrate" class="section">
             <div class="fh-top-row">
                 <button class="fix-action-btn primary" onclick="openTsiModal()">+ ADD TSI</button>
-                <div class="fh-search-wrap">
-                    <span class="fh-search-icon">&#128269;</span>
+                <div class="fh-search-wrap uni-search" style="flex:1;">
+                    <span class="us-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
                     <input type="text" id="fixSearchInput" placeholder="Search tail / fault / ATA..." autocomplete="off">
                 </div>
             </div>
@@ -1736,10 +1735,8 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         <!-- QUICK REFERENCE -->
         <section id="quickref" class="section">
-            <div class="search-container">
-                <div class="search-icon">
-                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                </div>
+            <div class="search-container uni-search">
+                <span class="us-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
                 <input type="text" class="search-input" id="searchInput" placeholder="Search the entire Toolbox..." autocomplete="off">
                 <span class="search-hint" id="searchHint">/</span>
                 <div class="autocomplete-dropdown" id="acDropdown"></div>

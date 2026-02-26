@@ -672,7 +672,7 @@
             border-radius: 6px;
             border: 1px solid var(--frame-border);
             background: rgba(255,255,255,0.05);
-            color: rgba(255,255,255,0.5);
+            color: #ffffff;
             cursor: pointer;
             transition: all 0.15s;
         }
@@ -682,7 +682,7 @@
         .fix-results-count {
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            color: rgba(255,255,255,0.4);
+            color: #ffffff;
             margin-bottom: 12px;
         }
 
@@ -814,7 +814,7 @@
         .fix-empty-state {
             text-align: center;
             padding: 60px 24px;
-            color: rgba(255,255,255,0.3);
+            color: #ffffff;
         }
         .fix-empty-state p { font-size: 15px; margin-bottom: 4px; }
         .fix-empty-state .hint { font-size: 12px; }
@@ -907,18 +907,18 @@
             padding: 2px 5px; border-radius: 3px; background: rgba(100,116,139,0.1);
             color: var(--text-dim); border: 1px solid var(--border-strong); flex-shrink: 0;
         }
-        .fec-divider { color: var(--border-strong); font-size: 10px; flex-shrink: 0; }
+        .fec-divider { color: var(--text-secondary); font-size: 10px; flex-shrink: 0; }
         .fec-effect-short {
-            font-size: 12px; color: var(--text-secondary); flex: 1; min-width: 0;
+            font-size: 12px; color: var(--text); flex: 1; min-width: 0;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .fec-due-compact {
             font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
-            color: var(--text-dim); flex-shrink: 0; margin-left: auto;
+            color: var(--text); flex-shrink: 0; margin-left: auto;
         }
         .fec-due-compact.overdue { color: var(--red); font-weight: 700; }
         .fec-chevron {
-            font-size: 10px; color: var(--text-dim); transition: transform 0.2s; flex-shrink: 0;
+            font-size: 10px; color: var(--text-secondary); transition: transform 0.2s; flex-shrink: 0;
         }
         .fix-entry-card.expanded .fec-chevron { transform: rotate(180deg); }
         .fec-expand {
@@ -938,7 +938,7 @@
             font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text);
         }
         .fec-effect-full {
-            font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;
+            font-size: 12px; color: var(--text); line-height: 1.5; margin-bottom: 10px;
         }
         .fec-notes {
             padding: 8px 12px; font-size: 12px; color: var(--text); line-height: 1.5;
@@ -948,15 +948,18 @@
             padding: 8px 12px; font-size: 12px; color: var(--green-text); line-height: 1.5;
             background: var(--green-bg); border: 1px solid var(--green-border); border-radius: 6px; margin-bottom: 8px;
         }
+        .fec-meta-row {
+            display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 8px;
+        }
         .fec-meta {
-            font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-dim); margin-bottom: 8px;
+            font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text); margin-bottom: 0;
         }
         .fec-actions {
             display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
             padding-top: 8px; border-top: 1px solid var(--border);
         }
         .fec-updated {
-            font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text);
             margin-left: 12px;
         }
         .fec-btn {
@@ -978,7 +981,7 @@
         .fix-expand-btn {
             font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600;
             padding: 3px 8px; border-radius: 4px; border: 1px solid var(--frame-border);
-            background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5); cursor: pointer;
+            background: rgba(255,255,255,0.06); color: #ffffff; cursor: pointer;
             transition: all 0.15s;
         }
         .fix-expand-btn:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
@@ -2506,9 +2509,16 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                     html += '<div class="fec-corrective"><span class="fec-label" style="margin-bottom:2px;color:var(--green-text);">CORRECTIVE ACTION</span><div>' + esc(e.correctiveAction) + '</div></div>';
                 }
 
-                // Meta line
-                html += '<div class="fec-meta">' + dateStr;
-                if (createdBy) html += ' - by ' + esc(createdBy);
+                // Created + Updated meta
+                html += '<div class="fec-meta-row">';
+                html += '<div class="fec-meta"><span class="fec-label">CREATED</span> ' + dateStr;
+                if (createdBy) html += ' by ' + esc(createdBy);
+                html += '</div>';
+                if (e.updatedAt) {
+                    html += '<div class="fec-meta"><span class="fec-label">LAST UPDATED</span> ' + formatTsiDate(e.updatedAt);
+                    if (e.updatedByName) html += ' by ' + esc(e.updatedByName);
+                    html += '</div>';
+                }
                 html += '</div>';
 
                 // Action buttons
@@ -2519,9 +2529,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                         html += '<button class="fec-btn fec-btn-close" onclick="event.stopPropagation();fixClose(\'' + e.id + '\')">CLOSE</button>';
                     } else {
                         html += '<button class="fec-btn fec-btn-reopen" onclick="event.stopPropagation();fixReopen(\'' + e.id + '\')">REOPEN</button>';
-                    }
-                    if (e.updatedAt) {
-                        html += '<span class="fec-updated">Updated ' + formatTsiDate(e.updatedAt) + (e.updatedByName ? ' by ' + esc(e.updatedByName) : '') + '</span>';
                     }
                     html += '<button class="fec-btn fec-btn-del" onclick="event.stopPropagation();fixDelete(\'' + e.id + '\')">DELETE</button>';
                     html += '</div>';

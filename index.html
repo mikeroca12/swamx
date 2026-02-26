@@ -1417,34 +1417,37 @@
 
         @media (max-width: 640px) {
             header { padding: 0; }
-            .header-row { flex-direction: column; align-items: flex-start; gap: 8px; padding-top: 6px; }
-            .logo-icon { height: 56px; }
-            .logo h1 { font-size: 18px; }
+            .header-row { flex-direction: row; align-items: center; gap: 0; padding-top: 6px; justify-content: space-between; }
+            .logo-icon { height: 50px; }
+            .logo h1 { font-size: 16px; }
             .logo .ref-only { font-size: 7px; }
-            .clock-area { margin-left: 0; gap: 12px; flex-wrap: nowrap; }
-            .cst-block { gap: 2px; }
-            .cst-label, .cst-day { font-size: 9px; }
-            .cst-time { font-size: 16px; }
-            .cst-date { font-size: 9px; }
-            .utc-digital .utc-label { font-size: 9px; }
-            .utc-digital .utc-time { font-size: 16px; }
-            .utc-analog canvas { width: 100px !important; height: 100px !important; }
+            .clock-area { margin-left: auto; gap: 10px; flex-wrap: nowrap; }
+            .cst-block { gap: 1px; }
+            .cst-label, .cst-day { font-size: 8px; }
+            .cst-time { font-size: 14px; }
+            .cst-date { font-size: 8px; }
+            .utc-digital .utc-label { font-size: 8px; }
+            .utc-digital .utc-time { font-size: 14px; }
+            .utc-analog canvas { width: 90px !important; height: 90px !important; }
             .utility-bar { padding: 6px 0 0; gap: 6px; }
             .utility-bar .ub-name { font-size: 9px; }
             .utility-bar .ub-btn { font-size: 8px; padding: 3px 6px; }
-            .nav-tabs { padding: 12px 0 0; gap: 2px; }
+            .nav-tabs { padding: 10px 0 0; gap: 2px; }
             .nav-tab { font-size: 12px; padding: 8px 12px; }
             .apps-grid { grid-template-columns: 1fr; }
             .search-input { font-size: 14px; padding: 12px 14px 12px 42px; }
             .uni-search input { font-size: 13px; padding: 10px 12px 10px 38px; }
             .uni-search .us-icon { left: 12px; }
             .uni-search .us-icon svg { width: 16px; height: 16px; }
-            .fix-chip { font-size: 9px; padding: 5px 8px; }
-            .fh-count { font-size: 8px; padding: 1px 4px; }
-            .fh-chip-sep { height: 16px; margin: 0 2px; }
-            .fh-top-row { gap: 6px; }
-            .fix-action-btn { height: 40px; padding: 0 14px; font-size: 10px; }
-            .fh-expand-btn { font-size: 9px; }
+            .fh-top-row { gap: 6px; flex-wrap: nowrap; }
+            .fix-action-btn { height: 38px; padding: 0 10px; font-size: 9px; flex-shrink: 0; }
+            .fh-chip-row { gap: 4px; margin-bottom: 10px; }
+            .fh-chips-left { gap: 4px; }
+            .fix-chip { font-size: 9px; padding: 4px 7px; }
+            .fh-count { font-size: 8px; padding: 1px 4px; min-width: 14px; }
+            .fh-chip-sep { height: 14px; margin: 0 1px; }
+            .fh-bulk-actions { flex-shrink: 0; }
+            .fh-expand-btn { font-size: 8px; }
             .filter-chip { font-size: 10px; padding: 5px 8px; }
             .filter-chip .badge { font-size: 9px; padding: 1px 4px; }
             .qrh-migrate-banner { font-size: 8px; }

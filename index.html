@@ -1567,9 +1567,9 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 </div>
             </div>
             <div class="nav-tabs">
-                <button class="nav-tab active" data-tab="quickref">Quick Reference</button>
-                <button class="nav-tab" data-tab="quicklinks">Quick Links</button>
+                <button class="nav-tab active" data-tab="quicklinks">Quick Links</button>
                 <button class="nav-tab" data-tab="fixrate">Fleet Health</button>
+                <button class="nav-tab" data-tab="quickref">Quick Reference</button>
                 <button class="nav-tab" data-tab="apps">Apps</button>
             </div>
         </header>
@@ -1605,7 +1605,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         </section>
 
         <!-- QUICK LINKS -->
-        <section id="quicklinks" class="section">
+        <section id="quicklinks" class="section active">
             <div class="ql-search">
                 <span class="qs-icon">&#128269;</span>
                 <input type="text" id="qlSearchInput" placeholder="Search all links..." oninput="qlFilter()" onkeydown="qlKeyNav(event)">
@@ -1686,7 +1686,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         </div>
 
         <!-- QUICK REFERENCE -->
-        <section id="quickref" class="section active">
+        <section id="quickref" class="section">
             <div class="search-container">
                 <div class="search-icon">
                     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -1694,6 +1694,10 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 <input type="text" class="search-input" id="searchInput" placeholder="Search the entire Toolbox..." autocomplete="off">
                 <span class="search-hint" id="searchHint">/</span>
                 <div class="autocomplete-dropdown" id="acDropdown"></div>
+            </div>
+
+            <div class="qrh-disclaimer" style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:8px 14px;margin-bottom:12px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:#92400e;letter-spacing:0.3px;">
+                MIGRATION IN PROGRESS - Some entries may not have linked references yet
             </div>
 
             <div class="filter-row" id="filterRow">

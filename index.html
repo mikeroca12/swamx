@@ -219,7 +219,7 @@
         }
 
         /* ---- SECTIONS ---- */
-        .section { display: none; padding: 32px 0 48px; }
+        .section { display: none; padding: 16px 0 48px; }
         .section.active { display: block; }
 
         /* ---- APPS SECTION ---- */
@@ -1660,7 +1660,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 <span class="qs-hint" id="qlHint">TAB to cycle, ENTER to open</span>
                 <button class="qs-clear" id="qlClear" onclick="qlClearSearch()">&#10005;</button>
             </div>
-            <div class="ql-fav-sec" id="qlFavSec">
+            <div class="ql-fav-sec" id="qlFavSec" style="display:none;">
                 <span class="ql-fav-star">&#9733;</span>
                 <div class="ql-fav-row" id="qlFavRow"></div>
             </div>
@@ -3270,7 +3270,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 tiles.forEach(function(t) { t.classList.remove('ql-sh', 'ql-sm', 'ql-sm-first'); });
                 cards.forEach(function(c) { c.classList.remove('ql-sh'); });
                 if (nr) nr.classList.remove('show');
-                if (fs) fs.style.display = '';
+                if (fs) fs.style.display = qlFavs.length > 0 ? 'flex' : 'none';
                 qlRenderMasonry();
                 return;
             }

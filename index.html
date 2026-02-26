@@ -1417,18 +1417,38 @@
 
         @media (max-width: 640px) {
             header { padding: 0; }
-            .header-row { flex-direction: column; align-items: flex-start; gap: 10px; padding-top: 6px; }
-            .clock-area { margin-left: 0; }
-            .logo h1 { font-size: 22px; }
-            .clock-area { gap: 14px; flex-wrap: wrap; }
+            .header-row { flex-direction: column; align-items: flex-start; gap: 8px; padding-top: 6px; }
+            .logo-icon { height: 56px; }
+            .logo h1 { font-size: 18px; }
+            .logo .ref-only { font-size: 7px; }
+            .clock-area { margin-left: 0; gap: 12px; flex-wrap: nowrap; }
+            .cst-block { gap: 2px; }
+            .cst-label, .cst-day { font-size: 9px; }
             .cst-time { font-size: 16px; }
+            .cst-date { font-size: 9px; }
+            .utc-digital .utc-label { font-size: 9px; }
             .utc-digital .utc-time { font-size: 16px; }
-            .utc-analog canvas { width: 110px !important; height: 110px !important; }
-            .apps-grid { grid-template-columns: 1fr; }
-            .search-input { font-size: 15px; padding: 14px 14px 14px 44px; }
-            .uni-search input { font-size: 14px; padding: 12px 14px 12px 42px; }
+            .utc-analog canvas { width: 100px !important; height: 100px !important; }
             .utility-bar { padding: 6px 0 0; gap: 6px; }
             .utility-bar .ub-name { font-size: 9px; }
+            .utility-bar .ub-btn { font-size: 8px; padding: 3px 6px; }
+            .nav-tabs { padding: 12px 0 0; gap: 2px; }
+            .nav-tab { font-size: 12px; padding: 8px 12px; }
+            .apps-grid { grid-template-columns: 1fr; }
+            .search-input { font-size: 14px; padding: 12px 14px 12px 42px; }
+            .uni-search input { font-size: 13px; padding: 10px 12px 10px 38px; }
+            .uni-search .us-icon { left: 12px; }
+            .uni-search .us-icon svg { width: 16px; height: 16px; }
+            .fix-chip { font-size: 9px; padding: 5px 8px; }
+            .fh-count { font-size: 8px; padding: 1px 4px; }
+            .fh-chip-sep { height: 16px; margin: 0 2px; }
+            .fh-top-row { gap: 6px; }
+            .fix-action-btn { height: 40px; padding: 0 14px; font-size: 10px; }
+            .fh-expand-btn { font-size: 9px; }
+            .filter-chip { font-size: 10px; padding: 5px 8px; }
+            .filter-chip .badge { font-size: 9px; padding: 1px 4px; }
+            .qrh-migrate-banner { font-size: 8px; }
+            .footer-tagline { font-size: 16px; }
         }
 
         @keyframes fadeUp {
@@ -1775,7 +1795,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             <div class="results-area" id="resultsArea">
                 <div class="results-empty">
                     <p class="qrh-tagline">All Quick Links. All Quick Reference. All Apps. One search.</p>
-                    <p class="hint">Type to search or select a category filter</p>
                     <div class="stats-line" id="statsLine"></div>
                 </div>
             </div>
@@ -2962,7 +2981,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 resultsArea.innerHTML = `
                     <div class="results-empty">
                         <p class="qrh-tagline">All Quick Links. All Quick Reference. All Apps. One search.</p>
-                        <p class="hint">Type to search or select a category filter</p>
                         <div class="stats-line"><span>${DATA.length}</span> entries &middot; <span>${Object.keys(MANUAL_LINKS).length}</span> manuals linked &middot; <span>${APPS.length}</span> app${APPS.length !== 1 ? 's' : ''}</div>
                     </div>`;
                 return;
@@ -3103,6 +3121,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         // ---- INIT ----
         updateBadges();
+        render();
 
         // ---- QUICK LINKS v2: Masonry + Korry ----
         var qlFavs = JSON.parse(localStorage.getItem('qlFavs') || '[]');

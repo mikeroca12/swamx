@@ -219,7 +219,7 @@
         }
 
         /* ---- SECTIONS ---- */
-        .section { display: none; padding: 16px 0 48px; }
+        .section { display: none; padding: 16px 0 24px; }
         .section.active { display: block; }
 
         /* ---- APPS SECTION ---- */
@@ -410,11 +410,11 @@
             background: rgba(255, 255, 255, 0.25);
         }
 
-        .results-area { min-height: 200px; }
+        .results-area { min-height: 0; }
 
         .results-empty {
             text-align: center;
-            padding: 60px 20px;
+            padding: 24px 20px;
             color: var(--text-dim);
         }
 
@@ -1129,7 +1129,7 @@
         .ql-search input{padding-right:220px;}
         .ql-search .qs-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:14px;display:none;padding:0 4px;}
         .ql-search .qs-clear.show{display:block;}
-        .ql-search .qs-hint{position:absolute;right:34px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;color:#ffffff;background:var(--accent);padding:3px 8px;border-radius:4px;border:none;flex-shrink:0;display:none;letter-spacing:0.3px;}
+        .ql-search .qs-hint{position:absolute;right:34px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;color:#ffffff;background:var(--accent);padding:3px 8px;border-radius:4px;border:2px solid #e8600a;flex-shrink:0;display:none;letter-spacing:0.3px;}
         .ql-search .qs-hint.show{display:block;}
 
         .ql-fav-sec{margin-bottom:10px;border-bottom:1px solid var(--frame-border);padding:6px 0;display:flex;align-items:flex-start;gap:8px;min-height:28px;}
@@ -1183,8 +1183,8 @@
         .ql-tile.ql-sh{display:none;}
         .ql-tile.ql-sm{border-color:var(--accent-light,#2563eb);background:#fff !important;box-shadow:0 0 0 1px var(--accent-light,#2563eb);}
         .ql-tile.ql-sm .ql-name{color:#1d4ed8;}
-        .ql-tile.ql-sm-first{border-color:var(--accent-light,#2563eb);background:#dbeafe !important;box-shadow:0 0 0 2px var(--accent-light,#2563eb);}
-        .ql-tile.ql-sm-first .ql-name{color:#1e40af;}
+        .ql-tile.ql-sm-first{border-color:#e8600a;background:#fff !important;box-shadow:0 0 0 2px #e8600a;}
+        .ql-tile.ql-sm-first .ql-name{color:#1e293b;}
         .ql-sec-card.ql-sh{display:none;}
         .ql-no-results{text-align:center;padding:30px;color:var(--text-on-dark-dim);font-size:13px;display:none;}
         .ql-no-results.show{display:block;}

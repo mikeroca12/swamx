@@ -319,6 +319,41 @@
             margin-bottom: 24px;
         }
 
+        /* Migration banner - temporary, not a card */
+        .qrh-migrate-banner {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #92400e;
+            padding: 8px 14px;
+            margin-bottom: 12px;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(90deg, #fef3c7 0%, #fde68a 50%, #fef3c7 100%);
+            background-size: 200% 100%;
+            animation: migratePulse 3s ease-in-out infinite;
+        }
+        .qrh-migrate-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #f59e0b;
+            flex-shrink: 0;
+            animation: migrateBlink 1.5s ease-in-out infinite;
+        }
+        @keyframes migratePulse {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        @keyframes migrateBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
         .filter-chip {
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
@@ -482,17 +517,25 @@
             display: flex;
         }
 
+        /* QRH tagline - SWA orange */
+        .qrh-tagline {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e8600a;
+            letter-spacing: -0.3px;
+        }
+
         .stats-line {
             text-align: center;
             font-size: 12px;
-            color: var(--text-on-dark-dim);
+            color: rgba(255,255,255,0.5);
             margin-top: 8px;
             letter-spacing: 0.3px;
         }
 
         .stats-line span {
-            color: var(--text-on-dark-muted);
-            font-weight: 500;
+            color: #e8600a;
+            font-weight: 700;
         }
 
         .search-hint {
@@ -677,25 +720,28 @@
         }
         .fh-search-wrap {
             flex: 1;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid var(--frame-border);
-            border-radius: 8px;
-            padding: 8px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 14px;
             display: flex;
             align-items: center;
             gap: 8px;
+            box-shadow: var(--card-shadow);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
+        .fh-search-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
         .fh-search-wrap input {
             border: none;
             outline: none;
-            font-size: 14px;
+            font-size: 15px;
             font-family: 'Outfit', sans-serif;
             flex: 1;
-            color: #ffffff;
+            color: var(--text);
             background: transparent;
         }
-        .fh-search-wrap input::placeholder { color: rgba(255,255,255,0.35); }
-        .fh-search-icon { color: rgba(255,255,255,0.35); font-size: 16px; }
+        .fh-search-wrap input::placeholder { color: var(--text-dim); }
+        .fh-search-icon { color: var(--text-dim); font-size: 16px; }
         .fh-chip-row {
             display: flex;
             align-items: center;
@@ -713,16 +759,16 @@
         .fh-chip-sep {
             width: 1px;
             height: 20px;
-            background: var(--frame-border);
+            background: var(--border);
             margin: 0 4px;
         }
         .fh-count {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
-            background: rgba(255,255,255,0.15);
+            background: rgba(0,0,0,0.06);
             padding: 1px 5px;
-            border-radius: 3px;
-            margin-left: 3px;
+            border-radius: 8px;
+            margin-left: 4px;
         }
         .fix-chip.active .fh-count {
             background: rgba(255,255,255,0.25);
@@ -735,32 +781,35 @@
         }
         .fh-expand-btn {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 600;
-            color: rgba(255,255,255,0.5);
-            background: none;
-            border: none;
+            color: var(--text-dim);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
             cursor: pointer;
-            padding: 2px 4px;
-            transition: color 0.15s;
+            padding: 3px 8px;
+            transition: all 0.15s;
         }
-        .fh-expand-btn:hover { color: #ffffff; }
-        .fh-bulk-sep { color: var(--frame-border); font-size: 10px; }
+        .fh-expand-btn:hover { border-color: var(--accent); color: var(--text); }
+        .fh-bulk-sep { color: var(--border); font-size: 10px; }
 
         /* Fleet/status chip row handled by .fh-chip-row */
         .fix-chip {
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             font-weight: 600;
-            padding: 6px 12px;
+            padding: 5px 12px;
             border-radius: 6px;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.08);
-            color: #ffffff;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.15s ease;
+            user-select: none;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
         }
-        .fix-chip:hover { background: rgba(255,255,255,0.14); }
+        .fix-chip:hover { border-color: var(--accent); }
         .fix-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
         .fix-results-count {
@@ -898,7 +947,7 @@
         .fix-empty-state {
             text-align: center;
             padding: 60px 24px;
-            color: #ffffff;
+            color: rgba(255,255,255,0.7);
         }
         .fix-empty-state p { font-size: 15px; margin-bottom: 4px; }
         .fix-empty-state .hint { font-size: 12px; }
@@ -907,10 +956,10 @@
         .fix-action-row { display: flex; gap: 8px; margin-bottom: 12px; }
         .fix-action-btn {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
-            padding: 7px 14px;
-            border-radius: 6px;
+            padding: 12px 18px;
+            border-radius: 12px;
             border: none;
             cursor: pointer;
             letter-spacing: 0.5px;
@@ -1696,7 +1745,8 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 <div class="autocomplete-dropdown" id="acDropdown"></div>
             </div>
 
-            <div class="qrh-disclaimer" style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:8px 14px;margin-bottom:12px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:#92400e;letter-spacing:0.3px;">
+            <div class="qrh-migrate-banner">
+                <span class="qrh-migrate-dot"></span>
                 MIGRATION IN PROGRESS - Some entries may not have linked references yet
             </div>
 
@@ -2905,7 +2955,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             if (!q && activeFilter === 'ALL') {
                 resultsArea.innerHTML = `
                     <div class="results-empty">
-                        <p><strong>All references. All manuals. All apps. One search.</strong></p>
+                        <p class="qrh-tagline">All references. All manuals. All apps. One search.</p>
                         <p class="hint">Type to search or select a category filter</p>
                         <div class="stats-line"><span>${DATA.length}</span> entries &middot; <span>${TSI_ENTRIES.length}</span> TSI records &middot; <span>${Object.keys(MANUAL_LINKS).length}</span> manuals linked &middot; <span>${APPS.length}</span> app${APPS.length !== 1 ? 's' : ''}</div>
                     </div>`;

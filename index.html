@@ -25,7 +25,7 @@
             --text-muted: #64748b;
             --text-dim: #94a3b8;
             --text-on-dark: #e2e8f0;
-            --text-on-dark-muted: #c8d5e8;
+            --text-on-dark-muted: #94a7c8;
             --text-on-dark-dim: #ffffff;
             --green: #16a34a;
             --amber: #d97706;
@@ -77,6 +77,34 @@
             position: relative;
             z-index: 1;
         }
+
+        /* ---- CLOCK ---- */
+        .clock-area { display: flex; align-items: center; gap: 20px; }
+        .cst-block { font-family: 'JetBrains Mono', monospace; }
+        .cst-time { font-size: 18px; font-weight: 700; color: #ffffff; }
+        .cst-time .cst-lbl { font-size: 11px; font-weight: 600; color: #34d399; letter-spacing: 1px; }
+        .cst-date { font-size: 11px; font-weight: 600; color: #ffffff; margin-top: 3px; letter-spacing: 0.5px; }
+        .cst-date .cst-day { color: #34d399; }
+        .utc-block {
+          font-family: 'JetBrains Mono', monospace;
+          cursor: pointer; position: relative; user-select: none;
+        }
+        .utc-block:hover .utc-hint { opacity: 1; }
+        .utc-digital .utc-time { font-size: 18px; font-weight: 700; color: #f9b612; }
+        .utc-digital .utc-time .utc-lbl { font-size: 11px; font-weight: 600; color: #f9b612; letter-spacing: 1px; }
+        .utc-analog { display: none; text-align: center; }
+        .utc-analog canvas { display: block; margin: 0 auto; }
+        .utc-analog-readout {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 13px; font-weight: 700; color: #f9b612;
+          letter-spacing: 1px; margin-top: 4px;
+        }
+        .utc-hint {
+          font-size: 8px; color: rgba(255,255,255,0.4); text-align: center;
+          margin-top: 2px; opacity: 0; transition: opacity 0.2s; letter-spacing: 0.5px;
+        }
+        .utc-block.analog-mode .utc-digital { display: none; }
+        .utc-block.analog-mode .utc-analog { display: block; }
 
         /* ---- HEADER ---- */
         header {
@@ -263,23 +291,6 @@
             box-shadow: 0 0 0 3px var(--accent-glow);
         }
 
-        .qrh-migration-banner {
-            background: #fef3c7;
-            border: 2px solid #fbbf24;
-            border-radius: 8px;
-            padding: 12px 14px;
-            margin-bottom: 16px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            color: #92400e;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            line-height: 1.4;
-        }
-        .qrh-banner-icon { font-size: 16px; color: #d97706; flex-shrink: 0; }
-
         .filter-row {
             display: flex;
             flex-wrap: wrap;
@@ -313,7 +324,7 @@
         .filter-chip .badge {
             font-size: 9px;
             font-weight: 700;
-            background: rgba(0,0,0,0.1);
+            background: rgba(0,0,0,0.06);
             padding: 1px 5px;
             border-radius: 8px;
             margin-left: 4px;
@@ -328,22 +339,22 @@
         .results-empty {
             text-align: center;
             padding: 60px 20px;
-            color: #ffffff;
+            color: var(--text-dim);
         }
 
-        .results-empty p { font-size: 15px; font-weight: 400; line-height: 1.6; color: #ffffff; }
+        .results-empty p { font-size: 15px; font-weight: 400; line-height: 1.6; color: var(--text-on-dark-muted); }
 
         .results-empty .hint {
             font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
-            color: #ffffff;
+            color: var(--text-on-dark-dim);
             margin-top: 8px;
         }
 
         .result-count {
             font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
-            color: #ffffff;
+            color: var(--text-on-dark-muted);
             margin-bottom: 12px;
         }
 
@@ -669,22 +680,21 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             font-weight: 600;
-            padding: 5px 12px;
+            padding: 6px 12px;
             border-radius: 6px;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text);
+            border: 1px solid var(--frame-border);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.5);
             cursor: pointer;
             transition: all 0.15s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
         }
-        .fix-chip:hover { border-color: var(--accent); color: var(--text); }
+        .fix-chip:hover { background: rgba(255,255,255,0.1); color: #fff; }
         .fix-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
         .fix-results-count {
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            color: #ffffff;
+            color: rgba(255,255,255,0.4);
             margin-bottom: 12px;
         }
 
@@ -816,7 +826,7 @@
         .fix-empty-state {
             text-align: center;
             padding: 60px 24px;
-            color: #ffffff;
+            color: rgba(255,255,255,0.3);
         }
         .fix-empty-state p { font-size: 15px; margin-bottom: 4px; }
         .fix-empty-state .hint { font-size: 12px; }
@@ -841,8 +851,8 @@
         }
         .fix-action-btn.primary { background: var(--accent); color: #fff; }
         .fix-action-btn.primary:hover { background: #1d4ed8; }
-        .fix-action-btn.secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-        .fix-action-btn.secondary:hover { border-color: var(--accent); }
+        .fix-action-btn.secondary { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid var(--frame-border); }
+        .fix-action-btn.secondary:hover { background: rgba(255,255,255,0.14); }
         .fix-status-bar {
             display: flex;
             align-items: center;
@@ -862,74 +872,56 @@
             border-radius: 4px;
             letter-spacing: 0.5px;
         }
-        .fsp-work, .fsp-closed, .fsp-total, .fsp-repeat { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+        .fsp-work, .fsp-closed, .fsp-total { background: rgba(255,255,255,0.08); color: #ffffff; border: 1px solid rgba(255,255,255,0.15); }
         .fsp-work.has-data { background: #fbbf24; color: #1e293b; border-color: #fbbf24; font-weight: 700; }
         .fsp-closed.has-data { background: #4ade80; color: #1e293b; border-color: #4ade80; font-weight: 700; }
-        .fsp-total.has-data { background: var(--surface); color: var(--text); border-color: var(--border); }
-        .fsp-repeat.has-data { background: var(--red); color: #fff; border-color: var(--red); font-weight: 700; }
-        .fsp-rate { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-        .fsp-rate.has-data { background: var(--blue-bg); color: var(--blue-text); border-color: var(--blue-border); }
+        .fsp-total.has-data { background: rgba(255,255,255,0.15); color: #ffffff; border-color: rgba(255,255,255,0.25); }
+        .fsp-rate { background: rgba(255,255,255,0.06); color: #ffffff; border: 1px solid var(--frame-border); }
+        .fsp-rate.has-data { background: rgba(37,99,235,0.15); color: #93c5fd; border-color: rgba(37,99,235,0.3); }
 
-        /* Entry cards - compact accordion */
+        /* Entry cards */
         .fix-entry-card {
-            background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-            margin-bottom: 6px; box-shadow: var(--card-shadow); overflow: hidden;
-            border-left: 3px solid var(--border);
+            background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+            margin-bottom: 10px; box-shadow: var(--card-shadow); overflow: hidden;
         }
-        .fix-entry-card.fec-status-work { border-left-color: #fbbf24; }
-        .fix-entry-card.fec-status-closed { border-left-color: #4ade80; }
-        .fix-entry-card.fec-overdue { border-left-color: var(--red); }
-        .fec-row {
-            padding: 10px 14px; display: flex; align-items: center; gap: 8px; cursor: pointer;
-            transition: background 0.1s;
+        .fec-header {
+            padding: 12px 16px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+            border-bottom: 1px solid var(--border);
         }
-        .fec-row:hover { background: var(--surface2); }
         .fec-status {
-            font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
-            padding: 3px 6px; border-radius: 3px; letter-spacing: 0.5px; flex-shrink: 0;
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+            padding: 4px 8px; border-radius: 4px; letter-spacing: 0.5px;
         }
         .fts-work { background: #fbbf24; color: #1e293b; }
         .fts-eff { background: #4ade80; color: #1e293b; }
         .fts-ineff { background: var(--red-bg); color: var(--red-text); border: 1px solid var(--red-border); }
         .fec-tail {
-            font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: var(--text); flex-shrink: 0;
+            font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: var(--text);
         }
         .fec-fleet {
-            font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
-            padding: 2px 5px; border-radius: 3px; background: rgba(22,163,74,0.1);
-            color: var(--green-text); border: 1px solid var(--green-border); flex-shrink: 0;
+            font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+            padding: 3px 6px; border-radius: 3px; background: rgba(22,163,74,0.1);
+            color: var(--green-text); border: 1px solid var(--green-border);
         }
-        .fec-repeat-badge {
-            font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
-            padding: 2px 5px; border-radius: 3px; background: rgba(220,38,38,0.1);
-            color: var(--red-text); border: 1px solid var(--red-border); flex-shrink: 0;
+        .fec-fc {
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text);
         }
-        .fec-history-badge {
-            font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
-            padding: 2px 5px; border-radius: 3px; background: rgba(100,116,139,0.1);
-            color: var(--text-dim); border: 1px solid var(--border-strong); flex-shrink: 0;
-        }
-        .fec-divider { color: var(--text-secondary); font-size: 10px; flex-shrink: 0; }
-        .fec-effect-short {
-            font-size: 12px; color: var(--text); flex: 1; min-width: 0;
+        .fec-effect {
+            font-size: 12px; color: var(--text-secondary); flex: 1; min-width: 120px;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
-        .fec-due-compact {
-            font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
-            color: var(--text); flex-shrink: 0; margin-left: auto;
+        .fec-header-right {
+            margin-left: auto; text-align: right; white-space: nowrap;
         }
-        .fec-due-compact.overdue { color: var(--red); font-weight: 700; }
-        .fec-chevron {
-            font-size: 10px; color: var(--text-secondary); transition: transform 0.2s; flex-shrink: 0;
+        .fec-date {
+            font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--text);
         }
-        .fix-entry-card.expanded .fec-chevron { transform: rotate(180deg); }
-        .fec-expand {
-            display: none; border-top: 1px solid var(--border);
+        .fec-created-by {
+            font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text); margin-top: 1px;
         }
-        .fix-entry-card.expanded .fec-expand { display: block; }
-        .fec-expand-body { padding: 12px 14px; }
-        .fec-detail-grid {
-            display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 10px;
+        .fec-details {
+            padding: 10px 16px; display: flex; gap: 20px; flex-wrap: wrap;
+            border-bottom: 1px solid var(--border);
         }
         .fec-field { display: flex; flex-direction: column; gap: 1px; }
         .fec-label {
@@ -939,29 +931,20 @@
         .fec-val {
             font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text);
         }
-        .fec-effect-full {
-            font-size: 12px; color: var(--text); line-height: 1.5; margin-bottom: 10px;
-        }
         .fec-notes {
-            padding: 8px 12px; font-size: 12px; color: var(--text); line-height: 1.5;
-            background: #fff; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px;
+            margin: 10px 16px; padding: 10px 14px; font-size: 12px; color: var(--text); line-height: 1.5;
+            background: #fff; border: 1px solid var(--border); border-radius: 6px;
         }
         .fec-corrective {
-            padding: 8px 12px; font-size: 12px; color: var(--green-text); line-height: 1.5;
-            background: var(--green-bg); border: 1px solid var(--green-border); border-radius: 6px; margin-bottom: 8px;
-        }
-        .fec-meta-row {
-            display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 8px;
-        }
-        .fec-meta {
-            font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text); margin-bottom: 0;
+            margin: 0 16px 10px; padding: 10px 14px; font-size: 12px; color: var(--green-text); line-height: 1.5;
+            background: var(--green-bg); border: 1px solid var(--green-border); border-radius: 6px;
         }
         .fec-actions {
-            display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
-            padding-top: 8px; border-top: 1px solid var(--border);
+            padding: 10px 16px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+            border-top: 1px solid var(--border);
         }
         .fec-updated {
-            font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text);
+            font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-dim);
             margin-left: 12px;
         }
         .fec-btn {
@@ -977,20 +960,9 @@
         .fec-btn-reopen:hover { background: #93c5fd; color: #1e3a5f; }
         .fec-btn-del { background: var(--red-bg); color: var(--red-text); border-color: var(--red-border); margin-left: auto; }
         .fec-btn-del:hover { background: #fca5a5; color: #7f1d1d; }
-        .fix-expand-controls {
-            display: flex; gap: 8px; margin-bottom: 8px;
-        }
-        .fix-expand-btn {
-            font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600;
-            padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border);
-            background: var(--surface); color: var(--text); cursor: pointer;
-            transition: all 0.15s;
-        }
-        .fix-expand-btn:hover { border-color: var(--accent); }
 
         /* Status filter chips */
-        .fix-status-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-        .fix-repeat-chip.active { background: var(--red); color: #fff; border-color: var(--red); }
+        .fix-status-chip.active { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.3); }
 
         /* Closeout action chips */
         .fco-chip {
@@ -1027,8 +999,6 @@
         .tsi-tail-opt .tt-tail{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--text);}
         .tsi-tail-opt .tt-fleet{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);}
         .tsi-fc-wrap{position:relative;}
-        .tsi-fc-desc{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);padding:0 2px 8px;line-height:1.4;display:none;}
-        .tsi-fc-desc.visible{display:block;}
         .tsi-fc-dd{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;max-height:340px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.12);}
         .tsi-fc-dd.open{display:block;}
         .tsi-fc-opt{padding:8px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:background 0.1s;border-bottom:1px solid var(--surface2);}
@@ -1044,16 +1014,8 @@
         .tsi-form-display{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--text);padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;min-height:42px;display:flex;align-items:center;}
         .tsi-save-btn{padding:8px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text);}
         .tsi-save-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
-        .tsi-completed-toggle{margin-bottom:12px;padding-top:8px;border-top:1px solid var(--border);}
-        .tsi-toggle-label{display:flex;align-items:center;gap:10px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--text-secondary);letter-spacing:0.3px;}
-        .tsi-toggle-box{width:36px;height:20px;border-radius:10px;background:var(--border);position:relative;transition:background 0.2s;flex-shrink:0;}
-        .tsi-toggle-box::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
-        .tsi-toggle-box.on{background:var(--accent);}
-        .tsi-toggle-box.on::after{transform:translateX(16px);}
-        .tsi-completed-fields{display:none;padding:12px 0 4px;border-top:1px dashed var(--border);margin-top:8px;}
-        .tsi-completed-fields.open{display:block;}
         .tsi-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:opacity 0.3s;}
-        @media(max-width:640px){ .tsi-form-row{flex-direction:column;gap:0;} .tsi-modal-overlay{align-items:flex-end;padding:0;} .tsi-modal{border-radius:16px 16px 0 0;max-height:85vh;} }
+        @media(max-width:640px){ .tsi-form-row{flex-direction:column;gap:0;} }
 
         /* ---- QUICK LINKS ---- */
         /* ---- QUICK LINKS v2: Masonry + Korry ---- */
@@ -1066,22 +1028,22 @@
         .ql-search .qs-hint{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);background:var(--surface);padding:2px 6px;border-radius:3px;border:1px solid var(--border);flex-shrink:0;display:none;}
         .ql-search .qs-hint.show{display:block;}
 
-        .ql-fav-sec{margin-bottom:12px;background:rgba(250,204,21,0.06);border:1px solid rgba(250,204,21,0.25);border-radius:8px;padding:8px 10px;}
+        .ql-fav-sec{margin-bottom:12px;background:rgba(250,204,21,0.04);border:1px solid rgba(250,204,21,0.15);border-radius:8px;padding:8px 10px;}
         .ql-fav-hdr{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#facc15;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
         .ql-fav-row{display:flex;flex-wrap:wrap;gap:5px;min-height:24px;align-items:center;}
         .ql-fav-empty{font-size:10px;color:#ffffff;padding:2px 0;}
-        .ql-fav-chip{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:4px 9px;display:inline-flex;align-items:center;gap:5px;text-decoration:none;cursor:pointer;transition:all 0.1s;box-shadow:var(--card-shadow);}
-        .ql-fav-chip:hover{border-color:var(--accent);box-shadow:var(--card-shadow-hover);}
-        .ql-fav-chip .qfc-n{font-size:11px;font-weight:700;color:var(--text);white-space:nowrap;}
-        .ql-fav-chip .qfc-x{font-size:9px;color:var(--text-secondary);cursor:pointer;}
-        .ql-fav-chip .qfc-x:hover{color:var(--red);}
+        .ql-fav-chip{background:rgba(255,255,255,0.1);border:1px solid rgba(250,204,21,0.2);border-radius:5px;padding:4px 9px;display:inline-flex;align-items:center;gap:5px;text-decoration:none;cursor:pointer;transition:all 0.1s;}
+        .ql-fav-chip:hover{background:rgba(255,255,255,0.16);border-color:rgba(250,204,21,0.4);}
+        .ql-fav-chip .qfc-n{font-size:11px;font-weight:700;color:var(--text-on-dark-dim);white-space:nowrap;}
+        .ql-fav-chip .qfc-x{font-size:9px;color:var(--text-on-dark);opacity:0.3;cursor:pointer;}
+        .ql-fav-chip .qfc-x:hover{opacity:1;}
 
         .ql-masonry{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;overflow:hidden;margin:0 -24px;}
         .ql-masonry .ql-col{width:190px;flex-shrink:0;flex-grow:0;display:flex;flex-direction:column;gap:10px;}
         .ql-sec-card{background:rgba(0,0,0,0.15);border:1px solid var(--frame-border);border-radius:7px;overflow:hidden;}
         .ql-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:pointer;user-select:none;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--frame-border);}
         .ql-sec-hdr h3{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#ffffff;margin:0;}
-        .ql-sec-hdr .ql-cnt{font-family:'JetBrains Mono',monospace;font-size:8px;color:#ffffff;background:rgba(255,255,255,0.18);padding:1px 5px;border-radius:3px;margin-left:5px;}
+        .ql-sec-hdr .ql-cnt{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--text-on-dark);background:rgba(255,255,255,0.1);padding:1px 5px;border-radius:3px;margin-left:5px;}
         .ql-sec-hdr .ql-arr{color:var(--text-on-dark-dim);font-size:9px;transition:transform 0.15s;}
         .ql-sec-hdr.collapsed .ql-arr{transform:rotate(-90deg);}
         .ql-sec-list{padding:3px;}
@@ -1090,8 +1052,8 @@
         .ql-tile{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:5px 8px;display:flex;align-items:center;gap:7px;margin-bottom:2px;cursor:pointer;transition:all 0.12s;text-decoration:none;box-shadow:var(--card-shadow);position:relative;}
         .ql-tile:hover{border-color:var(--accent-light,#2563eb);box-shadow:var(--card-shadow-hover);transform:translateY(-1px);background:#fff;}
         .ql-tile .ql-name{font-size:12px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;}
-        .ql-tile .ql-star{background:none;border:none;cursor:pointer;font-size:12px;color:#b4bcc9;opacity:1;transition:all 0.1s;flex-shrink:0;padding:2px 4px;}
-        .ql-tile:hover .ql-star{color:#94a3b8;}
+        .ql-tile .ql-star{background:none;border:none;cursor:pointer;font-size:12px;color:#8896a8;opacity:1;transition:all 0.1s;flex-shrink:0;padding:2px 4px;}
+        .ql-tile:hover .ql-star{color:#6b7a8d;}
         .ql-tile .ql-star.fv{color:#facc15;opacity:1;}
         .ql-tile .ql-star:hover{opacity:1;}
 
@@ -1343,6 +1305,10 @@
             header { padding: 28px 0 0; }
             .header-row { flex-direction: column; align-items: flex-start; gap: 10px; }
             .logo h1 { font-size: 22px; }
+            .clock-area { gap: 14px; flex-wrap: wrap; }
+            .cst-time { font-size: 16px; }
+            .utc-digital .utc-time { font-size: 16px; }
+            .utc-analog canvas { width: 110px !important; height: 110px !important; }
             .apps-grid { grid-template-columns: 1fr; }
             .search-input { font-size: 15px; padding: 14px 14px 14px 44px; }
         }
@@ -1399,14 +1365,14 @@
     #mainApp { display: none; }
     #mainApp.authed { display: block; }
     /* User badge in nav area */
-    .user-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; color: #ffffff; margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .user-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.5); margin-left: auto; display: flex; align-items: center; gap: 8px; }
     .user-badge .ub-name { color: #ffffff; }
-    .user-badge .ub-logout { color: #ffffff; cursor: pointer; font-size: 9px; padding: 2px 6px; border: 1px solid rgba(255,255,255,0.35); border-radius: 4px; transition: all 0.15s; background: none; }
-    .user-badge .ub-logout:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
+    .user-badge .ub-logout { color: rgba(255,255,255,0.3); cursor: pointer; font-size: 9px; padding: 2px 6px; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; transition: all 0.15s; background: none; }
+    .user-badge .ub-logout:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
     .user-badge .ub-role { font-size: 8px; padding: 2px 5px; border-radius: 3px; letter-spacing: 0.5px; text-transform: uppercase; }
     .ub-role-admin { background: rgba(37,99,235,0.15); color: #93c5fd; border: 1px solid rgba(37,99,235,0.3); }
     .ub-role-editor { background: rgba(22,163,74,0.15); color: #86efac; border: 1px solid rgba(22,163,74,0.3); }
-    .ub-role-viewer { background: rgba(255,255,255,0.1); color: #ffffff; border: 1px solid rgba(255,255,255,0.2); }
+    .ub-role-viewer { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
@@ -1420,7 +1386,7 @@
         <h1>MOC <span>Toolbox</span></h1>
       </div>
     </div>
-    <div class="login-ref">All content reference only</div>
+    <div class="login-ref" style="font-style:italic;">For reference use only</div>
     <label class="login-label">Employee Number</label>
     <input type="text" class="login-input" id="loginENum" placeholder="Enter your E#" autocomplete="off">
     <label class="login-label">Access Code</label>
@@ -1445,15 +1411,10 @@ window.addEventListener('moc-auth-ready', function() {
   // Update user badge
   var badge = document.getElementById('userBadge');
   if (badge && CURRENT_USER) {
-    var role = CURRENT_USER.role || 'viewer';
-    var badgeHtml = '<span class="ub-name">' + CURRENT_USER.name + '</span>';
-    if (role === 'admin') {
-      badgeHtml += '<span class="ub-role ub-role-admin">ADMIN</span>';
-    } else if (role === 'editor') {
-      badgeHtml += '<span class="ub-role ub-role-editor">TSI</span>';
-    }
-    badgeHtml += '<button class="ub-logout" onclick="mocSignOut()">Sign Out</button>';
-    badge.innerHTML = badgeHtml;
+    var roleClass = 'ub-role-' + (CURRENT_USER.role || 'viewer');
+    badge.innerHTML = '<span class="ub-name">' + CURRENT_USER.name + '</span>' +
+      '<span class="ub-role ' + roleClass + '">' + (CURRENT_USER.role || 'viewer').toUpperCase() + '</span>' +
+      '<button class="ub-logout" onclick="mocSignOut()">Sign Out</button>';
   }
 
   // Show roster sync button for admin
@@ -1519,16 +1480,32 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                     <div class="logo-icon"><img src="logo.webp" alt="MOC Toolbox"></div>
                     <div class="logo-text-wrap">
                         <h1>MOC <span>Toolbox</span></h1>
-                        <div class="ref-only">All content reference only</div>
+                        <div class="ref-only" style="font-style:italic;">For reference use only</div>
                     </div>
                 </div>
-                <button class="ub-logout" id="rosterSyncBtn" style="display:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:#ffffff;cursor:pointer;padding:2px 6px;border:1px solid rgba(255,255,255,0.35);border-radius:4px;background:none;" onclick="syncRoster()">SYNC ROSTER</button>
+                <div class="clock-area" id="clockArea">
+                  <div class="cst-block">
+                    <div class="cst-time"><span class="cst-lbl">CST</span> <span id="cstTime">--:--</span></div>
+                    <div class="cst-date"><span class="cst-day" id="cstDay">---</span> <span id="cstDate">--/--/----</span></div>
+                  </div>
+                  <div class="utc-block" id="utcBlock" onclick="toggleUtcClock()">
+                    <div class="utc-digital">
+                      <div class="utc-time"><span class="utc-lbl">UTC</span> <span id="utcDigital">--:--</span></div>
+                    </div>
+                    <div class="utc-analog">
+                      <canvas id="utcCanvas" width="280" height="280" style="width:140px;height:140px;"></canvas>
+                      <div class="utc-analog-readout" id="utcAnalog">--:--Z</div>
+                    </div>
+                    <div class="utc-hint">click to toggle</div>
+                  </div>
+                </div>
+                <button class="ub-logout" id="rosterSyncBtn" style="display:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:rgba(255,255,255,0.3);cursor:pointer;padding:2px 6px;border:1px solid rgba(255,255,255,0.15);border-radius:4px;background:none;" onclick="syncRoster()">SYNC ROSTER</button>
                 <div class="user-badge" id="userBadge"></div>
             </div>
             <div class="nav-tabs">
-                <button class="nav-tab active" data-tab="quicklinks">Quick Links</button>
-                <button class="nav-tab" data-tab="fixrate">Fleet Health</button>
-                <button class="nav-tab" data-tab="quickref">Quick Reference</button>
+                <button class="nav-tab active" data-tab="quickref">Quick Reference</button>
+                <button class="nav-tab" data-tab="quicklinks">Quick Links</button>
+                <button class="nav-tab" data-tab="fixrate">TSI Fix Rate</button>
                 <button class="nav-tab" data-tab="apps">Apps</button>
             </div>
         </header>
@@ -1564,7 +1541,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         </section>
 
         <!-- QUICK LINKS -->
-        <section id="quicklinks" class="section active">
+        <section id="quicklinks" class="section">
             <div class="ql-search">
                 <span class="qs-icon">&#128269;</span>
                 <input type="text" id="qlSearchInput" placeholder="Search all links..." oninput="qlFilter()" onkeydown="qlKeyNav(event)">
@@ -1579,12 +1556,11 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             <div class="ql-no-results" id="qlNoResults">No links match your search.</div>
         </section>
 
-        <!-- TSI TRACKER -->
+        <!-- TSI FIX RATE -->
         <section id="fixrate" class="section">
             <div class="fix-status-bar" id="fixStatusBar">
                 <span class="fix-status-pill fsp-work" id="fixInWork">0 IN WORK</span>
                 <span class="fix-status-pill fsp-closed" id="fixClosed">0 CLOSED</span>
-                <span class="fix-status-pill fsp-repeat" id="fixRepeat">0 REPEAT</span>
                 <span class="fix-status-pill fsp-total" id="fixTotal">0 TOTAL</span>
                 <span style="flex:1;"></span>
                 <span class="fix-status-pill fsp-rate" id="fixRate">-- 1ST ATTEMPT FIX RATE</span>
@@ -1606,11 +1582,10 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 <span style="width:1px;height:20px;background:var(--frame-border);margin:0 4px;"></span>
                 <button class="fix-chip fix-status-chip active" data-status-filter="IN WORK">IN WORK</button>
                 <button class="fix-chip fix-status-chip" data-status-filter="CLOSED">CLOSED</button>
-                <button class="fix-chip fix-status-chip fix-repeat-chip" data-status-filter="REPEAT">REPEAT</button>
             </div>
             <div id="fixResults">
                 <div class="fix-empty-state">
-                    <p>No entries yet</p>
+                    <p>No TSI entries yet</p>
                     <p class="hint">Click + ADD TSI to create your first entry</p>
                 </div>
             </div>
@@ -1647,7 +1622,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         </div>
 
         <!-- QUICK REFERENCE -->
-        <section id="quickref" class="section">
+        <section id="quickref" class="section active">
             <div class="search-container">
                 <div class="search-icon">
                     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -1655,11 +1630,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 <input type="text" class="search-input" id="searchInput" placeholder="Search the entire Toolbox..." autocomplete="off">
                 <span class="search-hint" id="searchHint">/</span>
                 <div class="autocomplete-dropdown" id="acDropdown"></div>
-            </div>
-
-            <div class="qrh-migration-banner">
-                <span class="qrh-banner-icon">&#9432;</span>
-                <span>Content migration in progress - some reference links may not be available yet.</span>
             </div>
 
             <div class="filter-row" id="filterRow">
@@ -2006,7 +1976,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 return words.every(w => hay.includes(w));
             }).slice(0, 5).map(d => ({...d, _type:'qrh'}));
 
-            // Search TSI Tracker
+            // Search TSI Fix Rate
             let fixMatches = TSI_ENTRIES.filter(d => {
                 const hay = [d.faultCode||'', d.effect||'', d.tail||'', d.ata||'', d.fleet||'', d.notes||''].join(' ').toLowerCase();
                 return words.every(w => hay.includes(w));
@@ -2330,63 +2300,17 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             var closed = TSI_ENTRIES.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; }).length;
             var eff = TSI_ENTRIES.filter(function(e) { return e.status === 'closed_eff'; }).length;
             var fr = closed > 0 ? Math.round((eff / closed) * 100) : null;
-
-            // Detect repeats: same tail + normalized fault code
-            // Active repeat: 2+ entries with most recent within 30 days
-            // Historical: 2+ entries but most recent is older than 30 days
-            var now = new Date();
-            var thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-            var groups = {};
-            TSI_ENTRIES.forEach(function(e) {
-                var key = (e.tail || '').toUpperCase() + '||' + getFcNorm(e);
-                if (!groups[key]) groups[key] = [];
-                groups[key].push(e);
-            });
-            window._repeatIds = {};
-            window._historyIds = {};
-            var repeatGroupCount = 0;
-            Object.keys(groups).forEach(function(key) {
-                var g = groups[key];
-                if (g.length < 2) return;
-                // Find most recent entry date
-                var latest = null;
-                g.forEach(function(e) {
-                    var d = new Date(e.created);
-                    if (!latest || d > latest) latest = d;
-                });
-                if (latest >= thirtyDaysAgo) {
-                    // Active repeat - within 30 days
-                    repeatGroupCount++;
-                    // Count only entries within 30-day window for active badge
-                    var recentCount = 0;
-                    g.forEach(function(e) {
-                        if (new Date(e.created) >= thirtyDaysAgo) recentCount++;
-                    });
-                    g.forEach(function(e) {
-                        window._repeatIds[e.id] = recentCount;
-                    });
-                } else {
-                    // Historical - all older than 30 days
-                    g.forEach(function(e) {
-                        window._historyIds[e.id] = g.length;
-                    });
-                }
-            });
-
             var elIW = document.getElementById('fixInWork');
             var elCL = document.getElementById('fixClosed');
-            var elRP = document.getElementById('fixRepeat');
             var elTT = document.getElementById('fixTotal');
             var elFR = document.getElementById('fixRate');
             if (!elIW) return;
             elIW.textContent = inWork + ' IN WORK';
             elCL.textContent = closed + ' CLOSED';
-            elRP.textContent = repeatGroupCount + ' REPEAT';
             elTT.textContent = TSI_ENTRIES.length + ' TOTAL';
             elFR.textContent = (fr !== null ? fr + '%' : '--') + ' 1ST ATTEMPT FIX RATE';
             elIW.classList.toggle('has-data', inWork > 0);
             elCL.classList.toggle('has-data', closed > 0);
-            elRP.classList.toggle('has-data', repeatGroupCount > 0);
             elTT.classList.toggle('has-data', TSI_ENTRIES.length > 0);
             elFR.classList.toggle('has-data', fr !== null);
         }
@@ -2409,8 +2333,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 results = results.filter(function(e) { return e.status === 'in_work'; });
             } else if (fixStatusFilter === 'CLOSED') {
                 results = results.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; });
-            } else if (fixStatusFilter === 'REPEAT') {
-                results = results.filter(function(e) { return window._repeatIds && window._repeatIds[e.id]; });
             }
 
             // Text search
@@ -2437,63 +2359,34 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             }
 
             var canEdit = window.mocCanEdit && window.mocCanEdit();
-            var html = '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
-                '<div class="fix-results-count">' + results.length + ' entr' + (results.length !== 1 ? 'ies' : 'y') + (q ? ' matching "' + esc(q) + '"' : '') + '</div>' +
-                '<span style="flex:1;"></span>' +
-                '<button class="fix-expand-btn" onclick="fixExpandAll()">EXPAND ALL</button>' +
-                '<button class="fix-expand-btn" onclick="fixCollapseAll()">COLLAPSE ALL</button>' +
-                '</div>';
+            var html = '<div class="fix-results-count">' + results.length + ' entr' + (results.length !== 1 ? 'ies' : 'y') + (q ? ' matching "' + esc(q) + '"' : '') + '</div>';
 
-            var today = new Date(); today.setHours(0,0,0,0);
+            results.forEach(function(e) {
+                var statusLabel, statusClass;
+                if (e.status === 'in_work') { statusLabel = 'IN WORK'; statusClass = 'fts-work'; }
+                else if (e.status === 'closed_eff') { statusLabel = 'CLOSED'; statusClass = 'fts-eff'; }
+                else { statusLabel = 'CLOSED'; statusClass = 'fts-eff'; }
 
-            results.forEach(function(e, idx) {
-                var statusLabel, statusClass, cardStatusClass;
-                if (e.status === 'in_work') { statusLabel = 'IN WORK'; statusClass = 'fts-work'; cardStatusClass = 'fec-status-work'; }
-                else if (e.status === 'closed_eff') { statusLabel = 'CLOSED'; statusClass = 'fts-eff'; cardStatusClass = 'fec-status-closed'; }
-                else { statusLabel = 'CLOSED'; statusClass = 'fts-eff'; cardStatusClass = 'fec-status-closed'; }
-
-                // Check overdue
-                var isOverdue = false;
-                if (e.dueDate && e.status === 'in_work') {
-                    var due = new Date(e.dueDate + 'T00:00:00');
-                    if (due < today) isOverdue = true;
-                }
-
-                var dueShort = e.dueDate ? formatTsiDateShort(e.dueDate) : '';
                 var dateStr = formatTsiDate(e.created);
                 var createdBy = e.createdByName || e.createdBy || '';
 
-                html += '<div class="fix-entry-card ' + cardStatusClass + (isOverdue ? ' fec-overdue' : '') + '" id="fec-' + e.id + '">';
+                html += '<div class="fix-entry-card">';
 
-                // Compact row (always visible)
-                html += '<div class="fec-row" onclick="fixToggleCard(\'' + e.id + '\')">';
+                // Header row
+                html += '<div class="fec-header">';
                 html += '<span class="fec-status ' + statusClass + '">' + statusLabel + '</span>';
                 html += '<span class="fec-tail">' + esc(e.tail||'') + '</span>';
                 html += '<span class="fec-fleet">' + esc(e.fleet||'') + '</span>';
-                if (window._repeatIds && window._repeatIds[e.id]) {
-                    html += '<span class="fec-repeat-badge">x' + window._repeatIds[e.id] + '</span>';
-                } else if (window._historyIds && window._historyIds[e.id]) {
-                    html += '<span class="fec-history-badge">x' + window._historyIds[e.id] + ' HX</span>';
-                }
-                html += '<span class="fec-divider">|</span>';
-                html += '<span class="fec-effect-short">' + esc(e.effect||e.faultCode||'') + '</span>';
-                if (dueShort && e.status === 'in_work') {
-                    html += '<span class="fec-due-compact' + (isOverdue ? ' overdue' : '') + '">DUE ' + dueShort + '</span>';
-                }
-                html += '<span class="fec-chevron">&#9660;</span>';
+                html += '<span class="fec-fc">' + esc(e.faultCode||'') + '</span>';
+                if (e.effect) html += '<span class="fec-effect">' + esc(e.effect) + '</span>';
+                html += '<div class="fec-header-right">';
+                html += '<div class="fec-date">' + dateStr + '</div>';
+                if (createdBy) html += '<div class="fec-created-by">by ' + esc(createdBy) + '</div>';
+                html += '</div>';
                 html += '</div>';
 
-                // Expandable detail section
-                html += '<div class="fec-expand"><div class="fec-expand-body">';
-
-                // Full effect text
-                if (e.effect) {
-                    html += '<div class="fec-effect-full">' + esc(e.effect) + '</div>';
-                }
-
-                // Detail grid
-                html += '<div class="fec-detail-grid">';
-                if (e.faultCode) html += '<div class="fec-field"><span class="fec-label">FAULT CODE</span><span class="fec-val">' + esc(e.faultCode) + '</span></div>';
+                // Details row
+                html += '<div class="fec-details">';
                 if (e.workOrder) html += '<div class="fec-field"><span class="fec-label">WORK ORDER</span><span class="fec-val">' + esc(e.workOrder) + '</span></div>';
                 if (e.actionType) html += '<div class="fec-field"><span class="fec-label">ACTION</span><span class="fec-val">' + esc(e.actionType) + '</span></div>';
                 html += '<div class="fec-field"><span class="fec-label">ATA</span><span class="fec-val">' + esc(e.ata||'') + '</span></div>';
@@ -2506,52 +2399,31 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                     html += '<div class="fec-notes">' + esc(e.notes) + '</div>';
                 }
 
-                // Corrective action
+                // Corrective action (shown when closed)
                 if (e.correctiveAction) {
                     html += '<div class="fec-corrective"><span class="fec-label" style="margin-bottom:2px;color:var(--green-text);">CORRECTIVE ACTION</span><div>' + esc(e.correctiveAction) + '</div></div>';
                 }
-
-                // Created + Updated meta
-                html += '<div class="fec-meta-row">';
-                html += '<div class="fec-meta"><span class="fec-label">CREATED</span> ' + dateStr;
-                if (createdBy) html += ' by ' + esc(createdBy);
-                html += '</div>';
-                if (e.updatedAt) {
-                    html += '<div class="fec-meta"><span class="fec-label">LAST UPDATED</span> ' + formatTsiDate(e.updatedAt);
-                    if (e.updatedByName) html += ' by ' + esc(e.updatedByName);
-                    html += '</div>';
-                }
-                html += '</div>';
 
                 // Action buttons
                 if (canEdit) {
                     html += '<div class="fec-actions">';
                     if (e.status === 'in_work') {
-                        html += '<button class="fec-btn fec-btn-update" onclick="event.stopPropagation();fixUpdate(\'' + e.id + '\')">UPDATE</button>';
-                        html += '<button class="fec-btn fec-btn-close" onclick="event.stopPropagation();fixClose(\'' + e.id + '\')">CLOSE</button>';
+                        html += '<button class="fec-btn fec-btn-update" onclick="fixUpdate(\'' + e.id + '\')">UPDATE</button>';
+                        html += '<button class="fec-btn fec-btn-close" onclick="fixClose(\'' + e.id + '\')">CLOSE</button>';
                     } else {
-                        html += '<button class="fec-btn fec-btn-reopen" onclick="event.stopPropagation();fixReopen(\'' + e.id + '\')">REOPEN</button>';
+                        html += '<button class="fec-btn fec-btn-reopen" onclick="fixReopen(\'' + e.id + '\')">REOPEN</button>';
                     }
-                    html += '<button class="fec-btn fec-btn-del" onclick="event.stopPropagation();fixDelete(\'' + e.id + '\')">DELETE</button>';
+                    if (e.updatedAt) {
+                        html += '<span class="fec-updated">Updated ' + formatTsiDate(e.updatedAt) + (e.updatedByName ? ' by ' + esc(e.updatedByName) : '') + '</span>';
+                    }
+                    html += '<button class="fec-btn fec-btn-del" onclick="fixDelete(\'' + e.id + '\')">DELETE</button>';
                     html += '</div>';
                 }
 
-                html += '</div></div>'; // close fec-expand-body, fec-expand
-                html += '</div>'; // close fix-entry-card
+                html += '</div>';
             });
 
             fixResults.innerHTML = html;
-        }
-
-        function fixToggleCard(id) {
-            var card = document.getElementById('fec-' + id);
-            if (card) card.classList.toggle('expanded');
-        }
-        function fixExpandAll() {
-            document.querySelectorAll('.fix-entry-card').forEach(function(c) { c.classList.add('expanded'); });
-        }
-        function fixCollapseAll() {
-            document.querySelectorAll('.fix-entry-card').forEach(function(c) { c.classList.remove('expanded'); });
         }
 
         // Close from Fix Rate tab
@@ -3028,17 +2900,17 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 html += '</div>';
             });
 
-            // Render fleet health cards inline
+            // Render fix rate cards inline
             fixResultsList.forEach(function(d) {
                 var statusLabel = d.status === 'in_work' ? 'IN WORK' : d.status === 'closed_eff' ? 'EFFECTIVE' : 'INEFFECTIVE';
                 var statusClass = d.status === 'in_work' ? 'fts-work' : d.status === 'closed_eff' ? 'fts-eff' : 'fts-ineff';
-                html += `<div class="fix-entry-card fec-status-work" style="cursor:pointer" onclick="document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.querySelector('[data-tab=fixrate]').classList.add('active');document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById('fixrate').classList.add('active');fixSearchInput.value='${esc(d.faultCode||'')}';renderFixRate();">
-                    <div class="fec-row">
+                html += `<div class="fix-entry-card" style="cursor:pointer" onclick="document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.querySelector('[data-tab=fixrate]').classList.add('active');document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById('fixrate').classList.add('active');fixSearchInput.value='${esc(d.faultCode||'')}';renderFixRate();">
+                    <div class="fec-header">
                         <span class="fec-status ${statusClass}">${statusLabel}</span>
                         <span class="fec-tail">${esc(d.tail||'')}</span>
                         <span class="fec-fleet">${esc(d.fleet||'')}</span>
-                        <span class="fec-divider">|</span>
-                        <span class="fec-effect-short">${highlight(d.effect||d.faultCode||'', words)}</span>
+                        <span class="fec-fc">${esc(d.faultCode||'')}</span>
+                        <span class="fec-effect">${highlight(d.effect||'', words)}</span>
                     </div>
                 </div>`;
             });
@@ -3334,7 +3206,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
       <div class="tsi-form-row">
         <div class="tsi-form-group tsi-fc-wrap" style="flex:0 0 55%;">
           <label class="tsi-form-label">FAULT CODE <span class="req">*</span></label>
-          <input type="text" class="tsi-form-input" id="tFaultCode" placeholder="e.g. 36-12020 or FAMV" autocomplete="off" oninput="tsiFilterFC();tsiFcDescUpdate();" onfocus="tsiFilterFC()" onkeydown="tsiFcKeyNav(event)">
+          <input type="text" class="tsi-form-input" id="tFaultCode" placeholder="e.g. 36-12020 or FAMV" autocomplete="off" oninput="tsiFilterFC()" onfocus="tsiFilterFC()" onkeydown="tsiFcKeyNav(event)">
           <div class="tsi-fc-dd" id="tsiFcDD"></div>
         </div>
         <div class="tsi-form-group">
@@ -3342,7 +3214,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
           <div class="tsi-form-display" id="tAta">-</div>
         </div>
       </div>
-      <div class="tsi-fc-desc" id="tFcDesc"></div>
 
       <div class="tsi-form-group">
         <label class="tsi-form-label">FLIGHT DECK EFFECT / DESCRIPTION <span class="req">*</span></label>
@@ -3367,33 +3238,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
       <div class="tsi-form-group">
         <label class="tsi-form-label">DUE DATE</label>
         <input type="date" class="tsi-form-input" id="tDueDate">
-      </div>
-
-      <div class="tsi-completed-toggle" id="tCompletedWrap">
-        <label class="tsi-toggle-label" onclick="tsiToggleCompleted()">
-          <span class="tsi-toggle-box" id="tCompletedBox"></span>
-          <span>Already completed</span>
-        </label>
-      </div>
-
-      <div class="tsi-completed-fields" id="tCompletedFields">
-        <div class="tsi-form-group">
-          <label class="tsi-form-label">ACTION TAKEN <span class="req">*</span></label>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <span class="fco-chip tsi-comp-chip" onclick="tsiPickCompAction(this)">REMOVE/REPLACE</span>
-            <span class="fco-chip tsi-comp-chip" onclick="tsiPickCompAction(this)">REPAIR</span>
-            <span class="fco-chip tsi-comp-chip" onclick="tsiPickCompAction(this)">RESET/OPS CK</span>
-            <span class="fco-chip tsi-comp-chip" onclick="tsiPickCompAction(this)">NFF</span>
-          </div>
-        </div>
-        <div class="tsi-form-group">
-          <label class="tsi-form-label">CORRECTIVE ACTION <span class="req">*</span></label>
-          <textarea class="tsi-form-textarea" id="tCompCorrectiveAction" placeholder="R/R #1 IASC P/N 1234, OPS CK SAT..." style="min-height:60px;"></textarea>
-        </div>
-        <div class="tsi-form-group">
-          <label class="tsi-form-label">CLOSE DATE</label>
-          <input type="date" class="tsi-form-input" id="tCompCloseDate">
-        </div>
       </div>
 
     </div>
@@ -3427,18 +3271,6 @@ function tsiParseCSVRow(line) {
   }
   result.push(cur);
   return result;
-}
-
-// Normalize fault code: extract XX-XXXXX pattern from any string
-function normalizeFaultCode(fc) {
-  if (!fc) return '';
-  var m = fc.match(/(\d{2}-\d{3,6})/);
-  return m ? m[1] : fc.trim().toUpperCase();
-}
-
-// Get normalized code for repeat matching (handles old entries without faultCodeNorm)
-function getFcNorm(entry) {
-  return entry.faultCodeNorm || normalizeFaultCode(entry.faultCode || '');
 }
 
 fetch('AircraftData.csv').then(function(r) { return r.ok ? r.text() : ''; }).then(function(text) {
@@ -3484,14 +3316,8 @@ function openTsiModal(editId) {
       document.getElementById('tDueDate').value = entry.dueDate || '';
     }
   }
-  // Hide completed toggle in edit mode
-  document.getElementById('tCompletedWrap').style.display = tsiEditId ? 'none' : '';
-  tsiCompleted = false;
-
   document.getElementById('tsiModalOverlay').classList.add('open');
-  if (!tsiEditId) {
-    setTimeout(function() { document.getElementById('tFail').focus(); }, 100);
-  }
+  setTimeout(function() { document.getElementById('tFail').focus(); }, 100);
 }
 
 function closeTsiModal() {
@@ -3500,43 +3326,15 @@ function closeTsiModal() {
   document.getElementById('tsiFcDD').classList.remove('open');
 }
 
-// Tap overlay to close modals
-document.getElementById('tsiModalOverlay').addEventListener('click', function(e) { if (e.target === this) closeTsiModal(); });
-document.getElementById('fixCoOverlay').addEventListener('click', function(e) { if (e.target === this) fixCoCancel(); });
-
 function tsiClearForm() {
-  ['tFail','tFaultCode','tEffect','tWorkOrder','tNotes','tDueDate','tRef','tCompCorrectiveAction','tCompCloseDate'].forEach(function(id) {
+  ['tFail','tFaultCode','tEffect','tWorkOrder','tNotes','tDueDate','tRef'].forEach(function(id) {
     document.getElementById(id).value = '';
   });
   document.getElementById('tFleet').textContent = '-';
   document.getElementById('tFleetVal').value = '';
   document.getElementById('tAta').textContent = '-';
-  document.getElementById('tFcDesc').textContent = '';
-  document.getElementById('tFcDesc').classList.remove('visible');
   document.getElementById('tsiTailDD').classList.remove('open');
   document.getElementById('tsiFcDD').classList.remove('open');
-  // Reset completed toggle
-  document.getElementById('tCompletedBox').classList.remove('on');
-  document.getElementById('tCompletedFields').classList.remove('open');
-  document.querySelectorAll('.tsi-comp-chip').forEach(function(c) { c.classList.remove('selected'); });
-}
-
-var tsiCompleted = false;
-function tsiToggleCompleted() {
-  tsiCompleted = !tsiCompleted;
-  document.getElementById('tCompletedBox').classList.toggle('on', tsiCompleted);
-  document.getElementById('tCompletedFields').classList.toggle('open', tsiCompleted);
-  if (tsiCompleted) {
-    var today = new Date();
-    var yyyy = today.getFullYear();
-    var mm = String(today.getMonth() + 1).padStart(2, '0');
-    var dd = String(today.getDate()).padStart(2, '0');
-    document.getElementById('tCompCloseDate').value = yyyy + '-' + mm + '-' + dd;
-  }
-}
-function tsiPickCompAction(el) {
-  document.querySelectorAll('.tsi-comp-chip').forEach(function(c) { c.classList.remove('selected'); });
-  el.classList.add('selected');
 }
 
 // ---- TSI MODAL: TAIL AUTOCOMPLETE ----
@@ -3608,11 +3406,6 @@ function tsiSelectFC(idx) {
   var dd = document.getElementById('tsiFcDD');
   var f = dd._matches[idx];
   document.getElementById('tFaultCode').value = f.code;
-  // Show fault description
-  var descEl = document.getElementById('tFcDesc');
-  var descText = [f.title, f.message].filter(Boolean).join(' - ');
-  if (descText) { descEl.textContent = descText; descEl.classList.add('visible'); }
-  else { descEl.textContent = ''; descEl.classList.remove('visible'); }
   if (f.message || f.title) {
     var ef = document.getElementById('tEffect');
     ef.value = f.message || f.title;
@@ -3624,13 +3417,6 @@ function tsiSelectFC(idx) {
   dd.classList.remove('open');
   document.getElementById('tEffect').focus();
   setTimeout(function() { document.getElementById('tEffect').setSelectionRange(0, 0); document.getElementById('tEffect').scrollLeft = 0; }, 0);
-}
-
-function tsiFcDescUpdate() {
-  // Clear description when manually typing (not from dropdown)
-  var descEl = document.getElementById('tFcDesc');
-  descEl.textContent = '';
-  descEl.classList.remove('visible');
 }
 
 function tsiAutoFillATA() {
@@ -3674,14 +3460,12 @@ function saveTsiEntry() {
 
   var ataMatch = faultCode.match(/^(\d{2})-/);
   var ata = ataMatch ? ataMatch[1] : '';
-  var fcNorm = normalizeFaultCode(faultCode);
 
   var entry = {
     tail: tail,
     fleet: fleet,
     ata: ata,
     faultCode: faultCode,
-    faultCodeNorm: fcNorm,
     effect: effect,
     workOrder: document.getElementById('tWorkOrder').value.trim().toUpperCase(),
     actionType: '',
@@ -3691,29 +3475,15 @@ function saveTsiEntry() {
     status: 'in_work',
     created: new Date().toISOString(),
     closedDate: null,
-    correctiveAction: '',
     createdBy: CURRENT_USER ? CURRENT_USER.enumVal : '',
     createdByName: CURRENT_USER ? CURRENT_USER.name : ''
   };
-
-  // Handle already-completed toggle
-  if (tsiCompleted && !tsiEditId) {
-    var compChip = document.querySelector('.tsi-comp-chip.selected');
-    if (!compChip) { tsiToast('Select an action taken'); return; }
-    var compNotes = document.getElementById('tCompCorrectiveAction').value.trim().toUpperCase();
-    if (!compNotes) { tsiToast('Enter corrective action'); document.getElementById('tCompCorrectiveAction').focus(); return; }
-    var compDate = document.getElementById('tCompCloseDate').value;
-    entry.status = 'closed_eff';
-    entry.actionType = compChip.textContent.trim();
-    entry.correctiveAction = compNotes;
-    entry.closedDate = compDate ? compDate + 'T' + new Date().toTimeString().slice(0,8) : new Date().toISOString();
-  }
 
   // Save to Firestore
   if (tsiEditId) {
     // Edit mode - update existing entry
     db.collection('tsi_entries').doc(tsiEditId).update({
-      tail: tail, fleet: fleet, ata: ata, faultCode: faultCode, faultCodeNorm: fcNorm, effect: effect,
+      tail: tail, fleet: fleet, ata: ata, faultCode: faultCode, effect: effect,
       workOrder: document.getElementById('tWorkOrder').value.trim().toUpperCase(),
       notes: document.getElementById('tNotes').value.trim().toUpperCase(),
       dueDate: document.getElementById('tDueDate').value,
@@ -3732,7 +3502,7 @@ function saveTsiEntry() {
     db.collection('tsi_entries').add(entry).then(function() {
       closeTsiModal();
       loadTsiEntries();
-      tsiToast(tsiCompleted ? 'Entry added - CLOSED' : 'Entry added - IN WORK');
+      tsiToast('TSI entry added - IN WORK');
     }).catch(function(err) {
       tsiToast('Error saving entry. Try again.');
     });
@@ -3752,6 +3522,151 @@ document.addEventListener('click', function(e) {
   if (!e.target.closest('.tsi-tail-wrap')) document.getElementById('tsiTailDD').classList.remove('open');
   if (!e.target.closest('.tsi-fc-wrap')) document.getElementById('tsiFcDD').classList.remove('open');
 });
+</script>
+
+<script>
+/* ---- LIVE CLOCK (UTC/CST with analog toggle) ---- */
+function _cp(n) { return n < 10 ? '0' + n : n; }
+
+function toggleUtcClock() {
+  var el = document.getElementById('utcBlock');
+  if (!el) return;
+  el.classList.toggle('analog-mode');
+  try { localStorage.setItem('moc_clock_analog', el.classList.contains('analog-mode') ? '1' : '0'); } catch(e) {}
+}
+
+// Restore preference
+try { if (localStorage.getItem('moc_clock_analog') === '1') { document.getElementById('utcBlock').classList.add('analog-mode'); } } catch(e) {}
+
+var SWA_ORANGE = '#e8600a';
+var SWA_RED = '#c8102e';
+
+function _drawSwordHand(ctx, cx, cy, angle, length, baseWidth, tipWidth, tailLen) {
+  var rad = (angle - 90) * Math.PI / 180;
+  var perpRad = rad + Math.PI / 2;
+  var tipX = cx + Math.cos(rad) * length;
+  var tipY = cy + Math.sin(rad) * length;
+  var bx1 = cx + Math.cos(perpRad) * baseWidth;
+  var by1 = cy + Math.sin(perpRad) * baseWidth;
+  var bx2 = cx - Math.cos(perpRad) * baseWidth;
+  var by2 = cy - Math.sin(perpRad) * baseWidth;
+  var shoulderDist = length * 0.65;
+  var shoulderWidth = baseWidth * 0.8;
+  var sx1 = cx + Math.cos(rad) * shoulderDist + Math.cos(perpRad) * shoulderWidth;
+  var sy1 = cy + Math.sin(rad) * shoulderDist + Math.sin(perpRad) * shoulderWidth;
+  var sx2 = cx + Math.cos(rad) * shoulderDist - Math.cos(perpRad) * shoulderWidth;
+  var sy2 = cy + Math.sin(rad) * shoulderDist - Math.sin(perpRad) * shoulderWidth;
+  var tailX = cx - Math.cos(rad) * tailLen;
+  var tailY = cy - Math.sin(rad) * tailLen;
+  var tx1 = tailX + Math.cos(perpRad) * (baseWidth * 0.6);
+  var ty1 = tailY + Math.sin(perpRad) * (baseWidth * 0.6);
+  var tx2 = tailX - Math.cos(perpRad) * (baseWidth * 0.6);
+  var ty2 = tailY - Math.sin(perpRad) * (baseWidth * 0.6);
+  ctx.beginPath();
+  ctx.moveTo(tx1, ty1); ctx.lineTo(bx1, by1); ctx.lineTo(sx1, sy1);
+  ctx.lineTo(tipX, tipY); ctx.lineTo(sx2, sy2); ctx.lineTo(bx2, by2);
+  ctx.lineTo(tx2, ty2); ctx.closePath();
+  ctx.fillStyle = '#d0d8e8'; ctx.fill();
+  ctx.strokeStyle = '#8899aa'; ctx.lineWidth = 0.8; ctx.stroke();
+  var sw = baseWidth * 0.4; var ssw = sw * 0.7;
+  var csb1x = cx + Math.cos(perpRad) * sw, csb1y = cy + Math.sin(perpRad) * sw;
+  var csb2x = cx - Math.cos(perpRad) * sw, csb2y = cy - Math.sin(perpRad) * sw;
+  var css1x = cx + Math.cos(rad) * shoulderDist + Math.cos(perpRad) * ssw;
+  var css1y = cy + Math.sin(rad) * shoulderDist + Math.sin(perpRad) * ssw;
+  var css2x = cx + Math.cos(rad) * shoulderDist - Math.cos(perpRad) * ssw;
+  var css2y = cy + Math.sin(rad) * shoulderDist - Math.sin(perpRad) * ssw;
+  var stD = length * 0.92;
+  var stX = cx + Math.cos(rad) * stD, stY = cy + Math.sin(rad) * stD;
+  ctx.beginPath();
+  ctx.moveTo(csb1x, csb1y); ctx.lineTo(css1x, css1y); ctx.lineTo(stX, stY);
+  ctx.lineTo(css2x, css2y); ctx.lineTo(csb2x, csb2y); ctx.closePath();
+  ctx.fillStyle = '#ffffff'; ctx.fill();
+}
+
+function _drawUtcClock(pxSize) {
+  var canvas = document.getElementById('utcCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var s = pxSize, r = s / 2;
+  var now = new Date();
+  var utcH = now.getUTCHours(), utcM = now.getUTCMinutes(), utcS = now.getUTCSeconds(), utcMs = now.getUTCMilliseconds();
+  var secFrac = utcS + utcMs / 1000;
+  ctx.clearRect(0, 0, s, s);
+  // Face
+  ctx.beginPath(); ctx.arc(r, r, r - 2, 0, Math.PI * 2);
+  ctx.fillStyle = '#141f33'; ctx.fill();
+  ctx.strokeStyle = SWA_ORANGE; ctx.lineWidth = 3.5; ctx.stroke();
+  // Triangle at 00
+  var triOuter = r - 7, triInner = r - 28, triHW = 7;
+  ctx.beginPath();
+  ctx.moveTo(r, r - triInner); ctx.lineTo(r - triHW, r - triOuter); ctx.lineTo(r + triHW, r - triOuter);
+  ctx.closePath(); ctx.fillStyle = '#ffffff'; ctx.fill();
+  // 24 ticks (skip 0)
+  for (var i = 1; i < 24; i++) {
+    var a = (i * 15 - 90) * Math.PI / 180;
+    var isMaj = (i % 3 === 0);
+    var oR = r - 9, iR = isMaj ? r - 26 : r - 18;
+    ctx.beginPath();
+    ctx.moveTo(r + Math.cos(a) * iR, r + Math.sin(a) * iR);
+    ctx.lineTo(r + Math.cos(a) * oR, r + Math.sin(a) * oR);
+    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = isMaj ? 2.5 : 1.5; ctx.stroke();
+  }
+  // Lume dots on major ticks (skip 0)
+  for (var ld = 3; ld < 24; ld += 3) {
+    var la = (ld * 15 - 90) * Math.PI / 180;
+    var lr = r - 9;
+    ctx.beginPath(); ctx.arc(r + Math.cos(la) * lr, r + Math.sin(la) * lr, 3, 0, Math.PI * 2);
+    ctx.fillStyle = '#e8edf5'; ctx.fill();
+    ctx.strokeStyle = '#8899aa'; ctx.lineWidth = 0.5; ctx.stroke();
+  }
+  // Numbers every 3hrs
+  var fs = Math.max(Math.round(s * 0.065), 14);
+  ctx.font = '700 ' + fs + 'px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#ffffff';
+  for (var h = 0; h < 24; h += 3) {
+    var ha = (h * 15 - 90) * Math.PI / 180;
+    var lr2 = r - 42;
+    ctx.fillText(_cp(h), r + Math.cos(ha) * lr2, r + Math.sin(ha) * lr2);
+  }
+  // Hour hand
+  _drawSwordHand(ctx, r, r, (utcH + utcM / 60) * 15, r * 0.38, 6, 2, 10);
+  // Minute hand
+  _drawSwordHand(ctx, r, r, (utcM + secFrac / 60) * 6, r * 0.58, 4.5, 1.5, 10);
+  // Second hand - smooth sweep
+  var sDeg = secFrac * 6 - 90;
+  var sRad = sDeg * Math.PI / 180;
+  ctx.beginPath();
+  ctx.moveTo(r - Math.cos(sRad) * 14, r - Math.sin(sRad) * 14);
+  ctx.lineTo(r + Math.cos(sRad) * (r * 0.65), r + Math.sin(sRad) * (r * 0.65));
+  ctx.strokeStyle = SWA_RED; ctx.lineWidth = 1.5; ctx.lineCap = 'round'; ctx.stroke();
+  // Center cap
+  ctx.beginPath(); ctx.arc(r, r, 6, 0, Math.PI * 2);
+  ctx.fillStyle = '#2a3a55'; ctx.fill(); ctx.strokeStyle = '#8899aa'; ctx.lineWidth = 1; ctx.stroke();
+  ctx.beginPath(); ctx.arc(r, r, 3, 0, Math.PI * 2); ctx.fillStyle = SWA_RED; ctx.fill();
+}
+
+var _clockDigLast = 0;
+function _clockTick() {
+  _drawUtcClock(280);
+  var now = Date.now();
+  if (now - _clockDigLast >= 1000) {
+    _clockDigLast = now;
+    var d = new Date();
+    var utcH = d.getUTCHours(), utcM = d.getUTCMinutes();
+    var cstH = (utcH - 6 + 24) % 24;
+    var cst = _cp(cstH) + ':' + _cp(utcM);
+    var utc = _cp(utcH) + ':' + _cp(utcM);
+    var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    document.getElementById('cstTime').textContent = cst;
+    document.getElementById('utcDigital').textContent = utc;
+    document.getElementById('cstDay').textContent = days[d.getUTCDay()];
+    document.getElementById('cstDate').textContent = _cp(d.getUTCDate()) + '-' + months[d.getUTCMonth()] + '-' + d.getUTCFullYear();
+    document.getElementById('utcAnalog').textContent = utc + 'Z';
+  }
+  requestAnimationFrame(_clockTick);
+}
+_clockTick();
 </script>
 </body>
 </html>

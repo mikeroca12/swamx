@@ -841,8 +841,8 @@
         }
         .fix-action-btn.primary { background: var(--accent); color: #fff; }
         .fix-action-btn.primary:hover { background: #1d4ed8; }
-        .fix-action-btn.secondary { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.25); }
-        .fix-action-btn.secondary:hover { background: rgba(255,255,255,0.2); }
+        .fix-action-btn.secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+        .fix-action-btn.secondary:hover { border-color: var(--accent); }
         .fix-status-bar {
             display: flex;
             align-items: center;
@@ -862,13 +862,13 @@
             border-radius: 4px;
             letter-spacing: 0.5px;
         }
-        .fsp-work, .fsp-closed, .fsp-total, .fsp-repeat { background: rgba(255,255,255,0.12); color: #ffffff; border: 1px solid rgba(255,255,255,0.25); }
+        .fsp-work, .fsp-closed, .fsp-total, .fsp-repeat { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
         .fsp-work.has-data { background: #fbbf24; color: #1e293b; border-color: #fbbf24; font-weight: 700; }
         .fsp-closed.has-data { background: #4ade80; color: #1e293b; border-color: #4ade80; font-weight: 700; }
-        .fsp-total.has-data { background: rgba(255,255,255,0.15); color: #ffffff; border-color: rgba(255,255,255,0.25); }
+        .fsp-total.has-data { background: var(--surface); color: var(--text); border-color: var(--border); }
         .fsp-repeat.has-data { background: var(--red); color: #fff; border-color: var(--red); font-weight: 700; }
-        .fsp-rate { background: rgba(255,255,255,0.1); color: #ffffff; border: 1px solid rgba(255,255,255,0.2); }
-        .fsp-rate.has-data { background: rgba(37,99,235,0.15); color: #93c5fd; border-color: rgba(37,99,235,0.3); }
+        .fsp-rate { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+        .fsp-rate.has-data { background: var(--blue-bg); color: var(--blue-text); border-color: var(--blue-border); }
 
         /* Entry cards - compact accordion */
         .fix-entry-card {
@@ -1066,14 +1066,14 @@
         .ql-search .qs-hint{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);background:var(--surface);padding:2px 6px;border-radius:3px;border:1px solid var(--border);flex-shrink:0;display:none;}
         .ql-search .qs-hint.show{display:block;}
 
-        .ql-fav-sec{margin-bottom:12px;background:var(--surface);border:2px solid #fbbf24;border-radius:8px;padding:8px 10px;}
-        .ql-fav-hdr{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#b45309;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+        .ql-fav-sec{margin-bottom:12px;background:rgba(250,204,21,0.06);border:1px solid rgba(250,204,21,0.25);border-radius:8px;padding:8px 10px;}
+        .ql-fav-hdr{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#facc15;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
         .ql-fav-row{display:flex;flex-wrap:wrap;gap:5px;min-height:24px;align-items:center;}
-        .ql-fav-empty{font-size:10px;color:var(--text-secondary);padding:2px 0;}
-        .ql-fav-chip{background:#fff;border:1px solid var(--border);border-radius:5px;padding:4px 9px;display:inline-flex;align-items:center;gap:5px;text-decoration:none;cursor:pointer;transition:all 0.1s;box-shadow:var(--card-shadow);}
+        .ql-fav-empty{font-size:10px;color:#ffffff;padding:2px 0;}
+        .ql-fav-chip{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:4px 9px;display:inline-flex;align-items:center;gap:5px;text-decoration:none;cursor:pointer;transition:all 0.1s;box-shadow:var(--card-shadow);}
         .ql-fav-chip:hover{border-color:var(--accent);box-shadow:var(--card-shadow-hover);}
         .ql-fav-chip .qfc-n{font-size:11px;font-weight:700;color:var(--text);white-space:nowrap;}
-        .ql-fav-chip .qfc-x{font-size:9px;color:var(--text-dim);cursor:pointer;}
+        .ql-fav-chip .qfc-x{font-size:9px;color:var(--text-secondary);cursor:pointer;}
         .ql-fav-chip .qfc-x:hover{color:var(--red);}
 
         .ql-masonry{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;overflow:hidden;margin:0 -24px;}
@@ -1399,14 +1399,14 @@
     #mainApp { display: none; }
     #mainApp.authed { display: block; }
     /* User badge in nav area */
-    .user-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.5); margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .user-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; color: #ffffff; margin-left: auto; display: flex; align-items: center; gap: 8px; }
     .user-badge .ub-name { color: #ffffff; }
-    .user-badge .ub-logout { color: rgba(255,255,255,0.3); cursor: pointer; font-size: 9px; padding: 2px 6px; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; transition: all 0.15s; background: none; }
-    .user-badge .ub-logout:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
+    .user-badge .ub-logout { color: #ffffff; cursor: pointer; font-size: 9px; padding: 2px 6px; border: 1px solid rgba(255,255,255,0.35); border-radius: 4px; transition: all 0.15s; background: none; }
+    .user-badge .ub-logout:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
     .user-badge .ub-role { font-size: 8px; padding: 2px 5px; border-radius: 3px; letter-spacing: 0.5px; text-transform: uppercase; }
     .ub-role-admin { background: rgba(37,99,235,0.15); color: #93c5fd; border: 1px solid rgba(37,99,235,0.3); }
     .ub-role-editor { background: rgba(22,163,74,0.15); color: #86efac; border: 1px solid rgba(22,163,74,0.3); }
-    .ub-role-viewer { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); }
+    .ub-role-viewer { background: rgba(255,255,255,0.1); color: #ffffff; border: 1px solid rgba(255,255,255,0.2); }
     </style>
 </head>
 <body>
@@ -1522,7 +1522,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                         <div class="ref-only">All content reference only</div>
                     </div>
                 </div>
-                <button class="ub-logout" id="rosterSyncBtn" style="display:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:rgba(255,255,255,0.3);cursor:pointer;padding:2px 6px;border:1px solid rgba(255,255,255,0.15);border-radius:4px;background:none;" onclick="syncRoster()">SYNC ROSTER</button>
+                <button class="ub-logout" id="rosterSyncBtn" style="display:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:#ffffff;cursor:pointer;padding:2px 6px;border:1px solid rgba(255,255,255,0.35);border-radius:4px;background:none;" onclick="syncRoster()">SYNC ROSTER</button>
                 <div class="user-badge" id="userBadge"></div>
             </div>
             <div class="nav-tabs">

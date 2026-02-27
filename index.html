@@ -989,7 +989,7 @@
         .fec-due-overdue { color: #dc2626; font-weight: 700; }
         .fec-line2 {
             font-size: 12px; color: var(--text-secondary); margin-top: 3px; padding-left: 0;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            line-height: 1.4;
         }
         .fts-work { background: #fbbf24; color: #1e293b; }
         .fts-closed { background: #4ade80; color: #1e293b; }
@@ -1052,8 +1052,8 @@
             line-height: 1.8;
             border-top: 1px solid var(--border);
         }
-        .fec-audit .fec-created { color: #ffffff; }
-        .fec-audit .fec-updated { color: #93c5fd; }
+        .fec-audit .fec-created { color: var(--text); display: block; }
+        .fec-audit .fec-updated { color: var(--accent); display: block; }
 
         /* Status filter chips */
         .fix-status-chip[data-status-filter="IN WORK"].active { background: #fbbf24; color: #1e293b; border-color: #fbbf24; }
@@ -2579,7 +2579,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 html += '<div class="fec-audit">';
                 html += '<span class="fec-created">Created ' + formatTsiDate(e.created) + (e.createdByName ? ' by ' + esc(e.createdByName) : '') + '</span>';
                 if (e.updatedAt) {
-                    html += '<br><span class="fec-updated">Last Updated ' + formatTsiDate(e.updatedAt) + (e.updatedByName ? ' by ' + esc(e.updatedByName) : '') + '</span>';
+                    html += '<span class="fec-updated">Last Updated ' + formatTsiDate(e.updatedAt) + (e.updatedByName ? ' by ' + esc(e.updatedByName) : '') + '</span>';
                 }
                 html += '</div>';
 

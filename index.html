@@ -350,12 +350,10 @@
             font-weight: 600;
             letter-spacing: 0.5px;
             color: #d97706;
-            padding: 0 0 8px;
-            margin-bottom: 8px;
+            padding: 6px 0 0;
             display: flex;
             align-items: center;
             gap: 6px;
-            animation: migrateTextPulse 2.5s ease-in-out infinite;
         }
         .qrh-migrate-dot {
             width: 5px;
@@ -1431,12 +1429,12 @@
             .uni-search .us-icon { left: 10px; }
             .uni-search .us-icon svg { width: 16px; height: 16px; }
             .fh-top-row { gap: 6px; flex-wrap: nowrap; }
-            .fix-action-btn { height: 38px; padding: 0 10px; font-size: 9px; flex-shrink: 0; }
+            .fix-action-btn { height: 32px; padding: 0 10px; font-size: 9px; flex-shrink: 0; }
             .fh-chip-row { gap: 5px; margin-bottom: 10px; }
             .fix-chip { font-size: 10px; padding: 5px 10px; }
             .fh-count { font-size: 9px; padding: 1px 5px; min-width: 14px; }
             .fh-chip-sep { height: 14px; margin: 0 1px; }
-            .fh-expand-btn { font-size: 9px; }
+            .fh-expand-btn { font-size: 11px; }
             .fh-expand-group { white-space: nowrap; }
             .filter-chip { font-size: 10px; padding: 5px 8px; }
             .filter-chip .badge { font-size: 9px; padding: 1px 4px; }
@@ -1765,11 +1763,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 <div class="autocomplete-dropdown" id="acDropdown"></div>
             </div>
 
-            <div class="qrh-migrate-banner">
-                <span class="qrh-migrate-dot"></span>
-                MIGRATION IN PROGRESS - Some entries may not have linked references yet
-            </div>
-
             <div class="filter-row" id="filterRow">
                 <button class="filter-chip active" data-filter="ALL">ALL</button>
                 <button class="filter-chip" data-filter="ATA">ATA</button>
@@ -1783,6 +1776,11 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 <button class="filter-chip" data-filter="GOM">GOM</button>
                 <button class="filter-chip" data-filter="MISC">MISC</button>
                 <button class="filter-chip" data-filter="APP">APP</button>
+            </div>
+
+            <div class="qrh-migrate-banner">
+                <span class="qrh-migrate-dot"></span>
+                MIGRATION IN PROGRESS - Some entries may not have linked references yet
             </div>
 
             <div class="results-area" id="resultsArea">

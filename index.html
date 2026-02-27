@@ -3995,6 +3995,7 @@ function toggleUtcClock() {
 
 var SWA_ORANGE = '#e8600a';
 var SWA_RED = '#c8102e';
+var _spinnerAngle = 0;
 
 function _drawSwordHand(ctx, cx, cy, angle, length, baseWidth, tipWidth, tailLen) {
   var rad = (angle - 90) * Math.PI / 180;
@@ -4047,12 +4048,54 @@ function _drawUtcClock(pxSize) {
   var utcH = now.getUTCHours(), utcM = now.getUTCMinutes(), utcS = now.getUTCSeconds(), utcMs = now.getUTCMilliseconds();
   var secFrac = utcS + utcMs / 1000;
   ctx.clearRect(0, 0, s, s);
+  // Aluminum inlet lip
+  var lipW = 18;
+  var outerR = r - 1;
+  var innerR = r - lipW;
+  var lipGrad = ctx.createRadialGradient(r, r, innerR - 3, r, r, outerR + 2);
+  lipGrad.addColorStop(0, '#1a2030');
+  lipGrad.addColorStop(0.06, '#2a3342');
+  lipGrad.addColorStop(0.15, '#3e4a5c');
+  lipGrad.addColorStop(0.28, '#586878');
+  lipGrad.addColorStop(0.42, '#748494');
+  lipGrad.addColorStop(0.55, '#9aa8b6');
+  lipGrad.addColorStop(0.68, '#b8c4d0');
+  lipGrad.addColorStop(0.78, '#d0d8e2');
+  lipGrad.addColorStop(0.87, '#e4eaf0');
+  lipGrad.addColorStop(0.94, '#f4f6fa');
+  lipGrad.addColorStop(1, '#c8d0da');
+  ctx.beginPath(); ctx.arc(r, r, outerR, 0, Math.PI * 2);
+  ctx.arc(r, r, innerR, 0, Math.PI * 2, true);
+  ctx.fillStyle = lipGrad; ctx.fill();
+  // Directional light
+  ctx.save();
+  ctx.beginPath(); ctx.arc(r, r, outerR, 0, Math.PI * 2);
+  ctx.arc(r, r, innerR, 0, Math.PI * 2, true); ctx.clip();
+  var lipDir = ctx.createLinearGradient(r * 0.2, r * 0.2, r * 1.8, r * 1.8);
+  lipDir.addColorStop(0, 'rgba(255,255,255,0.28)');
+  lipDir.addColorStop(0.25, 'rgba(255,255,255,0.1)');
+  lipDir.addColorStop(0.45, 'rgba(0,0,0,0)');
+  lipDir.addColorStop(0.7, 'rgba(0,0,0,0.06)');
+  lipDir.addColorStop(1, 'rgba(0,0,0,0.2)');
+  ctx.beginPath(); ctx.arc(r, r, outerR, 0, Math.PI * 2);
+  ctx.fillStyle = lipDir; ctx.fill();
+  var lipSpec = ctx.createRadialGradient(r * 0.7, r * 0.55, 0, r * 0.7, r * 0.55, lipW * 3);
+  lipSpec.addColorStop(0, 'rgba(255,255,255,0.15)');
+  lipSpec.addColorStop(0.5, 'rgba(255,255,255,0.03)');
+  lipSpec.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.beginPath(); ctx.arc(r, r, outerR, 0, Math.PI * 2);
+  ctx.fillStyle = lipSpec; ctx.fill();
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(r, r, outerR, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 1; ctx.stroke();
+  ctx.beginPath(); ctx.arc(r, r, innerR, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(0,0,0,0.45)'; ctx.lineWidth = 1.2; ctx.stroke();
   // Face
-  ctx.beginPath(); ctx.arc(r, r, r - 2, 0, Math.PI * 2);
+  var faceR = innerR - 1;
+  ctx.beginPath(); ctx.arc(r, r, faceR, 0, Math.PI * 2);
   ctx.fillStyle = '#141f33'; ctx.fill();
-  ctx.strokeStyle = SWA_ORANGE; ctx.lineWidth = 3.5; ctx.stroke();
   // Triangle at 00
-  var triOuter = r - 7, triInner = r - 28, triHW = 7;
+  var triOuter = faceR - 5, triInner = faceR - 22, triHW = 7;
   ctx.beginPath();
   ctx.moveTo(r, r - triInner); ctx.lineTo(r - triHW, r - triOuter); ctx.lineTo(r + triHW, r - triOuter);
   ctx.closePath(); ctx.fillStyle = '#ffffff'; ctx.fill();
@@ -4060,7 +4103,7 @@ function _drawUtcClock(pxSize) {
   for (var i = 1; i < 24; i++) {
     var a = (i * 15 - 90) * Math.PI / 180;
     var isMaj = (i % 3 === 0);
-    var oR = r - 9, iR = isMaj ? r - 26 : r - 18;
+    var oR = faceR - 5, iR = isMaj ? faceR - 20 : faceR - 13;
     ctx.beginPath();
     ctx.moveTo(r + Math.cos(a) * iR, r + Math.sin(a) * iR);
     ctx.lineTo(r + Math.cos(a) * oR, r + Math.sin(a) * oR);
@@ -4069,35 +4112,73 @@ function _drawUtcClock(pxSize) {
   // Lume dots on major ticks (skip 0)
   for (var ld = 3; ld < 24; ld += 3) {
     var la = (ld * 15 - 90) * Math.PI / 180;
-    var lr = r - 9;
+    var lr = faceR - 5;
     ctx.beginPath(); ctx.arc(r + Math.cos(la) * lr, r + Math.sin(la) * lr, 3, 0, Math.PI * 2);
     ctx.fillStyle = '#e8edf5'; ctx.fill();
     ctx.strokeStyle = '#8899aa'; ctx.lineWidth = 0.5; ctx.stroke();
   }
   // Numbers every 3hrs
-  var fs = Math.max(Math.round(s * 0.065), 14);
+  var fs = Math.max(Math.round(s * 0.055), 12);
   ctx.font = '700 ' + fs + 'px "JetBrains Mono", monospace';
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#ffffff';
   for (var h = 0; h < 24; h += 3) {
     var ha = (h * 15 - 90) * Math.PI / 180;
-    var lr2 = r - 42;
+    var lr2 = faceR - 34;
     ctx.fillText(_cp(h), r + Math.cos(ha) * lr2, r + Math.sin(ha) * lr2);
   }
   // Hour hand
-  _drawSwordHand(ctx, r, r, (utcH + utcM / 60) * 15, r * 0.38, 6, 2, 10);
+  _drawSwordHand(ctx, r, r, (utcH + utcM / 60) * 15, faceR * 0.42, 6, 2, 10);
   // Minute hand
-  _drawSwordHand(ctx, r, r, (utcM + secFrac / 60) * 6, r * 0.58, 4.5, 1.5, 10);
+  _drawSwordHand(ctx, r, r, (utcM + secFrac / 60) * 6, faceR * 0.62, 4.5, 1.5, 10);
   // Second hand - smooth sweep
   var sDeg = secFrac * 6 - 90;
   var sRad = sDeg * Math.PI / 180;
   ctx.beginPath();
   ctx.moveTo(r - Math.cos(sRad) * 14, r - Math.sin(sRad) * 14);
-  ctx.lineTo(r + Math.cos(sRad) * (r * 0.65), r + Math.sin(sRad) * (r * 0.65));
+  ctx.lineTo(r + Math.cos(sRad) * (faceR * 0.72), r + Math.sin(sRad) * (faceR * 0.72));
   ctx.strokeStyle = SWA_RED; ctx.lineWidth = 1.5; ctx.lineCap = 'round'; ctx.stroke();
-  // Center cap
-  ctx.beginPath(); ctx.arc(r, r, 6, 0, Math.PI * 2);
-  ctx.fillStyle = '#2a3a55'; ctx.fill(); ctx.strokeStyle = '#8899aa'; ctx.lineWidth = 1; ctx.stroke();
-  ctx.beginPath(); ctx.arc(r, r, 3, 0, Math.PI * 2); ctx.fillStyle = SWA_RED; ctx.fill();
+  // Spinner hub - black with white spiral
+  var spSize = 16;
+  _spinnerAngle += 0.007;
+  ctx.save();
+  ctx.translate(r, r);
+  var spGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, spSize);
+  spGrad.addColorStop(0, '#2a2a2a');
+  spGrad.addColorStop(0.3, '#1a1a1a');
+  spGrad.addColorStop(0.7, '#111111');
+  spGrad.addColorStop(1, '#0a0a0a');
+  ctx.beginPath(); ctx.arc(0, 0, spSize, 0, Math.PI * 2);
+  ctx.fillStyle = spGrad; ctx.fill();
+  ctx.beginPath(); ctx.arc(0, 0, spSize, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 0.8; ctx.stroke();
+  // White spiral
+  ctx.rotate(_spinnerAngle);
+  ctx.beginPath();
+  var spSteps = 40, spTurns = 0.7;
+  for (var sp = 0; sp <= spSteps; sp++) {
+    var st = sp / spSteps;
+    var sDist = st * (spSize * 0.88);
+    var sAngle = st * spTurns * Math.PI;
+    var sx = Math.cos(sAngle) * sDist - Math.sin(sAngle) * sDist * 0.3;
+    var sy = Math.sin(sAngle) * sDist + Math.cos(sAngle) * sDist * 0.3;
+    if (sp === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
+  }
+  ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 3.5; ctx.lineCap = 'round';
+  ctx.globalAlpha = 0.9; ctx.stroke(); ctx.globalAlpha = 1;
+  ctx.rotate(-_spinnerAngle);
+  // Tip
+  ctx.beginPath(); ctx.arc(0, 0, 2.5, 0, Math.PI * 2);
+  ctx.fillStyle = '#444'; ctx.fill();
+  ctx.beginPath(); ctx.arc(0, 0, 1.2, 0, Math.PI * 2);
+  ctx.fillStyle = '#666'; ctx.fill();
+  // Subtle light catch
+  var spHL = ctx.createRadialGradient(spSize * 0.2, -spSize * 0.2, 0, 0, 0, spSize);
+  spHL.addColorStop(0, 'rgba(255,255,255,0.08)');
+  spHL.addColorStop(0.4, 'rgba(255,255,255,0.02)');
+  spHL.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.beginPath(); ctx.arc(0, 0, spSize, 0, Math.PI * 2);
+  ctx.fillStyle = spHL; ctx.fill();
+  ctx.restore();
 }
 
 var _clockDigLast = 0;

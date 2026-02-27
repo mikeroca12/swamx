@@ -268,7 +268,7 @@
         /* ---- QUICK REF SECTION ---- */
         .search-container {
             position: relative;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .search-input {
@@ -278,12 +278,12 @@
             font-size: 16px;
             font-weight: 400;
             color: var(--text);
-            background: var(--surface);
+            background: #ffffff;
             border: 1px solid var(--border);
             border-radius: 12px;
             outline: none;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: var(--card-shadow);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .search-input::placeholder { color: var(--text-secondary); }
@@ -323,12 +323,12 @@
             font-size: 14px;
             font-weight: 400;
             color: var(--text);
-            background: var(--surface);
+            background: #ffffff;
             border: 1px solid var(--border);
             border-radius: 10px;
             outline: none;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: var(--card-shadow);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
         }
         .uni-search input::placeholder { color: var(--text-secondary); }
         .uni-search input:focus {
@@ -380,8 +380,8 @@
             padding: 5px 12px;
             border-radius: 6px;
             border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text);
+            background: var(--surface2);
+            color: var(--text-secondary);
             cursor: pointer;
             transition: all 0.15s ease;
             user-select: none;
@@ -735,7 +735,7 @@
             display: flex;
             gap: 10px;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 18px;
         }
         .fh-chip-row {
             display: flex;
@@ -786,8 +786,8 @@
             padding: 5px 12px;
             border-radius: 6px;
             border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text);
+            background: var(--surface2);
+            color: var(--text-secondary);
             cursor: pointer;
             transition: all 0.15s ease;
             user-select: none;
@@ -1786,7 +1786,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         <!-- QUICK LINKS -->
         <section id="quicklinks" class="section active">
-            <div class="ql-search uni-search" style="margin-bottom:12px;">
+            <div class="ql-search uni-search" style="margin-bottom:18px;">
                 <span class="us-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
                 <input type="text" id="qlSearchInput" placeholder="Search all links..." oninput="qlFilter()" onkeydown="qlKeyNav(event)">
                 <span class="qs-hint" id="qlHint">TAB to cycle, ENTER to open</span>

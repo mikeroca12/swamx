@@ -118,6 +118,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
   background:rgba(232,96,10,1);
   transform:translate(-50%,-50%) scale(1.25);
   box-shadow:0 0 12px rgba(232,96,10,0.6), 0 2px 8px rgba(0,0,0,0.4);
+  z-index:10;
 }
 .hotspot-tooltip {
   position:absolute;
@@ -145,6 +146,26 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
   transform:translateX(-50%);
   border:5px solid transparent;
   border-top-color:#1e293b;
+}
+/* Tooltip pinned to left edge - for hotspots near left side */
+.hotspot.tip-right .hotspot-tooltip {
+  left:0;
+  transform:translateX(0);
+}
+.hotspot.tip-right .hotspot-tooltip::after {
+  left:14px;
+  transform:none;
+}
+/* Tooltip pinned to right edge - for hotspots near right side */
+.hotspot.tip-left .hotspot-tooltip {
+  left:auto;
+  right:0;
+  transform:none;
+}
+.hotspot.tip-left .hotspot-tooltip::after {
+  left:auto;
+  right:14px;
+  transform:none;
 }
 .hotspot:hover .hotspot-tooltip {
   opacity:1;
@@ -271,7 +292,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
     <img src="leap1bheader.png" alt="LEAP-1B engine components">
 
     <!-- 1: Cowl Inner Barrel Acoustic - white panel far left -->
-    <a href="inlet-cowl-acoustic.html" class="hotspot" style="top:55%;left:10%;">
+    <a href="inlet-cowl-acoustic.html" class="hotspot tip-right" style="top:55%;left:10%;">
       1
       <span class="hotspot-tooltip">Cowl Inner Barrel Acoustic</span>
     </a>
@@ -295,7 +316,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
     </a>
 
     <!-- 5: Aft Acoustic Panel - right photo, dark panels -->
-    <a href="aft-acoustic-panel-inspection.html" class="hotspot" style="top:45%;left:82%;">
+    <a href="aft-acoustic-panel-inspection.html" class="hotspot tip-left" style="top:45%;left:82%;">
       5
       <span class="hotspot-tooltip">Aft Acoustic Panel</span>
     </a>

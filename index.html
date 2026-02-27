@@ -318,14 +318,14 @@
         }
         .uni-search input {
             width: 100%;
-            padding: 14px 16px 14px 46px;
+            padding: 10px 16px 10px 42px;
             font-family: 'Outfit', sans-serif;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 400;
             color: var(--text);
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 10px;
             outline: none;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
             box-shadow: var(--card-shadow);
@@ -943,9 +943,9 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             font-weight: 700;
-            padding: 0 20px;
-            height: 48px;
-            border-radius: 12px;
+            padding: 0 16px;
+            height: 40px;
+            border-radius: 10px;
             border: none;
             cursor: pointer;
             letter-spacing: 0.5px;
@@ -1385,7 +1385,7 @@
 
         footer .footer-tagline {
             font-family: 'DM Sans', sans-serif;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: #e8600a;
             letter-spacing: -0.3px;
@@ -1427,16 +1427,17 @@
             .nav-tab { font-size: 12px; padding: 8px 12px; }
             .apps-grid { grid-template-columns: 1fr; }
             .search-input { font-size: 14px; padding: 12px 14px 12px 42px; }
-            .uni-search input { font-size: 13px; padding: 10px 12px 10px 38px; }
-            .uni-search .us-icon { left: 12px; }
+            .uni-search input { font-size: 13px; padding: 8px 12px 8px 36px; }
+            .uni-search .us-icon { left: 10px; }
             .uni-search .us-icon svg { width: 16px; height: 16px; }
             .fh-top-row { gap: 6px; flex-wrap: nowrap; }
             .fix-action-btn { height: 38px; padding: 0 10px; font-size: 9px; flex-shrink: 0; }
-            .fh-chip-row { gap: 4px; margin-bottom: 10px; }
-            .fix-chip { font-size: 9px; padding: 4px 7px; }
-            .fh-count { font-size: 8px; padding: 1px 4px; min-width: 14px; }
+            .fh-chip-row { gap: 5px; margin-bottom: 10px; }
+            .fix-chip { font-size: 10px; padding: 5px 10px; }
+            .fh-count { font-size: 9px; padding: 1px 5px; min-width: 14px; }
             .fh-chip-sep { height: 14px; margin: 0 1px; }
-            .fh-expand-btn { font-size: 8px; }
+            .fh-expand-btn { font-size: 9px; }
+            .fh-expand-group { white-space: nowrap; }
             .filter-chip { font-size: 10px; padding: 5px 8px; }
             .filter-chip .badge { font-size: 9px; padding: 1px 4px; }
             .qrh-migrate-banner { font-size: 8px; }
@@ -1697,11 +1698,11 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         <!-- TSI FIX RATE -->
         <section id="fixrate" class="section">
             <div class="fh-top-row">
-                <button class="fix-action-btn primary" onclick="openTsiModal()">+ ADD TSI</button>
                 <div class="fh-search-wrap uni-search" style="flex:1;">
                     <span class="us-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
                     <input type="text" id="fixSearchInput" placeholder="Search Tail # / Fault / ATA..." autocomplete="off">
                 </div>
+                <button class="fix-action-btn primary" onclick="openTsiModal()">+ ADD TSI</button>
             </div>
             <div class="fh-chip-row">
                     <button class="fix-chip active" data-fix-filter="ALL">ALL</button>
@@ -1713,9 +1714,9 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                     <button class="fix-chip fix-status-chip active" data-status-filter="IN WORK">IN WORK <span class="fh-count" id="fhCountWork">0</span></button>
                     <button class="fix-chip fix-status-chip" data-status-filter="CLOSED">CLOSED <span class="fh-count" id="fhCountClosed">0</span></button>
                     <button class="fix-chip fix-status-chip" data-status-filter="REPEAT">REPEAT <span class="fh-count" id="fhCountRepeat">0</span></button>
-                    <button class="fh-expand-btn" onclick="fhExpandAll()">Expand All</button>
+                    <span class="fh-expand-group" style="white-space:nowrap;"><button class="fh-expand-btn" onclick="fhExpandAll()">Expand All</button>
                     <span class="fh-bulk-sep">|</span>
-                    <button class="fh-expand-btn" onclick="fhCollapseAll()">Collapse All</button>
+                    <button class="fh-expand-btn" onclick="fhCollapseAll()">Collapse All</button></span>
             </div>
             <div id="fixResults">
                 <div class="fix-empty-state">
@@ -3384,7 +3385,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             <input type="text" class="tsi-form-input" id="tFail" placeholder="Tail..." autocomplete="off" oninput="tsiFilterTails()" onfocus="tsiFilterTails()" onkeydown="tsiTailKeyNav(event)">
             <div class="tsi-tail-dd" id="tsiTailDD"></div>
           </div>
-          <div class="tsi-form-group" style="flex:0 0 72px;margin-bottom:4px;">
+          <div class="tsi-form-group" style="flex:0 0 85px;margin-bottom:4px;">
             <label class="tsi-form-label">FLEET</label>
             <div class="tsi-form-display" id="tFleet">-</div>
             <input type="hidden" id="tFleetVal">

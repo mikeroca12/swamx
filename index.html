@@ -2656,12 +2656,30 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             }).catch(function(err) { tsiToast('Error: ' + err.message); });
         }
 
+        var _delTimer = null;
         function fixDelete(id) {
-            if (!confirm('Delete this TSI entry? Cannot be undone.')) return;
-            db.collection('tsi_entries').doc(id).delete().then(function() {
-                loadTsiEntries();
-                tsiToast('Deleted');
-            }).catch(function(err) { tsiToast('Error: ' + err.message); });
+            var btn = event.currentTarget;
+            if (btn.dataset.armed === 'true') {
+                clearTimeout(_delTimer);
+                btn.dataset.armed = 'false';
+                btn.textContent = 'DELETE';
+                btn.style.cssText = '';
+                db.collection('tsi_entries').doc(id).delete().then(function() {
+                    loadTsiEntries();
+                    tsiToast('Deleted');
+                }).catch(function(err) { tsiToast('Error: ' + err.message); });
+                return;
+            }
+            btn.dataset.armed = 'true';
+            btn.textContent = 'CONFIRM';
+            btn.style.background = 'var(--red-bg)';
+            btn.style.color = 'var(--red-text)';
+            btn.style.borderColor = 'var(--red-border)';
+            _delTimer = setTimeout(function() {
+                btn.dataset.armed = 'false';
+                btn.textContent = 'DELETE';
+                btn.style.cssText = '';
+            }, 3000);
         }
 
         function formatTsiDate(iso) {

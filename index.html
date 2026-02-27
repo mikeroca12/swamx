@@ -4075,7 +4075,7 @@ function _clockTick() {
     document.getElementById('utcDigital').textContent = utc;
     document.getElementById('cstDay').textContent = days[d.getUTCDay()];
     document.getElementById('cstDate').textContent = _cp(d.getUTCDate()) + '-' + months[d.getUTCMonth()] + '-' + d.getUTCFullYear();
-    document.getElementById('utcAnalog').textContent = utc + 'Z';
+    document.getElementById('utcAnalog').textContent = utc + 'Z ' + _cp(d.getUTCDate()) + months[d.getUTCMonth()];
   }
   requestAnimationFrame(_clockTick);
 }

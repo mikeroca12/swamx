@@ -1016,6 +1016,8 @@
         .fec-val {
             font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text);
         }
+        .fec-val.fec-copy { cursor: pointer; border-bottom: 1px dashed var(--text-dim); }
+        .fec-val.fec-copy:hover { color: var(--accent); border-color: var(--accent); }
         .fec-notes {
             margin: 4px 16px 6px; padding: 8px 12px; font-size: 12px; color: var(--text); line-height: 1.5;
             background: #fff; border: 1px solid var(--border); border-radius: 6px;
@@ -2547,8 +2549,8 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
                 // Detail fields
                 html += '<div class="fec-details">';
-                html += '<div class="fec-field"><span class="fec-label">FAULT CODE</span><span class="fec-val">' + esc(fc) + '</span></div>';
-                if (e.workOrder) html += '<div class="fec-field"><span class="fec-label">WORK ORDER</span><span class="fec-val">' + esc(e.workOrder) + '</span></div>';
+                html += '<div class="fec-field"><span class="fec-label">FAULT CODE</span><span class="fec-val fec-copy" onclick="event.stopPropagation();fecCopy(this)" title="Click to copy">' + esc(fc) + '</span></div>';
+                if (e.workOrder) html += '<div class="fec-field"><span class="fec-label">TSI BARCODE</span><span class="fec-val fec-copy" onclick="event.stopPropagation();fecCopy(this)" title="Click to copy">' + esc(e.workOrder) + '</span></div>';
                 html += '<div class="fec-field"><span class="fec-label">ATA</span><span class="fec-val">' + esc(e.ata||'') + '</span></div>';
                 if (e.ref) html += '<div class="fec-field"><span class="fec-label">AMM/FIM</span><span class="fec-val">' + esc(e.ref) + '</span></div>';
                 html += '</div>';
@@ -2649,6 +2651,15 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         }
 
         var _delTimer = null;
+        function fecCopy(el) {
+            var text = el.textContent.trim();
+            navigator.clipboard.writeText(text).then(function() {
+                var orig = el.textContent;
+                el.textContent = 'COPIED';
+                el.style.color = 'var(--green)';
+                setTimeout(function() { el.textContent = orig; el.style.color = ''; }, 1200);
+            });
+        }
         function fixDelete(id) {
             var btn = event.currentTarget;
             if (btn.dataset.armed === 'true') {

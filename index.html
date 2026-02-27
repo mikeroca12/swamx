@@ -3598,7 +3598,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         </div>
         <div style="display:flex;gap:12px;flex:1 1 200px;align-items:flex-start;">
           <div class="tsi-form-group tsi-fc-wrap" style="flex:0 1 140px;margin-bottom:4px;">
-            <label class="tsi-form-label">FAULT CODE <span class="req">*</span></label>
+            <label class="tsi-form-label">FAULT CODE <span class="req" id="tFcReq">*</span></label>
             <input type="text" class="tsi-form-input" id="tFaultCode" placeholder="e.g. 36-12020" autocomplete="off" oninput="tsiFilterFC()" onfocus="tsiFilterFC()" onkeydown="tsiFcKeyNav(event)">
             <div class="tsi-fc-dd" id="tsiFcDD"></div>
           </div>
@@ -3606,6 +3606,16 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             <label class="tsi-form-label">ATA</label>
             <div class="tsi-form-display" id="tAta">-</div>
           </div>
+        </div>
+      </div>
+
+      <div class="tsi-form-group" id="tNgQuickFill" style="display:none;">
+        <label class="tsi-form-label">QUICK FILL</label>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="fco-chip" onclick="tsiPickNgTemplate(this,0)">HYD XFER B to A</span>
+          <span class="fco-chip" onclick="tsiPickNgTemplate(this,1)">HYD XFER A to B</span>
+          <span class="fco-chip" onclick="tsiPickNgTemplate(this,2)">HYD LEAK SYS B</span>
+          <span class="fco-chip" onclick="tsiPickNgTemplate(this,3)">HYD LEAK SYS A</span>
         </div>
       </div>
 
@@ -3626,7 +3636,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
       </div>
 
       <div class="tsi-form-group">
-        <label class="tsi-form-label">AMM/FIM REFERENCE</label>
+        <label class="tsi-form-label" id="tRefLabel">AMM/FIM REFERENCE</label>
         <input type="text" class="tsi-form-input" id="tRef" placeholder="Optional">
       </div>
 
@@ -3730,6 +3740,7 @@ function openTsiModal(editId) {
       document.getElementById('tFail').value = entry.tail || '';
       document.getElementById('tFleet').textContent = entry.fleet || '-';
       document.getElementById('tFleetVal').value = entry.fleet || '';
+      tsiSetFleetMode(entry.fleet || '');
       document.getElementById('tFaultCode').value = entry.faultCode || '';
       document.getElementById('tAta').textContent = entry.ata || '-';
       document.getElementById('tEffect').value = entry.effect || '';
@@ -3772,6 +3783,7 @@ function tsiClearForm() {
   document.getElementById('tAta').textContent = '-';
   document.getElementById('tsiTailDD').classList.remove('open');
   document.getElementById('tsiFcDD').classList.remove('open');
+  tsiSetFleetMode('');
   // Reset closed historical fields
   var cb = document.getElementById('tClosedHist');
   if (cb) cb.checked = false;
@@ -3818,7 +3830,45 @@ function tsiSelectTail(tail, fleet) {
   document.getElementById('tFleet').textContent = fleet;
   document.getElementById('tFleetVal').value = fleet;
   document.getElementById('tsiTailDD').classList.remove('open');
+  tsiSetFleetMode(fleet);
   document.getElementById('tFaultCode').focus();
+}
+
+var TSI_NG_TEMPLATES = [
+  { desc: 'HYDRAULIC TRANSFER B TO A SYSTEM FLUID TRANSFER', fim: 'FIM 29-10 TASK 807', ata: '29' },
+  { desc: 'HYDRAULIC TRANSFER A TO B SYSTEM FLUID TRANSFER', fim: 'FIM TBD', ata: '29' },
+  { desc: 'HYDRAULIC LEAK SYSTEM B', fim: 'FIM 29-11 TASK 802', ata: '29' },
+  { desc: 'HYDRAULIC LEAK SYSTEM A', fim: 'FIM TBD', ata: '29' }
+];
+
+var _tsiNgMode = false;
+
+function tsiSetFleetMode(fleet) {
+  var isNg = (fleet === 'NG 700' || fleet === 'NG 800');
+  _tsiNgMode = isNg;
+  document.getElementById('tNgQuickFill').style.display = isNg ? 'block' : 'none';
+  document.getElementById('tFcReq').style.display = isNg ? 'none' : '';
+  document.getElementById('tRefLabel').textContent = isNg ? 'AMM/FIM REFERENCE' : 'AMM/iFIM REFERENCE';
+  if (isNg) {
+    document.getElementById('tFaultCode').placeholder = 'Optional';
+    document.getElementById('tsiFcDD').classList.remove('open');
+  } else {
+    document.getElementById('tFaultCode').placeholder = 'e.g. 36-12020';
+  }
+  // Clear quick fill chip selections when switching
+  document.querySelectorAll('#tNgQuickFill .fco-chip').forEach(function(c) { c.classList.remove('selected'); });
+}
+
+function tsiPickNgTemplate(el, idx) {
+  el.parentElement.querySelectorAll('.fco-chip').forEach(function(c) { c.classList.remove('selected'); });
+  el.classList.add('selected');
+  var t = TSI_NG_TEMPLATES[idx];
+  document.getElementById('tEffect').value = t.desc;
+  document.getElementById('tRef').value = t.fim;
+  document.getElementById('tAta').textContent = t.ata;
+  if (!document.getElementById('tFaultCode').value.trim()) {
+    document.getElementById('tFaultCode').value = 'N/A';
+  }
 }
 
 function tsiTailKeyNav(e) {
@@ -3837,6 +3887,7 @@ function tsiTailKeyNav(e) {
 
 // ---- TSI MODAL: FAULT CODE AUTOCOMPLETE ----
 function tsiFilterFC() {
+  if (_tsiNgMode) { tsiAutoFillATA(); return; }
   var q = document.getElementById('tFaultCode').value.trim().toUpperCase();
   var dd = document.getElementById('tsiFcDD');
   if (!q || q.length < 2 || TSI_FAULT_CODES.length === 0) { dd.classList.remove('open'); return; }
@@ -3908,7 +3959,8 @@ function saveTsiEntry() {
   var isClosed = document.getElementById('tClosedHist').checked;
 
   if (!tail) { tsiToast('Tail number is required'); document.getElementById('tFail').focus(); return; }
-  if (!faultCode) { tsiToast('Fault code is required'); document.getElementById('tFaultCode').focus(); return; }
+  if (!_tsiNgMode && !faultCode) { tsiToast('Fault code is required'); document.getElementById('tFaultCode').focus(); return; }
+  if (_tsiNgMode && !faultCode) { faultCode = 'N/A'; document.getElementById('tFaultCode').value = 'N/A'; }
   if (!effect) { tsiToast('Flight deck effect is required'); document.getElementById('tEffect').focus(); return; }
 
   var barcode = document.getElementById('tWorkOrder').value.trim();

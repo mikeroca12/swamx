@@ -423,10 +423,10 @@
         .results-empty {
             text-align: center;
             padding: 24px 20px;
-            color: var(--text-dim);
+            color: #ffffff;
         }
 
-        .results-empty p { font-size: 15px; font-weight: 400; line-height: 1.6; color: var(--text-on-dark-muted); }
+        .results-empty p { font-size: 15px; font-weight: 400; line-height: 1.6; color: #ffffff; }
 
         .results-empty .hint {
             font-family: 'JetBrains Mono', monospace;
@@ -549,14 +549,14 @@
         .qrh-tagline {
             font-size: 16px;
             font-weight: 700;
-            color: #e8600a;
+            color: #ffffff;
             letter-spacing: -0.3px;
         }
 
         .stats-line {
             text-align: center;
             font-size: 12px;
-            color: rgba(255,255,255,0.5);
+            color: #ffffff;
             margin-top: 8px;
             letter-spacing: 0.3px;
         }
@@ -773,19 +773,14 @@
         .fix-status-chip.active .fh-count {
             background: rgba(0,0,0,0.15);
         }
-        .fh-expand-btn {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.5);
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            transition: color 0.15s;
+        .fh-expand-toggle {
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; padding: 5px; border-radius: 6px;
+            transition: all 0.15s; border: none; background: none;
+            margin-left: auto;
         }
-        .fh-expand-btn:hover { color: #ffffff; }
-        .fh-bulk-sep { color: rgba(255,255,255,0.25); font-size: 10px; }
+        .fh-expand-toggle:hover { background: rgba(255,255,255,0.08); }
+        .fh-expand-toggle svg { stroke: #ffffff; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 
         /* Fleet/status chip row handled by .fh-chip-row */
         .fix-chip {
@@ -940,10 +935,10 @@
         .fix-empty-state {
             text-align: center;
             padding: 60px 24px;
-            color: rgba(255,255,255,0.7);
+            color: #ffffff;
         }
         .fix-empty-state p { font-size: 15px; margin-bottom: 4px; }
-        .fix-empty-state .hint { font-size: 12px; }
+        .fix-empty-state .hint { font-size: 12px; color: rgba(255,255,255,0.7); }
 
         /* Fix Rate action buttons */
         .fix-action-row { display: flex; gap: 8px; margin-bottom: 12px; }
@@ -1408,7 +1403,7 @@
         }
 
         footer .footer-sub {
-            color: rgba(255,255,255,0.3);
+            color: #ffffff;
             font-size: 10px;
             font-family: 'JetBrains Mono', monospace;
             margin-top: 8px;
@@ -1444,8 +1439,7 @@
             .fix-chip { font-size: 10px; padding: 5px 10px; }
             .fh-count { font-size: 9px; padding: 1px 5px; min-width: 14px; }
             .fh-chip-sep { height: 14px; margin: 0 1px; }
-            .fh-expand-btn { font-size: 11px; }
-            .fh-expand-group { white-space: nowrap; }
+            .fh-expand-toggle { padding: 4px; }
             .filter-chip { font-size: 10px; padding: 5px 8px; }
             .filter-chip .badge { font-size: 9px; padding: 1px 4px; }
             .qrh-migrate-banner { font-size: 11px; }
@@ -1835,9 +1829,17 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                     <button class="fix-chip fix-status-chip active" data-status-filter="IN WORK">IN WORK <span class="fh-count" id="fhCountWork">0</span></button>
                     <button class="fix-chip fix-status-chip" data-status-filter="CLOSED">CLOSED <span class="fh-count" id="fhCountClosed">0</span></button>
                     <button class="fix-chip fix-status-chip" data-status-filter="REPEAT">REPEAT <span class="fh-count" id="fhCountRepeat">0</span></button>
-                    <span class="fh-expand-group" style="white-space:nowrap;margin-left:auto;"><button class="fh-expand-btn" onclick="fhExpandAll()">Expand All</button>
-                    <span class="fh-bulk-sep">|</span>
-                    <button class="fh-expand-btn" onclick="fhCollapseAll()">Collapse All</button></span>
+                    <button class="fh-expand-toggle" id="fhExpandToggle" onclick="fhToggleExpandAll()" title="Expand / Collapse All">
+                      <svg width="24" height="30" viewBox="-1 -7 26 42" id="fhExpandSvg">
+                        <line x1="5" y1="10" x2="19" y2="10" stroke-width="2"/>
+                        <line x1="5" y1="14" x2="19" y2="14" stroke-width="2"/>
+                        <line x1="5" y1="18" x2="19" y2="18" stroke-width="2"/>
+                        <polyline class="fh-arrow" points="6 2 12 -6 18 2" stroke-width="1.5"/>
+                        <line class="fh-arrow" x1="12" y1="-6" x2="12" y2="10" stroke-width="1.3"/>
+                        <polyline class="fh-arrow" points="6 26 12 34 18 26" stroke-width="1.5"/>
+                        <line class="fh-arrow" x1="12" y1="34" x2="12" y2="18" stroke-width="1.3"/>
+                      </svg>
+                    </button>
             </div>
             <div id="fixResults">
                 <div class="fix-empty-state">
@@ -2651,11 +2653,29 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             return { label: 'Due ' + formatTsiDateShort(dueDateStr), cls: 'fec-due-normal' };
         }
 
+        var _fhExpanded = false;
+        function fhToggleExpandAll() {
+            var cards = document.querySelectorAll('.fix-entry-card');
+            var arrows = document.querySelectorAll('.fh-arrow');
+            if (_fhExpanded) {
+                cards.forEach(function(c) { c.classList.remove('open'); });
+                arrows.forEach(function(a) { a.style.display = ''; });
+                _fhExpanded = false;
+            } else {
+                cards.forEach(function(c) { c.classList.add('open'); });
+                arrows.forEach(function(a) { a.style.display = 'none'; });
+                _fhExpanded = true;
+            }
+        }
         function fhExpandAll() {
             document.querySelectorAll('.fix-entry-card').forEach(function(c) { c.classList.add('open'); });
+            document.querySelectorAll('.fh-arrow').forEach(function(a) { a.style.display = 'none'; });
+            _fhExpanded = true;
         }
         function fhCollapseAll() {
             document.querySelectorAll('.fix-entry-card').forEach(function(c) { c.classList.remove('open'); });
+            document.querySelectorAll('.fh-arrow').forEach(function(a) { a.style.display = ''; });
+            _fhExpanded = false;
         }
         function fhToggleCard(el) {
             el.closest('.fix-entry-card').classList.toggle('open');

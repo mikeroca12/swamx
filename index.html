@@ -1109,7 +1109,7 @@
         .tsi-save-btn{padding:8px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text);}
         .tsi-save-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
         .tsi-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:opacity 0.3s;}
-        @media(max-width:640px){ .tsi-form-row{flex-direction:column;gap:0;} .tsi-modal-overlay{padding:24px 20px calc(24px + env(safe-area-inset-bottom,20px)) 20px;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;align-items:flex-start;justify-content:center;} .tsi-modal{width:100%;max-width:none;max-height:none;border-radius:12px;box-sizing:border-box;} .tsi-modal-body{padding:18px 24px 12px;} .tsi-modal-header{padding:14px 24px;} .tsi-modal-footer{padding:14px 24px;} input[type="date"]{min-width:0;max-width:100%;} }
+        @media(max-width:640px){ .tsi-form-row{flex-direction:column;gap:0;} .tsi-modal-overlay{padding:24px 20px calc(24px + env(safe-area-inset-bottom,20px)) 20px;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;align-items:flex-start;justify-content:center;} .tsi-modal{width:100%;max-width:none;max-height:none;border-radius:12px;box-sizing:border-box;} .tsi-modal-body{padding:18px 24px 12px;} .tsi-modal-header{padding:14px 24px;} .tsi-modal-footer{padding:14px 24px;} }
 
         /* ---- QUICK LINKS ---- */
         /* ---- QUICK LINKS v2: Masonry + Korry ---- */
@@ -1496,6 +1496,9 @@
     .ub-role-editor { background: rgba(22,163,74,0.15); color: #86efac; border: 1px solid rgba(22,163,74,0.3); }
     .ub-role-viewer { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>.flatpickr-calendar{font-family:'DM Sans',sans-serif;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body>
 
@@ -1737,7 +1740,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                     </div>
                     <div class="tsi-form-group" id="fcoDateGroup">
                         <label class="tsi-form-label">CLOSE DATE</label>
-                        <input type="date" id="fcoDate" class="tsi-form-input" style="max-width:100%;box-sizing:border-box;">
+                        <input type="text" id="fcoDate" class="tsi-form-input" placeholder="Select date..." readonly>
                     </div>
                 </div>
                 <div class="tsi-modal-footer">
@@ -2605,11 +2608,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             fixCloseoutId = id;
             document.querySelectorAll('.fco-chip').forEach(function(c) { c.classList.remove('selected'); });
             document.getElementById('fcoNotes').value = '';
-            var today = new Date();
-            var yyyy = today.getFullYear();
-            var mm = String(today.getMonth() + 1).padStart(2, '0');
-            var dd = String(today.getDate()).padStart(2, '0');
-            document.getElementById('fcoDate').value = yyyy + '-' + mm + '-' + dd;
+            fpCloseDate.setDate(new Date(), true);
             document.getElementById('fixCoOverlay').classList.add('open');
         }
 
@@ -3382,7 +3381,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
       <div class="tsi-form-group" id="tDueDateGroup">
         <label class="tsi-form-label">DUE DATE</label>
-        <input type="date" class="tsi-form-input" id="tDueDate" style="max-width:100%;box-sizing:border-box;">
+        <input type="text" class="tsi-form-input" id="tDueDate" placeholder="Select date..." readonly>
       </div>
 
       <div class="tsi-form-group" style="margin-top:4px;">
@@ -3418,6 +3417,10 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 </div>
 
 <script>
+// ---- FLATPICKR DATE PICKERS ----
+var fpDueDate = flatpickr('#tDueDate', { dateFormat: 'Y-m-d', altInput: true, altFormat: 'M j, Y', allowInput: false });
+var fpCloseDate = flatpickr('#fcoDate', { dateFormat: 'Y-m-d', altInput: true, altFormat: 'M j, Y', allowInput: false });
+
 // ---- TSI MODAL: AIRCRAFT + FAULT CODE DATA ----
 var TSI_AIRCRAFT = [];
 var TSI_FAULT_CODES = [];
@@ -3482,7 +3485,7 @@ function openTsiModal(editId) {
       document.getElementById('tWorkOrder').value = entry.workOrder || '';
       document.getElementById('tRef').value = entry.ref || '';
       document.getElementById('tNotes').value = entry.notes || '';
-      document.getElementById('tDueDate').value = entry.dueDate || '';
+      if (entry.dueDate) fpDueDate.setDate(entry.dueDate, true); else fpDueDate.clear();
       // If editing a closed entry, check the box and populate fields
       var isClosed = entry.status === 'closed_eff' || entry.status === 'closed_ineff';
       var cb = document.getElementById('tClosedHist');
@@ -3509,9 +3512,10 @@ function closeTsiModal() {
 }
 
 function tsiClearForm() {
-  ['tFail','tFaultCode','tEffect','tWorkOrder','tNotes','tDueDate','tRef'].forEach(function(id) {
+  ['tFail','tFaultCode','tEffect','tWorkOrder','tNotes','tRef'].forEach(function(id) {
     document.getElementById(id).value = '';
   });
+  fpDueDate.clear();
   document.getElementById('tFleet').textContent = '-';
   document.getElementById('tFleetVal').value = '';
   document.getElementById('tAta').textContent = '-';

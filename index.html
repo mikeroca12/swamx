@@ -83,7 +83,7 @@
         .cst-block { font-family: 'JetBrains Mono', monospace; }
         .cst-time { font-size: 18px; font-weight: 700; color: #ffffff; }
         .cst-time .cst-lbl { font-size: 11px; font-weight: 600; color: #34d399; letter-spacing: 1px; }
-        .cst-date { font-size: 11px; font-weight: 600; color: #34d399; margin-top: 3px; letter-spacing: 0.5px; }
+        .cst-date { font-size: 18px; font-weight: 700; color: #34d399; margin-top: 3px; letter-spacing: 0.5px; }
         .utc-date { font-size: 11px; font-weight: 600; color: #f9b612; margin-top: 3px; letter-spacing: 0.5px; }
         .utc-block {
           font-family: 'JetBrains Mono', monospace;
@@ -1414,7 +1414,7 @@
             .clock-area { margin-left: auto; gap: 10px; flex-wrap: nowrap; }
             .cst-block { gap: 1px; }
             .cst-time { font-size: 14px; }
-            .cst-date { font-size: 8px; }
+            .cst-date { font-size: 14px; }
             .utc-date { font-size: 8px; }
             .utc-digital .utc-label { font-size: 8px; }
             .utc-digital .utc-time { font-size: 14px; }
@@ -4086,7 +4086,12 @@ function _clockTick() {
     } else {
       utcDateEl.style.display = 'none';
     }
-    document.getElementById('utcAnalog').textContent = utc + 'Z ' + _cp(d.getUTCDate()) + '-' + months[d.getUTCMonth()];
+    // Analog readout - only show date when UTC differs from CST
+    if (utcDateStr !== cstDateStr) {
+      document.getElementById('utcAnalog').textContent = utc + 'Z ' + utcDateStr;
+    } else {
+      document.getElementById('utcAnalog').textContent = utc + 'Z';
+    }
   }
   requestAnimationFrame(_clockTick);
 }

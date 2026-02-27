@@ -777,10 +777,16 @@
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; padding: 5px; border-radius: 6px;
             transition: all 0.15s; border: none; background: none;
-            margin-left: auto;
+            flex-shrink: 0;
         }
         .fh-expand-toggle:hover { background: rgba(255,255,255,0.08); }
-        .fh-expand-toggle svg { stroke: #ffffff; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .fh-expand-toggle svg { stroke: #e8600a; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .fh-chip-wrap {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .fh-chip-wrap .fh-chip-row { flex: 1; min-width: 0; }
 
         /* Fleet/status chip row handled by .fh-chip-row */
         .fix-chip {
@@ -1819,6 +1825,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 </div>
                 <button class="fix-action-btn primary" onclick="openTsiModal()">+ ADD TSI</button>
             </div>
+            <div class="fh-chip-wrap">
             <div class="fh-chip-row">
                     <button class="fix-chip" data-fix-filter="ALL">ALL</button>
                     <button class="fix-chip active" data-fix-filter="MAX 8">MAX 8</button>
@@ -1829,17 +1836,21 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                     <button class="fix-chip fix-status-chip active" data-status-filter="IN WORK">IN WORK <span class="fh-count" id="fhCountWork">0</span></button>
                     <button class="fix-chip fix-status-chip" data-status-filter="CLOSED">CLOSED <span class="fh-count" id="fhCountClosed">0</span></button>
                     <button class="fix-chip fix-status-chip" data-status-filter="REPEAT">REPEAT <span class="fh-count" id="fhCountRepeat">0</span></button>
-                    <button class="fh-expand-toggle" id="fhExpandToggle" onclick="fhToggleExpandAll()" title="Expand / Collapse All">
-                      <svg width="24" height="30" viewBox="-1 -7 26 42" id="fhExpandSvg">
-                        <line x1="5" y1="10" x2="19" y2="10" stroke-width="2"/>
-                        <line x1="5" y1="14" x2="19" y2="14" stroke-width="2"/>
-                        <line x1="5" y1="18" x2="19" y2="18" stroke-width="2"/>
-                        <polyline class="fh-arrow" points="6 2 12 -6 18 2" stroke-width="1.5"/>
-                        <line class="fh-arrow" x1="12" y1="-6" x2="12" y2="10" stroke-width="1.3"/>
-                        <polyline class="fh-arrow" points="6 26 12 34 18 26" stroke-width="1.5"/>
-                        <line class="fh-arrow" x1="12" y1="34" x2="12" y2="18" stroke-width="1.3"/>
-                      </svg>
-                    </button>
+            </div>
+            <button class="fh-expand-toggle" id="fhExpandToggle" onclick="fhToggleExpandAll()" title="Expand / Collapse All">
+              <svg width="24" height="30" viewBox="-1 -7 26 42" id="fhExpandSvg">
+                <line x1="5" y1="10" x2="19" y2="10" stroke-width="2"/>
+                <line x1="5" y1="18" x2="19" y2="18" stroke-width="2"/>
+                <polyline class="fh-arrow-expand" points="6 2 12 -6 18 2" stroke-width="1.5"/>
+                <line class="fh-arrow-expand" x1="12" y1="-6" x2="12" y2="10" stroke-width="1.3"/>
+                <polyline class="fh-arrow-expand" points="6 26 12 34 18 26" stroke-width="1.5"/>
+                <line class="fh-arrow-expand" x1="12" y1="34" x2="12" y2="18" stroke-width="1.3"/>
+                <polyline class="fh-arrow-collapse" points="6 2 12 10 18 2" stroke-width="1.5" style="display:none;"/>
+                <line class="fh-arrow-collapse" x1="12" y1="10" x2="12" y2="2" stroke-width="1.3" style="display:none;"/>
+                <polyline class="fh-arrow-collapse" points="6 26 12 18 18 26" stroke-width="1.5" style="display:none;"/>
+                <line class="fh-arrow-collapse" x1="12" y1="18" x2="12" y2="26" stroke-width="1.3" style="display:none;"/>
+              </svg>
+            </button>
             </div>
             <div id="fixResults">
                 <div class="fix-empty-state">
@@ -2655,26 +2666,18 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         var _fhExpanded = false;
         function fhToggleExpandAll() {
-            var cards = document.querySelectorAll('.fix-entry-card');
-            var arrows = document.querySelectorAll('.fh-arrow');
-            if (_fhExpanded) {
-                cards.forEach(function(c) { c.classList.remove('open'); });
-                arrows.forEach(function(a) { a.style.display = ''; });
-                _fhExpanded = false;
-            } else {
-                cards.forEach(function(c) { c.classList.add('open'); });
-                arrows.forEach(function(a) { a.style.display = 'none'; });
-                _fhExpanded = true;
-            }
+            if (_fhExpanded) { fhCollapseAll(); } else { fhExpandAll(); }
         }
         function fhExpandAll() {
             document.querySelectorAll('.fix-entry-card').forEach(function(c) { c.classList.add('open'); });
-            document.querySelectorAll('.fh-arrow').forEach(function(a) { a.style.display = 'none'; });
+            document.querySelectorAll('.fh-arrow-expand').forEach(function(a) { a.style.display = 'none'; });
+            document.querySelectorAll('.fh-arrow-collapse').forEach(function(a) { a.style.display = ''; });
             _fhExpanded = true;
         }
         function fhCollapseAll() {
             document.querySelectorAll('.fix-entry-card').forEach(function(c) { c.classList.remove('open'); });
-            document.querySelectorAll('.fh-arrow').forEach(function(a) { a.style.display = ''; });
+            document.querySelectorAll('.fh-arrow-expand').forEach(function(a) { a.style.display = ''; });
+            document.querySelectorAll('.fh-arrow-collapse').forEach(function(a) { a.style.display = 'none'; });
             _fhExpanded = false;
         }
         function fhToggleCard(el) {

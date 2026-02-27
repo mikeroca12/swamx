@@ -1070,7 +1070,7 @@
         /* TSI Modal */
         .tsi-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;}
         .tsi-modal-overlay.open{display:flex;}
-        .tsi-modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+        .tsi-modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
         .tsi-modal-header{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
         .tsi-modal-header h2{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--text);}
         .tsi-modal-close{background:none;border:none;font-size:20px;color:var(--text-dim);cursor:pointer;padding:4px;}
@@ -3334,26 +3334,23 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
       <button class="tsi-modal-close" onclick="closeTsiModal()">&times;</button>
     </div>
     <div class="tsi-modal-body">
-      <div class="tsi-form-row">
-        <div class="tsi-form-group tsi-tail-wrap" style="flex:0 0 55%;">
+      <div class="tsi-form-row" style="flex-wrap:wrap;">
+        <div class="tsi-form-group tsi-tail-wrap" style="flex:1 1 160px;">
           <label class="tsi-form-label">TAIL NUMBER <span class="req">*</span></label>
-          <input type="text" class="tsi-form-input" id="tFail" placeholder="Start typing tail..." autocomplete="off" oninput="tsiFilterTails()" onfocus="tsiFilterTails()" onkeydown="tsiTailKeyNav(event)">
+          <input type="text" class="tsi-form-input" id="tFail" placeholder="Tail..." autocomplete="off" oninput="tsiFilterTails()" onfocus="tsiFilterTails()" onkeydown="tsiTailKeyNav(event)">
           <div class="tsi-tail-dd" id="tsiTailDD"></div>
         </div>
-        <div class="tsi-form-group">
+        <div class="tsi-form-group" style="flex:0 0 70px;">
           <label class="tsi-form-label">FLEET</label>
           <div class="tsi-form-display" id="tFleet">-</div>
           <input type="hidden" id="tFleetVal">
         </div>
-      </div>
-
-      <div class="tsi-form-row">
-        <div class="tsi-form-group tsi-fc-wrap" style="flex:0 0 55%;">
+        <div class="tsi-form-group tsi-fc-wrap" style="flex:1 1 160px;">
           <label class="tsi-form-label">FAULT CODE <span class="req">*</span></label>
-          <input type="text" class="tsi-form-input" id="tFaultCode" placeholder="e.g. 36-12020 or FAMV" autocomplete="off" oninput="tsiFilterFC()" onfocus="tsiFilterFC()" onkeydown="tsiFcKeyNav(event)">
+          <input type="text" class="tsi-form-input" id="tFaultCode" placeholder="e.g. 36-12020" autocomplete="off" oninput="tsiFilterFC()" onfocus="tsiFilterFC()" onkeydown="tsiFcKeyNav(event)">
           <div class="tsi-fc-dd" id="tsiFcDD"></div>
         </div>
-        <div class="tsi-form-group">
+        <div class="tsi-form-group" style="flex:0 0 50px;">
           <label class="tsi-form-label">ATA</label>
           <div class="tsi-form-display" id="tAta">-</div>
         </div>
@@ -3364,9 +3361,15 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         <input type="text" class="tsi-form-input" id="tEffect" placeholder="e.g. BLEED FAMV L - Status Message">
       </div>
 
-      <div class="tsi-form-group">
-        <label class="tsi-form-label">WORK ORDER / TSI BARCODE</label>
-        <input type="text" class="tsi-form-input" id="tWorkOrder" placeholder="e.g. TTG8Q01AL9VS">
+      <div class="tsi-form-row">
+        <div class="tsi-form-group" style="flex:1;">
+          <label class="tsi-form-label">TSI BARCODE</label>
+          <input type="text" class="tsi-form-input" id="tWorkOrder" placeholder="e.g. TTG8Q01AL9VS">
+        </div>
+        <div class="tsi-form-group" id="tDueDateGroup" style="flex:0 0 45%;">
+          <label class="tsi-form-label">DUE DATE</label>
+          <input type="text" class="tsi-form-input" id="tDueDate" placeholder="Select date..." readonly>
+        </div>
       </div>
 
       <div class="tsi-form-group">
@@ -3377,11 +3380,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
       <div class="tsi-form-group">
         <label class="tsi-form-label">TSI DETAILS / NOTES</label>
         <textarea class="tsi-form-textarea" id="tNotes" placeholder="Paste TSI verbiage or describe what was done..."></textarea>
-      </div>
-
-      <div class="tsi-form-group" id="tDueDateGroup" style="width:50%;">
-        <label class="tsi-form-label">DUE DATE</label>
-        <input type="text" class="tsi-form-input" id="tDueDate" placeholder="Select date..." readonly>
       </div>
 
       <div class="tsi-form-group" style="margin-top:4px;">

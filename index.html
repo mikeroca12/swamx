@@ -2638,16 +2638,31 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             }).catch(function(err) { tsiToast('Error: ' + err.message); });
         }
 
+        var _reopenTimer = null;
         function fixReopen(id) {
-            if (!confirm('Reopen this entry?')) return;
-            db.collection('tsi_entries').doc(id).update({
-                status: 'in_work',
-                closedDate: null,
-                actionType: ''
-            }).then(function() {
-                loadTsiEntries();
-                tsiToast('Reopened');
-            }).catch(function(err) { tsiToast('Error: ' + err.message); });
+            var btn = event.currentTarget;
+            if (btn.dataset.armed === 'true') {
+                clearTimeout(_reopenTimer);
+                btn.dataset.armed = 'false';
+                btn.textContent = 'REOPEN';
+                btn.style.cssText = '';
+                db.collection('tsi_entries').doc(id).update({
+                    status: 'in_work',
+                    closedDate: null,
+                    actionType: ''
+                }).then(function() {
+                    loadTsiEntries();
+                    tsiToast('Reopened');
+                }).catch(function(err) { tsiToast('Error: ' + err.message); });
+                return;
+            }
+            btn.dataset.armed = 'true';
+            btn.textContent = 'CONFIRM';
+            _reopenTimer = setTimeout(function() {
+                btn.dataset.armed = 'false';
+                btn.textContent = 'REOPEN';
+                btn.style.cssText = '';
+            }, 3000);
         }
 
         var _delTimer = null;

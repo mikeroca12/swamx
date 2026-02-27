@@ -1838,17 +1838,11 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                     <button class="fix-chip fix-status-chip" data-status-filter="REPEAT">REPEAT <span class="fh-count" id="fhCountRepeat">0</span></button>
             </div>
             <button class="fh-expand-toggle" id="fhExpandToggle" onclick="fhToggleExpandAll()" title="Expand / Collapse All">
-              <svg width="24" height="30" viewBox="-1 -7 26 42" id="fhExpandSvg">
-                <line x1="5" y1="10" x2="19" y2="10" stroke-width="2"/>
-                <line x1="5" y1="18" x2="19" y2="18" stroke-width="2"/>
-                <polyline class="fh-arrow-expand" points="6 2 12 -6 18 2" stroke-width="1.5"/>
-                <line class="fh-arrow-expand" x1="12" y1="-6" x2="12" y2="10" stroke-width="1.3"/>
-                <polyline class="fh-arrow-expand" points="6 26 12 34 18 26" stroke-width="1.5"/>
-                <line class="fh-arrow-expand" x1="12" y1="34" x2="12" y2="18" stroke-width="1.3"/>
-                <polyline class="fh-arrow-collapse" points="6 2 12 10 18 2" stroke-width="1.5" style="display:none;"/>
-                <line class="fh-arrow-collapse" x1="12" y1="10" x2="12" y2="2" stroke-width="1.3" style="display:none;"/>
-                <polyline class="fh-arrow-collapse" points="6 26 12 18 18 26" stroke-width="1.5" style="display:none;"/>
-                <line class="fh-arrow-collapse" x1="12" y1="18" x2="12" y2="26" stroke-width="1.3" style="display:none;"/>
+              <svg width="20" height="24" viewBox="0 0 24 28" id="fhExpandSvg">
+                <polyline class="fh-arrow-expand" points="6 8 12 1 18 8" stroke-width="2"/>
+                <polyline class="fh-arrow-expand" points="6 20 12 27 18 20" stroke-width="2"/>
+                <polyline class="fh-arrow-collapse" points="6 1 12 8 18 1" stroke-width="2" style="display:none;"/>
+                <polyline class="fh-arrow-collapse" points="6 27 12 20 18 27" stroke-width="2" style="display:none;"/>
               </svg>
             </button>
             </div>

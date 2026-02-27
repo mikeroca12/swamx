@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>737-8 Flap/Slat Overspeed Decision Tool</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #1b2a45;
@@ -541,12 +541,27 @@ body {
   width: auto;
   object-fit: contain;
 }
+.moc-nav .nav-logo-text {
+  display: flex;
+  flex-direction: column;
+}
 .moc-nav .nav-title {
-  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
   color: var(--text-on-dark);
   font-size: 14px;
+  line-height: 1.2;
 }
 .moc-nav .nav-title span { color: #3b82f6; }
+.moc-nav .nav-ref {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: #ef4444;
+  text-transform: uppercase;
+  font-style: italic;
+}
 .moc-nav .nav-sep {
   color: var(--frame-border);
   font-size: 16px;
@@ -557,7 +572,10 @@ body {
 <div class="moc-nav">
   <a href="index.html">
     <img src="logo.webp" alt="MOC">
-    <span class="nav-title">MOC <span>Toolbox</span></span>
+    <div class="nav-logo-text">
+      <span class="nav-title">MOC <span>Toolbox</span></span>
+      <span class="nav-ref">For reference use only</span>
+    </div>
   </a>
   <span class="nav-sep">|</span>
   <a href="index.html">Back to Apps</a>

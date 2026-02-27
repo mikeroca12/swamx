@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abradable Inspection | MOC Toolbox</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #1b2a45;
@@ -52,7 +52,9 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 .nav-bar a { color:var(--text-on-dark-dim); text-decoration:none; transition:color 0.15s; }
 .nav-bar a:hover { color:var(--text-on-dark); }
 .nav-bar .nav-logo { display:flex; align-items:center; gap:8px; }
-.nav-bar .nav-title { font-weight:700; color:var(--text-on-dark); }
+.nav-bar .nav-logo-text { display:flex; flex-direction:column; }
+.nav-bar .nav-title { font-family:'Outfit',sans-serif; font-weight:900; color:var(--text-on-dark); line-height:1.2; }
+.nav-bar .nav-ref { font-family:'JetBrains Mono',monospace; font-size:7px; font-weight:600; letter-spacing:1.5px; color:#ef4444; text-transform:uppercase; font-style:italic; }
 .nav-bar .nav-title span { color:#3b82f6; }
 .nav-bar .nav-sep { color:var(--frame-border); }
 .nav-bar img { height:28px; }
@@ -171,7 +173,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 <div class="nav-bar">
   <a href="index.html" class="nav-logo">
     <img src="logo.webp" alt="Logo">
-    <span class="nav-title">MOC <span>Toolbox</span></span>
+    <div class="nav-logo-text"><span class="nav-title">MOC <span>Toolbox</span></span><span class="nav-ref">For reference use only</span></div>
   </a>
   <span class="nav-sep">|</span>
   <a href="leap-1b.html">Back to LEAP-1B Hub</a>

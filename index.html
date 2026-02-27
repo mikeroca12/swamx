@@ -3860,7 +3860,15 @@ function tsiSetFleetMode(fleet) {
 }
 
 function tsiPickNgTemplate(el, idx) {
+  var wasSelected = el.classList.contains('selected');
   el.parentElement.querySelectorAll('.fco-chip').forEach(function(c) { c.classList.remove('selected'); });
+  if (wasSelected) {
+    document.getElementById('tEffect').value = '';
+    document.getElementById('tRef').value = '';
+    document.getElementById('tAta').textContent = '-';
+    document.getElementById('tFaultCode').value = '';
+    return;
+  }
   el.classList.add('selected');
   var t = TSI_NG_TEMPLATES[idx];
   document.getElementById('tEffect').value = t.desc;

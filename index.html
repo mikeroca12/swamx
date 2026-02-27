@@ -1083,6 +1083,15 @@
         .tsi-modal-close:hover{color:var(--text);}
         .tsi-modal-body{padding:14px 20px 8px;}
         .tsi-modal-footer{padding:10px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
+        .tsi-override-toggle{display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 0;margin-top:4px;user-select:none;}
+        .tsi-override-switch{width:36px;height:20px;background:var(--border);border-radius:10px;position:relative;transition:background 0.2s;flex-shrink:0;}
+        .tsi-override-switch::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+        .tsi-override-toggle.active .tsi-override-switch{background:var(--accent);}
+        .tsi-override-toggle.active .tsi-override-switch::after{transform:translateX(16px);}
+        .tsi-override-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--text-secondary);}
+        .tsi-override-hint{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--text-dim);font-style:italic;}
+        .tsi-override-dates{display:none;padding:10px 0 0;}
+        .tsi-override-dates.open{display:flex;gap:12px;}
         .tsi-form-group{margin-bottom:12px;}
         .tsi-form-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:6px;display:block;}
         .tsi-form-label .req{color:var(--red);}
@@ -1872,9 +1881,18 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                         <label class="tsi-form-label">CORRECTIVE ACTION <span class="req">*</span></label>
                         <textarea id="fcoNotes" class="tsi-form-input" rows="3" placeholder="R/R #1 IASC P/N 1234, OPS CK SAT..." style="resize:vertical;min-height:70px;"></textarea>
                     </div>
-                    <div class="tsi-form-group" id="fcoDateGroup">
-                        <label class="tsi-form-label">CLOSE DATE</label>
-                        <input type="text" id="fcoDate" class="tsi-form-input" placeholder="Select date..." readonly>
+                    <div class="tsi-override-toggle" id="fcoOverrideToggle" onclick="fcoToggleOverride()">
+                        <div class="tsi-override-switch"></div>
+                        <div>
+                            <div class="tsi-override-label">Override Close Date</div>
+                            <div class="tsi-override-hint">Backdate when this was actually closed</div>
+                        </div>
+                    </div>
+                    <div class="tsi-override-dates" id="fcoOverrideDates">
+                        <div class="tsi-form-group" style="flex:1;">
+                            <label class="tsi-form-label">CLOSE DATE</label>
+                            <input type="text" id="fcoDate" class="tsi-form-input" placeholder="Select date..." readonly>
+                        </div>
                     </div>
                 </div>
                 <div class="tsi-modal-footer">
@@ -2823,6 +2841,9 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         function fixCoCancel() {
             document.getElementById('fixCoOverlay').classList.remove('open');
+            document.getElementById('fcoOverrideToggle').classList.remove('active');
+            document.getElementById('fcoOverrideDates').classList.remove('open');
+            fpCloseDate.clear();
             fixCloseoutId = null;
         }
 
@@ -2838,10 +2859,10 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             var notes = document.getElementById('fcoNotes').value.trim().toUpperCase();
             if (!notes) { tsiToast('Enter corrective action notes'); document.getElementById('fcoNotes').focus(); return; }
             var closeDate = document.getElementById('fcoDate').value;
-            if (!closeDate) { tsiToast('Enter a close date'); return; }
+            var closedDate = closeDate ? closeDate + 'T00:00:00' : new Date().toISOString();
             db.collection('tsi_entries').doc(fixCloseoutId).update({
                 status: 'closed_eff',
-                closedDate: closeDate + 'T' + new Date().toTimeString().slice(0,8),
+                closedDate: closedDate,
                 actionType: chip.textContent.trim(),
                 correctiveAction: notes
             }).then(function() {
@@ -3669,6 +3690,24 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         </div>
       </div>
 
+      <div class="tsi-override-toggle" id="tOverrideToggle" onclick="tsiToggleOverride()">
+        <div class="tsi-override-switch"></div>
+        <div>
+          <div class="tsi-override-label">Override Dates</div>
+          <div class="tsi-override-hint">Backdate open and/or close dates</div>
+        </div>
+      </div>
+      <div class="tsi-override-dates" id="tOverrideDates">
+        <div class="tsi-form-group" style="flex:1;">
+          <label class="tsi-form-label">OPEN DATE</label>
+          <input type="text" class="tsi-form-input" id="tOverrideOpen" placeholder="Default: today" readonly>
+        </div>
+        <div class="tsi-form-group" style="flex:1;">
+          <label class="tsi-form-label">CLOSE DATE</label>
+          <input type="text" class="tsi-form-input" id="tOverrideClose" placeholder="Default: today" readonly>
+        </div>
+      </div>
+
     </div>
     <div class="tsi-modal-footer">
       <button class="tsi-save-btn" onclick="closeTsiModal()">CANCEL</button>
@@ -3681,6 +3720,29 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 // ---- FLATPICKR DATE PICKERS ----
 var fpDueDate = flatpickr('#tDueDate', { dateFormat: 'Y-m-d', altInput: true, altFormat: 'M j, Y', allowInput: false, altInputClass: 'tsi-form-input', appendTo: document.body });
 var fpCloseDate = flatpickr('#fcoDate', { dateFormat: 'Y-m-d', altInput: true, altFormat: 'M j, Y', allowInput: false, altInputClass: 'tsi-form-input', appendTo: document.body });
+var fpOverrideOpen = flatpickr('#tOverrideOpen', { dateFormat: 'Y-m-d', altInput: true, altFormat: 'M j, Y', allowInput: false, altInputClass: 'tsi-form-input', appendTo: document.body });
+var fpOverrideClose = flatpickr('#tOverrideClose', { dateFormat: 'Y-m-d', altInput: true, altFormat: 'M j, Y', allowInput: false, altInputClass: 'tsi-form-input', appendTo: document.body });
+
+function tsiToggleOverride() {
+  var tog = document.getElementById('tOverrideToggle');
+  var dates = document.getElementById('tOverrideDates');
+  tog.classList.toggle('active');
+  dates.classList.toggle('open');
+  if (!tog.classList.contains('active')) {
+    fpOverrideOpen.clear();
+    fpOverrideClose.clear();
+  }
+}
+
+function fcoToggleOverride() {
+  var tog = document.getElementById('fcoOverrideToggle');
+  var dates = document.getElementById('fcoOverrideDates');
+  tog.classList.toggle('active');
+  dates.classList.toggle('open');
+  if (!tog.classList.contains('active')) {
+    fpCloseDate.clear();
+  }
+}
 
 // ---- TSI MODAL: AIRCRAFT + FAULT CODE DATA ----
 var TSI_AIRCRAFT = [];
@@ -3761,6 +3823,15 @@ function openTsiModal(editId) {
       if (isClosed && entry.correctiveAction) {
         document.getElementById('tHistCorrective').value = entry.correctiveAction;
       }
+      // Populate override dates if entry has backdated timestamps (midnight = overridden)
+      var hasOpenOverride = entry.created && entry.created.indexOf('T00:00:00') !== -1;
+      var hasCloseOverride = entry.closedDate && entry.closedDate.indexOf('T00:00:00') !== -1;
+      if (hasOpenOverride || hasCloseOverride) {
+        document.getElementById('tOverrideToggle').classList.add('active');
+        document.getElementById('tOverrideDates').classList.add('open');
+        if (hasOpenOverride) fpOverrideOpen.setDate(entry.created.split('T')[0], true);
+        if (hasCloseOverride) fpOverrideClose.setDate(entry.closedDate.split('T')[0], true);
+      }
     }
   }
   document.getElementById('tsiModalOverlay').classList.add('open');
@@ -3784,6 +3855,11 @@ function tsiClearForm() {
   document.getElementById('tsiTailDD').classList.remove('open');
   document.getElementById('tsiFcDD').classList.remove('open');
   tsiSetFleetMode('');
+  // Reset override dates
+  document.getElementById('tOverrideToggle').classList.remove('active');
+  document.getElementById('tOverrideDates').classList.remove('open');
+  fpOverrideOpen.clear();
+  fpOverrideClose.clear();
   // Reset closed historical fields
   var cb = document.getElementById('tClosedHist');
   if (cb) cb.checked = false;
@@ -3794,6 +3870,11 @@ function tsiToggleClosed() {
   var checked = document.getElementById('tClosedHist').checked;
   document.getElementById('tClosedFields').style.display = checked ? 'block' : 'none';
   document.getElementById('tDueDateGroup').style.display = checked ? 'none' : 'block';
+  // Auto-toggle override dates on when historical is checked
+  if (checked) {
+    document.getElementById('tOverrideToggle').classList.add('active');
+    document.getElementById('tOverrideDates').classList.add('open');
+  }
   if (!checked) {
     document.getElementById('tHistAction').value = '';
     var ta = document.getElementById('tHistCorrective');
@@ -3998,6 +4079,14 @@ function saveTsiEntry() {
   var ataMatch = faultCode.match(/^(\d{2})/);
   var ata = ataMatch ? ataMatch[1] : '';
 
+  var overrideOpen = document.getElementById('tOverrideOpen').value;
+  var overrideClose = document.getElementById('tOverrideClose').value;
+  var createdDate = overrideOpen ? overrideOpen + 'T00:00:00' : new Date().toISOString();
+  var closedDate = null;
+  if (isClosed) {
+    closedDate = overrideClose ? overrideClose + 'T00:00:00' : new Date().toISOString();
+  }
+
   var entry = {
     tail: tail,
     fleet: fleet,
@@ -4011,8 +4100,8 @@ function saveTsiEntry() {
     dueDate: isClosed ? '' : document.getElementById('tDueDate').value,
     ref: document.getElementById('tRef').value.trim().toUpperCase(),
     status: isClosed ? 'closed_eff' : 'in_work',
-    created: new Date().toISOString(),
-    closedDate: isClosed ? new Date().toISOString() : null,
+    created: createdDate,
+    closedDate: closedDate,
     createdBy: CURRENT_USER ? CURRENT_USER.enumVal : '',
     createdByName: CURRENT_USER ? CURRENT_USER.name : ''
   };

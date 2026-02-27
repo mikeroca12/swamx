@@ -1557,7 +1557,112 @@ window.addEventListener('moc-auth-ready', function() {
 
   applyRolePermissions();
   if (typeof loadTsiEntries === 'function') loadTsiEntries();
+  if (typeof loadUserPrefs === 'function') loadUserPrefs();
 });
+
+// ---- USER PREFERENCES (Firestore-backed) ----
+var USER_PREFS = null;
+var _prefsSaveTimer = null;
+var PREFS_DEFAULTS = {
+  fleet_filters: ['MAX 8'],
+  status_filter: 'IN WORK',
+  ql_favs: [],
+  ql_collapsed: [],
+  clock_analog: false
+};
+
+function _prefsDocRef() {
+  if (!db || !CURRENT_USER) return null;
+  return db.collection('user_preferences').doc(CURRENT_USER.enumVal);
+}
+
+function loadUserPrefs() {
+  var ref = _prefsDocRef();
+  if (!ref) return;
+  ref.get().then(function(doc) {
+    if (doc.exists) {
+      USER_PREFS = doc.data();
+      _migrateLocalStorage(false);
+    } else {
+      // First load - migrate localStorage if present
+      USER_PREFS = Object.assign({}, PREFS_DEFAULTS);
+      _migrateLocalStorage(true);
+      saveUserPrefs();
+    }
+    applyUserPrefs();
+  }).catch(function(err) {
+    console.error('Prefs load error:', err);
+    USER_PREFS = Object.assign({}, PREFS_DEFAULTS);
+    applyUserPrefs();
+  });
+}
+
+function _migrateLocalStorage(isNew) {
+  try {
+    var lsFavs = JSON.parse(localStorage.getItem('qlFavs') || 'null');
+    var lsColl = JSON.parse(localStorage.getItem('qlCollapsed') || 'null');
+    var lsClock = localStorage.getItem('moc_clock_analog');
+    if (isNew) {
+      if (lsFavs && lsFavs.length) USER_PREFS.ql_favs = lsFavs;
+      if (lsColl && lsColl.length) USER_PREFS.ql_collapsed = lsColl;
+      if (lsClock === '1') USER_PREFS.clock_analog = true;
+    }
+    // Clear localStorage after migration
+    localStorage.removeItem('qlFavs');
+    localStorage.removeItem('qlCollapsed');
+    localStorage.removeItem('moc_clock_analog');
+  } catch(e) {}
+}
+
+function saveUserPrefs() {
+  if (_prefsSaveTimer) clearTimeout(_prefsSaveTimer);
+  _prefsSaveTimer = setTimeout(function() {
+    var ref = _prefsDocRef();
+    if (!ref || !USER_PREFS) return;
+    var data = Object.assign({}, USER_PREFS, { updated: new Date() });
+    ref.set(data, { merge: true }).catch(function(err) {
+      console.error('Prefs save error:', err);
+    });
+  }, 500);
+}
+
+function applyUserPrefs() {
+  if (!USER_PREFS) return;
+
+  // Fleet chips - multi-select
+  var filters = USER_PREFS.fleet_filters || PREFS_DEFAULTS.fleet_filters;
+  activeFixFilters = filters.slice();
+  document.querySelectorAll('[data-fix-filter]').forEach(function(c) {
+    var v = c.dataset.fixFilter;
+    if (v === 'ALL') {
+      c.classList.toggle('active', activeFixFilters.length === 4);
+    } else {
+      c.classList.toggle('active', activeFixFilters.indexOf(v) !== -1);
+    }
+  });
+
+  // Status chip
+  var sf = USER_PREFS.status_filter || PREFS_DEFAULTS.status_filter;
+  fixStatusFilter = sf;
+  document.querySelectorAll('[data-status-filter]').forEach(function(c) {
+    c.classList.toggle('active', c.dataset.statusFilter === sf);
+  });
+
+  // Quick Links
+  qlFavs = (USER_PREFS.ql_favs || []).slice();
+  qlCollapsed = (USER_PREFS.ql_collapsed || []).slice();
+  if (typeof qlRenderAll === 'function') qlRenderAll();
+
+  // Clock
+  var clockEl = document.getElementById('utcBlock');
+  if (clockEl) {
+    if (USER_PREFS.clock_analog) clockEl.classList.add('analog-mode');
+    else clockEl.classList.remove('analog-mode');
+  }
+
+  // Re-render fleet health
+  if (typeof renderFixRate === 'function') renderFixRate();
+}
 
 function applyRolePermissions() {
   var canEdit = window.mocCanEdit();
@@ -1704,8 +1809,8 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 <button class="fix-action-btn primary" onclick="openTsiModal()">+ ADD TSI</button>
             </div>
             <div class="fh-chip-row">
-                    <button class="fix-chip active" data-fix-filter="ALL">ALL</button>
-                    <button class="fix-chip" data-fix-filter="MAX 8">MAX 8</button>
+                    <button class="fix-chip" data-fix-filter="ALL">ALL</button>
+                    <button class="fix-chip active" data-fix-filter="MAX 8">MAX 8</button>
                     <button class="fix-chip" data-fix-filter="MAX 7">MAX 7</button>
                     <button class="fix-chip" data-fix-filter="NG 800">NG 800</button>
                     <button class="fix-chip" data-fix-filter="NG 700">NG 700</button>
@@ -2391,13 +2496,46 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         const fixSearchInput = document.getElementById('fixSearchInput');
         const fixResults = document.getElementById('fixResults');
         const fixFilterChips = document.querySelectorAll('[data-fix-filter]');
-        let activeFixFilter = 'ALL';
+        let activeFixFilters = ['MAX 8'];
 
         fixFilterChips.forEach(function(chip) {
             chip.addEventListener('click', function() {
-                fixFilterChips.forEach(function(c) { c.classList.remove('active'); });
-                chip.classList.add('active');
-                activeFixFilter = chip.dataset.fixFilter;
+                var v = chip.dataset.fixFilter;
+                if (v === 'ALL') {
+                    // ALL toggles everything on
+                    var allFleets = ['MAX 8', 'MAX 7', 'NG 800', 'NG 700'];
+                    var allActive = activeFixFilters.length === allFleets.length;
+                    if (allActive) {
+                        // Deselect all, revert to default
+                        activeFixFilters = ['MAX 8'];
+                    } else {
+                        activeFixFilters = allFleets.slice();
+                    }
+                } else {
+                    var idx = activeFixFilters.indexOf(v);
+                    if (idx !== -1) {
+                        activeFixFilters.splice(idx, 1);
+                        // Don't allow empty - revert to default
+                        if (activeFixFilters.length === 0) activeFixFilters = ['MAX 8'];
+                    } else {
+                        activeFixFilters.push(v);
+                    }
+                }
+                // Update chip visuals
+                var allFleets = ['MAX 8', 'MAX 7', 'NG 800', 'NG 700'];
+                fixFilterChips.forEach(function(c) {
+                    var cv = c.dataset.fixFilter;
+                    if (cv === 'ALL') {
+                        c.classList.toggle('active', activeFixFilters.length === allFleets.length);
+                    } else {
+                        c.classList.toggle('active', activeFixFilters.indexOf(cv) !== -1);
+                    }
+                });
+                // Save to prefs
+                if (USER_PREFS) {
+                    USER_PREFS.fleet_filters = activeFixFilters.slice();
+                    saveUserPrefs();
+                }
                 renderFixRate();
             });
         });
@@ -2407,14 +2545,16 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         document.querySelectorAll('[data-status-filter]').forEach(function(chip) {
             chip.addEventListener('click', function() {
                 if (chip.classList.contains('active')) {
-                    // Toggle off - show all
                     chip.classList.remove('active');
                     fixStatusFilter = 'ALL';
                 } else {
-                    // Select this one, deselect others
                     document.querySelectorAll('[data-status-filter]').forEach(function(c) { c.classList.remove('active'); });
                     chip.classList.add('active');
                     fixStatusFilter = chip.dataset.statusFilter;
+                }
+                if (USER_PREFS) {
+                    USER_PREFS.status_filter = fixStatusFilter;
+                    saveUserPrefs();
                 }
                 renderFixRate();
             });
@@ -2480,10 +2620,11 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
             var results = TSI_ENTRIES;
 
-            // Fleet filter
-            if (activeFixFilter !== 'ALL') {
+            // Fleet filter (multi-select)
+            var allFleets = ['MAX 8', 'MAX 7', 'NG 800', 'NG 700'];
+            if (activeFixFilters.length < allFleets.length) {
                 results = results.filter(function(e) {
-                    return e.fleet && e.fleet.toUpperCase() === activeFixFilter;
+                    return e.fleet && activeFixFilters.indexOf(e.fleet.toUpperCase()) !== -1;
                 });
             }
 
@@ -3151,6 +3292,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         // ---- QUICK LINKS v2: Masonry + Korry ----
         var qlFavs = JSON.parse(localStorage.getItem('qlFavs') || '[]');
         var qlCollapsed = JSON.parse(localStorage.getItem('qlCollapsed') || '[]');
+        // Note: these will be overwritten by applyUserPrefs() once Firestore loads
 
         function qlFk(s, n) { return s + '::' + n; }
         function qlIsF(s, n) { return qlFavs.indexOf(qlFk(s, n)) !== -1; }
@@ -3167,14 +3309,14 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             if (e) { e.preventDefault(); e.stopPropagation(); }
             var k = qlFk(sid, nm), i = qlFavs.indexOf(k);
             if (i === -1) qlFavs.push(k); else qlFavs.splice(i, 1);
-            localStorage.setItem('qlFavs', JSON.stringify(qlFavs));
+            if (USER_PREFS) { USER_PREFS.ql_favs = qlFavs.slice(); saveUserPrefs(); }
             qlRenderAll();
         }
 
         function qlToggleSec(sid) {
             var i = qlCollapsed.indexOf(sid);
             if (i === -1) qlCollapsed.push(sid); else qlCollapsed.splice(i, 1);
-            localStorage.setItem('qlCollapsed', JSON.stringify(qlCollapsed));
+            if (USER_PREFS) { USER_PREFS.ql_collapsed = qlCollapsed.slice(); saveUserPrefs(); }
             qlRenderMasonry();
         }
 
@@ -3803,11 +3945,11 @@ function toggleUtcClock() {
   var el = document.getElementById('utcBlock');
   if (!el) return;
   el.classList.toggle('analog-mode');
-  try { localStorage.setItem('moc_clock_analog', el.classList.contains('analog-mode') ? '1' : '0'); } catch(e) {}
+  var isAnalog = el.classList.contains('analog-mode');
+  if (USER_PREFS) { USER_PREFS.clock_analog = isAnalog; saveUserPrefs(); }
 }
 
-// Restore preference
-try { if (localStorage.getItem('moc_clock_analog') === '1') { document.getElementById('utcBlock').classList.add('analog-mode'); } } catch(e) {}
+// Clock preference restored by applyUserPrefs() after auth
 
 var SWA_ORANGE = '#e8600a';
 var SWA_RED = '#c8102e';

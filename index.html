@@ -3367,23 +3367,23 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
       <div class="tsi-form-row">
         <div class="tsi-form-group" style="flex:1;">
-          <label class="tsi-form-label">TSI BARCODE</label>
+          <label class="tsi-form-label">TSI BARCODE <span class="req">*</span></label>
           <input type="text" class="tsi-form-input" id="tWorkOrder" placeholder="e.g. TTG8Q01AL9VS">
         </div>
         <div class="tsi-form-group" id="tDueDateGroup" style="flex:0 0 45%;">
-          <label class="tsi-form-label">DUE DATE</label>
+          <label class="tsi-form-label">DUE DATE <span class="req">*</span></label>
           <input type="text" class="tsi-form-input" id="tDueDate" placeholder="Select date..." readonly>
         </div>
       </div>
 
       <div class="tsi-form-group">
         <label class="tsi-form-label">AMM/FIM REFERENCE</label>
-        <input type="text" class="tsi-form-input" id="tRef" placeholder="e.g. AMM 36-12-03">
+        <input type="text" class="tsi-form-input" id="tRef" placeholder="Optional">
       </div>
 
       <div class="tsi-form-group">
         <label class="tsi-form-label">TSI DETAILS / NOTES</label>
-        <textarea class="tsi-form-textarea" id="tNotes" placeholder="Paste TSI verbiage or describe what was done..."></textarea>
+        <textarea class="tsi-form-textarea" id="tNotes" placeholder="Optional"></textarea>
       </div>
 
       <div class="tsi-form-group" style="margin-top:4px;">
@@ -3661,6 +3661,14 @@ function saveTsiEntry() {
   if (!tail) { tsiToast('Tail number is required'); document.getElementById('tFail').focus(); return; }
   if (!faultCode) { tsiToast('Fault code is required'); document.getElementById('tFaultCode').focus(); return; }
   if (!effect) { tsiToast('Flight deck effect is required'); document.getElementById('tEffect').focus(); return; }
+
+  var barcode = document.getElementById('tWorkOrder').value.trim();
+  if (!barcode) { tsiToast('TSI barcode is required'); document.getElementById('tWorkOrder').focus(); return; }
+
+  if (!isClosed) {
+    var dueDate = document.getElementById('tDueDate').value;
+    if (!dueDate) { tsiToast('Due date is required'); return; }
+  }
 
   if (isClosed) {
     var histAction = document.getElementById('tHistAction').value;

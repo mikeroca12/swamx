@@ -193,28 +193,38 @@
             display: flex;
             gap: 4px;
             padding: 20px 0 0;
+            position: relative;
+            border-bottom: 1px solid var(--frame-border);
+        }
+
+        .nav-tabs .tab-indicator {
+            position: absolute;
+            bottom: -1px;
+            height: 3px;
+            background: var(--accent-light);
+            border-radius: 3px 3px 0 0;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .nav-tab {
             font-family: 'Outfit', sans-serif;
             font-size: 14px;
             font-weight: 500;
-            color: var(--text-on-dark-muted);
+            color: #ffffff;
             background: none;
             border: none;
             padding: 10px 20px;
             border-radius: 8px 8px 0 0;
             cursor: pointer;
-            transition: all 0.15s ease;
-            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+            position: relative;
         }
 
-        .nav-tab:hover { color: var(--text-on-dark); background: rgba(255,255,255,0.06); }
+        .nav-tab:hover { background: rgba(255,255,255,0.04); }
 
         .nav-tab.active {
             color: #ffffff;
-            background: rgba(255,255,255,0.1);
-            border-bottom: 2px solid var(--accent-light);
+            background: rgba(59,130,246,0.15);
             font-weight: 600;
         }
 
@@ -381,7 +391,7 @@
             border-radius: 6px;
             border: 1px solid var(--border);
             background: var(--surface2);
-            color: var(--text-secondary);
+            color: var(--text);
             cursor: pointer;
             transition: all 0.15s ease;
             user-select: none;
@@ -787,7 +797,7 @@
             border-radius: 6px;
             border: 1px solid var(--border);
             background: var(--surface2);
-            color: var(--text-secondary);
+            color: var(--text);
             cursor: pointer;
             transition: all 0.15s ease;
             user-select: none;
@@ -1746,11 +1756,12 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                   </div>
                 </div>
             </div>
-            <div class="nav-tabs">
+            <div class="nav-tabs" id="navTabs">
                 <button class="nav-tab active" data-tab="quicklinks">Quick Links</button>
                 <button class="nav-tab" data-tab="fixrate">Fleet Health</button>
                 <button class="nav-tab" data-tab="quickref">Quick Reference</button>
                 <button class="nav-tab" data-tab="apps">Apps</button>
+                <div class="tab-indicator" id="tabIndicator"></div>
             </div>
         </header>
 
@@ -1908,6 +1919,14 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
     <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
 
     <script>
+        // ---- TAB INDICATOR ----
+        function positionTabIndicator(tab) {
+            var ind = document.getElementById('tabIndicator');
+            if (!ind || !tab) return;
+            ind.style.left = tab.offsetLeft + 'px';
+            ind.style.width = tab.offsetWidth + 'px';
+        }
+
         // ---- TAB SWITCHING ----
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.addEventListener('click', () => {
@@ -1915,8 +1934,28 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
                 tab.classList.add('active');
                 document.getElementById(tab.dataset.tab).classList.add('active');
+                positionTabIndicator(tab);
             });
         });
+
+        // Init indicator position without animation
+        (function() {
+            var active = document.querySelector('.nav-tab.active');
+            var ind = document.getElementById('tabIndicator');
+            if (active && ind) {
+                ind.style.transition = 'none';
+                positionTabIndicator(active);
+                requestAnimationFrame(function() {
+                    requestAnimationFrame(function() {
+                        ind.style.transition = '';
+                    });
+                });
+            }
+            window.addEventListener('resize', function() {
+                var a = document.querySelector('.nav-tab.active');
+                if (a) positionTabIndicator(a);
+            });
+        })();
 
         // ---- REFERENCE DATA ----
         // Format: { cat: "ATA 28", title: "FUEL TANK FLOAT SWITCH T/S", refs: ["REF 1", "REF 2"] }
@@ -2305,9 +2344,11 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 }
             } else if (match._type === 'fix') {
                 document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                document.querySelector('[data-tab="fixrate"]').classList.add('active');
+                var fixTab = document.querySelector('[data-tab="fixrate"]');
+                fixTab.classList.add('active');
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
                 document.getElementById('fixrate').classList.add('active');
+                positionTabIndicator(fixTab);
                 fixSearchInput.value = match.faultCode;
                 renderFixRate();
             } else {

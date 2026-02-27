@@ -89,7 +89,6 @@
           font-family: 'JetBrains Mono', monospace;
           cursor: pointer; position: relative; user-select: none;
         }
-        .utc-block:hover .utc-hint { opacity: 1; }
         .utc-digital .utc-time { font-size: 18px; font-weight: 700; color: #f9b612; }
         .utc-digital .utc-time .utc-lbl { font-size: 11px; font-weight: 600; color: #f9b612; letter-spacing: 1px; }
         .utc-analog { display: none; text-align: center; }
@@ -100,8 +99,9 @@
           letter-spacing: 1px; margin-top: 4px;
         }
         .utc-hint {
-          font-size: 8px; color: rgba(255,255,255,0.4); text-align: center;
-          margin-top: 2px; opacity: 0; transition: opacity 0.2s; letter-spacing: 0.5px;
+          font-size: 9px; color: #ffffff; text-align: center;
+          margin-top: 2px; letter-spacing: 0.5px; display: none;
+          text-decoration: underline; text-underline-offset: 2px;
         }
         .utc-block.analog-mode .utc-digital { display: none; }
         .utc-block.analog-mode .utc-analog { display: block; }
@@ -1578,7 +1578,8 @@ var PREFS_DEFAULTS = {
   status_filter: 'IN WORK',
   ql_favs: [],
   ql_collapsed: [],
-  clock_analog: false
+  clock_analog: false,
+  clock_discovered: false
 };
 
 function _prefsDocRef() {
@@ -1669,6 +1670,11 @@ function applyUserPrefs() {
     if (USER_PREFS.clock_analog) clockEl.classList.add('analog-mode');
     else clockEl.classList.remove('analog-mode');
   }
+  // Show "view analog" hint only if never toggled before
+  var hint = document.getElementById('utcHint');
+  if (hint) {
+    hint.style.display = USER_PREFS.clock_discovered ? 'none' : 'block';
+  }
 
   // Re-render fleet health
   if (typeof renderFixRate === 'function') renderFixRate();
@@ -1752,7 +1758,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                       <canvas id="utcCanvas" width="280" height="280" style="width:140px;height:140px;"></canvas>
                       <div class="utc-analog-readout" id="utcAnalog">--:--Z</div>
                     </div>
-                    <div class="utc-hint">click to toggle</div>
+                    <div class="utc-hint" id="utcHint">view analog</div>
                   </div>
                 </div>
             </div>
@@ -3988,7 +3994,10 @@ function toggleUtcClock() {
   if (!el) return;
   el.classList.toggle('analog-mode');
   var isAnalog = el.classList.contains('analog-mode');
-  if (USER_PREFS) { USER_PREFS.clock_analog = isAnalog; saveUserPrefs(); }
+  // Hide hint forever after first toggle
+  var hint = document.getElementById('utcHint');
+  if (hint) hint.style.display = 'none';
+  if (USER_PREFS) { USER_PREFS.clock_analog = isAnalog; USER_PREFS.clock_discovered = true; saveUserPrefs(); }
 }
 
 // Clock preference restored by applyUserPrefs() after auth

@@ -83,8 +83,8 @@
         .cst-block { font-family: 'JetBrains Mono', monospace; }
         .cst-time { font-size: 18px; font-weight: 700; color: #ffffff; }
         .cst-time .cst-lbl { font-size: 11px; font-weight: 600; color: #34d399; letter-spacing: 1px; }
-        .cst-date { font-size: 11px; font-weight: 600; color: #ffffff; margin-top: 3px; letter-spacing: 0.5px; }
-        .cst-date .cst-day { color: #34d399; }
+        .cst-date { font-size: 11px; font-weight: 600; color: #34d399; margin-top: 3px; letter-spacing: 0.5px; }
+        .utc-date { font-size: 11px; font-weight: 600; color: #f9b612; margin-top: 3px; letter-spacing: 0.5px; }
         .utc-block {
           font-family: 'JetBrains Mono', monospace;
           cursor: pointer; position: relative; user-select: none;
@@ -1413,9 +1413,9 @@
             .logo .ref-only { font-size: 7px; }
             .clock-area { margin-left: auto; gap: 10px; flex-wrap: nowrap; }
             .cst-block { gap: 1px; }
-            .cst-label, .cst-day { font-size: 8px; }
             .cst-time { font-size: 14px; }
             .cst-date { font-size: 8px; }
+            .utc-date { font-size: 8px; }
             .utc-digital .utc-label { font-size: 8px; }
             .utc-digital .utc-time { font-size: 14px; }
             .utc-analog canvas { width: 90px !important; height: 90px !important; }
@@ -1731,11 +1731,12 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 <div class="clock-area" id="clockArea">
                   <div class="cst-block">
                     <div class="cst-time"><span class="cst-lbl">CST</span> <span id="cstTime">--:--</span></div>
-                    <div class="cst-date"><span class="cst-day" id="cstDay">---</span> <span id="cstDate">--/--/----</span></div>
+                    <div class="cst-date" id="cstDate">--</div>
                   </div>
                   <div class="utc-block" id="utcBlock" onclick="toggleUtcClock()">
                     <div class="utc-digital">
                       <div class="utc-time"><span class="utc-lbl">UTC</span> <span id="utcDigital">--:--</span></div>
+                      <div class="utc-date" id="utcDate" style="display:none;"></div>
                     </div>
                     <div class="utc-analog">
                       <canvas id="utcCanvas" width="280" height="280" style="width:140px;height:140px;"></canvas>
@@ -4069,13 +4070,23 @@ function _clockTick() {
     var cstH = (utcH - 6 + 24) % 24;
     var cst = _cp(cstH) + ':' + _cp(utcM);
     var utc = _cp(utcH) + ':' + _cp(utcM);
-    var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
     var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    // CST date - offset by -6h
+    var cstDate = new Date(d.getTime() - 6 * 3600000);
+    var cstDateStr = _cp(cstDate.getUTCDate()) + '-' + months[cstDate.getUTCMonth()];
+    var utcDateStr = _cp(d.getUTCDate()) + '-' + months[d.getUTCMonth()];
     document.getElementById('cstTime').textContent = cst;
     document.getElementById('utcDigital').textContent = utc;
-    document.getElementById('cstDay').textContent = days[d.getUTCDay()];
-    document.getElementById('cstDate').textContent = _cp(d.getUTCDate()) + '-' + months[d.getUTCMonth()] + '-' + d.getUTCFullYear();
-    document.getElementById('utcAnalog').textContent = utc + 'Z ' + _cp(d.getUTCDate()) + months[d.getUTCMonth()];
+    document.getElementById('cstDate').textContent = cstDateStr;
+    // Only show UTC date when it differs from CST
+    var utcDateEl = document.getElementById('utcDate');
+    if (utcDateStr !== cstDateStr) {
+      utcDateEl.textContent = utcDateStr;
+      utcDateEl.style.display = '';
+    } else {
+      utcDateEl.style.display = 'none';
+    }
+    document.getElementById('utcAnalog').textContent = utc + 'Z ' + _cp(d.getUTCDate()) + '-' + months[d.getUTCMonth()];
   }
   requestAnimationFrame(_clockTick);
 }

@@ -2657,7 +2657,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 var orig = el.textContent;
                 el.textContent = 'COPIED';
                 el.style.color = 'var(--green)';
-                setTimeout(function() { el.textContent = orig; el.style.color = ''; }, 1200);
+                setTimeout(function() { el.textContent = orig; el.style.color = ''; }, 800);
             });
         }
         function fixDelete(id) {
@@ -2675,9 +2675,9 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             }
             btn.dataset.armed = 'true';
             btn.textContent = 'CONFIRM';
-            btn.style.background = 'var(--red-bg)';
-            btn.style.color = 'var(--red-text)';
-            btn.style.borderColor = 'var(--red-border)';
+            btn.style.background = 'none';
+            btn.style.color = 'var(--red)';
+            btn.style.borderColor = 'var(--red)';
             _delTimer = setTimeout(function() {
                 btn.dataset.armed = 'false';
                 btn.textContent = 'DELETE';

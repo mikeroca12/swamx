@@ -346,18 +346,19 @@
         /* Migration notice - minimal pulsing text */
         .qrh-migrate-banner {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 9px;
+            font-size: 11px;
             font-weight: 600;
             letter-spacing: 0.5px;
             color: #d97706;
-            padding: 6px 0 0;
+            padding: 4px 0 0;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
         .qrh-migrate-dot {
-            width: 5px;
-            height: 5px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: #f59e0b;
             flex-shrink: 0;
@@ -1759,7 +1760,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             <div class="search-container uni-search">
                 <span class="us-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
                 <input type="text" class="search-input" id="searchInput" placeholder="All Quick Links, All Quick Reference, All Apps. One search." autocomplete="off">
-                <span class="search-hint" id="searchHint">/</span>
                 <div class="autocomplete-dropdown" id="acDropdown"></div>
             </div>
 

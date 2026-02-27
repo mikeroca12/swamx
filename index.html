@@ -3334,23 +3334,23 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
       <button class="tsi-modal-close" onclick="closeTsiModal()">&times;</button>
     </div>
     <div class="tsi-modal-body">
-      <div class="tsi-form-row" style="flex-wrap:wrap;row-gap:4px;">
-        <div class="tsi-form-group tsi-tail-wrap" style="flex:1 1 120px;">
+      <div class="tsi-form-row" style="flex-wrap:wrap;row-gap:2px;">
+        <div class="tsi-form-group tsi-tail-wrap" style="flex:1 1 100px;margin-bottom:4px;">
           <label class="tsi-form-label">TAIL NUMBER <span class="req">*</span></label>
           <input type="text" class="tsi-form-input" id="tFail" placeholder="Tail..." autocomplete="off" oninput="tsiFilterTails()" onfocus="tsiFilterTails()" onkeydown="tsiTailKeyNav(event)">
           <div class="tsi-tail-dd" id="tsiTailDD"></div>
         </div>
-        <div class="tsi-form-group" style="flex:0 0 60px;">
+        <div class="tsi-form-group" style="flex:0 0 50px;margin-bottom:4px;">
           <label class="tsi-form-label">FLEET</label>
           <div class="tsi-form-display" id="tFleet">-</div>
           <input type="hidden" id="tFleetVal">
         </div>
-        <div class="tsi-form-group tsi-fc-wrap" style="flex:1 1 120px;">
+        <div class="tsi-form-group tsi-fc-wrap" style="flex:1 1 100px;margin-bottom:4px;">
           <label class="tsi-form-label">FAULT CODE <span class="req">*</span></label>
           <input type="text" class="tsi-form-input" id="tFaultCode" placeholder="e.g. 36-12020" autocomplete="off" oninput="tsiFilterFC()" onfocus="tsiFilterFC()" onkeydown="tsiFcKeyNav(event)">
           <div class="tsi-fc-dd" id="tsiFcDD"></div>
         </div>
-        <div class="tsi-form-group" style="flex:0 0 40px;">
+        <div class="tsi-form-group" style="flex:0 0 36px;margin-bottom:4px;">
           <label class="tsi-form-label">ATA</label>
           <div class="tsi-form-display" id="tAta">-</div>
         </div>

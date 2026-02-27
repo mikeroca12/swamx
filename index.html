@@ -745,13 +745,6 @@
             flex-wrap: wrap;
             margin-bottom: 16px;
         }
-        .fh-chips-left {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            align-items: center;
-            flex: 1;
-        }
         .fh-chip-sep {
             width: 1px;
             height: 20px;
@@ -771,12 +764,6 @@
         }
         .fix-status-chip.active .fh-count {
             background: rgba(0,0,0,0.15);
-        }
-        .fh-bulk-actions {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
         }
         .fh-expand-btn {
             font-family: 'JetBrains Mono', monospace;
@@ -1083,13 +1070,13 @@
         /* TSI Modal */
         .tsi-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;}
         .tsi-modal-overlay.open{display:flex;}
-        .tsi-modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:520px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
-        .tsi-modal-header{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+        .tsi-modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+        .tsi-modal-header{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
         .tsi-modal-header h2{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--text);}
         .tsi-modal-close{background:none;border:none;font-size:20px;color:var(--text-dim);cursor:pointer;padding:4px;}
         .tsi-modal-close:hover{color:var(--text);}
-        .tsi-modal-body{padding:14px 20px 8px;flex:1;overflow-y:auto;}
-        .tsi-modal-footer{padding:10px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;flex-shrink:0;}
+        .tsi-modal-body{padding:14px 20px 8px;}
+        .tsi-modal-footer{padding:10px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
         .tsi-form-group{margin-bottom:12px;}
         .tsi-form-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:6px;display:block;}
         .tsi-form-label .req{color:var(--red);}
@@ -1122,7 +1109,7 @@
         .tsi-save-btn{padding:8px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text);}
         .tsi-save-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
         .tsi-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:opacity 0.3s;}
-        @media(max-width:640px){ .tsi-form-row{flex-direction:column;gap:0;} .tsi-modal-overlay{padding:0;align-items:flex-end;} .tsi-modal{max-height:90vh;max-height:90dvh;border-radius:12px 12px 0 0;margin-top:auto;display:flex;flex-direction:column;overflow:hidden;} .tsi-modal-header{flex-shrink:0;position:sticky;top:0;background:var(--surface);z-index:10;border-radius:12px 12px 0 0;} .tsi-modal-body{flex:1;overflow-y:auto;padding-bottom:16px;} .tsi-modal-footer{flex-shrink:0;position:sticky;bottom:0;background:var(--surface);z-index:10;padding:12px 20px;border-top:1px solid var(--border);} }
+        @media(max-width:640px){ .tsi-form-row{flex-direction:column;gap:0;} .tsi-modal-overlay{padding:0;overflow-y:auto;-webkit-overflow-scrolling:touch;align-items:flex-start;justify-content:flex-start;} .tsi-modal{max-width:100%;max-height:none;overflow-y:visible;border-radius:0;margin:0;padding-top:env(safe-area-inset-top,20px);} .tsi-modal-body{padding:14px 20px 20px;} .tsi-modal-footer{padding:16px 20px calc(16px + env(safe-area-inset-bottom,20px));} }
 
         /* ---- QUICK LINKS ---- */
         /* ---- QUICK LINKS v2: Masonry + Korry ---- */
@@ -1442,12 +1429,9 @@
             .fh-top-row { gap: 6px; flex-wrap: nowrap; }
             .fix-action-btn { height: 38px; padding: 0 10px; font-size: 9px; flex-shrink: 0; }
             .fh-chip-row { gap: 4px; margin-bottom: 10px; }
-            .fh-chips-left { gap: 4px; }
             .fix-chip { font-size: 9px; padding: 4px 7px; }
             .fh-count { font-size: 8px; padding: 1px 4px; min-width: 14px; }
             .fh-chip-sep { height: 14px; margin: 0 1px; }
-            .fh-bulk-actions { flex-shrink: 0; }
-            .fh-bulk-sep { display: none; }
             .fh-expand-btn { font-size: 8px; }
             .filter-chip { font-size: 10px; padding: 5px 8px; }
             .filter-chip .badge { font-size: 9px; padding: 1px 4px; }
@@ -1712,7 +1696,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 </div>
             </div>
             <div class="fh-chip-row">
-                <div class="fh-chips-left">
                     <button class="fix-chip active" data-fix-filter="ALL">ALL</button>
                     <button class="fix-chip" data-fix-filter="MAX 8">MAX 8</button>
                     <button class="fix-chip" data-fix-filter="MAX 7">MAX 7</button>
@@ -1722,12 +1705,10 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                     <button class="fix-chip fix-status-chip active" data-status-filter="IN WORK">IN WORK <span class="fh-count" id="fhCountWork">0</span></button>
                     <button class="fix-chip fix-status-chip" data-status-filter="CLOSED">CLOSED <span class="fh-count" id="fhCountClosed">0</span></button>
                     <button class="fix-chip fix-status-chip" data-status-filter="REPEAT">REPEAT <span class="fh-count" id="fhCountRepeat">0</span></button>
-                </div>
-                <div class="fh-bulk-actions">
+                    <span class="fh-chip-sep"></span>
                     <button class="fh-expand-btn" onclick="fhExpandAll()">Expand All</button>
                     <span class="fh-bulk-sep">|</span>
                     <button class="fh-expand-btn" onclick="fhCollapseAll()">Collapse All</button>
-                </div>
             </div>
             <div id="fixResults">
                 <div class="fix-empty-state">

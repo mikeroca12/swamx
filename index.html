@@ -1048,10 +1048,12 @@
         .fec-btn-del:hover { background: var(--red-bg); color: var(--red-text); border-color: var(--red-border); }
         .fec-audit {
             padding: 8px 16px;
-            font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace; font-size: 9px;
             line-height: 1.8;
             border-top: 1px solid var(--border);
         }
+        .fec-audit .fec-created { color: #ffffff; }
+        .fec-audit .fec-updated { color: #93c5fd; }
 
         /* Status filter chips */
         .fix-status-chip[data-status-filter="IN WORK"].active { background: #fbbf24; color: #1e293b; border-color: #fbbf24; }
@@ -2575,9 +2577,9 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
                 // Audit line
                 html += '<div class="fec-audit">';
-                html += 'Created ' + formatTsiDate(e.created) + (e.createdByName ? ' by ' + esc(e.createdByName) : '');
+                html += '<span class="fec-created">Created ' + formatTsiDate(e.created) + (e.createdByName ? ' by ' + esc(e.createdByName) : '') + '</span>';
                 if (e.updatedAt) {
-                    html += '<br>Last Updated ' + formatTsiDate(e.updatedAt) + (e.updatedByName ? ' by ' + esc(e.updatedByName) : '');
+                    html += '<br><span class="fec-updated">Last Updated ' + formatTsiDate(e.updatedAt) + (e.updatedByName ? ' by ' + esc(e.updatedByName) : '') + '</span>';
                 }
                 html += '</div>';
 
@@ -3504,7 +3506,7 @@ function openTsiModal(editId) {
     }
   }
   document.getElementById('tsiModalOverlay').classList.add('open');
-  setTimeout(function() { document.getElementById('tFail').focus(); }, 100);
+  if (!tsiEditId) setTimeout(function() { document.getElementById('tFail').focus(); }, 100);
 }
 
 function closeTsiModal() {

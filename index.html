@@ -3379,7 +3379,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         <textarea class="tsi-form-textarea" id="tNotes" placeholder="Paste TSI verbiage or describe what was done..."></textarea>
       </div>
 
-      <div class="tsi-form-group" id="tDueDateGroup">
+      <div class="tsi-form-group" id="tDueDateGroup" style="width:50%;">
         <label class="tsi-form-label">DUE DATE</label>
         <input type="text" class="tsi-form-input" id="tDueDate" placeholder="Select date..." readonly>
       </div>
@@ -3418,8 +3418,8 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
 <script>
 // ---- FLATPICKR DATE PICKERS ----
-var fpDueDate = flatpickr('#tDueDate', { dateFormat: 'Y-m-d', allowInput: false });
-var fpCloseDate = flatpickr('#fcoDate', { dateFormat: 'Y-m-d', allowInput: false });
+var fpDueDate = flatpickr('#tDueDate', { dateFormat: 'Y-m-d', altInput: true, altFormat: 'M j, Y', allowInput: false, altInputClass: 'tsi-form-input', appendTo: document.body });
+var fpCloseDate = flatpickr('#fcoDate', { dateFormat: 'Y-m-d', altInput: true, altFormat: 'M j, Y', allowInput: false, altInputClass: 'tsi-form-input', appendTo: document.body });
 
 // ---- TSI MODAL: AIRCRAFT + FAULT CODE DATA ----
 var TSI_AIRCRAFT = [];

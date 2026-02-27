@@ -1,10 +1,5 @@
 [
   {
-    "enumVal": "30661",
-    "name": "Randy Day",
-    "role": "viewer"
-  },
-  {
     "enumVal": "104712",
     "name": "Allen Church",
     "role": "viewer"
@@ -32,7 +27,7 @@
   {
     "enumVal": "108466",
     "name": "Bryan Witkowski",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "127360",
@@ -42,7 +37,7 @@
   {
     "enumVal": "121254",
     "name": "Charlie Patel",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "146124",
@@ -52,7 +47,7 @@
   {
     "enumVal": "134690",
     "name": "Chris Szymanek",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "87692",
@@ -62,7 +57,7 @@
   {
     "enumVal": "128523",
     "name": "Cody Glover",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "98254",
@@ -72,7 +67,7 @@
   {
     "enumVal": "105998",
     "name": "Craig Petty",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "121417",
@@ -132,17 +127,17 @@
   {
     "enumVal": "103381",
     "name": "Eric Kancir",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "99711",
     "name": "Eric Londono",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "114837",
     "name": "Eric Watts",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "105051",
@@ -167,7 +162,7 @@
   {
     "enumVal": "81649",
     "name": "James Adams",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "99674",
@@ -217,7 +212,7 @@
   {
     "enumVal": "17503",
     "name": "Kevin Osborne",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "79676",
@@ -227,7 +222,7 @@
   {
     "enumVal": "103713",
     "name": "Manny Quinones",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "114343",
@@ -252,12 +247,17 @@
   {
     "enumVal": "73218",
     "name": "Nikki diVittorio",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "139367",
     "name": "Peter Lisboa",
     "role": "viewer"
+  },
+  {
+    "enumVal": "30661",
+    "name": "Randy Day",
+    "role": "editor"
   },
   {
     "enumVal": "108437",
@@ -267,26 +267,16 @@
   {
     "enumVal": "89982",
     "name": "Raul Figueroa",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "60828",
     "name": "Richard Johnson",
-    "role": "viewer"
-  },
-  {
-    "enumVal": "104716",
-    "name": "Robby Clark",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "28909",
     "name": "Rob Cush",
-    "role": "viewer"
-  },
-  {
-    "enumVal": "106826",
-    "name": "Robert Clarke",
     "role": "viewer"
   },
   {
@@ -295,18 +285,28 @@
     "role": "viewer"
   },
   {
+    "enumVal": "104716",
+    "name": "Robby Clark",
+    "role": "viewer"
+  },
+  {
+    "enumVal": "106826",
+    "name": "Robert Clarke",
+    "role": "editor"
+  },
+  {
     "enumVal": "12169",
     "name": "Rod Davis",
     "role": "viewer"
   },
   {
-    "enumVal": "91172",
-    "name": "Russell Scott",
+    "enumVal": "76681",
+    "name": "Russ Hillman",
     "role": "viewer"
   },
   {
-    "enumVal": "76681",
-    "name": "Russ Hillman",
+    "enumVal": "91172",
+    "name": "Russell Scott",
     "role": "viewer"
   },
   {
@@ -332,7 +332,7 @@
   {
     "enumVal": "139854",
     "name": "Sem Montiel",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "105577",
@@ -362,7 +362,7 @@
   {
     "enumVal": "103379",
     "name": "Tobin Miklas",
-    "role": "viewer"
+    "role": "editor"
   },
   {
     "enumVal": "103380",

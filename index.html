@@ -1074,9 +1074,10 @@
         .fec-log-status.closed { background: #dcfce7; color: #15803d; }
         .fec-log-status.open { background: #fef3c7; color: #b45309; }
         .fec-log-dates { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text); font-weight: 600; }
-        .fec-log-barcode { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-dim); }
-        .fec-log-action { font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top: 2px; }
-        .fec-log-by { font-size: 9px; color: var(--text-dim); margin-top: 2px; }
+        .fec-log-barcode { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text); cursor: pointer; border-bottom: 1px dashed var(--text-dim); }
+        .fec-log-barcode:hover { color: var(--accent); border-color: var(--accent); }
+        .fec-log-action { font-size: 11px; color: var(--text); line-height: 1.4; margin-top: 2px; }
+        .fec-log-by { font-size: 9px; color: var(--text-secondary); margin-top: 2px; }
         .fec-log-actions { display: flex; gap: 6px; margin-top: 4px; }
         .fec-log-btn { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border); background: none; color: var(--text-dim); cursor: pointer; transition: all 0.15s; }
         .fec-log-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -2995,7 +2996,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                         html += '<div class="fec-log-top">';
                         html += '<span class="fec-log-status ' + hStatus + '">' + hStatusLabel + '</span>';
                         html += '<span class="fec-log-dates">' + hDates + '</span>';
-                        if (h.workOrder) html += '<span class="fec-log-barcode">' + esc(h.workOrder) + '</span>';
+                        if (h.workOrder) html += '<span class="fec-log-barcode fec-copy" onclick="event.stopPropagation();fecCopy(this)" title="Click to copy">' + esc(h.workOrder) + '</span>';
                         html += '</div>';
                         if (h.correctiveAction) {
                             html += '<div class="fec-log-action">' + esc(h.correctiveAction) + '</div>';

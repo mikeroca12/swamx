@@ -3115,6 +3115,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         var _delTimer = null;
         var _delCountdown = null;
+        var _delReady = false;
         function fecCopy(el) {
             var text = el.textContent.trim();
             navigator.clipboard.writeText(text).then(function() {
@@ -3127,9 +3128,11 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         function fixDelete(id) {
             var btn = event.currentTarget;
             if (btn.dataset.armed === 'true') {
+                if (!_delReady) return; // ignore during guard period
                 clearInterval(_delCountdown);
                 clearTimeout(_delTimer);
                 btn.dataset.armed = 'false';
+                _delReady = false;
                 btn.textContent = 'DELETE';
                 btn.classList.remove('fec-btn-del-armed');
                 db.collection('tsi_entries').doc(id).delete().then(function() {
@@ -3140,6 +3143,8 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             }
             btn.dataset.armed = 'true';
             btn.classList.add('fec-btn-del-armed');
+            _delReady = false;
+            setTimeout(function() { _delReady = true; }, 500);
             var sec = 3;
             btn.textContent = 'CONFIRM (' + sec + ')';
             _delCountdown = setInterval(function() {
@@ -3149,6 +3154,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 } else {
                     clearInterval(_delCountdown);
                     btn.dataset.armed = 'false';
+                    _delReady = false;
                     btn.textContent = 'DELETE';
                     btn.classList.remove('fec-btn-del-armed');
                 }
@@ -3156,6 +3162,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             _delTimer = setTimeout(function() {
                 clearInterval(_delCountdown);
                 btn.dataset.armed = 'false';
+                _delReady = false;
                 btn.textContent = 'DELETE';
                 btn.classList.remove('fec-btn-del-armed');
             }, 3500);

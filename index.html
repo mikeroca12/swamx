@@ -1051,6 +1051,13 @@
         .fec-btn-reopen:hover { background: #93c5fd; color: #1e3a5f; }
         .fec-btn-del { background: none; color: var(--text-dim); border-color: var(--border); margin-left: auto; }
         .fec-btn-del:hover { background: var(--red-bg); color: var(--red-text); border-color: var(--red-border); }
+        .fec-repeat-badge {
+            font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+            padding: 2px 6px; border-radius: 4px; letter-spacing: 0.5px; margin-left: 6px; flex-shrink: 0;
+        }
+        .fec-repeat-neutral { background: var(--surface-alt); color: var(--text-secondary); }
+        .fec-repeat-yellow { background: #fef3c7; color: #b45309; }
+        .fec-repeat-red { background: #dc2626; color: #ffffff; }
         .fec-audit {
             padding: 2px 16px;
             font-family: 'JetBrains Mono', monospace; font-size: 9px;
@@ -2632,20 +2639,135 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             });
         });
 
+        // ---- Fleet Health 2.0: Grouping Layer ----
+        var TSI_GROUPS = {}; // keyed by groupKey (tail|faultCode)
+
+        function buildGroupKey(entry) {
+            var tail = (entry.tail || '').toUpperCase();
+            var fc = normalizeFaultCode(entry.faultCode) || entry.faultCode || 'N/A';
+            return tail + '|' + fc;
+        }
+
+        function normalizeStatus(status) {
+            if (status === 'in_work') return 'in_work';
+            return 'closed'; // closed_eff, closed_ineff, closed all -> closed
+        }
+
+        function aggregateByGroup(entries) {
+            var groups = {};
+            entries.forEach(function(e) {
+                var key = buildGroupKey(e);
+                if (!groups[key]) {
+                    groups[key] = {
+                        groupKey: key,
+                        tail: (e.tail || '').toUpperCase(),
+                        faultCode: normalizeFaultCode(e.faultCode) || e.faultCode || 'N/A',
+                        fleet: e.fleet || '',
+                        effect: e.effect || '',
+                        ata: e.ata || '',
+                        occurrences: []
+                    };
+                }
+                groups[key].occurrences.push(e);
+            });
+            // Sort occurrences within each group: newest first
+            Object.keys(groups).forEach(function(key) {
+                groups[key].occurrences.sort(function(a, b) {
+                    return (b.created || '').localeCompare(a.created || '');
+                });
+                // Update group-level fields from most recent occurrence
+                var latest = groups[key].occurrences[0];
+                groups[key].effect = latest.effect || groups[key].effect;
+                groups[key].fleet = latest.fleet || groups[key].fleet;
+                groups[key].ata = latest.ata || groups[key].ata;
+            });
+            return groups;
+        }
+
+        function getGroupPrimary(group) {
+            // Active occurrence wins, otherwise most recent
+            var active = group.occurrences.find(function(o) { return o.status === 'in_work'; });
+            return active || group.occurrences[0];
+        }
+
+        function getGroupHistory(group) {
+            var primary = getGroupPrimary(group);
+            return group.occurrences.filter(function(o) { return o.id !== primary.id; });
+        }
+
+        function getGroupStatus(group) {
+            var hasActive = group.occurrences.some(function(o) { return o.status === 'in_work'; });
+            return hasActive ? 'in_work' : 'closed';
+        }
+
+        function getRepeatInfo(group) {
+            var count = group.occurrences.length;
+            if (count < 2) return { isRepeat: false, count: count, tier: 'none' };
+            // Check for manual override
+            var hasOverride = group.occurrences.some(function(o) { return o.repeatOverride === true; });
+            // Find time-based tier: compare each occurrence's created to the previous close
+            var tier = 'neutral'; // default for 2+
+            var sorted = group.occurrences.slice().sort(function(a, b) {
+                return (a.created || '').localeCompare(b.created || '');
+            });
+            for (var i = 1; i < sorted.length; i++) {
+                var prevClose = sorted[i - 1].closedDate;
+                var currOpen = sorted[i].created;
+                if (prevClose && currOpen) {
+                    var diffMs = new Date(currOpen).getTime() - new Date(prevClose).getTime();
+                    var diffDays = diffMs / (1000 * 60 * 60 * 24);
+                    if (diffDays <= 7) { tier = 'red'; break; }
+                    if (diffDays <= 30 && tier !== 'red') { tier = 'yellow'; }
+                }
+            }
+            // Override forces repeat badge regardless of time
+            var meetsThreshold = (tier === 'red' || tier === 'yellow' || hasOverride);
+            return { isRepeat: true, count: count, tier: tier, meetsThreshold: meetsThreshold };
+        }
+
+        function checkBarcodeDuplicate(barcode, excludeId) {
+            if (!barcode) return false;
+            var upper = barcode.toUpperCase();
+            return TSI_ENTRIES.some(function(e) {
+                return e.workOrder && e.workOrder.toUpperCase() === upper && e.id !== excludeId;
+            });
+        }
+
+        function sortGroups(groups) {
+            var arr = Object.values(groups);
+            arr.sort(function(a, b) {
+                var aActive = getGroupStatus(a) === 'in_work' ? 0 : 1;
+                var bActive = getGroupStatus(b) === 'in_work' ? 0 : 1;
+                if (aActive !== bActive) return aActive - bActive;
+                // Within same status tier, sort by most recent activity DESC
+                var aDate = a.occurrences[0].created || '';
+                var bDate = b.occurrences[0].created || '';
+                return bDate.localeCompare(aDate);
+            });
+            return arr;
+        }
+
         function loadTsiEntries() {
             if (typeof db === 'undefined') return;
             db.collection('tsi_entries').orderBy('created', 'desc').get().then(function(snap) {
                 TSI_ENTRIES = [];
                 snap.forEach(function(doc) { var d = doc.data(); d.id = doc.id; TSI_ENTRIES.push(d); });
+                TSI_GROUPS = aggregateByGroup(TSI_ENTRIES);
+                window.tsiGroups = TSI_GROUPS; // expose for F12 testing
+                window.tsiEntries = TSI_ENTRIES;
                 updateFixStatusBar();
                 renderFixRate();
             }).catch(function(err) { console.error('TSI load error:', err); });
         }
 
         function updateFixStatusBar() {
-            var inWork = TSI_ENTRIES.filter(function(e) { return e.status === 'in_work'; }).length;
-            var closed = TSI_ENTRIES.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; }).length;
-            var repeat = TSI_ENTRIES.filter(function(e) { return e.repeat === true; }).length;
+            var groups = Object.values(TSI_GROUPS);
+            var inWork = groups.filter(function(g) { return getGroupStatus(g) === 'in_work'; }).length;
+            var closed = groups.filter(function(g) { return getGroupStatus(g) === 'closed'; }).length;
+            var repeat = groups.filter(function(g) {
+                var ri = getRepeatInfo(g);
+                return ri.isRepeat && ri.meetsThreshold;
+            }).length;
             var cw = document.getElementById('fhCountWork');
             var cc = document.getElementById('fhCountClosed');
             var cr = document.getElementById('fhCountRepeat');
@@ -2700,44 +2822,49 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             var q = fixSearchInput.value.trim().toLowerCase();
             var words = q ? q.split(/\s+/) : [];
 
-            var results = TSI_ENTRIES;
+            var groups = sortGroups(TSI_GROUPS);
 
             // Fleet filter (multi-select)
             var allFleets = ['MAX 8', 'MAX 7', 'NG 800', 'NG 700'];
             if (activeFixFilters.length < allFleets.length) {
-                results = results.filter(function(e) {
-                    return e.fleet && activeFixFilters.indexOf(e.fleet.toUpperCase()) !== -1;
+                groups = groups.filter(function(g) {
+                    return g.fleet && activeFixFilters.indexOf(g.fleet.toUpperCase()) !== -1;
                 });
             }
 
             // Status filter
             if (fixStatusFilter === 'IN WORK') {
-                results = results.filter(function(e) { return e.status === 'in_work'; });
+                groups = groups.filter(function(g) { return getGroupStatus(g) === 'in_work'; });
             } else if (fixStatusFilter === 'CLOSED') {
-                results = results.filter(function(e) { return e.status === 'closed_eff' || e.status === 'closed_ineff'; });
+                groups = groups.filter(function(g) { return getGroupStatus(g) === 'closed'; });
             } else if (fixStatusFilter === 'REPEAT') {
-                results = results.filter(function(e) { return e.repeat === true; });
-            }
-
-            // Text search
-            if (q) {
-                results = results.filter(function(e) {
-                    var hay = [e.faultCode||'', e.effect||'', e.ata||'', e.fleet||'', e.tail||'', e.notes||'', e.workOrder||'', e.ref||'', e.actionType||'', e.correctiveAction||''].join(' ').toLowerCase();
-                    return words.every(function(w) { return hay.indexOf(w) !== -1; });
+                groups = groups.filter(function(g) {
+                    var ri = getRepeatInfo(g);
+                    return ri.isRepeat && ri.meetsThreshold;
                 });
             }
 
-            if (results.length === 0 && TSI_ENTRIES.length === 0) {
+            // Text search (search across all occurrences in group)
+            if (q) {
+                groups = groups.filter(function(g) {
+                    return g.occurrences.some(function(e) {
+                        var hay = [e.faultCode||'', e.effect||'', e.ata||'', e.fleet||'', e.tail||'', e.workOrder||'', e.ref||'', e.actionType||'', e.correctiveAction||''].join(' ').toLowerCase();
+                        return words.every(function(w) { return hay.indexOf(w) !== -1; });
+                    });
+                });
+            }
+
+            if (groups.length === 0 && TSI_ENTRIES.length === 0) {
                 fixResults.innerHTML = '<div class="fix-empty-state"><p>No TSI entries yet</p><p class="hint">Click + ADD TSI to create your first entry</p></div>';
                 return;
             }
 
-            if (results.length === 0 && fixStatusFilter === 'IN WORK') {
+            if (groups.length === 0 && fixStatusFilter === 'IN WORK') {
                 fixResults.innerHTML = '<div class="fix-empty-state"><p>No entries in work</p><p class="hint">All caught up - or click CLOSED to see history</p></div>';
                 return;
             }
 
-            if (results.length === 0) {
+            if (groups.length === 0) {
                 fixResults.innerHTML = '<div class="fix-empty-state"><p>No matching entries</p><p class="hint">Try a different search, fleet, or status filter</p></div>';
                 return;
             }
@@ -2745,7 +2872,11 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             var canEdit = window.mocCanEdit && window.mocCanEdit();
             var html = '';
 
-            results.forEach(function(e) {
+            // Phase 1 bridge: render primary occurrence per group using existing card layout
+            groups.forEach(function(g) {
+                var e = getGroupPrimary(g);
+                var repeatInfo = getRepeatInfo(g);
+
                 var statusLabel, statusClass;
                 if (e.status === 'in_work') { statusLabel = 'IN WORK'; statusClass = 'fts-work'; }
                 else { statusLabel = 'CLOSED'; statusClass = 'fts-closed'; }
@@ -2765,6 +2896,9 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 html += '<span class="fec-fleet">' + esc(e.fleet||'') + '</span>';
                 html += '<span class="fec-sep">&bull;</span>';
                 html += '<span class="fec-fc">' + esc(fc) + '</span>';
+                if (repeatInfo.isRepeat) {
+                    html += '<span class="fec-repeat-badge fec-repeat-' + repeatInfo.tier + '">REPEAT x' + repeatInfo.count + '</span>';
+                }
                 if (dueState.label) {
                     html += '<span class="fec-sep">&bull;</span>';
                     html += '<span class="fec-due ' + dueState.cls + '">' + dueState.label + '</span>';
@@ -2786,11 +2920,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 if (e.ref) html += '<div class="fec-field"><span class="fec-label">AMM/FIM</span><span class="fec-val">' + esc(e.ref) + '</span></div>';
                 html += '</div>';
 
-                // TSI Details / Notes
-                if (e.notes) {
-                    html += '<div class="fec-notes"><span class="fec-label" style="display:block;margin-bottom:4px;">TSI DETAILS</span>' + esc(e.notes) + '</div>';
-                }
-
                 // Corrective action (shown when closed)
                 if (e.correctiveAction) {
                     html += '<div class="fec-corrective"><span class="fec-label" style="margin-bottom:2px;color:var(--green-text);">CORRECTIVE ACTION</span><div>' + esc(e.correctiveAction) + '</div></div>';
@@ -2811,7 +2940,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                         html += '<button class="fec-btn fec-btn-update" onclick="event.stopPropagation();fixUpdate(\'' + e.id + '\')">UPDATE</button>';
                         html += '<button class="fec-btn fec-btn-close" onclick="event.stopPropagation();fixClose(\'' + e.id + '\')">CLOSE</button>';
                     } else {
-                        html += '<button class="fec-btn fec-btn-reopen" onclick="event.stopPropagation();fixReopen(\'' + e.id + '\')">REOPEN</button>';
+                        html += '<button class="fec-btn fec-btn-update" onclick="event.stopPropagation();fixUpdate(\'' + e.id + '\')">EDIT</button>';
                     }
                     html += '<button class="fec-btn fec-btn-del" onclick="event.stopPropagation();fixDelete(\'' + e.id + '\')">DELETE</button>';
                     html += '</div>';
@@ -4054,6 +4183,11 @@ function saveTsiEntry() {
 
   var barcode = document.getElementById('tWorkOrder').value.trim();
   if (!barcode) { tsiToast('TSI barcode is required'); document.getElementById('tWorkOrder').focus(); return; }
+
+  // Barcode uniqueness check
+  if (checkBarcodeDuplicate(barcode, tsiEditId)) {
+    tsiToast('TSI barcode already exists'); document.getElementById('tWorkOrder').focus(); return;
+  }
 
   if (!isClosed) {
     var dueDate = document.getElementById('tDueDate').value;

@@ -1043,17 +1043,16 @@
             padding: 6px 12px; border-radius: 5px; border: 1px solid; cursor: pointer;
             letter-spacing: 0.3px; transition: all 0.15s;
         }
-        .fec-btn-update { background: var(--blue-bg); color: var(--blue-text); border-color: var(--blue-border); }
+        .fec-btn-update { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
         .fec-btn-update:hover { background: #93c5fd; color: #1e3a5f; }
-        .fec-btn-close { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); }
+        .fec-btn-close { background: #dcfce7; color: #15803d; border-color: #86efac; }
         .fec-btn-close:hover { background: #86efac; color: #14532d; }
-        .fec-btn-reopen { background: var(--blue-bg); color: var(--blue-text); border-color: var(--blue-border); }
-        .fec-btn-reopen:hover { background: #93c5fd; color: #1e3a5f; }
-        .fec-btn-del { background: none; color: var(--text-dim); border-color: var(--border); margin-left: auto; }
-        .fec-btn-del:hover { background: var(--red-bg); color: var(--red-text); border-color: var(--red-border); }
+        .fec-btn-del { background: none; color: var(--text-secondary); border-color: var(--border); margin-left: auto; }
+        .fec-btn-del:hover { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
+        .fec-btn-del-armed { background: #fee2e2 !important; color: #dc2626 !important; border-color: #dc2626 !important; }
         .fec-repeat-badge {
             font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
-            padding: 2px 6px; border-radius: 4px; letter-spacing: 0.5px; margin-left: 6px; flex-shrink: 0;
+            padding: 2px 6px; border-radius: 4px; letter-spacing: 0.5px; margin-left: 6px; margin-right: 6px; flex-shrink: 0;
         }
         .fec-repeat-neutral { background: var(--surface-alt); color: var(--text-secondary); }
         .fec-repeat-yellow { background: #fef3c7; color: #b45309; }
@@ -3022,8 +3021,8 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                         }
                         if (canEdit) {
                             html += '<div class="fec-log-actions">';
-                            html += '<button class="fec-log-btn" onclick="event.stopPropagation();fixUpdate(\'' + h.id + '\')">EDIT</button>';
-                            html += '<button class="fec-log-btn fec-log-btn-del" onclick="event.stopPropagation();fixDelete(\'' + h.id + '\')">DELETE</button>';
+                            html += '<button class="fec-btn fec-btn-update" onclick="event.stopPropagation();fixUpdate(\'' + h.id + '\')">EDIT</button>';
+                            html += '<button class="fec-btn fec-btn-del" onclick="event.stopPropagation();fixDelete(\'' + h.id + '\')">DELETE</button>';
                             html += '</div>';
                         }
                         html += '</div>'; // end fec-log
@@ -3115,6 +3114,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         }
 
         var _delTimer = null;
+        var _delCountdown = null;
         function fecCopy(el) {
             var text = el.textContent.trim();
             navigator.clipboard.writeText(text).then(function() {
@@ -3127,10 +3127,11 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         function fixDelete(id) {
             var btn = event.currentTarget;
             if (btn.dataset.armed === 'true') {
+                clearInterval(_delCountdown);
                 clearTimeout(_delTimer);
                 btn.dataset.armed = 'false';
                 btn.textContent = 'DELETE';
-                btn.style.cssText = '';
+                btn.classList.remove('fec-btn-del-armed');
                 db.collection('tsi_entries').doc(id).delete().then(function() {
                     loadTsiEntries();
                     tsiToast('Deleted');
@@ -3138,15 +3139,26 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 return;
             }
             btn.dataset.armed = 'true';
-            btn.textContent = 'CONFIRM';
-            btn.style.background = 'none';
-            btn.style.color = 'var(--red)';
-            btn.style.borderColor = 'var(--red)';
+            btn.classList.add('fec-btn-del-armed');
+            var sec = 3;
+            btn.textContent = 'CONFIRM (' + sec + ')';
+            _delCountdown = setInterval(function() {
+                sec--;
+                if (sec > 0) {
+                    btn.textContent = 'CONFIRM (' + sec + ')';
+                } else {
+                    clearInterval(_delCountdown);
+                    btn.dataset.armed = 'false';
+                    btn.textContent = 'DELETE';
+                    btn.classList.remove('fec-btn-del-armed');
+                }
+            }, 1000);
             _delTimer = setTimeout(function() {
+                clearInterval(_delCountdown);
                 btn.dataset.armed = 'false';
                 btn.textContent = 'DELETE';
-                btn.style.cssText = '';
-            }, 3000);
+                btn.classList.remove('fec-btn-del-armed');
+            }, 3500);
         }
 
         function formatTsiDate(iso) {

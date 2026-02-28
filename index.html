@@ -1074,7 +1074,7 @@
         .fec-log-status.closed { background: #dcfce7; color: #15803d; }
         .fec-log-status.open { background: #fef3c7; color: #b45309; }
         .fec-log-dates { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text); font-weight: 600; }
-        .fec-log-barcode { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text); cursor: pointer; border-bottom: 1px dashed var(--text-dim); }
+        .fec-log-barcode { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; color: var(--text); cursor: pointer; border-bottom: 1px dashed var(--text-dim); }
         .fec-log-barcode:hover { color: var(--accent); border-color: var(--accent); }
         .fec-log-action { font-size: 11px; color: var(--text); line-height: 1.4; margin-top: 2px; }
         .fec-log-by { font-size: 9px; color: var(--text-secondary); margin-top: 2px; }
@@ -2925,8 +2925,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                     html += '<span class="fec-repeat-badge fec-repeat-' + repeatInfo.tier + '">REPEAT x' + repeatInfo.count + '</span>';
                 }
                 if (dueState.label) {
-                    html += '<span class="fec-sep">&bull;</span>';
-                    html += '<span class="fec-due ' + dueState.cls + '">' + dueState.label + '</span>';
+                    html += '<span class="fec-due ' + dueState.cls + '" style="margin-left:auto;">' + dueState.label + '</span>';
                 }
                 html += '</div>';
                 if (e.effect) {
@@ -3001,8 +3000,12 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                         if (h.correctiveAction) {
                             html += '<div class="fec-log-action">' + esc(h.correctiveAction) + '</div>';
                         }
-                        if (h.createdByName) {
-                            html += '<div class="fec-log-by">' + esc(h.createdByName) + '</div>';
+                        var hAudit = 'Created ' + formatTsiDate(h.created);
+                        if (h.closedDate) hAudit += ' - Closed ' + formatTsiDate(h.closedDate);
+                        if (h.createdByName) hAudit += ' by ' + esc(h.createdByName);
+                        html += '<div class="fec-log-by">' + hAudit + '</div>';
+                        if (h.updatedAt) {
+                            html += '<div class="fec-log-by" style="color:var(--accent);">Last Updated ' + formatTsiDate(h.updatedAt) + (h.updatedByName ? ' by ' + esc(h.updatedByName) : '') + '</div>';
                         }
                         if (canEdit) {
                             html += '<div class="fec-log-actions">';

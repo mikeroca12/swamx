@@ -1860,7 +1860,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             <div class="fh-top-row">
                 <div class="fh-search-wrap uni-search" style="flex:1;">
                     <span class="us-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-                    <input type="text" id="fixSearchInput" placeholder="Tail (8938) / Fault (36-21020) / ATA (36)..." autocomplete="off">
+                    <input type="text" id="fixSearchInput" placeholder="Search by Tail #, Fault Code, ATA..." autocomplete="off">
                 </div>
                 <button class="fix-action-btn primary" onclick="openTsiModal()">+ ADD TSI</button>
             </div>
@@ -2867,30 +2867,31 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 });
             }
 
-            // Smart search: 2 digits = ATA, 4+ digits = tail, has dash = fault code, else = effect/description
+            // Smart search - fully tolerant, normalize everything
             if (q) {
-                var qClean = q.replace(/\s+/g, '');
-                var searchMode = 'text'; // default: search effect/description
-                if (/^\d{2}$/.test(qClean)) {
-                    searchMode = 'ata';
-                } else if (/^\d{4,}$/.test(qClean)) {
-                    searchMode = 'tail';
-                } else if (/\d+-\d+/.test(qClean)) {
-                    searchMode = 'fault';
-                }
+                var qRaw = q;
+                var qStripped = q.replace(/[\s\-]/g, '').replace(/^n/i, ''); // remove spaces, dashes, leading N
+                var qDigitsOnly = q.replace(/\D/g, ''); // digits only
 
                 groups = groups.filter(function(g) {
                     return g.occurrences.some(function(e) {
-                        if (searchMode === 'ata') {
-                            return (e.ata || '') === qClean;
-                        } else if (searchMode === 'tail') {
-                            return (e.tail || '').toLowerCase().indexOf(qClean) !== -1;
-                        } else if (searchMode === 'fault') {
-                            return (e.faultCode || '').toLowerCase().indexOf(q) !== -1;
-                        } else {
-                            var hay = [e.effect||'', e.correctiveAction||''].join(' ').toLowerCase();
-                            return words.every(function(w) { return hay.indexOf(w) !== -1; });
-                        }
+                        // Tail match: strip N and dashes from both sides, substring
+                        var tail = (e.tail || '').toLowerCase().replace(/^n/, '').replace(/[\s\-]/g, '');
+                        if (tail && qStripped.length >= 2 && tail.indexOf(qStripped) !== -1) return true;
+
+                        // Fault code match: strip dashes from both sides, substring
+                        var fc = (e.faultCode || '').toLowerCase().replace(/[\s\-]/g, '');
+                        if (fc && qStripped.length >= 2 && fc.indexOf(qStripped) !== -1) return true;
+
+                        // ATA match: strip dashes, startsWith
+                        var ata = (e.ata || '').replace(/[\s\-]/g, '');
+                        if (ata && qDigitsOnly.length >= 2 && ata.indexOf(qDigitsOnly) === 0) return true;
+
+                        // Description match: case-insensitive substring across effect + corrective action
+                        var desc = [e.effect || '', e.correctiveAction || ''].join(' ').toLowerCase();
+                        if (qRaw.length >= 3 && words.every(function(w) { return desc.indexOf(w) !== -1; })) return true;
+
+                        return false;
                     });
                 });
             }

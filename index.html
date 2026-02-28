@@ -1058,6 +1058,29 @@
         .fec-repeat-neutral { background: var(--surface-alt); color: var(--text-secondary); }
         .fec-repeat-yellow { background: #fef3c7; color: #b45309; }
         .fec-repeat-red { background: #dc2626; color: #ffffff; }
+        /* Previous Occurrences */
+        .fec-history { border-top: 1px solid var(--border); display: none; }
+        .fix-entry-card.open .fec-history { display: block; }
+        .fec-history-toggle { padding: 8px 16px; background: var(--surface-hover); border: none; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; transition: background 0.15s; }
+        .fec-history-toggle:hover { background: var(--surface-alt); }
+        .fec-history-toggle .fec-hist-arrow { transition: transform 0.2s; font-size: 10px; }
+        .fec-history-toggle.open .fec-hist-arrow { transform: rotate(180deg); }
+        .fec-history-entries { display: none; }
+        .fec-history-toggle.open + .fec-history-entries { display: block; }
+        .fec-log { padding: 10px 16px; border-top: 1px solid var(--border); }
+        .fec-log:first-child { border-top: none; }
+        .fec-log-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .fec-log-status { font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700; padding: 2px 5px; border-radius: 3px; }
+        .fec-log-status.closed { background: #dcfce7; color: #15803d; }
+        .fec-log-status.open { background: #fef3c7; color: #b45309; }
+        .fec-log-dates { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text); font-weight: 600; }
+        .fec-log-barcode { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-dim); }
+        .fec-log-action { font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top: 2px; }
+        .fec-log-by { font-size: 9px; color: var(--text-dim); margin-top: 2px; }
+        .fec-log-actions { display: flex; gap: 6px; margin-top: 4px; }
+        .fec-log-btn { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border); background: none; color: var(--text-dim); cursor: pointer; transition: all 0.15s; }
+        .fec-log-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .fec-log-btn-del:hover { border-color: #fca5a5; color: #b91c1c; background: #fee2e2; }
         .fec-audit {
             padding: 2px 16px;
             font-family: 'JetBrains Mono', monospace; font-size: 9px;
@@ -2872,9 +2895,10 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             var canEdit = window.mocCanEdit && window.mocCanEdit();
             var html = '';
 
-            // Phase 1 bridge: render primary occurrence per group using existing card layout
+            // Phase 2: grouped card rendering with Previous Occurrences
             groups.forEach(function(g) {
                 var e = getGroupPrimary(g);
+                var history = getGroupHistory(g);
                 var repeatInfo = getRepeatInfo(g);
 
                 var statusLabel, statusClass;
@@ -2909,7 +2933,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 }
                 html += '</div>';
 
-                // Expanded detail
+                // Expanded detail - primary occurrence
                 html += '<div class="fec-expanded">';
 
                 // Detail fields
@@ -2927,13 +2951,17 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
                 // Audit line
                 html += '<div class="fec-audit">';
-                html += '<span class="fec-created">Created ' + formatTsiDate(e.created) + (e.createdByName ? ' by ' + esc(e.createdByName) : '') + '</span>';
+                if (e.status === 'in_work') {
+                    html += '<span class="fec-created">Created ' + formatTsiDate(e.created) + (e.createdByName ? ' by ' + esc(e.createdByName) : '') + '</span>';
+                } else {
+                    html += '<span class="fec-created">Created ' + formatTsiDate(e.created) + (e.closedDate ? ' - Closed ' + formatTsiDate(e.closedDate) : '') + (e.createdByName ? ' by ' + esc(e.createdByName) : '') + '</span>';
+                }
                 if (e.updatedAt) {
                     html += '<span class="fec-updated">Last Updated ' + formatTsiDate(e.updatedAt) + (e.updatedByName ? ' by ' + esc(e.updatedByName) : '') + '</span>';
                 }
                 html += '</div>';
 
-                // Action buttons
+                // Action buttons - primary occurrence
                 if (canEdit) {
                     html += '<div class="fec-actions">';
                     if (e.status === 'in_work') {
@@ -2947,6 +2975,47 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 }
 
                 html += '</div>'; // end fec-expanded
+
+                // Previous Occurrences section
+                if (history.length > 0) {
+                    html += '<div class="fec-history">';
+                    html += '<button class="fec-history-toggle" onclick="event.stopPropagation();this.classList.toggle(\'open\');">';
+                    html += 'Previous Occurrences (' + history.length + ')';
+                    html += '<span class="fec-hist-arrow">&#9660;</span>';
+                    html += '</button>';
+                    html += '<div class="fec-history-entries">';
+
+                    history.forEach(function(h) {
+                        var hStatus = (h.status === 'in_work') ? 'open' : 'closed';
+                        var hStatusLabel = (h.status === 'in_work') ? 'IN WORK' : 'CLOSED';
+                        var hDates = formatTsiDateShort(h.created);
+                        if (h.closedDate) hDates += ' - ' + formatTsiDateShort(h.closedDate);
+
+                        html += '<div class="fec-log">';
+                        html += '<div class="fec-log-top">';
+                        html += '<span class="fec-log-status ' + hStatus + '">' + hStatusLabel + '</span>';
+                        html += '<span class="fec-log-dates">' + hDates + '</span>';
+                        if (h.workOrder) html += '<span class="fec-log-barcode">' + esc(h.workOrder) + '</span>';
+                        html += '</div>';
+                        if (h.correctiveAction) {
+                            html += '<div class="fec-log-action">' + esc(h.correctiveAction) + '</div>';
+                        }
+                        if (h.createdByName) {
+                            html += '<div class="fec-log-by">' + esc(h.createdByName) + '</div>';
+                        }
+                        if (canEdit) {
+                            html += '<div class="fec-log-actions">';
+                            html += '<button class="fec-log-btn" onclick="event.stopPropagation();fixUpdate(\'' + h.id + '\')">EDIT</button>';
+                            html += '<button class="fec-log-btn fec-log-btn-del" onclick="event.stopPropagation();fixDelete(\'' + h.id + '\')">DELETE</button>';
+                            html += '</div>';
+                        }
+                        html += '</div>'; // end fec-log
+                    });
+
+                    html += '</div>'; // end fec-history-entries
+                    html += '</div>'; // end fec-history
+                }
+
                 html += '</div>'; // end fix-entry-card
             });
 
@@ -3075,10 +3144,11 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
 
         function formatTsiDateShort(dateStr) {
             if (!dateStr) return '';
-            var parts = dateStr.split('-');
-            if (parts.length < 3) return dateStr;
+            var d = new Date(dateStr);
+            if (isNaN(d.getTime())) return dateStr;
             var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-            return parseInt(parts[2]) + '-' + months[parseInt(parts[1]) - 1] + '-' + parts[0];
+            var day = d.getDate();
+            return (day < 10 ? '0' : '') + day + '-' + months[d.getMonth()] + '-' + d.getFullYear();
         }
 
         // ---- QUICK LINKS ----

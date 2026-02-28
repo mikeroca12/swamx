@@ -982,7 +982,7 @@
             padding: 10px 16px;
         }
         .fec-line1 {
-            display: flex; align-items: center; gap: 0; font-size: 13px; font-weight: 600; color: var(--text);
+            display: flex; align-items: center; gap: 0; font-size: 13px; font-weight: 600; color: var(--text); flex-wrap: wrap; row-gap: 4px;
         }
         .fec-line1 .fec-status {
             font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
@@ -1061,9 +1061,9 @@
         /* Previous Occurrences */
         .fec-history { border-top: 1px solid var(--border); display: none; }
         .fix-entry-card.open .fec-history { display: block; }
-        .fec-history-toggle { padding: 8px 16px; background: var(--surface-hover); border: none; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; transition: background 0.15s; }
+        .fec-history-toggle { padding: 8px 16px; background: var(--surface-hover); border: none; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; color: var(--text); letter-spacing: 1px; text-transform: uppercase; transition: background 0.15s; }
         .fec-history-toggle:hover { background: var(--surface-alt); }
-        .fec-history-toggle .fec-hist-arrow { transition: transform 0.2s; font-size: 10px; }
+        .fec-history-toggle .fec-hist-arrow { transition: transform 0.2s; font-size: 10px; color: var(--text); }
         .fec-history-toggle.open .fec-hist-arrow { transform: rotate(180deg); }
         .fec-history-entries { display: none; }
         .fec-history-toggle.open + .fec-history-entries { display: block; }
@@ -2981,7 +2981,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
                 if (history.length > 0) {
                     html += '<div class="fec-history">';
                     html += '<button class="fec-history-toggle" onclick="event.stopPropagation();this.classList.toggle(\'open\');">';
-                    html += 'Previous Occurrences (' + history.length + ')';
+                    html += 'Fault History (' + history.length + ')';
                     html += '<span class="fec-hist-arrow">&#9660;</span>';
                     html += '</button>';
                     html += '<div class="fec-history-entries">';

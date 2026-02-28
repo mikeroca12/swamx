@@ -3086,33 +3086,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
             }).catch(function(err) { tsiToast('Error: ' + err.message); });
         }
 
-        var _reopenTimer = null;
-        function fixReopen(id) {
-            var btn = event.currentTarget;
-            if (btn.dataset.armed === 'true') {
-                clearTimeout(_reopenTimer);
-                btn.dataset.armed = 'false';
-                btn.textContent = 'REOPEN';
-                btn.style.cssText = '';
-                db.collection('tsi_entries').doc(id).update({
-                    status: 'in_work',
-                    closedDate: null,
-                    actionType: ''
-                }).then(function() {
-                    loadTsiEntries();
-                    tsiToast('Reopened');
-                }).catch(function(err) { tsiToast('Error: ' + err.message); });
-                return;
-            }
-            btn.dataset.armed = 'true';
-            btn.textContent = 'CONFIRM';
-            _reopenTimer = setTimeout(function() {
-                btn.dataset.armed = 'false';
-                btn.textContent = 'REOPEN';
-                btn.style.cssText = '';
-            }, 3000);
-        }
-
         var _delTimer = null;
         var _delCountdown = null;
         var _delReady = false;
@@ -3896,11 +3869,6 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
         <input type="text" class="tsi-form-input" id="tRef" placeholder="Optional">
       </div>
 
-      <div class="tsi-form-group">
-        <label class="tsi-form-label">TSI DETAILS / NOTES</label>
-        <textarea class="tsi-form-textarea" id="tNotes" placeholder="Optional"></textarea>
-      </div>
-
       <div class="tsi-form-group" style="margin-top:4px;">
         <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--text-secondary);">
           <input type="checkbox" id="tClosedHist" onchange="tsiToggleClosed()">
@@ -3937,7 +3905,7 @@ document.getElementById('loginCode').addEventListener('keydown', function(e) {
           <label class="tsi-form-label">OPEN DATE</label>
           <input type="text" class="tsi-form-input" id="tOverrideOpen" placeholder="Default: today" readonly>
         </div>
-        <div class="tsi-form-group" style="flex:1;">
+        <div class="tsi-form-group" style="flex:1;" id="tOverrideCloseGroup">
           <label class="tsi-form-label">CLOSE DATE</label>
           <input type="text" class="tsi-form-input" id="tOverrideClose" placeholder="Default: today" readonly>
         </div>
@@ -3967,6 +3935,7 @@ function tsiToggleOverride() {
     fpOverrideOpen.clear();
     fpOverrideClose.clear();
   }
+  tsiUpdateCloseDateVisibility();
 }
 
 function fcoToggleOverride() {
@@ -4043,7 +4012,6 @@ function openTsiModal(editId) {
       document.getElementById('tEffect').value = entry.effect || '';
       document.getElementById('tWorkOrder').value = entry.workOrder || '';
       document.getElementById('tRef').value = entry.ref || '';
-      document.getElementById('tNotes').value = entry.notes || '';
       if (entry.dueDate) fpDueDate.setDate(entry.dueDate, true); else fpDueDate.clear();
       // If editing a closed entry, check the box and populate fields
       var isClosed = entry.status === 'closed_eff' || entry.status === 'closed_ineff';
@@ -4067,6 +4035,7 @@ function openTsiModal(editId) {
         if (hasOpenOverride) fpOverrideOpen.setDate(entry.created.split('T')[0], true);
         if (hasCloseOverride) fpOverrideClose.setDate(entry.closedDate.split('T')[0], true);
       }
+      tsiUpdateCloseDateVisibility();
     }
   }
   document.getElementById('tsiModalOverlay').classList.add('open');
@@ -4080,7 +4049,7 @@ function closeTsiModal() {
 }
 
 function tsiClearForm() {
-  ['tFail','tFaultCode','tEffect','tWorkOrder','tNotes','tRef'].forEach(function(id) {
+  ['tFail','tFaultCode','tEffect','tWorkOrder','tRef'].forEach(function(id) {
     document.getElementById(id).value = '';
   });
   fpDueDate.clear();
@@ -4115,6 +4084,16 @@ function tsiToggleClosed() {
     var ta = document.getElementById('tHistCorrective');
     if (ta) ta.value = '';
     document.querySelectorAll('#tClosedFields .fco-chip').forEach(function(c) { c.classList.remove('selected'); });
+  }
+  tsiUpdateCloseDateVisibility();
+}
+
+function tsiUpdateCloseDateVisibility() {
+  var isHist = document.getElementById('tClosedHist').checked;
+  var closeGroup = document.getElementById('tOverrideCloseGroup');
+  if (closeGroup) {
+    closeGroup.style.display = isHist ? '' : 'none';
+    if (!isHist) fpOverrideClose.clear();
   }
 }
 
@@ -4336,7 +4315,6 @@ function saveTsiEntry() {
     workOrder: document.getElementById('tWorkOrder').value.trim().toUpperCase(),
     actionType: isClosed ? document.getElementById('tHistAction').value : '',
     correctiveAction: isClosed ? document.getElementById('tHistCorrective').value.trim().toUpperCase() : '',
-    notes: document.getElementById('tNotes').value.trim().toUpperCase(),
     dueDate: isClosed ? '' : document.getElementById('tDueDate').value,
     ref: document.getElementById('tRef').value.trim().toUpperCase(),
     status: isClosed ? 'closed_eff' : 'in_work',
@@ -4352,7 +4330,6 @@ function saveTsiEntry() {
     db.collection('tsi_entries').doc(tsiEditId).update({
       tail: tail, fleet: fleet, ata: ata, faultCode: fcNorm || faultCode, effect: effect,
       workOrder: document.getElementById('tWorkOrder').value.trim().toUpperCase(),
-      notes: document.getElementById('tNotes').value.trim().toUpperCase(),
       dueDate: isClosed ? '' : document.getElementById('tDueDate').value,
       ref: document.getElementById('tRef').value.trim().toUpperCase(),
       updatedAt: new Date().toISOString(),
